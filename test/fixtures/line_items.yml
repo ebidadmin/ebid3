@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  entry_id: 1
+  car_part_id: 1
+  part_no: MyString
+  quantity: 1
+  status: MyString
+  bids_count: 1
+
+two:
+  entry_id: 1
+  car_part_id: 1
+  part_no: MyString
+  quantity: 1
+  status: MyString
+  bids_count: 1

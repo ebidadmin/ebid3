@@ -1,0 +1,423 @@
+/* HOME PAGE
+---------------------------------------------------------------------- */
+
+#branding-menu { background-color: #911D00; color: white; font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; height: 90px; overflow: hidden; border-bottom: 5px solid #CCC; }
+
+#branding-menu p { float: right; font-size: 14px; line-height: 18px; margin: 30px 0; }
+
+#branding-menu p a { margin-left: 10px; }
+
+#branding-top { font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; padding: 10% 0 20px; position: relative; }
+
+#branding-top #logo { background: transparent url(../images/base/ebidlogo.jpg) no-repeat; clear: both; height: 95px; opacity: 1; text-indent: -9999px; width: 100px; }
+
+#branding-top img { height: 291px; width: 500px; position: absolute; right: 0; top: 10%; }
+
+#branding-top h2 { clear: both; float: left; display: inline; font-size: 3em; font-weight: normal; line-height: 1.2em; width: 450px; margin-bottom: 12%; }
+
+#branding-top p, #call-to-action p, #reg-instruction { border-top: 1px dotted #cacaca; border-bottom: 1px dotted #cacaca; clear: both; color: #919191; font: italic 2em/1.6em Georgia, "Times New Roman", Times, serif; padding: 8px 0 15px; text-align: center; }
+
+#reg-instruction { text-align: left; }
+
+#branding-top em, #branding-bottom .small em { padding-bottom: 4px; border-bottom: 2px solid #919191; }
+
+#branding-bottom { font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; margin: 10px 0 10%; overflow: hidden; }
+
+#branding-bottom h2 { opacity: 0.9; background-color: white; }
+
+#branding-bottom .buyer h2 { color: #BE9B4D; }
+
+#branding-bottom .supplier h2 { color: #911D00; }
+
+#branding-bottom h3 { color: #cacaca; }
+
+#branding-bottom .box { width: 410px; padding-left: 25px; padding-right: 25px; color: white; }
+
+#branding-bottom .buyer { float: left; background-color: #BE9B4D; }
+
+#branding-bottom .supplier { float: right; background-color: #911D00; }
+
+#branding-bottom p, #branding-bottom li { font-size: 14px; margin-bottom: 0.8em; }
+
+#branding-bottom ul { text-align: left; }
+
+#branding-bottom ul.benefits { height: 340px; }
+
+#branding-bottom ul.who-join { height: 250px; }
+
+#branding-bottom li { list-style-type: disc; list-style-position: outside; margin-left: 20px; padding-left: 10px; }
+
+#branding-bottom .small { margin-top: 15px; font-size: 12px; }
+
+#call-to-action { clear: both; margin: 20px 0; }
+
+#call-to-action #signup { display: block; height: 50px; width: 200px; background: url(../images/base/signup.png) no-repeat; text-indent: -9999px; margin: 10px auto; }
+
+#call-to-action #signup:hover { background-position: -701px 0; }
+
+
+/* ABOUT PAGE
+---------------------------------------------------------------------- */
+
+#about-company { clear: both; display: inline; float: left; font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; font-size: 14px; margin-right: 20px; width: 620px; }
+
+#about-company .intro { font-size: 1.2em; }
+
+#about-company .highlight { font-weight: bold; }
+
+#about-company img#ebidcommunity, #about-company img#sweetspot { margin: 0 auto 2em; }
+
+#about-people { background-color: #FFF6BF; border: 1px solid #CCC; float: right; font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; width: 278px; padding: 20px; }
+
+#about-people h3 { color: #C00; margin-bottom: 0.3em; }
+
+#about-people .position { font-style: italic; }
+
+/* FAQs
+---------------------------------------------------------------------- */
+
+#faq { width: 70%; font-size: 1.2em; }
+
+#faq dt { font: italic 1.4em/1.5em Georgia, "Times New Roman", Times, serif; color: #CC0000; margin-bottom: 10px; }
+
+#faq dd { margin-bottom: 20px; }
+
+#faq .first { color: #919191; font-weight: bold; padding: 0 0 0 20px; border: none; margin: 0; width: 80px; min-height: 0; }
+
+#faq li { list-style-type: disc; list-style-position: outside; margin: 0 0 10px 130px; padding-left: 20px; }
+
+#faq ul.regular li { margin-left: 40px; }
+
+/* BUYER & SUPPLIER - DASHBOARD
+---------------------------------------------------------------------- */
+
+/*#buyer-dash h3 { clear: both; }
+
+.dash-entry { position: relative; display: inline; float: left; height: 70px; background-color: #e5e5e5; width: 160px; margin-right: 15px; margin-bottom: 20px; padding: 10px; }
+
+.dash-entry.last { margin-right: 0; }
+
+#pending, #released, #expired { clear: both; }
+
+#overdue { background: #ffd480; }
+
+.dash-entry strong, .dash-entry .instruction, .dash-entry a { float: left; width: 100%; opacity: 1; margin-bottom: 5px; }
+
+.dash-entry .instruction { color: black; font-weight: normal; }
+
+.dash-entry .count { position: absolute; top: 10px; right: 10px; height: 40px; width: 40px; text-align: center; line-height: 40px; background-color: white; margin-right: 0; font-size: 1.5em; }
+
+.dash-entry .count.highlight { background-color: #FFF6BF; color: #C00; }
+
+#content-main .dash-entry a { border-top: 1px solid rgba(254,255,254,0.9); padding: 5px 0 0; background: none; opacity: 1; text-align: center; }*/
+
+.dash { display: inline; float: left; margin-right: 3%; width: 31.2%; }
+.dash.last { margin-right: 0; }
+.dash h3 { background-color: #e5e5e5; padding: 8px 0; text-align: center; }
+#entries, #expired, #expired-2, #expired-3, #orders,
+#last-bid, #new-orders, #overdue, #feature { border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; }
+.dash-entry { clear: both; height: 20px; line-height: 20px; margin: 0 0 10px; position: relative; }
+.dash-entry strong { float: left; width: 30%; }
+.dash-entry .count { position: absolute; right: 0; font-size: 18px; }
+.dash-entry .count.highlight { background-color: #FFF6BF; color: #C00; }
+#content-main .dash-entry .link { font-weight: normal; position: absolute; right: 50px; padding: 0 4px; opacity: 1; }
+
+.dash.supplier { width: 48%; }
+.dash.supplier .dash-entry strong { width: 35%; }
+#content-main .dash.supplier .dash-entry .link { right: 150px; }
+.dash.full { width: 100%; }
+.dash.full .dash-entry strong { width: 20%; }
+
+/* TABLES OF ENTRIES
+---------------------------------------------------------------------- */
+
+table#lot-bids th, 
+table th.bid-box, 
+table th.status { background: #797979; color: #FFF; }
+table th strong, table th .strong { color: #fff6bf; font-size: 1.5em; }
+
+table td.bid-box, 
+table td.status, 
+table td.fees { background-color: #eaeaea; }
+/*#fff6bf*/
+table .vehicle, th.vehicle, td.vehicle { width: 40%; }
+table .vehicle #details { float: left; margin-left: 10px; width: 260px;}
+table .terms,
+table .delivery { text-align: left; width: 20%; }
+table .delivery p, table .requirements p { margin-left: 60px; }
+table .vehicle a, table .requirements a, table .terms a { font-size: 1.5em; }
+table .status { width: 40%; text-align: center; }
+table .status p { margin-bottom: 5px; }
+table p span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px ;width: 30%; }
+table tr#accept-decline { text-align: center; }
+
+table.buyer.monitor-bids { clear: both; }
+table.buyer .type { width: 6%; }
+table.buyer .price { width: 18%; }
+table.buyer td.price { text-align: right; padding-right: 20px; }
+/*table.buyer td[colspan="4"] { text-align: center; margin-bottom: 0; }*/
+table.buyer .
+
+table .amount { text-align: center; }
+
+
+/* BUYER FEES
+---------------------------------------------------------------------- */
+
+table#buyer-fees td div { margin-bottom: 5px; height: 18px; line-height: 18px;}
+table#buyer-fees .vehicle a { font-size: 1em; margin-left: -4px;}
+table#buyer-fees .vehicle { width: 30%; }
+table .decline-type { text-align: left; width: 15%;}
+table .part, table .lowest-bid, table .fee { float: left }
+table .part { clear: both; width: 200px; margin-right: 10px;}
+table .lowest-bid, table .fee { margin-left: 10px; width: 140px; text-align: right; }
+table td .fee { font-size: 1.2em; font-weight: bold;}
+
+/* SUPPLIER - MAIN HUB
+---------------------------------------------------------------------- */
+
+table#item-bids { clear: both; margin: 4em 0 1em; }
+table .qty { width: 10%; text-align: center; }
+table .partname { text-align: left; }
+table .bid-box { width: 60%; overflow: hidden; text-align: center; }
+table .bid-box span { color: #C00; }
+table .bid-box .bid-field { float: left; display: inline; width: 25%; min-height: 2.5em; padding: 2px; }
+table .bid-box #regular { width: 31%; }
+table .bid-box p.bid-amount { margin: 5px 5px 0; padding: 0 12px 0 0; min-height: 1.5em; text-align: right; }
+table .bid-box input.quote { text-align: right; }
+table .bid-box .bid-msg { clear: both; }
+table .bid-box p.instruction { margin: 5px 0; }
+table .bid-box p.instruction.large { font-size: 1.1em; }
+
+table#lot-bids { margin: 1.5em 0; }
+table#lot-bids th, .total-th { text-align: center; vertical-align: middle; }
+table#lot-bids tr { border-top: 2px solid #999; }
+
+/*table td.vehicle p { width: 70%; margin-left: 110px; }*/
+/*table .vehicle span { font-weight: bold; }*/
+
+/* SUPPLIER - MONITOR BIDS
+---------------------------------------------------------------------- */
+
+table#monitor-bids .part-desc,
+table#monitor-bids .amount,
+table#monitor-bids .bid-type,
+table#monitor-bids .status { display: inline; float: left; margin-left: 10px; width: 110px; }
+table#monitor-bids .part-desc { clear: both; text-align: left; width: 180px; }
+table#monitor-bids .bid-group { float: left; margin-left: 15px; }
+table#monitor-bids .amount { text-align: right; }
+table#monitor-bids th .amount { margin-left: 15px; }
+table#monitor-bids td .amount { clear: both; margin-left: 0; }
+
+/* SUPPLIER - ORDERS
+---------------------------------------------------------------------- */
+
+table#orders-list .vehicle a { font-size: 1.2em; margin-left: -4px; }
+
+/* SUPPLIER FEES
+---------------------------------------------------------------------- */
+
+table#supplier-fees .vehicle { width: 30%; }
+table#supplier-fees td div { margin-bottom: 5px; line-height: 20px;}
+table .po-delivery, table .amount-paid, table .fees { float: left;  }
+table .po-delivery { clear: both; width: 30%; text-align: left;}
+table .amount-paid, table .fees { font-weight: bold; margin-left: 10px; padding-right: 10px; text-align: right; width: 30%;}
+table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase;}
+
+/* PHOTO SETS
+---------------------------------------------------------------------- */
+
+.photo { float: left; padding: 5px; background-color: rgba(255,255,255,0.9); border: 1px solid #CCC; height: 60px; width: 80px; }
+
+.photo-set { float: left; width: 33%; }
+
+.photo-set ul li { float: left; margin: 0 5px 10px 0; }
+
+.photo-set .photo:hover { border: 1px solid #5f6252; opacity: 1; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
+
+/*#content-main .photo-set ul li a:hover,
+#content-main table .photo-link { background: none; opacity: 1; }*/
+
+
+/* CREATE ENTRY - PARTS DB
+---------------------------------------------------------------------- */
+
+#parts { float: left; width: 38%; min-height: 400px; overflow: hidden; padding: 10px; border: 1px solid #CCCCCC; background-color: #FFF6BF; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
+
+#parts #search-form { display: block; text-align: center; height: 50px; line-height: 50px; }
+
+#parts #search-form > input { margin-top: 0; margin-right: 5px; }
+
+#parts #search-box { width: 50%; }
+
+#parts p { text-align: center; margin: 0.5em 0; }
+
+#parts li { margin: 0.5em 0 0.7em 2em; list-style-type: none; }
+
+#parts .pagination { clear: both; color: #666666; padding: 10px 0; position: relative; text-align: center; float: none;font-weight: normal; font-size: .8em; }
+
+.ajax-loader { float: right; }
+
+/* PARTS LISTS
+---------------------------------------------------------------------- */
+
+/*----- 1. Cart Selection -----*/
+
+#selection { float: right; width: 55%; min-height: 400px; overflow: hidden; }
+
+#selection h3 { clear: both; padding: 10px 0; text-align: center; }
+
+#selection #cart h3, #selection #prev-cart h3 { background: #797979; color: #FFF; }
+
+#selection h4, li.selection-title, li.selection-list, .vehicle-set h4 { overflow: hidden; margin: 0; }
+
+#selection .qty, #show-parts .qty { float: left; width: 10%; text-align: center; }
+
+#selection .partname, #show-parts .partname { float: left; width: 40%; }
+
+#selection .partnum { float: left; width: 40%; text-align: right; }
+
+#selection ul, ul#show-parts { margin-bottom: 2em; overflow: hidden; }
+
+#selection ul li input { margin-top: -0.5em; text-align: center; }
+
+#selection ul li input[type="submit"] { margin-left: 0.5em; }
+
+#selection #cart_notice { float: left; width: 70%; line-height: 1.5em; min-height: 1.5em; color: #C00; font-weight: bold; }
+
+#selection #cart input[type="button"] { margin-top: 0; float: right; }
+
+#selection .box h3 { margin-bottom: 0.5em; padding: 0; }
+
+/*----- 2. PO Parts Lists -----*/
+
+.first table.parts-set { float: left; width: 100%; margin: 2em 0; }
+
+#order table.parts-set { float: right; width: 540px; margin-bottom: 1.5em; }
+
+#order span.partname { width: 25%; }
+
+#order span.partnum { width: 25%; text-align: center; }
+
+.price { width: 20%; text-align: right; padding: 10px 8px 10px 0; }
+
+.selection-total td { font-size: 1.5em; font-weight: bold; color: #C00; text-align: right; padding: 10px 8px 10px 0; border-bottom: none; }
+
+/* CREATE ENTRY - VEHICLE & FILE FIELDS */
+
+.column { float: left; width: 32%; margin-right: 10px; }
+
+.column:last-child { margin-right: 0; }
+
+.column-2 { float: left; width: 16%; }
+
+#attachments input { margin: 0; }
+
+#attachments .fields { margin: 4px; padding: 10px 0; -moz-box-shadow: none; -webkit-box-shadow: none; text-align: center; }
+
+#attachments input[type="file"] { width: 65%; }
+
+#attachments .add-photo { margin: 4px; text-align: center; }
+
+
+/* VEHICLES SETS
+---------------------------------------------------------------------- */
+
+.vehicle-set, #show-parts { position: relative; overflow: hidden; float: right; width: 60%; margin-bottom: 2em; }
+
+.vehicle-set li { margin-left: 60px; }
+
+.vehicle-set li span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 30%; }
+
+/* PURCHASE ORDER
+---------------------------------------------------------------------- */
+
+.first { float: left; overflow: hidden; width: 460px; min-height: 200px; padding-right: 20px; margin: 0 10px 20px 0; border-right: 1px solid #999; }
+
+.second { float: right; width: 460px; }
+
+.first h2, .second h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999;  }
+
+.first .who { color: #C00; }
+
+.first .vehicle-set { width: 100%; margin-bottom: 2em; }
+
+.first .full-name { margin-top: 1.2em; font-weight: bold; }
+
+.first .highlight { background-color: #FFF6BF; padding: 0 10px; }
+#buyer-company, #supplier-company { float: left; overflow: hidden; width: 50%; }
+#supplier-company.multiple { clear: both; background-color: #FFF6BF;}
+
+#buyer-company h3, #supplier-company h3 { font-size: 1em; color: #999; text-transform: uppercase; }
+
+#buyer-company h4, #supplier-company h4 { margin-bottom: 0.8em; }
+
+#del-instructions  { width: 450px; }
+
+#del-instructions li { clear: both; padding-left: 140px; }
+
+#del-instructions span { font-weight: bold; color: #999; display: block; float: left; margin-left: -140px; width: 30%; }
+
+#del-status { background-color: #FFF6BF; clear: both; color: #C00; margin-top: 5em; padding: 10px 0; text-align: center;}
+#order { clear: both; overflow: hidden; margin: 1.5em 0; border-bottom: 1px solid #999; }
+
+#order .vehicle-set { float: left; margin: 0 10px 1em; width: 280px; }
+
+#order .vehicle-set li { clear: both; float: left; width: 280px; }
+
+#order li span { width: 40%; }
+
+
+
+/* ADMIN - MONITORING */
+
+table.admin ul.entry-links li { float: none; }
+
+table.admin li { float: left; width: 100%; }
+
+table.admin .vehicle ul { margin: 0 0 0 110px; }
+
+table.admin .vehicle li a { font-size: 1em; }
+
+table.admin .vehicle li span { width: 40%; }
+
+table.admin .bid-box ul { margin: 0; overflow: hidden; }
+
+
+ul.first.rating li { margin-bottom: 1.5em; }
+
+.profile { min-height: 300px; }
+
+.profile li, .usage li, #show-company-info li { margin-bottom: 0.5em; }
+
+.usage li#pwd { margin-bottom: 1.5em; }
+
+.col-3 { width: 60%; }
+
+#search-form span { margin-right: 10px; }
+
+#search-form { margin-bottom: 10px; }
+
+
+/* AUDIT TRAIL
+---------------------------------------------------------------------- */
+
+#audits .bid-box { max-width: 570px; text-align: left; }
+
+
+/* NEW FEATURE
+---------------------------------------------------------------------- */
+
+.new-feature { background: url(../images/new_item.png) no-repeat 3px center; padding-left: 25px; }
+
+.new-feature a { padding-left: 25px; }
+
+
+
+
+#bid-migrations .item-id { width: 10%; }
+#bid-migrations .vehicle { width: 30%; }
+#bid-migrations .lot-bids,
+#bid-migrations .ip-bids,
+#bid-migrations .new-bids { width: 20%; }
+#bid-migrations .new-bids { background-color: #FFF6BF; }

@@ -10,7 +10,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101130094324) do
+ActiveRecord::Schema.define(:version => 20101130105236) do
+
+  create_table "bids", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "entry_id"
+    t.integer  "line_item_id"
+    t.decimal  "amount",       :precision => 10, :scale => 2
+    t.integer  "quantity",                                    :default => 1,           :null => false
+    t.decimal  "total",        :precision => 10, :scale => 2
+    t.string   "bid_type"
+    t.boolean  "lot",                                         :default => false
+    t.string   "status",                                      :default => "Submitted", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "ordered"
+    t.integer  "order_id"
+    t.date     "delivered"
+    t.date     "paid"
+    t.decimal  "fee",          :precision => 10, :scale => 2
+    t.date     "remitted"
+    t.date     "declined"
+    t.date     "expired"
+  end
+
+  add_index "bids", ["entry_id"], :name => "index_bids_on_entry_id"
+  add_index "bids", ["line_item_id"], :name => "index_bids_on_line_item_id"
+  add_index "bids", ["order_id"], :name => "index_bids_on_order_id"
+  add_index "bids", ["user_id"], :name => "index_bids_on_user_id"
 
   create_table "car_brands", :force => true do |t|
     t.integer  "car_origin_id"
@@ -89,6 +116,36 @@ ActiveRecord::Schema.define(:version => 20101130094324) do
     t.integer  "primary_role"
   end
 
+  create_table "entries", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "ref_no"
+    t.integer  "year_model",        :default => 2010
+    t.integer  "car_brand_id",      :default => 0
+    t.integer  "car_model_id",      :default => 0
+    t.integer  "car_variant_id",    :default => 0
+    t.string   "plate_no"
+    t.string   "serial_no"
+    t.string   "motor_no"
+    t.date     "date_of_loss"
+    t.integer  "city_id"
+    t.integer  "term_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "bid_until"
+    t.string   "buyer_status",      :default => "New"
+    t.integer  "photos_count",      :default => 0,     :null => false
+    t.boolean  "additional_flag",   :default => false
+    t.date     "expired"
+    t.boolean  "chargeable_expiry", :default => false
+  end
+
+  add_index "entries", ["car_brand_id"], :name => "index_entries_on_car_brand_id"
+  add_index "entries", ["car_model_id"], :name => "index_entries_on_car_model_id"
+  add_index "entries", ["car_variant_id"], :name => "index_entries_on_car_variant_id"
+  add_index "entries", ["city_id"], :name => "index_entries_on_city_id"
+  add_index "entries", ["term_id"], :name => "index_entries_on_term_id"
+  add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
+
   create_table "friendships", :force => true do |t|
     t.integer  "company_id"
     t.integer  "friend_id"
@@ -98,6 +155,33 @@ ActiveRecord::Schema.define(:version => 20101130094324) do
 
   add_index "friendships", ["company_id"], :name => "index_friendships_on_company_id"
   add_index "friendships", ["friend_id"], :name => "index_friendships_on_friend_id"
+
+  create_table "line_items", :force => true do |t|
+    t.integer  "entry_id"
+    t.integer  "car_part_id"
+    t.string   "part_no",     :default => ""
+    t.integer  "quantity",    :default => 1,     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status",      :default => "New"
+    t.integer  "bids_count",  :default => 0,     :null => false
+  end
+
+  add_index "line_items", ["car_part_id"], :name => "index_line_items_on_car_part_id"
+  add_index "line_items", ["entry_id"], :name => "index_line_items_on_entry_id"
+
+  create_table "photos", :force => true do |t|
+    t.integer  "entry_id"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.boolean  "processing"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "photos", ["entry_id"], :name => "index_photos_on_entry_id"
 
   create_table "profiles", :force => true do |t|
     t.integer  "user_id"

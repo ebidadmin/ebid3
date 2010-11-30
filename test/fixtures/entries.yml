@@ -1,0 +1,39 @@
+one:
+  user_id: 1
+  ref_no: MyString
+  year_model: 1
+  car_brand_id: 1
+  car_model_id: 1
+  car_variant_id: 1
+  plate_no: MyString
+  serial_no: MyString
+  motor_no: MyString
+  date_of_loss: 2010-11-30
+  city_id: 1
+  term_id: 1
+  bid_until: 2010-11-30
+  buyer_status: MyString
+  photos_count: 1
+  additional_flag: false
+  expired: 2010-11-30
+  chargeable_expiry: false
+
+two:
+  user_id: 1
+  ref_no: MyString
+  year_model: 1
+  car_brand_id: 1
+  car_model_id: 1
+  car_variant_id: 1
+  plate_no: MyString
+  serial_no: MyString
+  motor_no: MyString
+  date_of_loss: 2010-11-30
+  city_id: 1
+  term_id: 1
+  bid_until: 2010-11-30
+  buyer_status: MyString
+  photos_count: 1
+  additional_flag: false
+  expired: 2010-11-30
+  chargeable_expiry: false

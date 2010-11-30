@@ -1,4 +1,6 @@
 Ebid::Application.routes.draw do
+  resources :entries
+
   resources :car_parts
 
   resources :car_variants
@@ -10,6 +12,18 @@ Ebid::Application.routes.draw do
   resources :companies
 
   devise_for :users
+
+  match 'buyer/:id/main' => 'buyer#main', :as => :buyer_main, :via => :get
+  match 'buyer/:id/pending' => 'buyer#pending', :as => :buyer_pending, :via => :get
+
+  get 'cart/add'
+  get 'cart/remove'
+  post 'cart/clear'
+  get 'cart/edit'
+  resources :cart_items, :only => :edit
+
+  get "site/index"
+  get "site/about"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -60,7 +74,7 @@ Ebid::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => "welcome#index"
+  root :to => "car_parts#index"
 
   # See how all your routes lay out with "rake routes"
 
