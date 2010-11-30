@@ -1,0 +1,29 @@
+<% title "Companies" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Address1</th>
+    <th>Address2</th>
+    <th>Zip Code</th>
+    <th>City</th>
+    <th>Approver</th>
+    <th>Approver Position</th>
+  </tr>
+  <% for company in @companies %>
+    <tr>
+      <td><%= company.name %></td>
+      <td><%= company.address1 %></td>
+      <td><%= company.address2 %></td>
+      <td><%= company.zip_code %></td>
+      <td><%= company.city_id %></td>
+      <td><%= company.approver %></td>
+      <td><%= company.approver_position %></td>
+      <td><%= link_to "Show", company %></td>
+      <td><%= link_to "Edit", edit_company_path(company) %></td>
+      <td><%= link_to "Destroy", company, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Company", new_company_path %></p>

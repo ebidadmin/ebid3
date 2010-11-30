@@ -1,0 +1,32 @@
+<%= form_for @company do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :address1 %><br />
+    <%= f.text_field :address1 %>
+  </p>
+  <p>
+    <%= f.label :address2 %><br />
+    <%= f.text_field :address2 %>
+  </p>
+  <p>
+    <%= f.label :zip_code %><br />
+    <%= f.text_field :zip_code %>
+  </p>
+  <p>
+    <%= f.label :city_id %><br />
+    <%= f.text_field :city_id %>
+  </p>
+  <p>
+    <%= f.label :approver %><br />
+    <%= f.text_field :approver %>
+  </p>
+  <p>
+    <%= f.label :approver_position %><br />
+    <%= f.text_field :approver_position %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

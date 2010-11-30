@@ -1,0 +1,36 @@
+<% title "Company" %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @company.name %>
+</p>
+<p>
+  <strong>Address1:</strong>
+  <%= @company.address1 %>
+</p>
+<p>
+  <strong>Address2:</strong>
+  <%= @company.address2 %>
+</p>
+<p>
+  <strong>Zip Code:</strong>
+  <%= @company.zip_code %>
+</p>
+<p>
+  <strong>City:</strong>
+  <%= @company.city_id %>
+</p>
+<p>
+  <strong>Approver:</strong>
+  <%= @company.approver %>
+</p>
+<p>
+  <strong>Approver Position:</strong>
+  <%= @company.approver_position %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_company_path(@company) %> |
+  <%= link_to "Destroy", @company, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", companies_path %>
+</p>
