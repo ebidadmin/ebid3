@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/main/!svn/ver/1/main/public/images/messages
+END
+warning.png
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/main/!svn/ver/1/main/public/images/messages/warning.png
+END
+success.png
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/main/!svn/ver/1/main/public/images/messages/success.png
+END
+error.png
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/main/!svn/ver/1/main/public/images/messages/error.png
+END
+info.png
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/main/!svn/ver/1/main/public/images/messages/info.png
+END

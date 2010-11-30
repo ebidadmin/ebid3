@@ -1,0 +1,19 @@
+<div id="header">
+	<%= link_to (content_tag :h1, "E-Bid Auto Parts Auction System"), '#' %>
+	<h2 id="slogan">The hub for auto parts buyers <span>&amp;</span> sellers</h2>
+	<ul id="global-links" class="links">
+		<%= content_tag :li, "Welcome back #{current_user.username}!", :id => 'name' if current_user  %>
+  	<%= nav_link "Home", root_path -%>
+  	<%= nav_link "About", site_about_path -%>
+		<% if current_user %> 
+			<%= nav_link "Edit My Profile", '#'  -%>
+			<%= nav_link "Logout", destroy_user_session_path -%>
+		<% else %> 
+				<%= nav_link "Sign up", new_user_registration_path -%>
+				<%= nav_link "Sign in", new_user_session_path -%>
+		<% end %>
+	</ul>
+	<div id="subnav">
+  	<%= yield(:subnav) %>
+	</div>
+</div>	
