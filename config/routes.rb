@@ -1,4 +1,12 @@
 Ebid::Application.routes.draw do
+  resources :car_parts
+
+  resources :car_variants
+
+  resources :car_models
+
+  resources :car_brands
+
   resources :companies
 
   devise_for :users

@@ -1,0 +1,28 @@
+<% title "Car Variant" %>
+
+<p>
+  <strong>Car Brand:</strong>
+  <%= @car_variant.car_brand_id %>
+</p>
+<p>
+  <strong>Car Model:</strong>
+  <%= @car_variant.car_model_id %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%= @car_variant.name %>
+</p>
+<p>
+  <strong>Start Year:</strong>
+  <%= @car_variant.start_year %>
+</p>
+<p>
+  <strong>End Year:</strong>
+  <%= @car_variant.end_year %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_car_variant_path(@car_variant) %> |
+  <%= link_to "Destroy", @car_variant, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", car_variants_path %>
+</p>

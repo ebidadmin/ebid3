@@ -1,0 +1,13 @@
+one:
+  car_brand_id: 1
+  car_model_id: 1
+  name: MyString
+  start_year: MyString
+  end_year: MyString
+
+two:
+  car_brand_id: 1
+  car_model_id: 1
+  name: MyString
+  start_year: MyString
+  end_year: MyString

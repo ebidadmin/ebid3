@@ -17,7 +17,8 @@ class CreateCompanies < ActiveRecord::Migration
                     :zip_code => '1226',
                     :city_id => 1,
                     :approver => 'Ted Toribio',
-                    :approver_position => 'President')
+                    :approver_position => 'President',
+                    :primary_role => 1)
   end
 
   def self.down

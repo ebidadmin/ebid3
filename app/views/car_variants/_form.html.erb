@@ -1,0 +1,24 @@
+<%= form_for @car_variant do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :car_brand_id %><br />
+    <%= f.text_field :car_brand_id %>
+  </p>
+  <p>
+    <%= f.label :car_model_id %><br />
+    <%= f.text_field :car_model_id %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :start_year %><br />
+    <%= f.text_field :start_year %>
+  </p>
+  <p>
+    <%= f.label :end_year %><br />
+    <%= f.text_field :end_year %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

@@ -1,0 +1,16 @@
+<% title "Car Brand" %>
+
+<p>
+  <strong>Car Origin:</strong>
+  <%= @car_brand.car_origin_id %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%= @car_brand.name %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_car_brand_path(@car_brand) %> |
+  <%= link_to "Destroy", @car_brand, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", car_brands_path %>
+</p>

@@ -1,0 +1,7 @@
+one:
+  car_origin_id: 1
+  name: MyString
+
+two:
+  car_origin_id: 1
+  name: MyString
