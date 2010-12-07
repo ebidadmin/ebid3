@@ -1,0 +1,12 @@
+<div  id="parts_listing">
+	<p class="instruction"><strong><%= pluralize @car_parts_count, "part" %></strong> found using your search keyword/s <strong><%= params[:name] %></strong></p>
+  <ol>
+  	<% for car_part in @car_parts -%> 
+  		<li>
+  			<%= add_link(car_part) %> 
+  		</li>	
+  	<% end -%> 
+  </ol>
+  <%= will_paginate @car_parts, :inner_window => 1, :outer_window => 1, :previous_label => '« Prev', :id => 'parts-pagination' %> 
+  <p class='instruction'><%= page_entries_info @car_parts %></p>
+</div>

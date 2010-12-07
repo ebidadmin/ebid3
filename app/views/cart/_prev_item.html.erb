@@ -1,0 +1,11 @@
+<%= form_for :item, :url =>  update_line_item_path(:id => prev_item), :remote => true, :method => :put do  %>
+	<span id="part_qty_<%= prev_item.car_part.id %>" class="qty">
+		<%= prev_item.quantity %>
+	</span>
+	<span class="partname">
+		<%=h prev_item.car_part.name %> 
+	</span>		
+	<span id="part_no_<%= prev_item.car_part.id %>" class="partnum">
+		<%= render '/cart/part_no_edit', :item => prev_item %>
+	</span>
+<% end %>

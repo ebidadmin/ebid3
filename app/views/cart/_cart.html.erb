@@ -1,0 +1,22 @@
+<h3>Current Selection</h3>
+
+<ul>
+	<%= render 'shared/part_titles' %>
+	<% for item in  @cart.cart_items %>
+		<li id="item_<%= item.car_part.id %>" class="selection-list">
+			<%= render 'cart/item', :item => item %>
+		</li>
+	<% end %>
+</ul>
+
+
+<p id="cart_notice">
+	<% if flash[:cart_notice] %> 
+		<%= render "cart/cart_notice" %>
+	<% end %>
+</p>
+
+<% unless @cart.cart_items.empty? %> 
+	<%= clear_cart_link %>
+<% end %>
+

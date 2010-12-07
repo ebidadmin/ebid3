@@ -1,0 +1,17 @@
+<div id="parts" >
+	<p class="instruction">
+		<strong>Type some keyword/s</strong> to search for the part you want, <br/>
+		then click on that part to add it to your selection.
+	</p>
+	<%= form_tag search_car_parts_path, :method => :get, :remote => true, :id => 'search-form' do %>
+		<%= text_field_tag :name, nil, :id => 'search-box' %>
+		<%= submit_tag "Search" %>
+	<% end %>
+
+	<% if @car_parts_count > 0 %>
+    <%= render 'parts_listing' %>
+	<% else %>
+    <p class="instruction">Sorry, <strong><%= params[:name] %></strong> could not be found.</p>
+		<p class="instruction">Please try another keyword.</p>
+	<% end %>
+</div>

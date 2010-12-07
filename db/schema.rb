@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101130105236) do
+ActiveRecord::Schema.define(:version => 20101203050010) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -129,12 +129,13 @@ ActiveRecord::Schema.define(:version => 20101130105236) do
     t.date     "date_of_loss"
     t.integer  "city_id"
     t.integer  "term_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.date     "bid_until"
-    t.string   "buyer_status",      :default => "New"
+    t.integer  "line_items_count",  :default => 0,     :null => false
     t.integer  "photos_count",      :default => 0,     :null => false
     t.boolean  "additional_flag",   :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "buyer_status",      :default => "New"
+    t.date     "bid_until"
     t.date     "expired"
     t.boolean  "chargeable_expiry", :default => false
   end
@@ -146,7 +147,7 @@ ActiveRecord::Schema.define(:version => 20101130105236) do
   add_index "entries", ["term_id"], :name => "index_entries_on_term_id"
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
-  create_table "friendships", :force => true do |t|
+  create_table "friendships", :id => false, :force => true do |t|
     t.integer  "company_id"
     t.integer  "friend_id"
     t.datetime "created_at"
@@ -170,13 +171,57 @@ ActiveRecord::Schema.define(:version => 20101130105236) do
   add_index "line_items", ["car_part_id"], :name => "index_line_items_on_car_part_id"
   add_index "line_items", ["entry_id"], :name => "index_line_items_on_entry_id"
 
+  create_table "order_items", :force => true do |t|
+    t.integer  "line_item_id"
+    t.integer  "order_id"
+    t.integer  "quantity"
+    t.decimal  "price",        :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "total",        :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string   "source"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "order_items", ["line_item_id"], :name => "index_order_items_on_line_item_id"
+  add_index "order_items", ["order_id"], :name => "index_order_items_on_order_id"
+
+  create_table "orders", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "company_id"
+    t.integer  "entry_id"
+    t.string   "deliver_to",                                         :default => ""
+    t.string   "address1",                                           :default => ""
+    t.string   "address2",                                           :default => ""
+    t.string   "contact_person",                                     :default => ""
+    t.string   "phone",                                              :default => ""
+    t.string   "fax",                                                :default => ""
+    t.text     "instructions"
+    t.string   "status",                                             :default => "PO Released", :null => false
+    t.string   "buyer_ip",                                           :default => ""
+    t.integer  "order_items_count",                                  :default => 0,             :null => false
+    t.decimal  "order_total",         :precision => 10, :scale => 2, :default => 0.0,           :null => false
+    t.integer  "seller_id"
+    t.boolean  "seller_confirmation",                                :default => false,         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "delivered"
+    t.date     "pay_until"
+    t.date     "paid"
+    t.integer  "ratings_count",                                      :default => 0,             :null => false
+  end
+
+  add_index "orders", ["company_id"], :name => "index_orders_on_company_id"
+  add_index "orders", ["entry_id"], :name => "index_orders_on_entry_id"
+  add_index "orders", ["seller_id"], :name => "index_orders_on_seller_id"
+  add_index "orders", ["user_id"], :name => "index_orders_on_user_id"
+
   create_table "photos", :force => true do |t|
     t.integer  "entry_id"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
-    t.boolean  "processing"
+    t.boolean  "processing",         :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -241,6 +286,7 @@ ActiveRecord::Schema.define(:version => 20101130105236) do
     t.datetime "updated_at"
     t.boolean  "enabled",                             :default => true, :null => false
     t.integer  "entries_count",                       :default => 0,    :null => false
+    t.integer  "bids_count",                          :default => 0,    :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

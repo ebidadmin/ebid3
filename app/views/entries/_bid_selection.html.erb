@@ -1,0 +1,13 @@
+<td class="bid-box type">High</td>
+<%= high_bid_display("original", item) %>
+<%= high_bid_display("replacement", item) %>
+<%= high_bid_display("surplus", item) %>
+
+<tr class="low-bids">
+	<td class="bid-box type" >Low</td>
+	<%= fields_for 'bids[]', item do |f| %>
+  <%= low_bid_selection("original", item, f) %>
+  <%= low_bid_selection("replacement", item, f) %>
+  <%= low_bid_selection("surplus", item, f) %>
+  <% end %>
+</tr>

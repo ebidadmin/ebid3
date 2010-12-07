@@ -1,0 +1,68 @@
+<% title "Purchase Order" -%>
+
+
+<div class="first">
+	<h2>Transaction</h2>
+	<%= render 'orders/order_buyer', :entry => @entry %>
+	<%= render 'orders/order_seller', :order => @order %>
+</div>
+<div class="second">
+	<h2>Delivery</h2>
+	<%= render 'orders/info_instructions', :order => @order %>
+	<h4 id="del-status">Status: <%= @order.status %></h4>
+</div>
+<div id="order">
+	<h2>Items in the Order</h2>
+	<%= image_tag @order.entry.photos.first.photo.url(:tiny), :class => "photo", :alt => "Photo of #{ @order.entry.plate_no}" %>
+	<%= render 'shared/info_vehicle', :entry => @entry %>
+	<%= render 'shared/info_parts'  -%>
+
+	<table class="parts-set">
+		<%= render 'shared/part_titles' %>
+		<%- for order_item in  @order_items1 -%>
+			<tr class="selection-list">	
+				<td class="qty"><%= order_item.quantity %></td>
+				<td class="partname">
+					<%= order_item.line_item.car_part.name %>
+					<%= content_tag :p, "(Part No. <strong>#{order_item.line_item.part_no}</strong>)", :class => 'partnum' unless order_item.line_item.part_no.blank?  %>
+          <%= content_tag :p, "(#{order_item.bid_type})", :class => 'strong' %>
+				</td> 
+				<td class="price">
+					<%= number_to_currency(order_item.amount, :unit => "P ") -%>
+				</td>
+				<td class="price">
+					<%= number_to_currency(order_item.total, :unit => "P ") -%>
+				</td>
+			</tr>	
+		<%- end -%>
+		<tr class="selection-total">	
+				<td class="label" colspan=2>
+					Order Total 
+				</td>
+				<td class="price" colspan=2>
+				  <%= number_to_currency(@order_items1.collect(&:total).sum, :unit => "P ") %>
+				</td>
+		</tr>
+	</table>
+	
+</div>
+
+<div id="confirmation" class="page-links">
+	<% if current_user.has_role?('powerbuyer') || current_user.has_role?('buyer') -%>
+		<% if @order.status == "PO Released" && @order.seller_confirmation == false %>
+		<%= link_to "OK, Done!", @entry, :class => 'button' -%>
+		<% else %>
+		<%= link_to "OK, Done!", :back, :class => 'button' -%>
+		<% end %>
+	<% elsif current_user.has_role?('seller') -%>
+
+		<% if @order.seller_confirmation == true -%>
+			<%= link_to "OK, Done!", :back, :class => 'button' -%>
+		<% else -%>
+			<%= form_tag confirm_order_path, :method => :put  do -%>
+				<%= submit_tag "Accept Order" -%> or <%= link_to "Cancel", seller_orders_path(current_user) -%>
+			<% end -%>
+		<% end -%>
+
+	<% end -%>
+</div>

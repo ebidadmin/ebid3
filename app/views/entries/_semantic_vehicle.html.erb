@@ -1,0 +1,12 @@
+<%= f.error_messages %>
+<%= f.input :year_model %>
+<%= f.input :car_brand, :group_by => :car_origin %>
+<%= f.input :car_model %>
+<%= f.input :car_variant %>
+<%= f.input :plate_no %>
+<%= f.input :serial_no, :label => 'Serial Number or VIN' %>
+<%= f.input :motor_no, :label => 'Motor Number' %>
+<%= f.input :ref_no, :label => 'Reference or Claim No.' %>
+<%= f.input :date_of_loss, :as => :string %>
+<%= f.input :city, :label => 'Deliver To' %>
+<%= f.input :term, :label => 'Credit Term Request' %>

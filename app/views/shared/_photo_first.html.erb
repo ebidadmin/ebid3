@@ -1,0 +1,7 @@
+<%- if entry.photos.exists? && entry.photos.first.processing? -%>
+	 <p class="photo">Photos inside.</p>
+<%- elsif entry.photos.exists? -%>
+    <%= image_tag entry.photos.first.photo.url(:tiny), :class => "photo", :alt => "Photo of #{entry.plate_no}" %>
+<%- else -%>
+		 <p>Sorry, no photo uploaded.</p>
+<%- end -%>

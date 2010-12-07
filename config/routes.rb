@@ -1,26 +1,74 @@
 Ebid::Application.routes.draw do
-  resources :entries
-
-  resources :car_parts
-
-  resources :car_variants
-
-  resources :car_models
-
-  resources :car_brands
-
-  resources :companies
 
   devise_for :users
 
-  match 'buyer/:id/main' => 'buyer#main', :as => :buyer_main, :via => :get
-  match 'buyer/:id/pending' => 'buyer#pending', :as => :buyer_pending, :via => :get
-
+  resources :users do
+    resources :profiles
+    member do
+      put :enable
+      put :disable
+      post :update_role
+      delete :destroy_role
+    end
+    resources :entries, :shallow => true do
+      member do
+        get :put_online
+        get :decide
+        get :reactivate
+      end
+   end
+  end
+  
   get 'cart/add'
   get 'cart/remove'
   post 'cart/clear'
   get 'cart/edit'
   resources :cart_items, :only => :edit
+
+  get 'photos/add', :as => :add_photo
+  delete 'photos/remove', :as => :remove_photo
+  
+  resources :car_parts do
+    get :search, :on => :collection
+  end
+
+  resources :car_variants
+  resources :car_models
+  resources :car_brands
+  resources :companies
+
+  match 'buyer/:user_id/main' => 'buyer#main', :as => :buyer_main, :via => :get
+  match 'buyer/:user_id/pending(/:page)' => 'buyer#pending', :as => :buyer_pending, :via => :get
+  match 'buyer/:user_id/online(/:page)' => 'buyer#online', :as => :buyer_online, :via => :get
+  match 'buyer/:user_id/results(-:status(/:page))' => 'buyer#results', :as => :buyer_results, :via => :get
+  match 'buyer/:user_id/orders(/:page)' => 'buyer#orders', :as => :buyer_orders, :via => :get
+  match 'buyer/:user_id/payments(/:page)' => 'buyer#payments', :as => :buyer_payments, :via => :get
+  match 'buyer/:user_id/paid(/:page)' => 'buyer#paid', :as => :buyer_paid, :via => :get
+  match 'buyer/:user_id/closed(/:page)' => 'buyer#closed', :as => :buyer_closed, :via => :get
+  match 'buyer/:user_id/fees(/:page)' => 'buyer#fees', :as => :buyer_fees, :via => :get
+
+  match 'seller/:user_id/main' => 'seller#main', :as => :seller_main, :via => :get
+  match 'seller/:user_id/hub/:brand(/page-(:page))' => 'seller#hub', :as => :seller_hub, :via => :get
+  match 'seller/:user_id/hub/:brand/:id' => 'seller#show', :as => :seller_show, :via => :get
+  match 'seller/:user_id/monitor(/:page)' => 'seller#monitor', :as => :seller_monitor, :via => :get
+  match 'seller/:user_id/orders(/:page)' => 'seller#orders', :as => :seller_orders, :via => :get
+  match 'seller/:user_id/payments(/:page)' => 'seller#payments', :as => :seller_payments, :via => :get
+  match 'seller/:user_id/feedback(/:page)' => 'seller#feedback', :as => :seller_feedback, :via => :get
+  match 'seller/:user_id/fees(/:page)' => 'seller#fees', :as => :seller_fees, :via => :get
+
+  resources :bids do
+    collection do
+      post :accept
+      post :decline
+    end
+  end
+  
+  resources :orders do
+    member do
+      put :confirm
+      put :seller_status
+    end
+  end
 
   get "site/index"
   get "site/about"
@@ -74,7 +122,7 @@ Ebid::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => "car_parts#index"
+  root :to => "site#index"
 
   # See how all your routes lay out with "rake routes"
 

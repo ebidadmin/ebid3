@@ -9,6 +9,8 @@ gem 'rd_searchlogic', :require => 'searchlogic', :git => 'git://github.com/rails
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => "rails3"
 gem 'formtastic'
 gem 'jquery-rails'
+gem "nested_form", :git => "git://github.com/madebydna/nested_form.git"
+# gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 
 # Deploy with Capistrano
 # gem 'capistrano'

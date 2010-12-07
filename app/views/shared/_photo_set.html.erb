@@ -1,0 +1,13 @@
+<div class="photo-set">
+	<h3>Photos</h3>
+	<ul>
+		<p class="instruction">Click a photo to enlarge.</p>
+		<% @entry.photos.each do |photo| %>
+			<%- if photo.processing? -%>
+				<li><%= image_tag '/images/processing_photo.png', :class => "photo" %></li>
+			<%- else -%>
+				<li><%= link_to (image_tag photo.photo.url(:tiny), :class => "photo", :alt => "Photo of #{@entry.plate_no}"), photo.photo.url(:large), :rel => "shadowbox[#{@entry.id}]" %></li>
+			<%- end -%>
+		<% end -%>
+	</ul>	
+</div>	

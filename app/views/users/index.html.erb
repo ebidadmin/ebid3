@@ -1,0 +1,55 @@
+<% title "Registered Users" %>
+
+<%= form_tag users_path, :method => 'get' do %>  
+  <p>  
+    <%= text_field_tag :search, params[:search] %>  
+    <%= submit_tag "Search", :name => nil %>  
+  </p>  
+<% end %>
+<%#= paginattion @users %>
+
+<table id="users-index">
+  <tr>
+		<th>Active?</th>
+    <th>Last Activity</th>
+    <th>User</th>
+    <th>Email</th>
+    <th>Enabled?</th>
+		<th>Roles</th>
+		<th></th>
+  </tr>
+  <% for user in @users %>
+    <tr>
+			<td>
+				<% if user.last_sign_in_at && user.last_sign_in_at > 5.minutes.ago %>
+					<%= image_tag '/images/yes.png' -%>
+				<% end %>
+			</td>
+      <td>
+				<p><%=h user.last_sign_in_at.to_s(:short) unless user.last_sign_in_at.nil? %></p>
+				<p><%=h "(#{time_ago_in_words user.last_sign_in_at} ago)" unless user.last_sign_in_at.nil? %></p>
+			</td>
+      <td>
+				<p><%=h user.profile.full_name if user.profile %> (<%=h user.username %>)</p>
+				<p><%=h user.company.name unless user.company.nil? %></p>
+			</td>
+      <td><%=h user.email %></td>
+      <td>
+				<%= user.enabled ? 'Yes' : 'No' -%>  
+				<%= enabling_toggle(user) %>
+      </td>
+			<td>
+				<% for role in user.roles %>
+					<%= role.name %>
+				<% end %>
+			</td>
+      <td class="center">
+    		<%= link_to "Account Info", user %>
+			</td>
+    </tr>
+  <% end %>
+</table>
+<p class="page-links">
+	<%= link_to "Add User", new_user_path, :class => 'button' %>
+	<%= link_to 'View Companies', companies_path, :class => 'button' %>
+</p>

@@ -1,0 +1,21 @@
+<div id="selection">
+	<div id="cart">
+		<%= render 'cart/cart' %>
+	</div>
+
+	<h3>
+		Total Quantity: 
+		<span id="cart_total"><%= pluralize(@cart.total, "part") %></span>
+	</h3> 
+	<%#= error_messages_for 'car_part' %>
+
+	<div class="box">
+		<h3>The part you want is not in our list?</h3>
+		<p class="instruction">Go ahead, include a new part here!</p >
+		<%= form_for :car_part, :url => car_parts_path do |f| %>
+		<%= f.error_messages %>
+		  <%= f.text_field :name %>
+			<%= f.submit "Add New Part", :class => "button" %>
+		<% end -%>	
+	</div>
+</div>

@@ -1,0 +1,9 @@
+<% content_for :subnav do %>
+  <ul class="links groups">
+  	<li class="label">Brand</li>
+  	<%- @brand_links.each do |car_brand| -%>
+  	<%= nav_link car_brand.name.upcase, :brand => car_brand.name.downcase  %>
+  	<% end %>
+  	<%= nav_link "ALL", :brand => 'all' %>
+  </ul>
+<% end %>

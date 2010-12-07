@@ -1,0 +1,11 @@
+<%= form_tag edit_cart_item_path(item), :remote => true, :method => :put do  %>
+	<span id="part_qty_<%=item.car_part.id %>" class="qty">
+		<%= item.quantity %>
+	</span>
+	<span class="partname">
+		<%= item.car_part.name %> <%= remove_link(item.car_part) %>
+	</span>		
+	<span id="part_no_<%= item.car_part.id %>" class="partnum">
+		<%= render '/cart/part_no_edit', :item => item %>
+	</span>
+<% end %>

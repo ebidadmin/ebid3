@@ -1,0 +1,6 @@
+<% if last_bid && last_bid.amount != last_bid.total %>
+  Ea: <%= render 'bids/bid', :bid => last_bid %><br>
+  Tot: <%= render 'bids/total', :bid => last_bid %>
+<% else %>
+  <%= render 'bids/bid', :bid => last_bid %>
+<% end %>

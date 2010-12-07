@@ -1,0 +1,63 @@
+<% title @title %>
+
+<%= render 'buyer/filter_by_user' unless @user_group.nil? %>
+
+<% if @due_soon_count && @due_soon_count > 0 %>
+	<div id="flash_notice">
+		Your company has <%= content_tag :strong, @due_soon_count %> payments worth 
+		<%= content_tag :strong, (number_to_currency @due_soon_amount, :unit => 'P ') %> due this week.
+		Kindly settle these soon.  Thanks!
+	</div>
+<% end %>
+<% if @overdue_payments_count && @overdue_payments_count > 0 %>
+	<div id="flash_warning">
+		Your company has <%= content_tag :strong, "#{@overdue_payments_count} overdue" %>  payments worth 
+		<%= content_tag :strong, (number_to_currency @overdue_payments_amount, :unit => 'P ')  %>.
+		Kindly settle these soon.  Thanks!
+	</div>
+<% end %>
+
+<ul class="dash">
+	<h3>Entries</h3>
+	<%= dash_entry_format("entries", "Total", "All entries",  @total, user_entries_path(params[:id]) ) %>
+	<%= dash_entry_format("pending", "Pending", "New &amp; Edited",  @pending, buyer_pending_path(params[:id]) ) %>
+	<%= dash_entry_format("expired", "Expired 1", "Never online",  @expired ) %>
+	<%= dash_entry_format("online", "Online", "Bidding ongoing",  @online, buyer_online_path(params[:id]) ) %>
+	<%= dash_entry_format("expired-2", "Expired 2", "Online > 1 week",  @expired2 ) %>
+	<%= dash_entry_format("for-decision", "For Decision", "Accept or decline?", @decision, buyer_results_path(params[:id]), nil , "highlight" ) %>
+	<%= dash_entry_format("expired-3", "Expired 3", "No Decision > 1 week", @expired3 ) %>
+	<%= dash_entry_format("declined", "Declined", nil, @declined ) %>
+	<%= dash_entry_format("closed", "Closed", "With payment & feedback", @closed ) %>
+</ul>
+<ul class="dash">
+	<h3>Orders</h3>
+	<%= dash_entry_format("orders", "Total", "All orders", @orders ) %>
+	<%= dash_entry_format("released", "New", "PO released", @released, buyer_orders_path(params[:id]) ) %>
+	<%= dash_entry_format("delivered", "Delivered", "Delivered - unpaid", @delivered, buyer_payments_path(params[:id]) ) %>
+	<%= dash_entry_format("orders-paid", "Paid", "Delivered - paid", @paid_count ) %>
+</ul>
+<ul class="dash last">
+	<h3>Payments</h3>
+	<%= dash_entry_format("due-later", "Within term", (number_to_currency @due_later_amount, :unit => 'P '), @due_later_count) %>
+	<%= dash_entry_format("pay-soon", "Due this wk", (number_to_currency @pay_soon_amount, :unit => 'P '), @pay_soon_count, buyer_payments_path(params[:id]), nil, "highlight") %>
+	<%= dash_entry_format("overdue", "Overdue", (number_to_currency @overdue_amount, :unit => 'P '), @overdue_count, buyer_payments_path(params[:id]), nil, "highlight") %>
+	<%= dash_entry_format("paid", "Paid", (number_to_currency @paid_amount, :unit => 'P '), @paid_count, nil, "last") %>
+</ul>
+<p class="page-links">
+<%= link_to "Create Entry", new_user_entry_path(current_user), :class => 'button' %>
+<%= link_to "What's Online?", buyer_online_path(current_user), :class => 'button' %>
+<%= link_to "See Results", buyer_results_path(current_user), :class => 'button' %>
+<%= link_to "Payments", buyer_payments_path(current_user), :class => 'button' %>
+</p>
+<ul class='dash full'>
+  <h3>What's new with E-Bid version 2.8.1?</h3>
+	<%= dash_entry_format("feature", "Multiple items per order", "Buyers can now order multiple items per PO. This saves time in ordering and printing by both buyers and suppliers.",  nil ) %>
+</ul>
+<ul class='dash full'>
+  <h3>What's new with E-Bid version 2.8?</h3>
+	<%= dash_entry_format("feature", "Buyer's dashboard", "A quick snapshot of what's happening online, plus a section on the status of your orders and payments due.",  nil ) %>
+	<%= dash_entry_format("feature", "Online & Results pages", "A new look makes it easier to monitor the status of your entries.",  nil ) %>
+	<%= dash_entry_format("feature", "Grouped orders & payments", "Orders and payments are now grouped on a per vehicle basis.",  nil ) %>
+	<%= dash_entry_format("feature", "Payment monitoring", "It's now easy to distinguish on-time versus overdue payments. This will be helpful in maintaining good relationships with your suppliers.",  nil ) %>
+	<%= dash_entry_format("feature", "Transaction fees", "Transaction fees are also grouped and it's now very easy to cross-check the computations with the entries you created.",  nil ) %>
+</ul>

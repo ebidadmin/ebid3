@@ -1,0 +1,62 @@
+<% content_for(:head) do %>
+	<%= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
+<% end %>
+
+<% title "Place Order" %>
+
+<% @bids.group_by(&:entry).each do |entry, bids| -%>
+
+  <div class="first">
+    
+		<%= content_tag :h2, 'Vehicle' %>
+  	<%= render 'shared/info_vehicle', :entry => entry %>
+  	
+		<%= content_tag :h2, ('Transaction' + (content_tag :span, "(#{ pluralize @bid_users.count, 'supplier' })", :class => 'highlight' )).html_safe %>
+ 
+    <!-- create an order for each supplier -->
+    <% bids.group_by(&:user_id).each do |seller, seller_bids| -%>
+    	<%= render 'orders/order_buyer', :entry => entry %>
+    	<%= render 'orders/order_seller', :order => @order %>
+    	<table class="parts-set">
+    		<%= render 'shared/part_titles' %>
+      	<% for bid in seller_bids %>
+      		<tr>	
+      			<td class="qty"><%=h bid.quantity %></td>
+      			<td class="partname">
+      				<%= content_tag :p, (bid.line_item.part_name + (content_tag :strong, " (#{bid.bid_type})")).html_safe %> 
+      				<%= content_tag :p, "(Part No. <strong>#{bid.line_item.part_no}</strong>)", :class => 'partnum' unless bid.line_item.part_no.blank?  %>
+      			</td>
+      			<td class="price">
+      				<%= number_to_currency bid.amount, :unit => "P " %>
+      			</td>
+      			<td class="price">
+      				<%= number_to_currency bid.total, :unit => "P " %>
+      			</td>
+      		</tr>
+      		<!-- pass all bid.ids as an array into the form -->
+      		<% content_for :bids_array do %>
+        		<%= hidden_field_tag 'bids[]', bid.id -%>
+      		<% end %>
+    		<% end %>
+    		<tr class="selection-total">
+    			<td class="label" colspan=2>Total Order</td>
+    			<td class="amount" colspan=2><%= number_to_currency seller_bids.collect(&:total).sum, :unit => "P " %></td>
+    		</tr>
+    	</table>
+  	<% end %>
+  	
+  </div>
+
+  <div class="second">
+  	<h2>Delivery</h2>
+    <%= semantic_form_for @order, :url => orders_path(:entry_id => entry.id), :method => :post do |f|  %>
+    	<%= yield :bids_array %>
+  		<%= render 'orders/deliver_form', :f => f %>
+  		<% f.buttons do %>
+  			<%= f.commit_button 'Place Order' %> 
+  			<%= link_to "Cancel", entry -%>
+  		<% end %>
+    <% end %>
+  </div>
+
+<% end %>

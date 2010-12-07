@@ -91,30 +91,10 @@
 /* BUYER & SUPPLIER - DASHBOARD
 ---------------------------------------------------------------------- */
 
-/*#buyer-dash h3 { clear: both; }
-
-.dash-entry { position: relative; display: inline; float: left; height: 70px; background-color: #e5e5e5; width: 160px; margin-right: 15px; margin-bottom: 20px; padding: 10px; }
-
-.dash-entry.last { margin-right: 0; }
-
-#pending, #released, #expired { clear: both; }
-
-#overdue { background: #ffd480; }
-
-.dash-entry strong, .dash-entry .instruction, .dash-entry a { float: left; width: 100%; opacity: 1; margin-bottom: 5px; }
-
-.dash-entry .instruction { color: black; font-weight: normal; }
-
-.dash-entry .count { position: absolute; top: 10px; right: 10px; height: 40px; width: 40px; text-align: center; line-height: 40px; background-color: white; margin-right: 0; font-size: 1.5em; }
-
-.dash-entry .count.highlight { background-color: #FFF6BF; color: #C00; }
-
-#content-main .dash-entry a { border-top: 1px solid rgba(254,255,254,0.9); padding: 5px 0 0; background: none; opacity: 1; text-align: center; }*/
-
 .dash { display: inline; float: left; margin-right: 3%; width: 31.2%; }
 .dash.last { margin-right: 0; }
 .dash h3 { background-color: #e5e5e5; padding: 8px 0; text-align: center; }
-#entries, #expired, #expired-2, #expired-3, #orders,
+#entries, #expired, #expired-2, #expired-3, #declined, #orders, #delivered,
 #last-bid, #new-orders, #overdue, #feature { border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; }
 .dash-entry { clear: both; height: 20px; line-height: 20px; margin: 0 0 10px; position: relative; }
 .dash-entry strong { float: left; width: 30%; }
@@ -181,9 +161,10 @@ table .qty { width: 10%; text-align: center; }
 table .partname { text-align: left; }
 table .bid-box { width: 60%; overflow: hidden; text-align: center; }
 table .bid-box span { color: #C00; }
-table .bid-box .bid-field { float: left; display: inline; width: 25%; min-height: 2.5em; padding: 2px; }
+table .bid-box .fields, table .bid-box #amounts { clear: both; overflow: hidden;}
+table .bid-box .bid-field, table .bid-box .bid-amount { float: left; display: inline; width: 32%; min-height: 2.5em; padding: 2px; text-align: right; }
 table .bid-box #regular { width: 31%; }
-table .bid-box p.bid-amount { margin: 5px 5px 0; padding: 0 12px 0 0; min-height: 1.5em; text-align: right; }
+table .bid-box .bid-amount { min-height: 1.5em;   }
 table .bid-box input.quote { text-align: right; }
 table .bid-box .bid-msg { clear: both; }
 table .bid-box p.instruction { margin: 5px 0; }
@@ -313,9 +294,9 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 #attachments input { margin: 0; }
 
-#attachments .fields { margin: 4px; padding: 10px 0; -moz-box-shadow: none; -webkit-box-shadow: none; text-align: center; }
-
-#attachments input[type="file"] { width: 65%; }
+#attachments .fields { float: left; width: 32%; margin: 4px; padding: 10px 0;  text-align: center;  background: #ddd;  }
+#attachments .fields :last-child { margin-right: 0; }
+#attachments input[type="file"] { width: 75%; }
 
 #attachments .add-photo { margin: 4px; text-align: center; }
 
@@ -325,7 +306,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 .vehicle-set, #show-parts { position: relative; overflow: hidden; float: right; width: 60%; margin-bottom: 2em; }
 
-.vehicle-set li { margin-left: 60px; }
+.vehicle-set li { clear: both; margin-left: 60px; }
 
 .vehicle-set li span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 30%; }
 
@@ -344,7 +325,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 .first .full-name { margin-top: 1.2em; font-weight: bold; }
 
-.first .highlight { background-color: #FFF6BF; padding: 0 10px; }
+.first .highlight, .highlight { background-color: #FFF6BF; padding: 0 10px; }
 #buyer-company, #supplier-company { float: left; overflow: hidden; width: 50%; }
 #supplier-company.multiple { clear: both; background-color: #FFF6BF;}
 

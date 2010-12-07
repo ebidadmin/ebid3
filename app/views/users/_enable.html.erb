@@ -1,0 +1,7 @@
+<% unless @user == current_user -%> 
+  <% if @user.enabled -%> 
+			<%= link_to '(disable)', disable_user_url(@user), :method => :put %>
+  <% else -%> 
+			<%= link_to '(enable)', enable_user_url(@user), :method => :put %>
+  <% end -%>
+<% end -%>

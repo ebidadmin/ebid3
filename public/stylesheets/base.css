@@ -31,7 +31,7 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 
 /* FLASH & ERROR MESSAGES
 ---------------------------------------------------------------------- */
-#flash_notice, #flash_error, #flash_alert, #flash_warning, #errorExplanation { border: 2px solid; font-size: 1.2em; margin: 0.5em 0; padding: 15px 10px 15px 75px; background-repeat: no-repeat; background-position: 20px center; }
+#flash_notice, #flash_error, #flash_alert, #flash_warning, #errorExplanation, .flash { border: 2px solid; font-size: 1.2em; margin: 0.5em 0; padding: 15px 10px 15px 75px; background-repeat: no-repeat; background-position: 20px center; }
 #flash_notice { color: #264409; background-color: #E6EFC2; background-image: url('/images/messages/success.png'); border-color: #C6D880; }
 #flash_error, #flash_alert { color: #8a1f11; background-color: #FBE3E4; background-image: url('/images/messages/error.png'); border-color: #FBC2C4; }
 #flash_warning { color: #514721; background-color: #FFF6BF; background-image: url('/images/messages/warning.png'); border-color: #FFD324; }
@@ -182,10 +182,11 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 /* SUBNAV
 ---------------------------------------------------------------------- */
 /*#header .instruction { color: black; text-transform: none; margin-left: 3em; }*/
-#header #subnav { float: left; overflow: hidden; padding: 5px 0; position: relative;  width: 100%;}
+#header #subnav { float: left; overflow: hidden; padding: 5px 0; position: relative;  width: 100%; }
 #header .groups, #header #search { display: block; font-size: smaller; }
 #header .groups { float: left; clear: left; margin: 0; }
-#header #search { margin: 0; position: absolute; right: 0; }
+#header #user_id, #header #status { float: left; margin-right: 10px; }
+#header #search { margin: 0; float: right; }
 #header #search p { float: left; height: 30px; line-height: 30px; margin: 5px 15px 0 0; }
 #header #search .label { display: block; margin-left: 0; text-transform: uppercase; color: #C00; font-weight: bold; }
 #header #search p span { margin: 0 5px 0 0; width: 20px; }

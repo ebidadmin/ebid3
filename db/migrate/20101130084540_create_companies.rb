@@ -11,14 +11,14 @@ class CreateCompanies < ActiveRecord::Migration
       t.timestamps
       t.integer :primary_role
     end
-    Company.create!(:name => 'e-Bid, Inc.', 
-                    :address1 => '2/F Corinthian Plaza', 
-                    :address2 => '121 Paseo de Roxas',
-                    :zip_code => '1226',
-                    :city_id => 1,
-                    :approver => 'Ted Toribio',
-                    :approver_position => 'President',
-                    :primary_role => 1)
+    # Company.create!(:name => 'e-Bid, Inc.', 
+    #                 :address1 => '2/F Corinthian Plaza', 
+    #                 :address2 => '121 Paseo de Roxas',
+    #                 :zip_code => '1226',
+    #                 :city_id => 1,
+    #                 :approver => 'Ted Toribio',
+    #                 :approver_position => 'President',
+    #                 :primary_role => 1)
   end
 
   def self.down

@@ -5,7 +5,6 @@ class CreateCartItems < ActiveRecord::Migration
       t.integer :car_part_id
       t.integer :quantity
       t.string :part_no
-      t.datetime :created_at
       t.timestamps
     end
     add_index :cart_items, :cart_id

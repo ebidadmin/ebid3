@@ -1,0 +1,21 @@
+<div class="vehicle-set">
+	<%= content_tag :h3, entry.vehicle %>
+	<ul>
+		<%- if @order -%>
+			<%= content_tag :li, (content_tag :span, 'Ref or Claim No: ') + (content_tag :strong, entry.ref_no), :id => "ref-no" %>
+		<%- end -%>	  
+		<%= content_tag :li, (content_tag :span, 'Plate No: ') + (content_tag :strong, entry.plate_no), :id => "plate-no" %>
+		<%= content_tag :li, (content_tag :span, 'Serial No or VIN: ') + entry.serial_no, :id => "serial-no" %>
+		<%= content_tag :li, (content_tag :span, 'Motor No: ') + entry.motor_no, :id => "motor-no" %>
+	
+		<%- if current_user.has_role?('buyer') -%>
+			<%= content_tag :li, (content_tag :span, 'Date Of Loss: ') + entry.date_of_loss.to_s(:long), :id => "date-of-loss" if entry.date_of_loss %>
+		<%- end -%>
+		
+		<%- unless @order -%>
+			<%= content_tag :li, (content_tag :span, 'Deliver To: ') + entry.city.name, :id => "deliver-to" if entry.city %>
+		<%- end -%>
+
+		<%= content_tag :li, (content_tag :span, 'Credit Term: ') + (content_tag :strong, entry.term.term_name), :id => "term" if entry.term %>
+	</ul>	
+</div>

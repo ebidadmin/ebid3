@@ -1,0 +1,27 @@
+<thead>
+	<th class="qty">Qty</th>
+	<th class="partname">Part Description</th>
+	<th class="bid-box"><strong>Per Item Bids (unit price)</strong></th>
+</thead>
+<% for item in  @line_items %>
+<tr>
+	<td class="qty"><%= item.quantity %></td>
+	<td class="partname">
+		<%=h item.car_part.name %> 
+		<%= content_tag :p, "(Part No. <strong>#{item.part_no}</strong>)", :class => 'partnum' unless item.part_no.blank?  %>
+	      <%= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
+	</td>
+	<td class="bid-box">
+		<div class="fields">
+		<%= content_tag :div, (content_tag :span, 'Orig ') + (text_field_tag "bids[#{item.id}][original]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
+		<%= content_tag :div, (content_tag :span, 'Rep ') + (text_field_tag "bids[#{item.id}][replacement]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
+		<%= content_tag :div, (content_tag :span, 'Surp ') + (text_field_tag "bids[#{item.id}][surplus]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
+		</div>	
+		<div id="amounts">                                                                                                  
+		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'original')), :class => 'bid-amount' %>
+		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'replacement')), :class => 'bid-amount' %>
+		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'surplus')), :class => 'bid-amount' %>
+		</div>		
+	</td>
+</tr>
+<% end %>

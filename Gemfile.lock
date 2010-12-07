@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/madebydna/nested_form.git
+  revision: 5d8054c05da3c20ff828d44041706c3d36ae86dc
+  specs:
+    nested_form (0.0.0)
+
+GIT
   remote: git://github.com/mislav/will_paginate.git
   revision: b1a5beeec9f56ecbe3594fcdca76d92b6767ce50
   branch: rails3
@@ -106,6 +112,7 @@ DEPENDENCIES
   jquery-rails
   mocha
   mysql2
+  nested_form!
   nifty-generators
   rails (= 3.0.3)
   rd_searchlogic!

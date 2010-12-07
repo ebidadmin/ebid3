@@ -1,0 +1,61 @@
+<% title @title %>
+
+<%= render 'buyer/filter_by_user' unless current_user.has_role?('seller') || @user_group.nil? %>
+<%= render 'buyer/filter_by_status' unless @status_tags.nil? %>
+<%= render 'buyer/filter_by_search' %>
+
+<%= content_tag :h3, "Total: #{number_to_currency(@all_orders.collect(&:total_order_amounts).sum, :unit => "P ")}" %>
+
+<%= will_paginate @orders %>
+<%= page_info @orders %>
+
+<%- unless @orders.blank? -%>
+<table id="orders-list">
+	<thead>
+    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
+    <%= content_tag :th, 'Delivery', :class => 'delivery' %>
+    <%= content_tag :th, 'Status', :class => 'status' %>
+	</thead>
+	<% @orders.group_by(&:entry).each do |entry, orders| %>
+	<tr>
+		<td class="vehicle" rowspan=<%= orders.count + 1 %>>	
+			<%= render 'shared/photo_first', :entry => entry  %>
+      <div id="details">
+  			<%= content_tag :p, (entry.ref_no unless entry.ref_no.nil?)  %>
+  			<%= content_tag :p, entry.vehicle, :class => 'strong'  %>
+  			<%#= content_tag :p, (link_to entry.vehicle, seller_path(entry)) if current_user.has_role?('seller') %>
+        <%= content_tag :p, entry.plate_no %>
+        <%= content_tag :span, "(created by #{entry.user.username})", :class => 'highlight' if current_user.has_role?("powerbuyer") %>
+  		</div>
+		</td>
+	</tr>
+	<%- for order in orders -%>
+	<tr>
+  	<td class="delivery">	
+      <%= content_tag :p, (content_tag :span, 'Location: ') + order.deliver_to %>
+      <%= content_tag :p, (content_tag :span, 'Credit: ') + entry.term.term_name %>
+      <%= content_tag :p, (content_tag :span, 'Amount: ') + number_to_currency(order.bids.collect(&:total).sum, :unit => "P ") %>
+  	</td>
+  	<td class="status">
+  		<%- unless order.seller_confirmation == false -%>
+  			<%= content_tag :p, 'Buyer: ' + order.company.name, :class => 'instruction' if current_user.has_role?('admin') || current_user == order.seller %>
+  		<%- end -%>
+	  		<%= content_tag :p, 'Seller: ' + order.seller.profile.company.name, :class => 'instruction' if current_user.has_role?('admin') || current_user.has_role?('buyer') || current_user == entry.user  %>
+  		<div>
+  		  <%= render 'orders/order_status_buyer', :order => order if current_user.has_role?('admin') || current_user.has_role?('buyer') || current_user == entry.user %>
+  			<%= render 'orders/order_status_seller', :order => order if current_user == order.seller %>
+  		  <%= link_to "View PO", order unless current_user == order.seller && order.seller_confirmation == false%>
+  		  &nbsp;<%= "ID: #{order.id}" if current_user.has_role?('admin') %>
+  		</div>
+	</td>
+  </tr>
+	<%- end -%>
+	<%- end -%>
+	<tr class="totals">
+	  <td>Sub-Total</td>
+	  <td class="amount"><%= number_to_currency(@orders.collect(&:total_order_amounts).sum, :unit => "P ") %></td>
+	  <td></td>
+	</tr>
+</table>
+<%- end -%>
+

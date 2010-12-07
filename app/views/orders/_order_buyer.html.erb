@@ -1,0 +1,35 @@
+<ul id="buyer-company">
+	<li><h3>Buyer</h3></li>
+	<% unless current_user.has_role?('seller') -%> <!-- if user is a buyer -->
+		<li class="company"><h4><%= entry.user.company.name %></h4></li>
+		<li class="address"><%= entry.user.company.address1 %></li>
+		<li class="address"><%= entry.user.company.address2 %></li>
+		<li class="city"><%= entry.user.company.city.name %></li>
+		<li class="full-name">
+  	  <% if current_user != entry.user %>
+  		<%= current_user.profile.full_name %>/<br>
+  		<% end -%>
+		  <%= entry.user.profile.full_name %>
+		</li>
+		<li class="phone"><%= entry.user.profile.phone %></li>
+		<li class="email"><%= entry.user.email %></li>
+	<%- else -%> <!-- if user is a seller -->
+		<% if current_user.has_role?('admin') || @order.seller_confirmation == true -%>  <!-- if order has been accepted -->
+		<li class="company"><h4><strong><%= entry.user.company.name %></strong></h4></li>
+		<li class="address"><%= entry.user.company.address1 %></li>
+		<li class="address"><%= entry.user.company.address2 %></li>
+		<li class="city"><%= entry.user.company.city.name %></li>
+		<li class="full-name">
+  	  <% if @order.user != entry.user %>
+  		<%= @order.user.profile.full_name %>/<br>
+  		<% end -%>
+		  <%= entry.user.profile.full_name %>
+		</li>
+		<li class="phone"><%= entry.user.profile.phone %></li>
+		<li class="email"><%= entry.user.email %></li>
+		<%- else -%> <!-- if order has not been accepted -->
+		<li class="who"><h4>Who's your Buyer?</h4></li>
+		<li><em>Accept the order to find out.</em></li>
+		<% end -%>
+	<% end -%>
+</ul>

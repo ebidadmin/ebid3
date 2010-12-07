@@ -1,0 +1,60 @@
+<% title "Account Info" -%>
+
+<div class="first profile">
+	<% unless @user.profile.nil? %>
+	<h2>
+		User Profile 
+		<em><%= link_to '(edit profile)', edit_user_profile_path(@user, @profile) %></em>
+	</h2>
+	<ul>		
+	  <li><span>Company:</span><%= link_to "#{@profile.company.name} (view details)", @profile.company if @profile.company -%></li>
+	  <li><span>Name:</span><%=h @profile.full_name -%></li>
+	  <li><span>Position:</span><%=h @profile.rank.name -%></li>
+	  <li><span>Phone:</span><%=h @profile.phone -%></li>
+	  <li><span>Fax:</span><%=h @profile.fax -%></li>
+	  <li><span>Birthdate:</span><%=h @profile.birthdate.to_s(:long) if @profile.birthdate -%></li>
+	</ul>
+	<% else %>
+	<h2>No user details yet. <%= link_to "(Create)", new_user_profile_path(@user) %></h2>
+	<% end %>
+
+
+	<%# if current_user.has_role?('admin') %>
+	<h2>Roles assigned</h2> 
+	<ul>
+		<%= render :partial => 'role', :collection => @user.roles -%>
+	</ul>
+	
+	<h2>Roles available</h2> 
+	<ul>
+		<%= render :partial => 'role', :collection => (@all_roles - @user.roles) -%>
+	</ul>
+	<%# end %>
+</div>
+
+<div class="second usage">
+	<h2>
+		Login History
+	</h2>
+	<ul>
+		<li><span>Username:</span><%=h @user.username %> <em><%= link_to "(change username/password)", edit_user_path(@user) -%></em></li>
+		<li><span>Email:</span><%=h @user.email %> <em><%= link_to "(change)", edit_user_path(@user) -%></em></li>
+		<li><span>Login count:</span> <%=h @user.sign_in_count -%></li>
+		<li>
+			<span>Enabled?</span>
+			<%= @user.enabled ? 'Yes' : 'No' -%>
+			<%= render :partial => 'enable', :object => @user -%>
+		</li>
+	</ul>
+</div>	
+
+<p class="page-links">
+	<% if current_user.has_role?('admin') %>
+		<%= link_to "Users List", users_path, :class => 'button' -%>
+		<%= link_to "Companies List", companies_path, :class => 'button' -%>
+	<% elsif current_user.roles.blank? %>
+		<%= link_to "Done!", new_user_session_path, :class => 'button' -%>
+	<% else %>
+		<%= link_to "Done!", :back, :class => 'button' -%>
+	<% end %>
+</p>

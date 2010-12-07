@@ -1,51 +1,48 @@
-<% title "Entries" %>
+<% title @title %>
 
-<table>
-  <tr>
-    <th>User</th>
-    <th>Ref No</th>
-    <th>Year Model</th>
-    <th>Car Brand</th>
-    <th>Car Model</th>
-    <th>Car Variant</th>
-    <th>Plate No</th>
-    <th>Serial No</th>
-    <th>Motor No</th>
-    <th>Date Of Loss</th>
-    <th>City</th>
-    <th>Term</th>
-    <th>Bid Until</th>
-    <th>Buyer Status</th>
-    <th>Photos Count</th>
-    <th>Additional Flag</th>
-    <th>Expired</th>
-    <th>Chargeable Expiry</th>
-  </tr>
-  <% for entry in @entries %>
-    <tr>
-      <td><%= entry.user_id %></td>
-      <td><%= entry.ref_no %></td>
-      <td><%= entry.year_model %></td>
-      <td><%= entry.car_brand_id %></td>
-      <td><%= entry.car_model_id %></td>
-      <td><%= entry.car_variant_id %></td>
-      <td><%= entry.plate_no %></td>
-      <td><%= entry.serial_no %></td>
-      <td><%= entry.motor_no %></td>
-      <td><%= entry.date_of_loss %></td>
-      <td><%= entry.city_id %></td>
-      <td><%= entry.term_id %></td>
-      <td><%= entry.bid_until %></td>
-      <td><%= entry.buyer_status %></td>
-      <td><%= entry.photos_count %></td>
-      <td><%= entry.additional_flag %></td>
-      <td><%= entry.expired %></td>
-      <td><%= entry.chargeable_expiry %></td>
-      <td><%= link_to "Show", entry %></td>
-      <td><%= link_to "Edit", edit_entry_path(entry) %></td>
-      <td><%= link_to "Destroy", entry, :confirm => 'Are you sure?', :method => :delete %></td>
-    </tr>
-  <% end %>
+<%= render 'buyer/filter_by_user' unless @user_group.nil? %>
+<%= render 'buyer/filter_by_status' unless @status_tags.nil? %>
+<%= render 'buyer/filter_by_search' %>
+
+<%= will_paginate @entries %>
+<%= page_info @entries %>
+<%= content_tag :span, " - #{params[:status]}", :class => 'strong highlight' if params[:status] %>
+
+<%- unless @entries.count < 1 -%>
+<table id="online-list">
+	<thead>
+    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
+    <%= content_tag :th, 'Terms', :class => 'terms' %>
+    <%= content_tag :th, 'Status', :class => 'status' %>
+	</thead>
+	<tbody>
+	<%- for entry in @entries -%>
+	<tr>
+		<td class="vehicle">	
+  		<%= render 'shared/photo_first', :entry => entry %>
+      <div id="details">
+        <%= content_tag :p, entry.ref_no unless entry.ref_no.nil? %>
+        <%= content_tag :p, entry.vehicle, :class => 'strong' %>
+        <%= content_tag :p, entry.plate_no %>
+        <%= content_tag :p, "(created by #{entry.user.username})" if current_user.has_role?("powerbuyer") %>
+			</div>
+		</td>
+    <td class="terms">  
+      <%= content_tag :p, "#{entry.term.term_name} / #{entry.city.name}" %>
+      <%= content_tag :p, (link_to (pluralize entry.line_items.count, "item"), entry), :class => 'parts-total' %>
+    </td>
+		<td class="status">
+      <%= content_tag :p, display_status(entry) %>
+			<p class="instruction">
+			  <%= "#{entry.bid_until.strftime('%b %d')} |"  %>
+			  <%= display_number_of_bidders(entry) unless (entry.buyer_status == "New" || entry.buyer_status == "Edited") %>
+        <%= render 'entries/online_links', :entry => entry  %>
+			  <%#= "| #{pluralize entry.orders.count, 'order'}" unless entry.orders.blank? %>
+      </p>
+		</td>
+	</tr>
+	<%- end -%>
+	</tbody>
 </table>
+<%- end -%>
 
-<p><%= link_to "New Entry", new_entry_path %></p>

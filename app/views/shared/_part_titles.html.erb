@@ -1,0 +1,17 @@
+<%- unless @order || @orders -%>
+	<li class="selection-title">
+	<h4>
+		<span class="qty">Qty</span>
+		<span class="partname">Part Description</span>
+		<span class="partnum">Part Number</span>
+	</h4>
+	</li>
+<%- else -%>
+	<thead  class="selection-title">
+		<th class="qty">Qty</th>
+		<th class="partname">Part Description</th>
+		<%= content_tag :th, "Unit Price", :class => 'price' %>
+		<%= content_tag :th, "Total", :class => 'price' %>
+	</thead>
+<%- end -%>
+

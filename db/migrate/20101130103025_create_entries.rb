@@ -13,11 +13,12 @@ class CreateEntries < ActiveRecord::Migration
       t.date :date_of_loss
       t.integer :city_id
       t.integer :term_id
-      t.timestamps
-      t.date :bid_until
-      t.string :buyer_status, :default => 'New'
+      t.integer :line_items_count, :null => false, :default => 0 
       t.integer :photos_count, :null => false, :default => 0
       t.boolean :additional_flag, :default => false
+      t.timestamps
+      t.string :buyer_status, :default => 'New'
+      t.date :bid_until
       t.date :expired
       t.boolean :chargeable_expiry, :default => false
     end

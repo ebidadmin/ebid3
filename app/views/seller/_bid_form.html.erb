@@ -1,0 +1,3 @@
+<%= content_tag :div, (render 'bid_reflection', :last_bid => item.last_bid(current_user.id, 'original')), :class => 'bid-amount' %>
+<%= content_tag :div, (render 'bid_reflection', :last_bid => item.last_bid(current_user.id, 'replacement')), :class => 'bid-amount' %>
+<%= content_tag :div, (render 'bid_reflection', :last_bid => item.last_bid(current_user.id, 'surplus')), :class => 'bid-amount' %>

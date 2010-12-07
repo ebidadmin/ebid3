@@ -1,8 +1,24 @@
 <% title "Edit Entry" %>
 
-<%= render 'form' %>
+<fieldset>
+	<legend>STEP 1 - Choose Parts</legend>
+  <%= render 'parts_selection' %>
+	<%= render 'parts_in_cart' %>
+</fieldset>	
 
-<p>
-  <%= link_to "Show", @entry %> |
-  <%= link_to "View All", entries_path %>
-</p>
+<%= nested_form_for @entry, :html => { :multipart => true } do |f| %>
+	<fieldset id="vehicle">
+		<legend>STEP 2 - Describe the vehicle</legend>
+		<%= render 'choose_vehicle', :f => f %>
+	</fieldset>
+	<fieldset id="attachments">
+		<legend>STEP 3 - Attach Photos</legend>
+		<%= render 'choose_attachments', :f => f %>
+	</fieldset>
+	<p class="page-links">
+		<%= f.submit %>
+		or <%= link_to "Cancel", user_entries_path(current_user) %>
+	</p>
+<% end %>
+
+<% javascript "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js", 'nested_form' %>

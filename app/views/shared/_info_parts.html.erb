@@ -1,0 +1,85 @@
+<!-- <h3>Parts List</h3> -->
+<%- if current_page? @entry -%> 
+ 
+	<ul id="show-parts">
+		<%= render 'shared/part_titles' %>
+		<% for item in  @entry.line_items %>
+			<li class="selection-list">
+				<span class="qty">
+					<%= item.quantity %>
+				</span>
+				<span class="partname">
+					<%=h item.car_part.name %> 
+				</span>		
+				<span class="partnum">
+					<%= item.part_no unless item.part_no.blank? %>
+					<%= "not provided" if item.part_no.blank? %>
+				</span>
+			</li>
+		<% end %>
+	</ul>
+
+	<%- elsif current_page? @order -%>
+
+		<table class="parts-set">
+			<%= render 'shared/part_titles' %>
+			<%- for item in  @order_items -%>
+				<tr class="selection-list">	
+					<td class="qty"><%= item.quantity %></td>
+					<td class="partname">
+						<%=h item.car_part.name %>
+						<%= content_tag :p, "(Part No. <strong>#{item.line_item.part_no}</strong>)", :class => 'partnum' unless item.line_item.part_no.blank?  %>
+					</td> 
+					<td class="price">
+						<%= number_with_delimiter(item.price.to_i)  -%>
+					</td>
+					<td class="price">
+						<%= number_with_delimiter(item.total.to_i) -%>
+					</td>
+				</tr>	
+			<%- end -%>
+			<tr class="selection-total">	
+					<td class="label" colspan=2>
+						Order Total
+						<%= "- Item Price "  -%>
+					</td>
+					<td class="price" colspan=2>
+						<%= number_with_delimiter(@order_items.collect(&:total).sum.to_i)  -%>
+					</td>
+			</tr>
+		</table>
+
+<%- elsif @order -%>
+
+	<table class="parts-set">
+		<%= render 'shared/part_titles' %>
+		<%- for item in  @line_items -%>
+			<tr class="selection-list">	
+				<td class="qty"><%= item.quantity %></td>
+				<td class="partname">
+					<%=h item.car_part.name %>
+					<%= content_tag :p, "(Part No. <strong>#{item.part_no}</strong>)", :class => 'partnum' unless item.part_no.blank?  %>
+				</td> 
+				<td class="price">
+					<%= number_with_delimiter(item.price.to_i) unless @order.order_tag == "Lot" -%>
+				</td>
+				<td class="price">
+				</td>
+			</tr>	
+		<%- end -%>
+		<tr class="selection-total">	
+				<td class="label" colspan=2>
+					Order Total
+					<%- unless @source.nil? -%>
+					<%= "- Lot Price (#{@source})" if @order.order_tag == "Lot" -%>
+					<%= "- Item Price (#{@source})" if @order.order_tag == "Item" -%>
+					<%- end -%>
+				</td>
+				<td class="amount" colspan=2>
+				<%= number_with_delimiter(@price.to_i) -%>
+				</td>
+		</tr>
+	</table>
+
+
+<%- end -%>

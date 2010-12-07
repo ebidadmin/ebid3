@@ -1,0 +1,35 @@
+<% content_for :head do %>
+	<%= stylesheet_link_tag 'shadowbox', :cache => false %>
+<% end %>
+
+<% title "Bid for #{@entry.vehicle}" %>
+
+<%= render 'shared/photo_set' %>
+<%= render 'shared/info_vehicle', :entry => @entry %>
+
+<%= form_tag bids_path(:entry_id => @entry), :remote => true do |f|  %>
+	
+	<table id="item-bids">
+		<%= render 'bid_table' %>
+	</table>
+	
+	<div class="page-links">
+		<%= submit_tag 'Place Bid/s', :class => 'button' %>
+	  <%= link_to "[Done]", :back %>
+		<%= content_tag :div, nil, :id => 'bidding-message' %>
+	</div>
+	
+<% end %>
+
+<% unless @entry.buyer_status == 'Online' && @entry.expired.nil? %>
+  <% content_for :subnav do %>
+	<%= content_tag :div, ("Note: the status of this entry is " + current_status_or_expired?(@entry) + 
+	". It\'s no longer available for bidding.").html_safe, :id => 'flash_warning'  %>
+  <% end  %>	
+<% end %>
+
+<%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" %>
+<%= javascript_include_tag 'shadowbox', :cache => false %>
+<script type="text/javascript">
+		Shadowbox.init();		
+</script>

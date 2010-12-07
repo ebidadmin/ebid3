@@ -13,6 +13,21 @@
 				<%= nav_link "Sign in", new_user_session_path -%>
 		<% end %>
 	</ul>
+	<% unless current_user.nil? %>
+  <ul id="navigation">
+		<% if current_user.has_role?('admin') %>
+		<%= render 'layouts/menu_buyer' %>
+		<% elsif current_user.has_role?('powerbuyer') %>
+			<%= render 'layouts/menu_powerbuyer' %>
+		<% elsif current_user.has_role?('buyer') %>
+			<%= render 'layouts/menu_buyer' %>
+		<% elsif current_user.has_role?('seller') %>
+			<%= render 'layouts/menu_seller' %>
+		<% else %>
+	   <%= nav_link 'Note: Your account is not yet activated.  Please contact 892-5835 asap.', '' %>
+		<% end %>
+  </ul>
+	<% end %>
 	<div id="subnav">
   	<%= yield(:subnav) %>
 	</div>

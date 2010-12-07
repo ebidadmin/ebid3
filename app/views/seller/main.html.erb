@@ -1,0 +1,37 @@
+<% title "Supplier's Dashboard" %>
+
+<ul class='supplier dash'>
+  <h3><%= current_user.username.upcase %>'s Activity</h3>
+	<%= dash_entry_format("last-login", "Last sign-in", "#{time_ago_in_words @last_activity} ago",  @last_activity.strftime('%b %d %R') ) %>
+	<%= dash_entry_format("last-bid", "Last bid", "#{time_ago_in_words @last_bid} ago",  @last_bid.strftime('%b %d %R') ) unless @last_bid.nil? %>
+	<%= dash_entry_format("total-items", "Total parts requested", nil,  (number_with_delimiter @line_items_count) ) %>
+	<%= dash_entry_format("total-bided", "Total parts bided on", (number_to_percentage @bid_percentage, :precision => 2), (number_with_delimiter @bids_count) ) %>
+	<%= dash_entry_format("missed-oppty", "Missed opportunity", (number_to_percentage @missed_percentage, :precision => 2), (number_with_delimiter @missed_count) ) %>
+</ul>
+<ul class='supplier dash last'>
+  <h3>Orders</h3>
+	<%= dash_entry_format("new-orders", "New", nil,  (number_to_currency @new_orders, :unit => "P "), seller_orders_path ) %>
+	<%= dash_entry_format("delivered-orders", "Total Delivered", nil,  (number_to_currency @total_delivered, :unit => "P "), seller_payments_path ) %>
+	<%= dash_entry_format("within-term", "Within Credit Term", percentage(@within_term_percent),  (number_to_currency @within_term, :unit => "P ") ) %>
+	<%= dash_entry_format("overdue", "Overdue", percentage(@overdue_percent),  (number_to_currency @overdue, :unit => "P ") ) %>
+	<%= dash_entry_format("paid", "Paid (needs feedback)", percentage(@paid_percent),  (number_to_currency @paid, :unit => "P ") ) %>
+	<%= dash_entry_format("closed", "Paid (closed)", percentage(@closed_percent),  (number_to_currency @closed, :unit => "P ") ) %>
+</ul>
+<p class="page-links">
+<%= link_to "Place Bids", seller_hub_path(current_user, :brand => 'all'), :class => 'button' %>
+<%= link_to "Monitor Bids", seller_monitor_path, :class => 'button' %>
+<%= link_to "Check Orders", seller_orders_path, :class => 'button' %>
+</p>
+
+<ul class='dash full'>
+  <h3>What's new with E-Bid version 2.8.1?</h3>
+	<%= dash_entry_format("feature", "Multiple items per order", "Buyers can now order multiple items per PO. This saves time in ordering and printing by both buyers and suppliers.",  nil ) %>
+</ul>
+<ul class='dash full'>
+  <h3>What's new with E-Bid version 2.8?</h3>
+	<%= dash_entry_format("feature", "Supplier's dashboard", "A quick snapshot of what's happening online, plus a section on the status of your orders and collections.",  nil ) %>
+	<%= dash_entry_format("feature", "Monitor bids", "A new look makes it easier to monitor your bids.",  nil ) %>
+	<%= dash_entry_format("feature", "Grouped orders & payments", "Orders and payments are now grouped on a per vehicle basis.",  nil ) %>
+	<%= dash_entry_format("feature", "Payment monitoring", "It's now easy to distinguish on-time versus overdue payments. We also have a better automated payment alert system for your buyers.",  nil ) %>
+	<%= dash_entry_format("feature", "Transaction fees", "Transaction fees are also grouped and it's now very easy to cross-check the computations with the POs.",  nil ) %>
+</ul> 

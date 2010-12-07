@@ -5,10 +5,10 @@ class CreateRoles < ActiveRecord::Migration
     end
     
     Role.create(:name => 'admin')
-    Role.create(:name => 'powerbuyer')
     Role.create(:name => 'buyer')
-    Role.create(:name => 'powerseller')
     Role.create(:name => 'seller')
+    Role.create(:name => 'powerbuyer')
+    Role.create(:name => 'powerseller')
     
     # generate the join table
     create_table "roles_users", :id => false do |t|

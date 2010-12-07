@@ -1,80 +1,85 @@
-<% title "Entry" %>
+<% content_for :head do %>
+	<%= stylesheet_link_tag 'shadowbox', :cache => false %>
+<% end %>
 
-<p>
-  <strong>User:</strong>
-  <%= @entry.user_id %>
-</p>
-<p>
-  <strong>Ref No:</strong>
-  <%= @entry.ref_no %>
-</p>
-<p>
-  <strong>Year Model:</strong>
-  <%= @entry.year_model %>
-</p>
-<p>
-  <strong>Car Brand:</strong>
-  <%= @entry.car_brand_id %>
-</p>
-<p>
-  <strong>Car Model:</strong>
-  <%= @entry.car_model_id %>
-</p>
-<p>
-  <strong>Car Variant:</strong>
-  <%= @entry.car_variant_id %>
-</p>
-<p>
-  <strong>Plate No:</strong>
-  <%= @entry.plate_no %>
-</p>
-<p>
-  <strong>Serial No:</strong>
-  <%= @entry.serial_no %>
-</p>
-<p>
-  <strong>Motor No:</strong>
-  <%= @entry.motor_no %>
-</p>
-<p>
-  <strong>Date Of Loss:</strong>
-  <%= @entry.date_of_loss %>
-</p>
-<p>
-  <strong>City:</strong>
-  <%= @entry.city_id %>
-</p>
-<p>
-  <strong>Term:</strong>
-  <%= @entry.term_id %>
-</p>
-<p>
-  <strong>Bid Until:</strong>
-  <%= @entry.bid_until %>
-</p>
-<p>
-  <strong>Buyer Status:</strong>
-  <%= @entry.buyer_status %>
-</p>
-<p>
-  <strong>Photos Count:</strong>
-  <%= @entry.photos_count %>
-</p>
-<p>
-  <strong>Additional Flag:</strong>
-  <%= @entry.additional_flag %>
-</p>
-<p>
-  <strong>Expired:</strong>
-  <%= @entry.expired %>
-</p>
-<p>
-  <strong>Chargeable Expiry:</strong>
-  <%= @entry.chargeable_expiry %>
-</p>
+<% title "Item Bids for #{@entry.plate_no}" %>
 
-<p>
-  <%= link_to "Edit", edit_entry_path(@entry) %> |
-  <%= link_to "Destroy", @entry, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", entries_path %>
-</p>
+<%= render 'shared/photo_set' %>
+<%= render 'shared/info_vehicle', :entry => @entry %>
+<h4 id="del-status">Status: <%= @entry.buyer_status %></h4>
+
+<%= form_tag accept_bids_path(:entry_id => @entry), :method => :post do  %>
+<table class="buyer monitor-bids">
+	<thead>
+	<tr>
+		<th class="qty" rowspan=2>Qty</th>
+		<th class="partname" rowspan=2>Part Description</th>
+		<th class="bid-box" colspan=4>
+			<strong>Item Bids (unit price)</strong>
+		</th>
+	</tr>
+	<tr>
+		<th class="bid-box type"></th>
+		<th class="bid-box price">Original</th>
+    <th class="bid-box price">Replacement</th>
+    <th class="bid-box price">Surplus</th>
+	</tr>
+	</thead>
+	<% for item in  @line_items %>
+	<tr>
+		<td class="qty" <%= proper_rowspan(item) %>><%= item.quantity %></td>
+		<td class="partname" <%= proper_rowspan(item) %>>    	
+			<%=h item.car_part.name %> 
+			<%= content_tag :p, "(Part No. <strong>#{item.part_no}</strong>)", :class => 'partnum' unless item.part_no.blank?  %>
+			<%= content_tag :p, (pluralize item.bids.collect(&:user_id).uniq.count, "bidder"), :class => 'strong' unless item.bids.collect(&:user_id).uniq.count < 1 %>
+			<%= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
+		</td>
+		
+		<% if item.status == "For Decision" %>
+			<% if item.bids.size < 1 %>
+				<td class="bid-box" colspan=4>
+					Sorry, there are no bids for this item.
+				</td>
+			<% else %>
+        <%= render 'bid_selection', :item => item %>
+			<% end -%>
+		<% else %>
+			<td class="bid-box" colspan=4>
+			  <% if item.status == "PO Released" || item.status == "Ordered" || item.status == "For Delivery" %>
+    				<strong><%= item.status %></strong> as of <%= item.order.updated_at.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+    		<% elsif item.status == "Delivered" %>
+    				<strong>Delivered</strong> as of <%= item.order.delivered.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+    		<% elsif item.status == "Paid" %>
+    				<strong>Paid</strong> as of <%= item.order.paid.strftime('%b %d') unless item.order%> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+    		<% else  %>
+    				<strong><%= item.status %></strong>
+    		<% end %>
+  		</td>
+		<% end %>
+	</tr>
+	<% end %>
+	<% if (@entry.buyer_status == "For Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP") && @entry.expired.nil? %>
+	<tr id="accept-decline">
+	  <td colspan=2></td>
+	  <td colspan=4>
+  		<p class="instruction strong">Select bid/s before you decide.</p>  
+    	<%= submit_tag "Accept Selected" -%>
+    	<%= submit_tag "Decline Selected", :confirm => 'Are you sure you want to decline the selected bid/s?',
+    	 			:method => :get %>
+	  </td>
+	</tr>
+	<% end %>
+</table>
+<% end -%>
+
+
+<p class="page-links">
+  <%= link_to "OK, done!", :back, :class => 'button' %>
+</div>
+
+
+<%#= javascript_include_tag :defaults, :cache => false %>
+<%= javascript_include_tag 'shadowbox', :cache => false %>
+<script type="text/javascript">
+		Shadowbox.init();		
+</script>

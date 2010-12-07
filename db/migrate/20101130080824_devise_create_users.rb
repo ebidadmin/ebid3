@@ -10,6 +10,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.timestamps
       t.boolean :enabled, :default => true, :null => false                      
       t.integer :entries_count, :null => false, :default => 0                                      
+      t.integer :bids_count, :null => false, :default => 0                                      
    end
     
     add_index :users, :username

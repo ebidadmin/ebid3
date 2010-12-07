@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      <%= content_for?(:title) ? "E-Bid Inc. - The Philippines' Vehicle Parts Auction Hub | " + yield(:title) : "E-Bid Inc. - The Philippines' Vehicle Parts Auction Hub" %>
+    </title>
+		<%= stylesheet_link_tag 'base', 'styles', :media => "all" %>
+    <%#= javascript_include_tag :defaults %>
+    <%= csrf_meta_tag %>
+		<link rel="shortcut icon" href="/images/base/favicon.ico" />
+		<%= yield(:head) %>
+  </head>
+
+  <body id="application.html" onload="">
+    
+		<div id="top">		
+      <div id="branding-menu">
+        <div class="container">
+            <%= render 'layouts/browsers' %>
+        <% if current_user %>
+          <p>Welcome back <%= current_user.username %>! <%= link_to 'Go to Main Page', user_entries_path(current_user) %></p>
+        <% else %>
+          <p>Already a member? <%= link_to 'Login', new_user_session_path %></p>
+        <% end %>
+        </div>
+      </div>
+  		<div class="container">
+  		  <ul id="home-nav" class="links">
+        	<%= nav_link "Home", root_path -%>
+        	<%= nav_link "About", site_about_path -%>
+  		  </ul>
+         <%= yield %>
+      </div>
+    </div>
+		</div>    
+		<div id="footer">
+			<%= render 'layouts/footer' %>
+		</div>
+
+  </body>
+</html>

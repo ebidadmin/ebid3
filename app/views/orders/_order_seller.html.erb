@@ -1,0 +1,25 @@
+<ul id="supplier-company">
+	<li><h3>Supplier</h3></li>
+	<% unless current_user.has_role?('buyer') -%>
+		<li class="company"><h4><%= order.seller.company.name %></h4></li>
+		<li class="address"><%= order.seller.company.address1 %></li>
+		<li class="address"><%= order.seller.company.address2 %></li>
+		<li class="city"><%= order.seller.company.city.name %></li>
+		<li class="full-name"><%= order.seller.profile.full_name %></li>
+		<li class="phone"><%= order.seller.profile.phone %></li>
+		<li class="email"><%= order.seller.email %></li>
+	<%- else -%>
+		<% unless order.seller.blank? -%>
+		<li class="company"><h4><strong><%= order.seller.company.name unless order.seller.nil? %></strong></h4></li>
+		<li class="address"><%= order.seller.company.address1 unless order.seller.nil?  %></li>
+		<li class="address"><%= order.seller.company.address2 unless order.seller.nil? %></li>
+		<li class="city"><%= order.seller.company.city.name unless order.seller.nil? %></li>
+		<li class="full-name"><%= order.seller.profile.full_name unless order.seller.nil? %></li>
+		<li class="phone"><%= order.seller.profile.phone unless order.seller.nil? %></li>
+		<li class="email"><%= order.seller.email unless order.seller.nil? %></li>
+		<%- else -%>
+		<li class="who"><h4>Who's your Supplier?</h4></li>
+		<li><em>Place the order to find out.</em></li>
+		<% end -%>
+	<% end -%>
+</ul>

@@ -1,0 +1,3 @@
+<% content_for :subnav do %>
+	<%= select_tag :status, options_for_select(@status_tags), :include_blank => "Filter by Status" %>
+<% end %>

@@ -41,4 +41,9 @@ class CarPartsController < ApplicationController
     flash[:notice] = "Successfully destroyed car part."
     redirect_to car_parts_url
   end
+
+  def search
+    @search = CarPart.name_like_all(params[:name].to_s.split).ascend_by_name
+    @car_parts, @car_parts_count = @search.paginate(:page => params[:page], :per_page => 12, :order => 'name ASC'), @search.count
+  end
 end

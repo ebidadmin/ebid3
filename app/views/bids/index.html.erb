@@ -1,0 +1,65 @@
+<% title "Monitor Bids"%>
+
+<% content_for :subnav do %>
+  <%= form_tag request.parameters, :id => 'search', :method => :get do |f| %>
+      <p class="label">Search</p>
+    	<p><span>Plate No.</span> <%= text_field_tag :search, params[:search], :id => 'search-box' %></p>
+    	<p><%= submit_tag "Go!" %></p>
+  <%- end -%>
+<% end %>
+
+<%= will_paginate @bids  %>
+<%= page_info @bids %>
+
+<%- unless @bids.blank? -%>
+<table id="monitor-bids">
+	<thead>
+		<th class="vehicle">Vehicle</th>
+		<th class="bid-box">
+		  <%= content_tag :p, 'Item Bids (unit price)', :class => 'strong' %>
+		  <%= content_tag :div, 'Part Description', :class => 'part-desc' %>
+		  <%= content_tag :div, 'Amount', :class => 'amount' %>
+		  <%= content_tag :div, 'Bid Type', :class => 'bid-type' %>
+		  <%= content_tag :div, 'Bid Status', :class => 'status' %>
+		</th>
+	</thead>
+	<tbody>
+  <% @bids.group_by(&:entry).each do |entry, bids| -%>
+  	<tr>
+  		<td class="vehicle">
+  			<%= render 'shared/photo_first', :entry => entry %>
+        <div id="details">
+	        <%= content_tag :p, entry.vehicle, :class => 'strong' %>
+	        <%= content_tag :p, entry.plate_no %>
+          <%= content_tag :p, "(created by #{entry.user.username})" if current_user.has_role?("powerbuyer") %>
+    			<p>Terms: <%=h entry.city.name if entry.city %> / <%=h entry.term.term_name if entry.term %></p>
+    			<p>Parts Requested: <%= link_to (entry.line_items.collect(&:quantity).sum), seller_show_path(:brand => entry.brand, :id => entry) %></p>
+    			<p>Entry Status: <%= current_status_or_expired?(entry) %></p>
+  			</div>
+  		</td>
+  		<td class="bid-box">
+      		<% bids.group_by(&:line_item).each do |line_item, bids| %>
+      		  <%= content_tag :div, line_item.car_part.name, :class => 'part-desc' -%>
+      		  <div class="bid-group">
+      			<% for bid in bids  -%>
+      			  <div class="amount">
+      			    <%= number_to_currency(bid.amount, :unit => "P ") %><br>
+                <%= content_tag :span, "#{bid.created_at.strftime('%b %d')} #{'/ ' + bid.user.username if current_user.has_role?('admin')}", :class => 'instruction' %>
+      			  </div>
+              <div class="bid-type">
+        				<%= bid.bid_type -%> <%= "- Lot" if bid.lot == true %>
+              </div>  
+      				<%= content_tag :div, bid.status, :class => "status #{quote_class(bid.status)}" -%>
+      			<% end -%>
+      		  </div>
+    			<% end -%>
+  		</td>
+  	</tr>
+  <% end -%>
+	</tbody>
+</table>
+<%- end -%>
+
+<p class="page-links">
+<%= link_to "Place More Bids", seller_hub_path(current_user, :brand => 'all'), :class => 'button' %>
+</p>

@@ -1,0 +1,43 @@
+<% title @title %>
+
+<%#= render 'view_by_group' unless @group_users.nil? %>
+
+
+<%= will_paginate @declined_bids  %>
+<%= page_info @declined_bids %>
+
+<% unless @declined_bids.blank? %>
+<table id="buyer-fees">
+	<thead>
+		<th class="vehicle">Vehicle</th>
+		<th class="decline-type">Decline Type</th>
+		<th class="">
+		  <div class="part">Part Description</div>
+		  <div class="lowest-bid">Lowest Bid</div>
+  		<div class="fee">Transaction Fee</div>
+		</th>
+	</thead>
+  <% @declined_bids.group_by(&:entry).each do |entry, bids| %>
+  <tr>
+		<td class="vehicle">	
+			<%= link_to h(entry.vehicle), entry %>
+			<p><%=h entry.plate_no %> <%= "by #{entry.user.username}" if current_user != entry.user %></p>
+		</td>
+		<td class="decline-type">
+		  <%= content_tag :p, entry.buyer_status, :class => 'strong' %>
+		  <%= content_tag :p, "#{bids.count} of #{pluralize entry.line_items.count, 'item'}" %> 	
+			<p class="instruction"><%= display_decline_date(entry) + "#{' (Expired)' unless entry.expired.nil? }" %></p>
+		</td>
+	  <td>
+  	<% for bid in bids %>
+	    <%= content_tag :div, bid.line_item.car_part.name, :class => 'part' %>
+	    <%= content_tag :div, (number_to_currency bid.total, :unit => ""), :class => 'lowest-bid'  %>
+	    <%= content_tag :div, (number_to_currency bid.fee, :unit => ""), :class => 'fee' %>
+			<%#= content_tag :div, bid.user.username, :class => 'instruction' if current_user.has_role?('admin')  -%>
+  	<% end %>
+		</td>                          
+	</tr>
+	<% end %>
+</table>
+<% end %>
+

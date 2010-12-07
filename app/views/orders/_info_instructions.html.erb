@@ -1,0 +1,8 @@
+<ul id="del-instructions">
+	<li><h4><span>Deliver to:</span> <%= order.deliver_to -%></h4></li>
+	<li><span>Address:</span> <%= order.address1 -%><%= ", #{order.address2}" unless order.address2.blank? -%></li>
+	<li><span>Contact person:</span> <%= order.contact_person -%></li>
+  <li><span>Phone:</span> <%= order.phone -%></li>
+	<li><span>Fax:</span> <%= order.fax -%></li>
+  <li><span>Special Instructions:</span> <%= order.instructions -%></li>
+</ul>
