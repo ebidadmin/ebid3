@@ -13,12 +13,16 @@ class CarVariantsController < ApplicationController
   
   def create
     @car_variant = CarVariant.new(params[:car_variant])
-    if @car_variant.save
-      flash[:notice] = "Successfully created car variant."
-      redirect_to @car_variant
-    else
-      render :action => 'new'
-    end
+     if @car_variant.save
+       flash[:notice] = "Successfully created car variant."
+       if current_user.has_role?('admin')
+         redirect_to car_variants_path
+       else
+         redirect_to new_user_entry_path(current_user)
+       end
+     else
+       render :action => 'new'
+     end
   end
   
   def edit

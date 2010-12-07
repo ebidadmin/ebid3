@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
         @line_item.update_attribute(:status, "Ordered")
       end
       @entry.update_status
-      OrderMailer.order_alert(@orders).deliver
+      OrderMailer.delay.order_alert(@orders)
       unless @orders.count < 2
         flash[:notice] = "Your POs have been released and will be processed right away. Thanks!"
         redirect_to @entry 

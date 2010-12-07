@@ -77,17 +77,20 @@ class BuyerController < ApplicationController
 
   def fees
     @title = "Declined Winning Bids"
-    # initiate_list
-    # if params[:user_id] == 'all'
-    #   entries = Entry.where(:user_id => current_user.company.users)
-    #   @total_bids = entries.collect(&:bids_count).sum
-    #   @all_declined_bids = Bid.entry_id_eq(entries).declined_not_null
-    # else
-    #   entries = defined_user.entries
-    #   @total_bids = Entry.where(:id => entries).collect(&:bids_count).sum
-    #   @all_declined_bids = Bid.entry_id_eq(entries).declined_not_null
-    # end
-     @declined_bids = Bid.where(:entry_id => current_user.entries).declined.paginate :page => params[:page], :per_page => 20
+    initiate_list
+    if params[:user_id] == 'all'
+      entries = Entry.where(:user_id => current_user.company.users)
+      @total_bids = entries.collect(&:bids_count).sum
+      @all_declined_bids = Bid.where(:entry_id => entries).declined
+    else
+      entries = defined_user.entries
+      @total_bids = Entry.where(:id => entries).(&:bids_count).sum
+      @all_declined_bids = Bid.where(:entry_id => entries).declined
+    end
+    @percentage_declined = (@all_declined_bids.count.to_f/@total_bids.to_f) * 100
+    @declined_bids = @all_declined_bids.paginate :page => params[:page], :per_page => 20
+
+    # @declined_bids = Bid.where(:entry_id => current_user.entries).declined.paginate :page => params[:page], :per_page => 20
   end
 
 private 

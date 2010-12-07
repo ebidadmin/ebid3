@@ -24,7 +24,7 @@
         <%= content_tag :p, entry.ref_no unless entry.ref_no.nil? %>
         <%= content_tag :p, entry.vehicle, :class => 'strong' %>
         <%= content_tag :p, entry.plate_no %>
-        <%= content_tag :p, "(created by #{entry.user.username})" if current_user.has_role?("powerbuyer") %>
+        <%= content_tag :span, "(created by #{entry.user.username})", :class => 'highlight' if current_user.has_role?("powerbuyer") %>
 			</div>
 		</td>
     <td class="terms">  
@@ -34,10 +34,10 @@
 		<td class="status">
       <%= content_tag :p, display_status(entry) %>
 			<p class="instruction">
-			  <%= "#{entry.bid_until.strftime('%b %d')} |" if entry.bid_until if current_user.has_role?("admin") %>
+			  <%= "#{entry.bid_until.strftime('%b %d')} |" if (entry.bid_until || current_user.has_role?("admin")) %>
 			  <%= display_number_of_bidders(entry) unless (entry.buyer_status == "New" || entry.buyer_status == "Edited") %>
         <%= render 'entries/online_links', :entry => entry  %>
-			  <%#= "| #{pluralize entry.orders.count, 'order'}" unless entry.orders.blank? %>
+			  <%= "| #{pluralize entry.orders.count, 'order'}" unless entry.orders.blank? %>
       </p>
 		</td>
 	</tr>

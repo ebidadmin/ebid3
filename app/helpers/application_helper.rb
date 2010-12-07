@@ -8,9 +8,17 @@ module ApplicationHelper
     "current_page" if current_page? page_name
   end
 
-  def menu_link(text, controller, action, clas=nil) 
-    content_tag(:li, (link_to text, {:controller => controller, :action => action, :user_id => 'all'}, :id => is_current?(controller, action)), :class=> clas )
+  def menu_link(text, controller, action, id = nil, clas = nil) 
+    content_tag(:li, (link_to text, {:controller => controller, :action => action, :user_id => user_id?(id)}, :id => is_current?(controller, action)), :class=> clas )
   end 
+  
+  def user_id?(id)
+    if id.nil?
+      current_user
+    else
+      id
+    end
+  end
 	
   def is_current?(controller, action)
     "current_page" if request.parameters['controller'] == controller && request.parameters['action'] == action

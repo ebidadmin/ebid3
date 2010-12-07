@@ -1,7 +1,7 @@
 <%= f.error_messages %>
 <%= f.input :year_model %>
 <%= f.input :car_brand, :group_by => :car_origin %>
-<%= f.input :car_model %>
+<span id='car_model_field'><%= render 'car_model_select' %></span>
 <%= f.input :car_variant %>
 <%= f.input :plate_no %>
 <%= f.input :serial_no, :label => 'Serial Number or VIN' %>

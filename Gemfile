@@ -10,7 +10,7 @@ gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branc
 gem 'formtastic'
 gem 'jquery-rails'
 gem "nested_form", :git => "git://github.com/madebydna/nested_form.git"
-# gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
+gem "delayed_job",  :git => 'git://github.com/collectiveidea/delayed_job.git'
 
 # Deploy with Capistrano
 # gem 'capistrano'

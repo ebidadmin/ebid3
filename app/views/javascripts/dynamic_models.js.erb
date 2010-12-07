@@ -1,0 +1,44 @@
+var models = new Array();
+<% for car_model in @car_models -%>
+  models.push(new Array(<%= car_model.car_brand_id %>, "<%= car_model.name %>", <%= car_model.id %>));
+<% end -%>
+
+var variants = new Array();
+<% for car_variant in @car_variants -%>
+  variants.push(new Array(<%= car_variant.car_model_id %>, "<%=h car_variant.name %>", <%= car_variant.id %>));
+<% end -%>
+
+
+$(function() {
+	
+  $('#car_model_field').hide();
+  $('#entry_car_brand_id').change(function() {  
+    car_brand_id = parseInt( $('#entry_car_brand_id').val() );
+		var options = '<option></option>';
+
+		for (i=0; i < models.length; i++) {
+		  if (car_brand_id == models[i][0]) {
+		   options += '<option value="' + models[i][2] + '">' + models[i][1] + '</option>';
+		  }
+		}
+		$("#entry_car_model_id").html(options);
+		$('#car_model_field').show();
+	  $('#car_variant_field').hide();
+		return false
+	});
+	
+  $('#car_variant_field').hide();
+  $('#entry_car_model_id').change(function() {  
+	  car_model_id = parseInt( $(this).val() );
+	  var options = '<option></option>';
+
+	  for (i=0; i < variants.length; i++) {
+	    if (car_model_id == variants[i][0]) {
+	     options += '<option value="' + variants[i][2] + '">' + variants[i][1] + '</option>';
+	    }
+	  }
+		$("#entry_car_variant_id").html(options);
+		$('#car_variant_field').show();
+		return false
+  });
+});

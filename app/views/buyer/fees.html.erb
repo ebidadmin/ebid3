@@ -1,12 +1,14 @@
 <% title @title %>
 
-<%#= render 'view_by_group' unless @group_users.nil? %>
+<%= render 'buyer/filter_by_user' unless @user_group.nil? %>
 
+<% unless @declined_bids.blank? %>
+<h2>Total Transaction Fees: <%= number_to_currency @all_declined_bids.collect(&:fee).sum, :unit => "Php " %></h2>
+<h4>You have declined <%= "#{@all_declined_bids.count} of  #{@total_bids} (#{percentage(@percentage_declined)}) " unless @total_bids.nil? %></h4>
 
 <%= will_paginate @declined_bids  %>
 <%= page_info @declined_bids %>
 
-<% unless @declined_bids.blank? %>
 <table id="buyer-fees">
 	<thead>
 		<th class="vehicle">Vehicle</th>

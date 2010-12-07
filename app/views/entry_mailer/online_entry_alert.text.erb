@@ -12,7 +12,7 @@ A new entry has been created and is now online:
 
 ******** ******** *******
 
-Put your bids here: http://www.ebid.com.ph<%= seller_show_path(:user_id => @seller.username, :brand => @entry.car_brand.name, :id => @entry.id) %>
+Put your bids here: http://www.ebid.com.ph<%= seller_show_path(:user_id => @seller.username, :brand => @entry.car_brand.name.downcase, :id => @entry.id) %>
 
 ******** ******** *******
 

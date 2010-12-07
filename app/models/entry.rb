@@ -36,7 +36,7 @@ class Entry < ActiveRecord::Base
   scope :pending, where("buyer_status IN ('New', 'Edited')")
   scope :online, where("buyer_status = ?", 'Online')
   scope :results, where("buyer_status IN ('For Decision', 'Ordered-IP', 'Declined-IP')")
-  scope :declined, where('buyer_status LIKE ?', "%Declined%")
+  scope :declined, where('buyer_status LIKE ?', "%Declined%").desc
   scope :closed, where("buyer_status = ?", 'Closed')
 
 	def add_line_items_from_cart(cart)
@@ -103,4 +103,8 @@ class Entry < ActiveRecord::Base
     end  
   end  
   
+  def bids_count
+	  bids.count
+	end
+	
 end

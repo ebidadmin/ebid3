@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/collectiveidea/delayed_job.git
+  revision: c933ffcd776aaf7cf63ec7937c7ec142220f246d
+  specs:
+    delayed_job (2.1.2)
+      activesupport (~> 3.0)
+      daemons
+
+GIT
   remote: git://github.com/madebydna/nested_form.git
   revision: 5d8054c05da3c20ff828d44041706c3d36ae86dc
   specs:
@@ -52,6 +60,7 @@ GEM
     bcrypt-ruby (2.1.2)
     builder (2.1.2)
     cancan (1.4.1)
+    daemons (1.1.0)
     devise (1.1.4)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
@@ -107,6 +116,7 @@ PLATFORMS
 
 DEPENDENCIES
   cancan
+  delayed_job!
   devise
   formtastic
   jquery-rails

@@ -38,7 +38,7 @@ class EntriesController < ApplicationController
       if current_user.entries << @entry
         @cart.destroy
         session[:cart_id] = nil 
-        EntryMailer.new_entry_alert(@entry).deliver
+        EntryMailer.delay.new_entry_alert(@entry)
         flash[:notice] = "Successfully created Entry ID # #{@entry.id}."
         redirect_to @entry
       else
@@ -100,7 +100,7 @@ class EntriesController < ApplicationController
     for friend in @entry.user.company.friends
       unless friend.users.nil?
         for seller in friend.users
-          EntryMailer.online_entry_alert(seller, @entry).deliver
+          EntryMailer.delay.online_entry_alert(seller, @entry)
         end
       end
     end
@@ -117,6 +117,11 @@ class EntriesController < ApplicationController
       flash[:warning] = "You have no quotes to decide on."
     end 
     redirect_to :back
+  end
+  
+  def update_car_model
+    car_models = CarModel.where(:car_brand_id => params[:id]) unless params[:id].blank?
+    render 'car_model_select', :car_models => car_models
   end
   
   private ##

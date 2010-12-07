@@ -18,12 +18,14 @@ Ebid::Application.routes.draw do
       end
    end
   end
-  
+    
   get 'cart/add'
   get 'cart/remove'
   post 'cart/clear'
   get 'cart/edit'
   resources :cart_items, :only => :edit
+  get 'javascripts/dynamic_models'
+  get 'javascripts/formtastic_models'
 
   get 'photos/add', :as => :add_photo
   delete 'photos/remove', :as => :remove_photo

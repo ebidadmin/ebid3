@@ -6,10 +6,11 @@
 	<%= render 'parts_in_cart' %>
 </fieldset>	
 
-<%= nested_form_for @entry, :url => user_entries_path(current_user), :html => { :multipart => true } do |f| %>
+<%= nested_form_for @entry, :url => user_entries_path(current_user), :remote => true, :html => { :multipart => true } do |f| %>
 	<fieldset id="vehicle">
 		<legend>STEP 2 - Describe the vehicle</legend>
 		<%= render 'choose_vehicle', :f => f %>
+		<%#= render 'semantic_vehicle', :f => f %>
 	</fieldset>
 	<fieldset id="attachments">
 		<legend>STEP 3 - Attach Photos</legend>
@@ -21,4 +22,5 @@
 	</p>
 <% end %>
 
-<% javascript "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js", 'nested_form' %>
+<% javascript 'dynamic_models' %>
+<%= javascript_include_tag 'jquery-ui.min', 'nested_form' %>
