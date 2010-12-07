@@ -38,6 +38,7 @@ class EntriesController < ApplicationController
       if current_user.entries << @entry
         @cart.destroy
         session[:cart_id] = nil 
+        EntryMailer.new_entry_alert(@entry).deliver
         flash[:notice] = "Successfully created Entry ID # #{@entry.id}."
         redirect_to @entry
       else
@@ -96,14 +97,13 @@ class EntriesController < ApplicationController
       flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
     end
     redirect_to :back
-    # for friend in @entry.user.company.friends
-    #   unless friend.users.nil?
-    #     for user in friend.users
-    #       email = user.email
-    #       UserMailer.send_later(:deliver_new_entry_notification2friends, email, @entry)
-    #     end
-    #   end
-    # end
+    for friend in @entry.user.company.friends
+      unless friend.users.nil?
+        for seller in friend.users
+          EntryMailer.online_entry_alert(seller, @entry).deliver
+        end
+      end
+    end
   end
 
   def decide

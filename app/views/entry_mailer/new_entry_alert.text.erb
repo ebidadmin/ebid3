@@ -1,0 +1,16 @@
+** E-Bid Administrator's Notification **
+
+
+A new entry has been created:
+
+	<%= @entry.user.profile.company.name %>
+	by <%= @entry.user.profile.full_name %>
+
+	<%= @entry.vehicle %>
+	(<%= @entry.plate_no %>)
+
+Parts: 
+	<% @entry.line_items.each do |li| %>
+	[ <%= li.quantity %> ]  <%= li.car_part.name %>
+	<% end %>
+

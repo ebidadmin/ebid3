@@ -34,7 +34,7 @@
 		<td class="status">
       <%= content_tag :p, display_status(entry) %>
 			<p class="instruction">
-			  <%= "#{entry.bid_until.strftime('%b %d')} |"  %>
+			  <%= "#{entry.bid_until.strftime('%b %d')} |" if entry.bid_until if current_user.has_role?("admin") %>
 			  <%= display_number_of_bidders(entry) unless (entry.buyer_status == "New" || entry.buyer_status == "Edited") %>
         <%= render 'entries/online_links', :entry => entry  %>
 			  <%#= "| #{pluralize entry.orders.count, 'order'}" unless entry.orders.blank? %>
