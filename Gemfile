@@ -13,7 +13,7 @@ gem "nested_form", :git => "git://github.com/madebydna/nested_form.git"
 gem "delayed_job",  :git => 'git://github.com/collectiveidea/delayed_job.git'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
 
 # Bundle the extra gems:
 # gem 'bj'

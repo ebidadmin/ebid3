@@ -13,7 +13,7 @@ development:
   pool: 5
   username: rails
   password: chrism
-  socket: /tmp/mysql.sock
+  # socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -34,6 +34,5 @@ production:
   reconnect: false
   database: ebid
   pool: 5
-  username: rails
-  password: chrism
-  socket: /tmp/mysql.sock
+  username: ebiduser
+  password: Manager12
