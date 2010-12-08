@@ -88,6 +88,7 @@ input[type=hidden] { display: none; }
 input[type="submit"], input[type="button"], #content-main a.button { -moz-border-radius: 3px 3px 3px 3px; -webkit-border-radius: 3px 3px 3px 3px; -moz-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); background: #7DB72F; border: 2px solid #FFFFFF !important; cursor: pointer; display: inline-block; outline: medium none; padding: 8px 15px 7px; text-align: center; vertical-align: baseline; color: #FFFFFF !important; text-decoration: none !important; }
 input[type="submit"]:hover, input[type="button"]:hover, #content-main  a.button:hover { background: #6B9D28; }
 input[type="submit"]:active, input[type="button"]:active, #content-main a.button:active { -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); color: #A9C08C; margin-top: 2px; }
+input#datepicker { margin-right: 10px; }
 
 /* TABLES & PSEUDO TABLES
 ---------------------------------------------------------------------- */
@@ -200,6 +201,9 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 @media print {
 body { border-top: 0; }
 body, .bid-box, .bid-field { background-color: transparent; }
-#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .button, #navigation { display: none; }
+h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .button, #navigation, #global-links { display: none; }
 .selection-list { font-size: 1.2em; font-weight: bold; }
+#order .photo { display: none; }
+#order .vehicle-set span { color: black; }
+.container { padding: 30px; }
 }

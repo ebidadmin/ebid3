@@ -12,7 +12,7 @@ $(function() {
 		$.get($("#search-form").attr("action"), $("#search-form").serialize(), null, "script");
 		return false;
 	});
-
+	
 	$('select#user_id').bind('change', function() { window.location.pathname = $(this).val() });
 	$('select#status').bind('change', function() { window.location.pathname = $(this).val() });
 	

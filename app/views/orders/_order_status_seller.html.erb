@@ -1,25 +1,23 @@
-<%- if order.status == "PO Released" -%>
-		Status: <%= order.status %> (<%= time_ago_in_words order.created_at %> ago)<br>
-		<span class='instruction'>Please <%= link_to "Confirm the PO", order %> now.</span>
-<%- elsif order.status == "For Delivery" -%>
-		<% form_tag seller_status_order_path(order), :method => :put do %>
-			Status: <%= select_tag :status, 
-				options_for_select(["For Delivery", "Delivered"], [order.status]),
-				{:onchange => 'this.form.submit()'} %>&nbsp; 
-			<%= time_ago_in_words order.updated_at %> ago <br>
-  		<span class='instruction'>(Please update status <strong>if Delivered</strong>)</span><br>
-		<% end %>
-<%- elsif order.status == "Delivered" -%>
-		<% form_tag seller_status_order_path(order), :method => :put do %>
-			Status: <%= select_tag :status, 
-				options_for_select(["Delivered", "Paid"], [order.status]),
-				{:onchange => 'this.form.submit()'} %>&nbsp;
-			<span class='instruction'>(Please update status <strong>if Paid</strong>)</span>
-		<% end %>
-		<br>Delivered: <%= order.delivered.strftime('%b %d') unless order.delivered.nil? %>
-   	<br><%= payment_due_status(order) %>&nbsp;
-<%- elsif order.status == "Paid" -%>
-		<strong>Paid: <%= order.paid.strftime('%b %d') unless order.paid.nil? %></strong>
-<%- elsif order.status == "Closed" -%>
-		<strong><%= order.status %></strong> &nbsp;
-<%- end -%>
+<%= form_tag seller_status_order_path(order), :method => :put do %>
+	<%- if order.status == "PO Released" -%>
+			Status: <%= order.status %> (<%= time_ago_in_words order.created_at %> ago)<br>
+			<span class='instruction'>Please <%= link_to "Confirm the PO", order %> now.</span>
+	<%- elsif order.status == "For Delivery" -%>
+				Status: <%= select_tag :status, 
+					options_for_select(["For Delivery", "Delivered"], [order.status]),
+					{:onchange => 'this.form.submit()'} %>&nbsp; 
+				<%= time_ago_in_words order.updated_at %> ago <br>
+	  		<span class='instruction'>(Please update status <strong>if Delivered</strong>)</span><br>
+	<%- elsif order.status == "Delivered" -%>
+				Status: <%= select_tag :status, 
+					options_for_select(["Delivered", "Paid"], [order.status]),
+					{:onchange => 'this.form.submit()'} %>&nbsp;
+				<span class='instruction'>(Please update status <strong>if Paid</strong>)</span>
+			<br>Delivered: <%= order.delivered.strftime('%b %d') unless order.delivered.nil? %>
+	   	<br><%= payment_due_status(order) %>&nbsp;
+	<%- elsif order.status == "Paid" -%>
+			<strong>Paid: <%= order.paid.strftime('%b %d') unless order.paid.nil? %></strong>
+	<%- elsif order.status == "Closed" -%>
+			<strong><%= order.status %></strong> &nbsp;
+	<%- end -%>
+<% end %>

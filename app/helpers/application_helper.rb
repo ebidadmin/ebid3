@@ -1,5 +1,18 @@
 module ApplicationHelper
 
+  def go_to_main_page_link
+    if current_user.has_role?('admin')
+      main_user_entries_path(current_user)
+      #admin_index_path
+    elsif current_user.has_role?('powerbuyer')
+      buyer_main_path('all')
+    elsif current_user.has_role?('buyer')
+      buyer_main_path(current_user)
+    elsif current_user.has_role?('seller')
+      seller_main_path(current_user)
+    end
+  end
+
   def nav_link(text, page, clas=nil, id = nil) 
     content_tag :li, (link_to text, page, :id => current?(page)), :class=> clas
   end 

@@ -1,36 +1,42 @@
-<% title "Company" %>
+<% title @company.name %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @company.name %>
-</p>
-<p>
-  <strong>Address1:</strong>
-  <%= @company.address1 %>
-</p>
-<p>
-  <strong>Address2:</strong>
-  <%= @company.address2 %>
-</p>
-<p>
-  <strong>Zip Code:</strong>
-  <%= @company.zip_code %>
-</p>
-<p>
-  <strong>City:</strong>
-  <%= @company.city_id %>
-</p>
-<p>
-  <strong>Approver:</strong>
-  <%= @company.approver %>
-</p>
-<p>
-  <strong>Approver Position:</strong>
-  <%= @company.approver_position %>
-</p>
+<div class="first">
+<h2>Company Info</h2>
+<ul id="show-company-info">
+	<li><span>Primary Role:</span><%= @company.role.name.capitalize unless @company.primary_role.nil? %></li>
+	<li><span>Address1:</span><%=h @company.address1 %></li>
+	<li><span>Address2:</span><%=h @company.address2 %></li>
+	<li><span>Zip Code:</span><%=h @company.zip_code %></li>
+	<li><span>City:</span><%=h @company.city.name %></li>
+	<li><span>Approver:</span><%=h @company.approver %></li>
+	<li><span>Approver Position:</span><%=h @company.approver_position %></li>
+</ul>
+<%- if @company.users -%>
+	<h2>Registered Users: <%= pluralize @company.users.count, 'user' -%></h2>
+	<ol>
+	<% for profile in @company.profiles -%>
+		<li>
+			Name: <%= profile.first_name -%> <%= profile.last_name -%><br />
+			Username: <%= profile.user.username -%><br />
+			<%= link_to 'See Profile', profile.user -%> 
+		</li><br />
+	<% end -%>
+	</ol>
+<% end -%>
+</div>
+<div class="second">
+<h2>Friends</h2>
+<ul>
+	<% for friend in @friends %>
+		<li class="friend"><%= friend.name %></li>
+	<% end %>
+</ul>	
+</div>
 
-<p>
-  <%= link_to "Edit", edit_company_path(@company) %> |
-  <%= link_to "Destroy", @company, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", companies_path %>
+<p class="page-links">
+  <%= link_to "Edit", edit_company_path(@company), :class => 'button' %> 
+	<% if current_user.has_role?('admin')  %>
+		<%= link_to "Delete", @company, :confirm => 'Are you sure?', :method => :delete %>
+	  | <%= link_to "View All", companies_path %>
+	<% end %>
 </p>

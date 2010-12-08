@@ -1,5 +1,6 @@
 class BuyerController < ApplicationController
-
+  before_filter :check_buyer_role
+  
   def main
     @title = "Buyer's Dashboard"
     if current_user.has_role?("powerbuyer")
@@ -84,7 +85,7 @@ class BuyerController < ApplicationController
       @all_declined_bids = Bid.where(:entry_id => entries).declined
     else
       entries = defined_user.entries
-      @total_bids = Entry.where(:id => entries).(&:bids_count).sum
+      @total_bids = Entry.where(:id => entries).collect(&:bids_count).sum
       @all_declined_bids = Bid.where(:entry_id => entries).declined
     end
     @percentage_declined = (@all_declined_bids.count.to_f/@total_bids.to_f) * 100

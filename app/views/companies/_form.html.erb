@@ -1,32 +1,30 @@
-<%= form_for @company do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :address1 %><br />
-    <%= f.text_field :address1 %>
-  </p>
-  <p>
-    <%= f.label :address2 %><br />
-    <%= f.text_field :address2 %>
-  </p>
-  <p>
-    <%= f.label :zip_code %><br />
-    <%= f.text_field :zip_code %>
-  </p>
-  <p>
-    <%= f.label :city_id %><br />
-    <%= f.text_field :city_id %>
-  </p>
-  <p>
-    <%= f.label :approver %><br />
-    <%= f.text_field :approver %>
-  </p>
-  <p>
-    <%= f.label :approver_position %><br />
-    <%= f.text_field :approver_position %>
-  </p>
-  <p><%= f.submit %></p>
+<% content_for(:head) do %>
+	<%= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
 <% end %>
+
+<% f.inputs do %>
+	<div class="first">
+	<%= f.input :name, :label => 'Company Name' %>
+	<%= f.input :role, :label => 'Primary Role' if current_user.has_role?('admin') %>
+	<%= f.input :role, :collection => Role.id_not(1), :label => 'Primary Role' unless current_user.has_role?('admin') %>
+	<%= f.input :address1, :label => 'Address (Line 1)' %>
+	<%= f.input :address2, :label => 'Address (Line 2)' %>
+	<%= f.input :zip_code %>
+	<%= f.input :city %>
+	<%= f.input :approver %>
+	<%= f.input :approver_position %>
+	</div>
+	<div class="second">
+	<%= f.input :friends, :as => :check_boxes if current_user.has_role?('admin') %>
+	<%= f.input :friends, :as => :check_boxes, :collection => Company.id_not(1).primary_role_not(current_user.company.primary_role) unless current_user.has_role?('admin') %>
+	</div>
+<% end %>
+<% f.buttons :class => "page-links"  do %>
+	<%= f.commit_button 'Submit' %> 
+	<%= link_to "Cancel", :back -%>
+	<% if current_user.has_role?('admin')  %>
+		| <%= link_to "Show", @company %> 
+		| <%= link_to "View All", companies_path %>
+	<% end %>
+<% end %>
+

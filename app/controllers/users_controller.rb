@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  # require_role "admin"
+  before_filter :check_admin_role, :only => [:index, :destroy, :enable]
    
   def index
     # @search = User.search(params[:search])

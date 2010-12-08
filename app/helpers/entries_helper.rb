@@ -21,7 +21,6 @@ module EntriesHelper
     end
   end
   
-  
   def proper_rowspan(item)
     if item.status == "For Decision" 
       # "rowspan = 3" unless item.item_quotes.size < 1

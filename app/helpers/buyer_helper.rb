@@ -5,7 +5,7 @@ module BuyerHelper
     if entry.expired
       entry.expired.strftime('%b %d')
     else
-      entry.updated.strftime('%b %d')
+      entry.updated_at.strftime('%b %d')
     end
   end
 

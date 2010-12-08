@@ -18,7 +18,7 @@
         <div class="container">
             <%= render 'layouts/browsers' %>
         <% if current_user %>
-          <p>Welcome back <%= current_user.username %>! <%= link_to 'Go to Main Page', user_entries_path(current_user) %></p>
+          <p>Welcome back <%= current_user.username %>! <%= link_to 'Go to Main Page',  go_to_main_page_link %></p>
         <% else %>
           <p>Already a member? <%= link_to 'Login', new_user_session_path %></p>
         <% end %>
@@ -29,6 +29,9 @@
         	<%= nav_link "Home", root_path -%>
         	<%= nav_link "About", site_about_path -%>
   		  </ul>
+		     <%- flash.each do |name, msg| -%>
+		        <%= content_tag :div, msg, :id => "flash_#{name}", :class => "flash" %>
+		      <%- end -%>
          <%= yield %>
       </div>
     </div>

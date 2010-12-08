@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  # include RoleSystem
   protect_from_forgery
   before_filter :authenticate_user!
 
@@ -22,6 +23,25 @@ class ApplicationController < ActionController::Base
       end
     end
 
+  	def check_role(role) 
+  	  unless current_user && current_user.has_role?(role) 
+  	    flash[:warning] = "Sorry. That page is not included in your access privileges." 
+  	    redirect_to root_path
+  	  end 
+  	end 
+
+  	def check_admin_role 
+  	  check_role('admin') 
+  	end 
+
+  	def check_buyer_role 
+  	  check_role('buyer') 
+  	end 
+
+  	def check_seller_role 
+  	  check_role('seller') 
+  	end 
+
     def initialize_cart
       if session[:cart_id]
         @cart = Cart.find(session[:cart_id]) 
@@ -37,7 +57,7 @@ class ApplicationController < ActionController::Base
         @company_users = current_user.company.users
         @user_group = @company_users.order('username').collect { |user| [user.username_for_menu, request_path(user.username.downcase)] }
       end
-      @status_tags = @tag_collection.collect { |tag| [tag, buyer_results_path(:status => tag)] } if @tag_collection
+      @status_tags = @tag_collection.collect { |tag| [tag, request_path(:status => tag)] } if @tag_collection
       @status = params[:status] unless params[:status].nil?
       @status = @tag_collection if params[:status].nil?
     end

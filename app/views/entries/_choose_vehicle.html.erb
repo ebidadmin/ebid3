@@ -33,7 +33,7 @@
 	  </p>
 	  <p class="column">
 	    <%= f.label :date_of_loss %><br />
-	    <%= f.text_field :date_of_loss %>
+	    <%= f.text_field :date_of_loss, :id => 'datepicker' %>
 	  </p>
 	  <p class="column-2">
 	    <%= f.label :city_id, 'Deliver To' %><br />
@@ -45,3 +45,18 @@
 	    <%= f.label :credit_term, 'Credit Term Request' %><br />
 	    <%= f.collection_select :term_id, Term.all, :id, :term_name %>
 	  </p>
+
+<% content_for :head do %>
+	<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('#datepicker').datepicker({ 
+				dateFormat: "yy-mm-dd",
+				maxDate: 0,
+				showButtonPanel: true, 
+				showOn: "button",
+				buttonImage: "/images/calendar.gif",
+				buttonImageOnly: true
+		});
+	});
+	</script>
+<% end %>

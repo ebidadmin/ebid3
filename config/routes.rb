@@ -2,6 +2,7 @@ Ebid::Application.routes.draw do
 
   devise_for :users
 
+  match 'users/:user_id/entries(/:page)' => 'entries#index'
   resources :users do
     resources :profiles
     member do
@@ -18,7 +19,7 @@ Ebid::Application.routes.draw do
       end
    end
   end
-    
+      
   get 'cart/add'
   get 'cart/remove'
   post 'cart/clear'
@@ -38,6 +39,7 @@ Ebid::Application.routes.draw do
   resources :car_models
   resources :car_brands
   resources :companies
+  resources :ranks
 
   match 'buyer/:user_id/main' => 'buyer#main', :as => :buyer_main, :via => :get
   match 'buyer/:user_id/pending(/:page)' => 'buyer#pending', :as => :buyer_pending, :via => :get

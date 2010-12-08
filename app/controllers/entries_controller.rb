@@ -31,7 +31,7 @@ class EntriesController < ApplicationController
     start_entry
     if @cart.cart_items.blank?
       flash[:error] = "Wait a minute ... your parts selection is still empty!"
-      redirect_to new_entry_path
+      redirect_to new_user_entry_path(current_user)
     else
       @entry = Entry.new(params[:entry])
       @entry.add_line_items_from_cart(@cart) 

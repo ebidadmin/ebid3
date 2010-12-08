@@ -2,21 +2,6 @@
 
 <%= render 'buyer/filter_by_user' unless @user_group.nil? %>
 
-<% if @due_soon_count && @due_soon_count > 0 %>
-	<div id="flash_notice">
-		Your company has <%= content_tag :strong, @due_soon_count %> payments worth 
-		<%= content_tag :strong, (number_to_currency @due_soon_amount, :unit => 'P ') %> due this week.
-		Kindly settle these soon.  Thanks!
-	</div>
-<% end %>
-<% if @overdue_payments_count && @overdue_payments_count > 0 %>
-	<div id="flash_warning">
-		Your company has <%= content_tag :strong, "#{@overdue_payments_count} overdue" %>  payments worth 
-		<%= content_tag :strong, (number_to_currency @overdue_payments_amount, :unit => 'P ')  %>.
-		Kindly settle these soon.  Thanks!
-	</div>
-<% end %>
-
 <ul class="dash">
 	<h3>Entries</h3>
 	<%= dash_entry_format("entries", "Total", "All entries",  @total, user_entries_path(params[:id]) ) %>
@@ -43,6 +28,22 @@
 	<%= dash_entry_format("overdue", "Overdue", (number_to_currency @overdue_amount, :unit => 'P '), @overdue_count, buyer_payments_path(params[:id]), nil, "highlight") %>
 	<%= dash_entry_format("paid", "Paid", (number_to_currency @paid_amount, :unit => 'P '), @paid_count, nil, "last") %>
 </ul>
+<div class="dash last notices">
+	<% if @due_soon_count && @due_soon_count > 0 %>
+		<div id="flash_notice">
+			Your company has <%= content_tag :strong, @due_soon_count %> payments worth 
+			<%= content_tag :strong, (number_to_currency @due_soon_amount, :unit => 'P ') %> due this week.
+			Kindly settle these soon.  Thanks!
+		</div>
+	<% end %>
+	<% if @overdue_payments_count && @overdue_payments_count > 0 %>
+		<div id="flash_warning">
+			Your company has <%= content_tag :strong, "#{@overdue_payments_count} overdue" %>  payments worth 
+			<%= content_tag :strong, (number_to_currency @overdue_payments_amount, :unit => 'P ')  %>.
+			Kindly settle these soon.  Thanks!
+		</div>
+	<% end %>
+</div>
 <p class="page-links">
 <%= link_to "Create Entry", new_user_entry_path(current_user), :class => 'button' %>
 <%= link_to "What's Online?", buyer_online_path(current_user), :class => 'button' %>

@@ -1,4 +1,5 @@
 class SellerController < ApplicationController
+  before_filter :check_seller_role
   
   def main
     @last_activity = current_user.last_sign_in_at unless current_user.last_sign_in_at.nil?
@@ -71,10 +72,8 @@ class SellerController < ApplicationController
   def feedback
     @title = "Paid Orders - Rate Your Buyers"
     @all_orders = Order.by_this_seller(current_user).paid
-    @orders = @all_orders.paginate :page => params[:page], :per_page => 10
-    if params[:status]
-      @orders = Order.by_this_seller(current_user).where(:status => params[:status]).desc.paginate :page => params[:page], :per_page => 10
-    end
+    @search = @all_orders.search(params[:search])
+    @orders = @search.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
   

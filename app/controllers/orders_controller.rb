@@ -63,6 +63,7 @@ class OrdersController < ApplicationController
   end
 
   def seller_status # For seller to update status of Orders
+    # raise params.to_yaml
     find_order_and_entry
     status = params[:status]
 
@@ -77,7 +78,7 @@ class OrdersController < ApplicationController
         Please rate your buyer to close the order.").html_safe
       end
       @order.update_associated_status(status)
-      redirect_to :back
+      redirect_to seller_orders_path(current_user) #:back
     end
   end
 
