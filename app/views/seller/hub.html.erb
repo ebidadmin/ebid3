@@ -1,6 +1,6 @@
 <% title @title %>
 
-<%= render 'seller/filter_by_brand' unless @brand_links.nil? %>
+<%= render 'seller/filter_by_brand' if @brand_links.count > 1 %>
 
 <%= will_paginate @entries %>
 <%= page_info @entries %>
@@ -17,7 +17,7 @@
 		<td class="vehicle">
 			<%= render 'shared/photo_first', :entry => entry %>
       <div id="details">
-        <%= content_tag :p, entry.vehicle, :class => 'strong' %>
+        <%= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) %>
         <%= content_tag :p, entry.plate_no %>
         <%= content_tag :p, "(created by #{entry.user.username})" if current_user.has_role?("powerbuyer") %>
 			</div>

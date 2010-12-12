@@ -2,8 +2,7 @@ module ApplicationHelper
 
   def go_to_main_page_link
     if current_user.has_role?('admin')
-      main_user_entries_path(current_user)
-      #admin_index_path
+      admin_index_path
     elsif current_user.has_role?('powerbuyer')
       buyer_main_path('all')
     elsif current_user.has_role?('buyer')
@@ -37,8 +36,9 @@ module ApplicationHelper
     "current_page" if request.parameters['controller'] == controller && request.parameters['action'] == action
   end
 
-  def page_info(target)
-    content_tag :p, (page_entries_info target), :class => 'instruction',:id => "page-info"
+  def page_info(target, sort_order = nil)
+    (content_tag :p, page_entries_info(target), :class => 'instruction',:id => "page-info") + 
+    (content_tag :p, ('Arranged according to ' + (content_tag :strong, sort_order)).html_safe, :class => 'sorting instruction' unless sort_order.nil? || target.blank?)
   end
   
   ## Helpers for buyer's & seller's dashboard

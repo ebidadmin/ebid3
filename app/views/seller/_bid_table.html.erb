@@ -8,19 +8,25 @@
 	<td class="qty"><%= item.quantity %></td>
 	<td class="partname">
 		<%=h item.car_part.name %> 
-		<%= content_tag :p, "(Part No. <strong>#{item.part_no}</strong>)", :class => 'partnum' unless item.part_no.blank?  %>
+		<%= content_tag :p, ("(Part No. <strong>#{item.part_no}</strong>)").html_safe, :class => 'partnum' unless item.part_no.blank?  %>
 	      <%= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
 	</td>
 	<td class="bid-box">
+		<% if @entry.buyer_status == "Online" %>
 		<div class="fields">
 		<%= content_tag :div, (content_tag :span, 'Orig ') + (text_field_tag "bids[#{item.id}][original]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
 		<%= content_tag :div, (content_tag :span, 'Rep ') + (text_field_tag "bids[#{item.id}][replacement]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
 		<%= content_tag :div, (content_tag :span, 'Surp ') + (text_field_tag "bids[#{item.id}][surplus]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
 		</div>	
+		<% end %>
+		<% unless item.bids.where(:user_id => current_user).blank? %>
 		<div id="amounts">                                                                                                  
 		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'original')), :class => 'bid-amount' %>
 		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'replacement')), :class => 'bid-amount' %>
 		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'surplus')), :class => 'bid-amount' %>
+		<% else %>
+		<%= content_tag :strong, 'You did not bid on this item.' %>
+		<% end %>
 		</div>		
 	</td>
 </tr>

@@ -22,13 +22,13 @@ class Entry < ActiveRecord::Base
   has_many :orders
   has_many :order_items, :through => :orders
 
-  validates_presence_of :year_model, :car_brand, :car_model, :plate_no
+  validates_presence_of :year_model, :car_brand, :car_model, :plate_no, :serial_no, :motor_no, :term
   validates_presence_of :city, :if => :new_city_blank
   validates_associated :city
-    #, :serial_no, :motor_no, :term
 
   scope :desc, order('id DESC')
   scope :asc, order('bid_until')
+  scope :five, limit(5)
 
   scope :current, where(:expired => nil)
   scope :expired, where('expired IS NOT NULL')
@@ -38,6 +38,10 @@ class Entry < ActiveRecord::Base
   scope :results, where("buyer_status IN ('For Decision', 'Ordered-IP', 'Declined-IP')")
   scope :declined, where('buyer_status LIKE ?', "%Declined%").desc
   scope :closed, where("buyer_status = ?", 'Closed')
+  scope :alive, where("buyer_status != ?", 'Removed')
+  
+  scope :with_bids, where('bids_count > 0')
+  scope :without_bids, where('bids_count < 1')
 
 	def add_line_items_from_cart(cart)
 		cart.cart_items.each do |item|

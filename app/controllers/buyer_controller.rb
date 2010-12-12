@@ -3,6 +3,7 @@ class BuyerController < ApplicationController
   
   def main
     @title = "Buyer's Dashboard"
+    @last_activity = current_user.last_sign_in_at
     if current_user.has_role?("powerbuyer")
       initiate_list
       delivered = Order.where(:company_id => current_user.company).delivered
@@ -52,16 +53,19 @@ class BuyerController < ApplicationController
     initiate_list
     find_orders
     @search = @all_orders.desc.search(params[:search])
+    @search = @all_orders.where(:seller_id => params[:seller]).desc.search(params[:search]) unless params[:seller].nil?
     @orders = @search.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
 
   def payments
     @title = 'Delivered Orders - For Payment'
+    @sort_order =" due date - ascending order"
     initiate_list
     @status = "Delivered"
     find_orders
     @search = @all_orders.asc.search(params[:search])    
+    @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
     @orders = @search.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
@@ -72,6 +76,7 @@ class BuyerController < ApplicationController
     @status = "Paid"
     find_orders
     @search = @all_orders.asc.search(params[:search])
+    @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
     @orders = @search.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
@@ -115,6 +120,7 @@ private
     @closed = entries.closed.count
     @orders = orders.count
     @released = orders.recent.count
+
     delivered_items =  orders.delivered
     @delivered = delivered_items.count
     pay_soon = delivered_items.due_soon

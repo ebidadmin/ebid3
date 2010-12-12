@@ -1,0 +1,24 @@
+<% title "Ratings" %>
+
+<table>
+  <tr>
+    <th>Order</th>
+    <th>User</th>
+    <th>Ratee</th>
+    <th>Stars</th>
+    <th>Review</th>
+		<th></th>
+  </tr>
+  <% for rating in @ratings %>
+    <tr>
+      <td><%= rating.order_id %></td>
+      <td><%= rating.user.username %></td>
+      <td><%= rating.ratee.username %></td>
+      <td><%= star_images(rating.stars) %></td>
+      <td><%= rating.review %></td>
+      <td><%= link_to "Edit", edit_order_rating_path(rating.order, rating) %>
+				<%= link_to "Destroy", [rating.order, rating], :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+

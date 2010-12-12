@@ -16,7 +16,7 @@
 	<% unless current_user.nil? %>
   <ul id="navigation">
 		<% if current_user.has_role?('admin') %>
-		<%= render 'layouts/menu_buyer' %>
+		<%= render 'layouts/menu_admin' %>
 		<% elsif current_user.has_role?('powerbuyer') %>
 			<%= render 'layouts/menu_powerbuyer' %>
 		<% elsif current_user.has_role?('buyer') %>

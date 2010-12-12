@@ -13,23 +13,24 @@ $(function() {
 		return false;
 	});
 	
-	$('select#user_id').bind('change', function() { window.location.pathname = $(this).val() });
+	$('select#username').bind('change', function() { window.location.pathname = $(this).val() });
 	$('select#status').bind('change', function() { window.location.pathname = $(this).val() });
+	$('select#seller').bind('change', function() { window.location.pathname = $(this).val() });
 	
 });
 
-jQuery.ajaxSetup({ 
-  'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
-})
-
-jQuery.fn.submitWithAjax = function() {
-  this.submit(function() {
-    $.post(this.action, $(this).serialize(), null, "script");
-    return false;
-  })
-  return this;
-};
-
-$(document).ready(function() {
-  $("#new_review").submitWithAjax();
-})
+// jQuery.ajaxSetup({ 
+//   'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
+// })
+// 
+// jQuery.fn.submitWithAjax = function() {
+//   this.submit(function() {
+//     $.post(this.action, $(this).serialize(), null, "script");
+//     return false;
+//   })
+//   return this;
+// };
+// 
+// $(document).ready(function() {
+//   $("#new_review").submitWithAjax();
+// })

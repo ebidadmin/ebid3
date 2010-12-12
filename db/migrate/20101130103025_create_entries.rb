@@ -19,6 +19,7 @@ class CreateEntries < ActiveRecord::Migration
       t.timestamps
       t.string :buyer_status, :default => 'New'
       t.date :bid_until
+      t.integer :bids_count
       t.date :expired
       t.boolean :chargeable_expiry, :default => false
     end

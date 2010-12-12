@@ -3,7 +3,7 @@ class Bid < ActiveRecord::Base
     :bid_type, :status, :ordered, :order_id, :delivered, :paid, :fee, :remitted, :declined, :expired
      
   belongs_to :user, :counter_cache => true
-  belongs_to :entry
+  belongs_to :entry, :counter_cache => true
   belongs_to :line_item, :counter_cache => true
   belongs_to :car_part
   belongs_to :order
@@ -11,6 +11,7 @@ class Bid < ActiveRecord::Base
   validates :amount, :numericality => true, :presence => true
   
   scope :desc, order('id DESC')
+  scope :bt, order('bid_type')
   scope :declined, where('declined != ?', '').order('declined DESC')
 
   def decline_process

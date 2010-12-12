@@ -1,8 +1,9 @@
 Ebid::Application.routes.draw do
 
+  get "admin/index"
+
   devise_for :users
 
-  match 'users/:user_id/entries(/:page)' => 'entries#index'
   resources :users do
     resources :profiles
     member do
@@ -40,6 +41,14 @@ Ebid::Application.routes.draw do
   resources :car_brands
   resources :companies
   resources :ranks
+  
+  match 'admin/dashboard' => 'admin#index', :as => :admin_index, :via => :get
+  match 'admin/entries' => 'admin#entries', :as => :admin_entries, :via => :get
+  match 'admin/online' => 'admin#online', :as => :admin_online, :via => :get
+  match 'admin/bids' => 'admin#bids', :as => :admin_bids, :via => :get
+  match 'admin/orders' => 'admin#orders', :as => :admin_orders, :via => :get
+  match 'admin/fees' => 'admin#fees', :as => :admin_fees, :via => :get
+  match 'admin/utilities' => 'admin#utilities', :as => :admin_utilities, :via => :get
 
   match 'buyer/:user_id/main' => 'buyer#main', :as => :buyer_main, :via => :get
   match 'buyer/:user_id/pending(/:page)' => 'buyer#pending', :as => :buyer_pending, :via => :get
@@ -67,11 +76,12 @@ Ebid::Application.routes.draw do
     end
   end
   
-  resources :orders do
+  resources :orders, :shallow => true do
     member do
       put :confirm
       put :seller_status
     end
+    resources :ratings
   end
 
   get "site/index"

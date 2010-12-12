@@ -6,6 +6,10 @@ class LineItem < ActiveRecord::Base
   has_one :order_item
   has_one :order, :through => :order_item
 
+  scope :with_bids, where('bids_count > 0')
+  scope :two_and_up, where('bids_count > 2')
+  scope :without_bids, where('bids_count < 1')
+
 	def part_name
 	  self.car_part.name
 	end
@@ -30,5 +34,12 @@ class LineItem < ActiveRecord::Base
     # self.bids.bid_type_eq(bid_type).status_does_not_equal('Ordered').descend_by_amount.last
     bids.where(:bid_type => bid_type).order('amount').first
 	end
+	
+	def self.with_bids_pct
+	  (with_bids.count.to_f/self.count.to_f) * 100
+	end
 
+	def self.two_and_up_pct
+	  (two_and_up.count.to_f/self.count.to_f) * 100
+	end
 end

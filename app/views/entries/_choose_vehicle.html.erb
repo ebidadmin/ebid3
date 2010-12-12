@@ -1,52 +1,50 @@
 <%= f.error_messages %>
-	  <p>
-	    <%= f.label :vehicle %><br>  
+<div class="full-column">
+  <%= f.label :vehicle %><br>  
 	<%= f.select :year_model, (Date.today.year-15..Date.today.year).to_a.reverse %>			
-	    <%= f.grouped_collection_select :car_brand_id,  CarOrigin.all, :car_brands, :name, :id, :name,    
-	  {:include_blank => 'Select Brand'} %>
-  <span id="car_model_field">
-    <%= f.collection_select :car_model_id, CarModel.all, :id, :name,    
-		  {:include_blank => 'Select Model'} %>
-  </span>
-  <span id="car_variant_field">
-		<%= f.collection_select :car_variant_id, CarVariant.all, :id, :name,    
-			{:include_blank => 'Select Variant'} %> 
-	   		<em><%= link_to 'Click here', new_car_variant_path %> to add new variant.</em>
-  </span>
-</p>
-	  <p class="column">
-	    <%= f.label :plate_no %><br />
-	    <%= f.text_field :plate_no %>
-	  </p>
-	  <p class="column">
-	    <%= f.label :serial_no, "Serial Number or VIN" %><br />
-	    <%= f.text_field :serial_no %>
-	  </p>
-	  <p class="column">
-	    <%= f.label :motor_no, "Motor Number" %><br />
-	    <%= f.text_field :motor_no %>
-	  </p>
+  <%= f.grouped_collection_select :car_brand_id,  CarOrigin.all, :car_brands, :name, :id, :name, {:include_blank => 'Select Brand'} %>
+	<span id="car_model_field">
+	<%= f.collection_select :car_model_id, CarModel.all, :id, :name, {:include_blank => 'Select Model'} %>
+	</span>
+	<span id="car_variant_field">
+	<%= f.collection_select :car_variant_id, CarVariant.all, :id, :name, {:include_blank => 'Select Variant'} %> 
+	<em><%= link_to 'Click here', new_car_variant_path %> to add new variant.</em>
+	</span>
+</div>
+<div class="column">
+  <%= f.label :plate_no %><br />
+  <%= f.text_field :plate_no %>
+</div>
+<div class="column">
+  <%= f.label :serial_no, "Serial Number or VIN" %><br />
+  <%= f.text_field :serial_no %>
+</div>
+<div class="column">
+  <%= f.label :motor_no, "Motor Number" %><br />
+  <%= f.text_field :motor_no %>
+</div>
 <hr>
-	  <p class="column">
-	    <%= f.label :ref_no, "Reference or Claim No." %><br />
-	<%= f.text_field :ref_no %>
-	  </p>
-	  <p class="column">
-	    <%= f.label :date_of_loss %><br />
-	    <%= f.text_field :date_of_loss, :id => 'datepicker' %>
-	  </p>
-	  <p class="column-2">
-	    <%= f.label :city_id, 'Deliver To' %><br />
-	    <%= f.collection_select :city_id, City.all, :id, :name, :include_blank => 'Select Location' %><br /><br />
-	    or type a new location ...
-	    <%= f.text_field :new_city, :value => @city, :size => 12 %> 
-	  </p>
-	  <p class="column-2">
-	    <%= f.label :credit_term, 'Credit Term Request' %><br />
-	    <%= f.collection_select :term_id, Term.all, :id, :term_name %>
-	  </p>
+<div class="column">
+  <%= f.label :ref_no, "Reference or Claim No." %><br />
+<%= f.text_field :ref_no %>
+</div>
+<div class="column">
+  <%= f.label :date_of_loss %><br />
+  <%= f.text_field :date_of_loss, :id => 'datepicker' %>
+</div>
+<div class="column-2">
+  <%= f.label :city_id, 'Deliver To' %><br />
+  <%= f.collection_select :city_id, City.all, :id, :name, {:include_blank => true}  %>
+  <p>or type a new location ...</p>
+  <%= f.text_field :new_city, :value => @city, :size => 12 %> 
+</div>
+<div class="column-2">
+  <%= f.label :credit_term, 'Credit Term Request' %><br />
+  <%= f.collection_select :term_id, Term.all, :id, :term_name %>
+</div>
 
-<% content_for :head do %>
+<% content_for :javascripts do %>
+	<%= javascript_include_tag 'jquery-ui.min' %>
 	<script type="text/javascript" charset="utf-8">
 	$(function() {
 		$('#datepicker').datepicker({ 

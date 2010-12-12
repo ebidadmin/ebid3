@@ -4,6 +4,6 @@
   	<%- @brand_links.each do |car_brand| -%>
   	<%= nav_link car_brand.name.upcase, :brand => car_brand.name.downcase  %>
   	<% end %>
-  	<%= nav_link "ALL", :brand => 'all' %>
+  	<%= nav_link "ALL", :brand => 'all'  %>
   </ul>
 <% end %>

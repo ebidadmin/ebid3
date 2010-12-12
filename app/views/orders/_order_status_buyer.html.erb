@@ -1,6 +1,5 @@
 <%- if order.status == "Delivered" -%>
 	Delivered: <%= order.delivered.strftime('%b %d') unless order.delivered.nil? %><br>
- 	<%= payment_due_status(order) %><br>
 	<%#= link_to "Rate Seller", new_order_rating_path(order) unless current_user.has_role?('admin') || order.ratings.user_id_equals(current_user).exists? %>
 <%- elsif order.status == "Paid" -%>
 	<strong><%= order.status %>: <%= order.paid.strftime('%b %d') unless order.paid.nil? %></strong><br>

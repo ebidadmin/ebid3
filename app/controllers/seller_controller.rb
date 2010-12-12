@@ -52,6 +52,7 @@ class SellerController < ApplicationController
 
   def orders
     @title = "Purchase Orders"
+    @sort_order =" date the PO was released - ascending order"
     @all_orders = Order.by_this_seller(current_user).recent
     @search = @all_orders.search(params[:search])
     @orders = @search.paginate :page => params[:page], :per_page => 10    
@@ -63,6 +64,7 @@ class SellerController < ApplicationController
 
   def payments
     @title = "Delivered Orders - For Payment"
+    @sort_order =" due date (per vehicle) - ascending order"
     @all_orders = Order.by_this_seller(current_user).delivered.unpaid.asc
     @search = @all_orders.search(params[:search])
     @orders = @search.paginate :page => params[:page], :per_page => 10    
@@ -71,6 +73,7 @@ class SellerController < ApplicationController
 
   def feedback
     @title = "Paid Orders - Rate Your Buyers"
+    @sort_order =" date paid (per vehicle) - ascending order"
     @all_orders = Order.by_this_seller(current_user).paid
     @search = @all_orders.search(params[:search])
     @orders = @search.paginate :page => params[:page], :per_page => 10    
@@ -79,6 +82,7 @@ class SellerController < ApplicationController
   
   def fees
     @title = "Transaction Fees for Paid Orders"
+    @sort_order =" date declined - descending order"
     @all_orders = Order.by_this_seller(current_user).paid_and_closed
     @orders = @all_orders.paginate :page => params[:page], :per_page => 10
   end

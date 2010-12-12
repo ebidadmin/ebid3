@@ -1,0 +1,24 @@
+<% title "Rating Summary" %>
+
+<%= content_tag :h2, @entry.vehicle %>
+<%= content_tag :p, @entry.plate_no %>
+<%= content_tag :p, 'Posted: ' +  @entry.created_at.strftime('%b %d %R') %>
+<%= content_tag :p, 'Ordered: ' +  @order.created_at.strftime('%b %d %R') %>
+<%= content_tag :p, 'Delivered: ' + @order.delivered.strftime('%b %d %R') %>
+<%= content_tag :p, 'Paid: ' + @order.paid.strftime('%b %d %R') %>
+
+<% for rating in @ratings %>
+<div id="show-rating">
+	<%= content_tag :p, 'For ' + rating.ratee.profile.full_name, :class => 'strong label' %>
+	<%= content_tag :p, star_images(rating.stars), :id => 'stars' %> 
+	<div>
+	<%= simple_format rating.review %>
+	<%= content_tag :p, 'by ' + rating.user.profile.full_name, :class => 'label' %>
+	<%= content_tag :p, 'on' + rating.created_at.strftime("%b %d, %Y at %R") %>
+	</div>
+</div>
+<% end %>
+
+<%= link_to 'Done!', seller_feedback_path(current_user), :class => 'button' if current_user.has_role?('seller') %>
+<%= link_to 'Done!', buyer_payments_path(current_user), :class => 'button' if current_user.has_role?('buyer') %>
+

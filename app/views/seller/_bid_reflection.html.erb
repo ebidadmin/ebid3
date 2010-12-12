@@ -1,6 +1,10 @@
 <% if last_bid && last_bid.amount != last_bid.total %>
-  Ea: <%= render 'bids/bid', :bid => last_bid %><br>
-  Tot: <%= render 'bids/total', :bid => last_bid %>
+  Each: <%= render 'bids/bid', :bid => last_bid %><br>
+  Total: <%= render 'bids/total', :bid => last_bid %>
 <% else %>
   <%= render 'bids/bid', :bid => last_bid %>
+<% end %>
+
+<% if last_bid && @entry.buyer_status != 'Online' %>
+<%= content_tag :p, last_bid.status, :class => "status #{quote_class(last_bid.status)}" -%>
 <% end %>

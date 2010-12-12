@@ -1,6 +1,7 @@
 <% title @title %>
 
 <%= render 'buyer/filter_by_user' unless @user_group.nil? %>
+<%= content_tag :h3, 'Your last sign-in was: ' + @last_activity.strftime('%b %d  %R') unless @last_activity.nil? %>
 
 <ul class="dash">
 	<h3>Entries</h3>

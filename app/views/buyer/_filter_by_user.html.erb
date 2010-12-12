@@ -1,3 +1,6 @@
 <% content_for :subnav do %>
-	<%= select_tag :user_id, options_for_select(@user_group), :include_blank => "Filter by Username" %>
+<ul class="links groups">
+	<li class="label">Users</li>
+	<%= select_tag :username, options_for_select(@user_group, @current_path),  %>
+</ul>
 <% end %>

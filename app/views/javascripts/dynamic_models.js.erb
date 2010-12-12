@@ -35,10 +35,10 @@ $(function() {
 	  for (i=0; i < variants.length; i++) {
 	    if (car_model_id == variants[i][0]) {
 	     options += '<option value="' + variants[i][2] + '">' + variants[i][1] + '</option>';
+			$("#entry_car_variant_id").html(options);
+			$('#car_variant_field').show();
 	    }
 	  }
-		$("#entry_car_variant_id").html(options);
-		$('#car_variant_field').show();
 		return false
   });
 });

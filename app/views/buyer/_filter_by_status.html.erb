@@ -1,3 +1,6 @@
 <% content_for :subnav do %>
-	<%= select_tag :status, options_for_select(@status_tags), :include_blank => "Filter by Status" %>
+<ul class="links groups">
+	<li class="label">Status</li>
+	<%= select_tag :status, options_for_select(@status_tags, @status_path) %>
+</ul>
 <% end %>

@@ -16,11 +16,10 @@ class User < ActiveRecord::Base
   has_many :bids
   has_many :orders
   has_one :seller, :through => :order
-  # has_many :ratings
-  # has_many :ratees, :through => :ratings
+  has_many :ratings
+  has_many :ratees, :through => :ratings
 
-  # scope :latest, :order => 'last_request_at DESC', :limit => 5
-  scope :active, order('last_sign_in_at DESC')
+  scope :active, where('last_sign_in_at > ?', 24.hours.ago).order('last_sign_in_at DESC').limit(5)
   
   validates_presence_of :username, :password, :password_confirmation, :email
   
@@ -43,5 +42,9 @@ class User < ActiveRecord::Base
   
   def username_for_menu
     username.upcase
+  end
+  
+  def company_name
+    profile.company.name.upcase
   end
 end

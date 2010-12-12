@@ -40,7 +40,7 @@ module EntriesHelper
     if entry.expired.blank? || entry.buyer_status == "Expired"
       entry.buyer_status
     else
-      entry.buyer_status + (content_tag :strong, " - Expired").html_safe 
+      content_tag :abbr, (entry.buyer_status + (content_tag :strong, " - Expired")).html_safe, :class => 'highlight'
     end 
   end
   

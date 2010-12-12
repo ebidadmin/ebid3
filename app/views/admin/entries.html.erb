@@ -1,0 +1,54 @@
+<% title @title %>
+
+<% content_for :subnav do %>
+  <% form_for @search, :html => { :id => 'search', :class => 'admin-search' }, :method => :get do |f| %>
+    <p class="label">Search</p>
+  	<p><span>Plate No.</span> <%= f.text_field :plate_no_like_any, :id => 'search-box' %></p>
+  	<p><span>Entry ID</span> <%= f.text_field :id, :id => 'search-box' %></p>
+  	<p><span>User <%= f.collection_select :user_id, @buyers, :id, :username_upcase, {:include_blank => 'All'}%></span></p>
+  	<p><%= f.submit "Go!" %></p>
+  	<p><%= link_to "Refresh", monitor_admin_path %></p>
+  <%- end -%>
+<% end %>
+  <%#= render 'admin/view_by_brand' %>
+
+
+<%= will_paginate @entries  %>
+<%= page_info @entries  %>
+
+<table class="admin monitor-bids">
+	<thead>
+		<th class="vehicle">Vehicle</th>
+		<th class="requirements">Requirements</th>
+		<th class="status">Status</th>
+	</thead>
+	<tbody>
+	<%- for entry in @entries -%>
+	<tr>
+		<td class="vehicle">
+			<%= render 'shared/photo_first', :entry => entry %>
+      <div id="details">
+				<abbr>Entry # <%= entry.id %>:</abbr>
+        <p class="strong"><%=h entry.vehicle %></p>
+        <p><%=h entry.plate_no %></p>
+        <%= content_tag :p, "(created by #{entry.user.username})" if current_user.has_role?("admin") || current_user.has_role?("powerbuyer") %>
+			</div>
+		</td>
+		<td class="requirements">
+			<p><span>Delivery:</span> <%=h entry.city.name if entry.city %></p>
+			<p><span>Credit:</span> <%=h entry.term.term_name if entry.term %></p>
+			<p><span>Parts:</span> <%= link_to (pluralize entry.line_items.count, "item"), monitor_indl_admin_path(:id => entry) %></p>
+		</td>
+		<td class="status">
+		  <p><%= display_status(entry) %></p>    
+			<p class="instruction">
+			  <%= entry.bid_until.strftime('%b %d') if entry.bid_until %> | 
+			  <%= display_number_of_bidders(entry) unless current_page? pending_user_entries_path(current_user) %> 
+      </p>
+        <%= render 'monitor_links', :entry => entry  %>
+			  <%= "| #{pluralize entry.orders.count, 'order'}" unless entry.orders.blank? %>
+		</td>
+	</tr>
+	<% end -%>
+	</tbody>
+</table>

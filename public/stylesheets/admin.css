@@ -1,0 +1,55 @@
+.dashboard-row { clear: both; float: left; overflow: hidden; width: 100%; }
+
+.latest {
+	float: left;
+  	width: 49%; 
+}
+
+.latest.entries {
+  	clear: both; 
+}
+
+.latest.users {
+  	float: right; 
+  	width: 45%;
+}
+
+.latest h2 {
+  	color: #C00; 
+  	opacity: 0.9;
+}
+
+.latest.entries h2 {
+  	background: url(../images/icons/dashboard.png) no-repeat left center; 
+  	padding-left: 40px;
+}
+
+.latest.users h2 { 
+  	padding-left: 50px;
+	background: url(../images/icons/users.png) no-repeat left center; 
+}
+.latest table {
+  	margin: 0 0 1.5em; 
+}
+
+.latest table td {
+  	vertical-align: top; 
+  	padding: 5px;
+}
+.latest .one {
+  	width: 50%; 
+}
+
+.latest .two {
+	width: 20%;
+	text-align: center;
+}
+
+.latest p {
+  	margin-bottom: 0; 
+}
+
+.latest .one a {
+  	width: 85%;
+  	padding: 4px 0;
+}

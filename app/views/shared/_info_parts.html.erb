@@ -27,8 +27,8 @@
 				<tr class="selection-list">	
 					<td class="qty"><%= item.quantity %></td>
 					<td class="partname">
-						<%=h item.car_part.name %>
-						<%= content_tag :p, "(Part No. <strong>#{item.line_item.part_no}</strong>)", :class => 'partnum' unless item.line_item.part_no.blank?  %>
+						<%= item.car_part.name %>
+						<%= content_tag :p, ("(Part No. #{content_tag :strong, item.line_item.part_no})").html_safe, :class => 'partnum' unless item.line_item.part_no.blank?  %>
 					</td> 
 					<td class="price">
 						<%= number_with_delimiter(item.price.to_i)  -%>

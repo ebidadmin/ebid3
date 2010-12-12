@@ -1,5 +1,6 @@
 class Order < ActiveRecord::Base
 
+  require 'date'
   belongs_to :user
   belongs_to :seller, :class_name => "User"
   
@@ -7,13 +8,13 @@ class Order < ActiveRecord::Base
   belongs_to :company
   has_many :order_items
   has_many :line_items, :through => :order_items  
-  # has_many :ratings
+  has_many :ratings
   has_many :bids
  
   validates_presence_of :deliver_to, :address1, :phone
 
   scope :desc, order('id DESC')
-  scope :asc, order('pay_until')
+  scope :asc, order('delivered ASC')
   scope :desc2, order('pay_until DESC')
 
   scope :unpaid, where(:paid => nil)
@@ -21,7 +22,7 @@ class Order < ActiveRecord::Base
   scope :recent, where("status IN ('PO Released', 'For Delivery')")
   scope :total_delivered, where("status IN ('Delivered', 'Paid', 'Closed')")
   scope :delivered, where(:status => 'Delivered')
-  scope :paid, where(:status => 'Paid')
+  scope :paid, where(:status => 'Paid').order('paid')
   scope :closed, where(:status => 'Closed')
   scope :paid_and_closed, where("status IN ('Paid', 'Closed')").order('paid DESC')
 
@@ -74,5 +75,13 @@ class Order < ActiveRecord::Base
     end  
   end  
   
+  def days_overdue
+    (Date.today - pay_until).to_i - 1
+  end
   
+  def close
+    update_attribute(:status, "Closed")
+    entry.update_attribute(:buyer_status, "Closed")
+    update_associated_status("Closed")
+  end
 end

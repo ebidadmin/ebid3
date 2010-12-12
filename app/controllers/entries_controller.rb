@@ -4,9 +4,9 @@ class EntriesController < ApplicationController
   def index
     @title = "All Entries"
     if params[:user_id] == 'all'
-      @tag_collection = Entry.where(:user_id => current_user.company.users).collect(&:buyer_status).uniq
+      @tag_collection = Entry.where(:user_id => current_user.company.users).alive.collect(&:buyer_status).uniq
     else
-      @tag_collection = User.find_by_username(params[:user_id]).entries.collect(&:buyer_status).uniq
+      @tag_collection = User.find_by_username(params[:user_id]).entries.alive.collect(&:buyer_status).uniq
     end
     initiate_list
     find_entries
@@ -40,10 +40,10 @@ class EntriesController < ApplicationController
         session[:cart_id] = nil 
         EntryMailer.delay.new_entry_alert(@entry)
         flash[:notice] = "Successfully created Entry ID # #{@entry.id}."
-        redirect_to @entry
+        redirect_to buyer_pending_path(current_user)
       else
         flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
-        render 'entries/new'
+        render 'new'
       end
     end
   end
@@ -74,20 +74,26 @@ class EntriesController < ApplicationController
       @cart.destroy
       session[:cart_id] = nil 
       flash[:notice] = "Successfully updated entry."
-      redirect_to @entry
+      redirect_to buyer_pending_path(current_user)
     else
       if @entry.photos.first.nil?
         @entry.photos.build
       end
-      redirect_to edit_entry_path(@entry)
+      render 'edit'
     end
   end
   
   def destroy
-    @entry = Entry.find(params[:id])
-    @entry.destroy
-    flash[:notice] = "Successfully destroyed entry."
-    redirect_to entries_url
+    if current_user.has_role?('admin')
+      @entry = Entry.find(params[:id])
+      @entry.destroy
+    else
+      @entry = current_user.entries.find(params[:id])
+      @entry.update_attribute(:buyer_status, "Removed")
+      @entry.line_items.update_all(:status => "Removed")
+    end
+    flash[:notice] = "Successfully deleted entry."
+    redirect_to :back #user_entries_path(current_user)
   end
 
   def put_online

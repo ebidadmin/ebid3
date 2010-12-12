@@ -17,14 +17,14 @@ class DeviseCreateUsers < ActiveRecord::Migration
     add_index :users, :email,                :unique => true
     add_index :users, :reset_password_token, :unique => true
     add_index :users, :unlock_token,         :unique => true
-    User.create!(:username => 'chrism', 
-                :email => 'cymarquez@mac.com', 
-                :password => 'chrism',
-                :password_confirmation => 'chrism')
-    User.create!(:username => 'efren', 
-                :email => 'efren@ebid.com.ph', 
-                :password => 'efren',
-                :password_confirmation => 'efren')
+    # User.create!(:username => 'chrism', 
+    #             :email => 'cymarquez@mac.com', 
+    #             :password => 'chrism',
+    #             :password_confirmation => 'chrism')
+    # User.create!(:username => 'efren', 
+    #             :email => 'efren@ebid.com.ph', 
+    #             :password => 'efren',
+    #             :password_confirmation => 'efren')
    end
 
   def self.down

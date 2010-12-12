@@ -1,0 +1,72 @@
+<% stylesheet 'admin' %>
+<% title @title %>
+
+<%= content_tag :p, ('Total Entries: ' + @entries.count.to_s) %>
+<%= content_tag :p, ('Total Parts: ' + @line_items.count.to_s) %>
+<%= content_tag :p, ('With Bids: ' + @with_bids.count.to_s + " (#{percentage(@with_bids_pct)})")  %>
+<%= content_tag :p, ('More than 2 Bids: ' + @two_and_up.count.to_s+ " (#{percentage(@two_and_up_pct)})") %>
+<%= content_tag :p, ('Without Bids: ' + @without_bids.count.to_s) %>
+
+<div class="dashboard-row">
+
+<div class="latest entries">
+	<h2>Online Entries</h2>
+	<table>
+		<tr>
+			<th class="one">Vehicle</th>
+			<th>Author</th>
+			<th class="two">Status</th>
+		</tr>
+		<%- for entry in @online_entries -%>
+		<tr>
+			<td class="one">
+				<p><%= link_to entry.vehicle, entry %></p>
+				<p><%= entry.plate_no %></p>
+				<%= content_tag :p, entry.ref_no if entry.ref_no  %>
+			</td>
+			<td>
+				<p><%= entry.user.profile.full_name %></p>
+				<p><%= entry.user.profile.company.name %></p>
+			</td>
+			<td class="two">
+				<p><%= entry.buyer_status %></p>
+				<p class="instruction"><%= time_ago_in_words entry.updated_at %> ago</p>
+			</td>
+		</tr>
+		<%- end -%>
+	</table>
+	<p class="page-links"><%= link_to "View All", admin_entries_path %></p>
+</div>
+
+<div class="latest users">
+	<h2>Active Users</h2>
+	<table>
+		<tr>
+			<th class="one">Profile</th>
+			<th>Last Request</th>
+			<th class="two">Current?</th>
+		</tr>
+		<%- for user in @users -%>
+		<tr>
+			<td class="one">
+				<p>
+					<%= user.profile.full_name if user.profile %>
+					<%= user.username unless user.profile %>
+				</p>
+				<p><%= user.profile.company.name unless user.profile.company.nil? %></p>
+			</td>
+			<td>
+				<p class="instruction"><%= time_ago_in_words user.last_sign_in_at if user.last_sign_in_at %> ago</p>
+			</td>
+			<td class="two">
+				<% if user.last_sign_in_at && user.last_sign_in_at > 20.minutes.ago %>
+					<%= image_tag '/images/yes.png' -%>
+				<% end %>
+			</td>
+		</tr>
+		<%- end -%>
+	</table>
+	<p class="page-links"><%= link_to "View All", users_path %></p>
+
+</div>
+</div>

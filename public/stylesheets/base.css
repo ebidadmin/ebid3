@@ -28,6 +28,11 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .brown { color: white; background-color: #8a1f11; }
 .offwhite { background-color: #eaeaea; }
 .white { background-color: #fffeff; }
+.red-alert, .mild-alert, .regular-alert, .comfy-alert { border: 2px solid; margin-top: 10px; padding: 5px; }
+.red-alert { background-color: #990000; border-color: #FFD324; color: white; font-weight: bold; }
+.mild-alert { background-color: #FFF6BF; border-color: #FFD324; color: #8a1f11;  }
+.regular-alert { background-color: white; border-color: #B60002; }
+.comfy-alert { background-color: white; border-color: #CCC; color: #999;  }
 
 /* FLASH & ERROR MESSAGES
 ---------------------------------------------------------------------- */
@@ -35,8 +40,8 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 #flash_notice { color: #264409; background-color: #E6EFC2; background-image: url('/images/messages/success.png'); border-color: #C6D880; }
 #flash_error, #flash_alert { color: #8a1f11; background-color: #FBE3E4; background-image: url('/images/messages/error.png'); border-color: #FBC2C4; }
 #flash_warning { color: #514721; background-color: #FFF6BF; background-image: url('/images/messages/warning.png'); border-color: #FFD324; }
-.fieldWithErrors { display: inline-table; }
-.fieldWithErrors input { border: 1px solid #D8000C; background-color: #fefce1; }
+.field_with_errors { display: inline; }
+.field_with_errors input, .field_with_errors select { border: 1px solid #D8000C; background-color: #fefce1; }
 #errorExplanation { color: #D8000C; background-color: #fefce1; background-image: url('/images/messages/info.png'); margin: 10px 0 20px; padding: 15px 10px 15px 70px; text-align: left; }
 #errorExplanation h2 { color: #000; text-align: left; font-weight: bold; font-size: 14px; padding-bottom: .5em; }
 #errorExplanation p { font-size: 12px; margin: 0.5em 0; display: none; }
@@ -69,6 +74,8 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .error_messages ul {
   margin: 0;
 }
+
+.error_messages ul li { list-style: square inside; margin-left:10px;}
 
 /* FORMS
 ---------------------------------------------------------------------- */
@@ -114,6 +121,7 @@ table tr.accept-decline { border-bottom: none; }
 #content-main .pagination a:hover { background: #999; color: #FFF; }
 #content-main .pagination span { background: transparent none repeat scroll 0 0; color: #CCC; margin-right: 1px; padding: 2px 5px; text-decoration: none; border: 1px solid white; }
 #page-info { float: left; padding: 0; }
+.sorting.instruction { float: right; }
 
 /* GENERAL LAYOUT
 ---------------------------------------------------------------------- */
@@ -185,23 +193,23 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 /*#header .instruction { color: black; text-transform: none; margin-left: 3em; }*/
 #header #subnav { float: left; overflow: hidden; padding: 5px 0; position: relative;  width: 100%; }
 #header .groups, #header #search { display: block; font-size: smaller; }
-#header .groups { float: left; clear: left; margin: 0; }
-#header #user_id, #header #status { float: left; margin-right: 10px; }
+#header .groups { float: left; margin: 0; }
+#header .seller.groups { width: 600px;}
+#header #username, #header #status { float: left; margin-right: 10px; }
 #header #search { margin: 0; float: right; }
 #header #search p { float: left; height: 30px; line-height: 30px; margin: 5px 15px 0 0; }
 #header #search .label { display: block; margin-left: 0; text-transform: uppercase; color: #C00; font-weight: bold; }
 #header #search p span { margin: 0 5px 0 0; width: 20px; }
 #header #search input[type="text"] { margin: 0; width: 5em; }
 #header #search input[type="submit"], #header #search select { margin-top: 0; padding: 5px; }
-
 #header #search.admin-search, #header #search.supplier-search { float: left; position: relative;}
 
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */
 @media print {
-body { border-top: 0; }
+body { border-top: 0; color: black; }
 body, .bid-box, .bid-field { background-color: transparent; }
-h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .button, #navigation, #global-links { display: none; }
+h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .button, #navigation, #global-links, #subnav { display: none; }
 .selection-list { font-size: 1.2em; font-weight: bold; }
 #order .photo { display: none; }
 #order .vehicle-set span { color: black; }
