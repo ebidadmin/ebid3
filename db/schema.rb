@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(:version => 20101209133215) do
     t.datetime "updated_at"
     t.string   "buyer_status",      :default => "New"
     t.date     "bid_until"
+    t.integer  "bids_count"
     t.date     "expired"
     t.boolean  "chargeable_expiry", :default => false
   end
@@ -269,7 +270,7 @@ ActiveRecord::Schema.define(:version => 20101209133215) do
     t.integer  "order_id"
     t.integer  "user_id"
     t.integer  "ratee_id"
-    t.integer  "stars"
+    t.decimal  "stars",      :precision => 3, :scale => 1
     t.text     "review"
     t.datetime "created_at"
     t.datetime "updated_at"

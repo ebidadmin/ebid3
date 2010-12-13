@@ -5,16 +5,20 @@ set :repository,  "."
 
 set :scm, :git
 
-set :domain, "173.230.150.91"
+set :domain, "67.23.79.176"
 set :user, "root" 
 set :use_sudo, false
 set :deploy_to, "/srv/www/ebid.com.ph"
-set :deploy_via, :copy
+set :deploy_via, :checkout
 set :rails_env, "production"
 
-role :web, "173.230.150.91"                          # Your HTTP server, Apache/etc
-role :app, "173.230.150.91"                          # This may be the same as your `Web` server
-role :db,  "173.230.150.91", :primary => true        # This is where Rails migrations will run
+# role :web, "173.230.150.91"                          # Your HTTP server, Apache/etc
+# role :app, "173.230.150.91"                          # This may be the same as your `Web` server
+# role :db,  "173.230.150.91", :primary => true        # This is where Rails migrations will run
+
+role :web, "67.23.79.176"                          # Your HTTP server, Apache/etc
+role :app, "67.23.79.176"                          # This may be the same as your `Web` server
+role :db,  "67.23.79.176", :primary => true        # This is where Rails migrations will run
 
 # If you are using Passenger mod_rails uncomment this:
 # if you're still using the script/reapear helper you will need

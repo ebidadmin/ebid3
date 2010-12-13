@@ -6,4 +6,6 @@ public/system/*
 .bundle
 .svn
 .svn/*
+.git
+.git/*
 

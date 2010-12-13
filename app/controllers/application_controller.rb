@@ -26,7 +26,8 @@ class ApplicationController < ActionController::Base
     def sign_out(resource_or_scope=nil)
       if session[:cart_id]
         @cart = Cart.find(session[:cart_id]) 
-        @cart.destroy if @cart
+        @cart.destroy unless @cart.nil?
+        session[:cart_id] = nil
       end
       return sign_out_all_scopes unless resource_or_scope
       scope = Devise::Mapping.find_scope!(resource_or_scope)
