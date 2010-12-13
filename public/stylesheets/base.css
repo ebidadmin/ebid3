@@ -195,7 +195,7 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 #header .groups, #header #search { display: block; font-size: smaller; }
 #header .groups { float: left; margin: 0; }
 #header .seller.groups { width: 600px;}
-#header #username, #header #status { float: left; margin-right: 10px; }
+#header #username, #header #status, #header #seller { float: left; margin-right: 10px; margin-top: 0;}
 #header #search { margin: 0; float: right; }
 #header #search p { float: left; height: 30px; line-height: 30px; margin: 5px 15px 0 0; }
 #header #search .label { display: block; margin-left: 0; text-transform: uppercase; color: #C00; font-weight: bold; }

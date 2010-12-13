@@ -1,6 +1,6 @@
 <% content_for :subnav do %>
 <ul class="links groups">
 	<li class="label">Users</li>
-	<%= select_tag :username, options_for_select(@user_group, @current_path),  %>
+	<li><%= select_tag :username, options_for_select(@user_group, @current_path),  %></li>
 </ul>
 <% end %>
