@@ -15,7 +15,7 @@
 	<h2>Items in the Order</h2>
 	<%= image_tag @order.entry.photos.first.photo.url(:tiny), :class => "photo", :alt => "Photo of #{ @order.entry.plate_no}" %>
 	<%= render 'shared/info_vehicle', :entry => @entry %>
-	<%= render 'shared/info_parts'  -%>
+	<%= render 'shared/info_parts' if current_user.has_role?('admin')  -%>
 
 	<table class="parts-set">
 		<%= render 'shared/part_titles' %>
@@ -49,18 +49,20 @@
 
 <div id="confirmation" class="page-links">
 	<% if current_user.has_role?('powerbuyer') || current_user.has_role?('buyer') -%>
+	
 		<% if @order.status == "PO Released" && @order.seller_confirmation == false %>
 		<%= link_to "OK, Done!", @entry, :class => 'button' -%>
 		<% else %>
 		<%= link_to "OK, Done!", :back, :class => 'button' -%>
 		<% end %>
+		
 	<% elsif current_user.has_role?('seller') -%>
 
 		<% if @order.seller_confirmation == true -%>
 			<%= link_to "OK, Done!", :back, :class => 'button' -%>
 		<% else -%>
 			<%= form_tag confirm_order_path, :method => :put  do -%>
-				<%= submit_tag "Accept Order" -%> or <%= link_to "Cancel", seller_orders_path(current_user) -%>
+				<%= submit_tag "Accept Order" -%> or <%= link_to "[ Cancel ]", seller_orders_path(current_user) -%>
 			<% end -%>
 		<% end -%>
 

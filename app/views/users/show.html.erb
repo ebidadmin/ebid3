@@ -19,7 +19,7 @@
 	<% end %>
 
 
-	<%# if current_user.has_role?('admin') %>
+	<% if current_user.has_role?('admin') %>
 	<h2>Roles assigned</h2> 
 	<ul>
 		<%= render :partial => 'role', :collection => @user.roles -%>
@@ -29,7 +29,7 @@
 	<ul>
 		<%= render :partial => 'role', :collection => (@all_roles - @user.roles) -%>
 	</ul>
-	<%# end %>
+	<% end %>
 </div>
 
 <div class="second usage">

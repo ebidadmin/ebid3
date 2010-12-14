@@ -49,6 +49,7 @@ class BuyerController < ApplicationController
   
   def orders
     @title = 'Orders'
+    @sort_order =" PO date - descending order"
     @tag_collection = ["PO Released", "For Delivery"]
     initiate_list
     find_orders
@@ -72,11 +73,12 @@ class BuyerController < ApplicationController
 
   def paid
     @title = 'Paid Orders - For Rating'
+    @sort_order =" date paid - ascending order"
     initiate_list
     @status = "Paid"
     find_orders
     @search = @all_orders.asc.search(params[:search])
-    @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
+    @search = @all_orders.where(:seller_id => params[:seller]).asc2.search(params[:search]) unless params[:seller].nil?
     @orders = @search.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
@@ -84,19 +86,17 @@ class BuyerController < ApplicationController
   def fees
     @title = "Declined Winning Bids"
     initiate_list
+    find_entries
     if params[:user_id] == 'all'
-      entries = Entry.where(:user_id => current_user.company.users)
+      entries = Entry.where(:user_id => @company_users)
       @total_bids = entries.collect(&:bids_count).sum
-      @all_declined_bids = Bid.where(:entry_id => entries).declined
     else
       entries = defined_user.entries
       @total_bids = Entry.where(:id => entries).collect(&:bids_count).sum
-      @all_declined_bids = Bid.where(:entry_id => entries).declined
     end
+    @all_declined_bids = Bid.where(:entry_id => entries).declined
     @percentage_declined = (@all_declined_bids.count.to_f/@total_bids.to_f) * 100
     @declined_bids = @all_declined_bids.paginate :page => params[:page], :per_page => 20
-
-    # @declined_bids = Bid.where(:entry_id => current_user.entries).declined.paginate :page => params[:page], :per_page => 20
   end
 
 private 

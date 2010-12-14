@@ -219,7 +219,7 @@ ActiveRecord::Schema.define(:version => 20101209133215) do
     t.integer  "seller_id"
     t.boolean  "seller_confirmation",                                :default => false,         :null => false
     t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "confirmed"
     t.date     "delivered"
     t.date     "pay_until"
     t.date     "paid"

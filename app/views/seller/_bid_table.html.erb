@@ -25,7 +25,7 @@
 		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'replacement')), :class => 'bid-amount' %>
 		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'surplus')), :class => 'bid-amount' %>
 		<% else %>
-		<%= content_tag :strong, 'You did not bid on this item.' %>
+		<%= content_tag :strong, 'You did not bid on this item.' if @entry.buyer_status != 'Online' %>
 		<% end %>
 		</div>		
 	</td>

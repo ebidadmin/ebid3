@@ -19,12 +19,21 @@ class AdminController < ApplicationController
     @buyers = Role.find_by_name('buyer').users
     unless params[:brand].nil?
       brand = CarBrand.find_by_name(params[:brand])
-      @search = Entry.car_brand_id_eq(brand).descend_by_id.search(params[:search])
+      @search = Entry.where(:car_brand => brand).desc.search(params[:search])
     else
-      @search = Entry.descend_by_id.search(params[:search])
+      @search = Entry.search(params[:search])
     end
     @brand_links = Entry.all.collect(&:car_brand).uniq  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
     @entries = @search.all.paginate(:page => params[:page], :per_page => 10)
   end
+
+  # entries = Entry.online.current.desc
+  # @brand_links = entries.collect(&:car_brand).uniq 
+  # if params[:brand] == 'all'
+  #   @entries = entries.paginate(:page => params[:page], :per_page => 10)
+  # else
+  #   brand = CarBrand.find_by_name(params[:brand])
+  #   @entries = entries.where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
+  # end
 
 end

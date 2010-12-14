@@ -20,8 +20,3 @@
 		or <%= link_to "Cancel", user_entries_path(current_user) %>
 	</p>
 <% end %>
-
-<% content_for :javascripts do %>
-	<%= javascript_include_tag 'dynamic_models', 'nested_form' %>
-	<%= stylesheet_link_tag 'blitzer/jquery-ui-1.8.6.custom' %>
-<% end %>

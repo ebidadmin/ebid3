@@ -37,11 +37,11 @@ class SellerController < ApplicationController
   def show
     @entry = Entry.find(params[:id], :joins => [:line_items])
     @line_items = @entry.line_items
-    # company = current_user.company
-    # unless current_user.has_role?('admin') || @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
-    #   flash[:error] = "Sorry, <strong>#{company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this."
-    #   redirect_to login_path
-    # end 
+    company = current_user.company
+    unless current_user.has_role?('admin') || @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
+      flash[:error] = "Sorry, <strong>#{company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this."
+      redirect_to login_path
+    end 
   end
   
   def monitor

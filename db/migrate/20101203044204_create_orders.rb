@@ -17,7 +17,8 @@ class CreateOrders < ActiveRecord::Migration
       t.decimal :order_total, :precision => 10, :scale => 2, :null => false, :default => 0.0
       t.integer :seller_id
       t.boolean :seller_confirmation, :null => false, :default => 0
-      t.timestamps
+      t.datetime :created_at
+      t.datetime :confirmed
       t.date :delivered
       t.date :pay_until
       t.date :paid

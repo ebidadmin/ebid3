@@ -39,5 +39,8 @@
 	<% end %>
 <% end %>
 
-<%= javascript_include_tag 'jquery-ui.min', 'nested_form' %>
-<%= stylesheet_link_tag 'blitzer/jquery-ui-1.8.6.custom', :cache => true %>
+<% content_for :javascripts do %>
+	<%#= javascript_include_tag 'jquery-ui.min' %>
+	<%= stylesheet_link_tag 'blitzer/jquery-ui-1.8.6.custom' %>
+<% end %>
+

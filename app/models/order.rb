@@ -14,8 +14,9 @@ class Order < ActiveRecord::Base
   validates_presence_of :deliver_to, :address1, :phone
 
   scope :desc, order('id DESC')
-  scope :asc, order('delivered ASC')
+  scope :asc, order('delivered')
   scope :desc2, order('pay_until DESC')
+  scope :asc2, order('paid')
 
   scope :unpaid, where(:paid => nil)
 
@@ -77,6 +78,10 @@ class Order < ActiveRecord::Base
   
   def days_overdue
     (Date.today - pay_until).to_i - 1
+  end
+
+  def days_ordered
+    (Time.now - confirmed).to_i - 1
   end
   
   def close

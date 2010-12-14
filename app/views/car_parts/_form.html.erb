@@ -4,5 +4,9 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
-  <p><%= f.submit %></p>
+  <p>
+    <%= f.submit "Submit", :class => 'button' %>
+    <%= link_to "Back", :back if current_user.has_role?('admin') %>
+    <%= link_to "Cancel", new_user_entry_path(current_user) unless current_user.has_role?('admin') %> 
+  </p>
 <% end %>

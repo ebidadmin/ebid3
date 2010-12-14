@@ -1,7 +1,7 @@
 <% title @title %>
 
 <%= render 'buyer/filter_by_user' unless current_user.has_role?('seller') || @user_group.nil? %>
-<%= render 'buyer/filter_by_status' unless @status_tags.nil? %>
+<%#= render 'buyer/filter_by_status' unless @status_tags.nil? %>
 <%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 <%= render 'buyer/filter_by_search' %>
 

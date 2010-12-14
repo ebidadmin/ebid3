@@ -25,8 +25,10 @@ class ApplicationController < ActionController::Base
 
     def sign_out(resource_or_scope=nil)
       if session[:cart_id]
-        @cart = Cart.find(session[:cart_id]) 
-        @cart.destroy unless @cart.nil?
+        unless Cart.where(:id => session[:cart_id]).blank?
+          @cart = Cart.find(session[:cart_id])
+          @cart.destroy unless @cart.nil?
+        end
         session[:cart_id] = nil
       end
       return sign_out_all_scopes unless resource_or_scope

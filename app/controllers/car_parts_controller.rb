@@ -1,4 +1,8 @@
 class CarPartsController < ApplicationController
+  before_filter :initialize_cart
+  before_filter :check_buyer_role
+  before_filter :check_admin_role, :except => [:new, :create, :search]
+
   def index
     @car_parts = CarPart.all
   end
@@ -14,8 +18,14 @@ class CarPartsController < ApplicationController
   def create
     @car_part = CarPart.new(params[:car_part])
     if @car_part.save
+      new_car_part = CarPart.last
+      @item = @cart.add(new_car_part.id)
       flash[:notice] = "Successfully created car part."
-      redirect_to @car_part
+      if current_user.has_role?('admin')
+        redirect_to car_parts_path(:name => @car_part.name)
+      else
+        redirect_to new_user_entry_path(current_user)
+      end 
     else
       render :action => 'new'
     end
@@ -29,7 +39,7 @@ class CarPartsController < ApplicationController
     @car_part = CarPart.find(params[:id])
     if @car_part.update_attributes(params[:car_part])
       flash[:notice] = "Successfully updated car part."
-      redirect_to @car_part
+      redirect_to car_parts_path(:name => @car_part.name)
     else
       render :action => 'edit'
     end
@@ -37,9 +47,10 @@ class CarPartsController < ApplicationController
   
   def destroy
     @car_part = CarPart.find(params[:id])
+    name = @car_part.name
     @car_part.destroy
-    flash[:notice] = "Successfully destroyed car part."
-    redirect_to car_parts_url
+    flash[:notice] = "Deleted <strong>#{name}</strong>."
+    redirect_to :back
   end
 
   def search

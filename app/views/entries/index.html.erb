@@ -7,6 +7,6 @@
 <% unless @entries.count < 1 %>
 	<%= render 'entries/main_table' %>
 <% else %>
-	<%= content_tag :h3, "Sorry, no entries found under [#{params[:user_id]} >> #{request.parameters['action']}].", :class => 'del-highlight' %>
+	<%= content_tag :h3, ('Sorry, no entries found under '  + (content_tag :span, "[ #{params[:user_id]} > #{request.parameters['action']} ]", :class => 'highlight')).html_safe %>
 <% end %>
 

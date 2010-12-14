@@ -53,9 +53,9 @@ Ebid::Application.routes.draw do
   match 'buyer/:user_id/main' => 'buyer#main', :as => :buyer_main, :via => :get
   match 'buyer/:user_id/pending(/:page)' => 'buyer#pending', :as => :buyer_pending, :via => :get
   match 'buyer/:user_id/online(/:page)' => 'buyer#online', :as => :buyer_online, :via => :get
-  match 'buyer/:user_id/results(-:status(/:page))' => 'buyer#results', :as => :buyer_results, :via => :get
-  match 'buyer/:user_id/orders(/:page)' => 'buyer#orders', :as => :buyer_orders, :via => :get
-  match 'buyer/:user_id/payments(/:page)' => 'buyer#payments', :as => :buyer_payments, :via => :get
+  match 'buyer/:user_id/results(/:status(/:page))' => 'buyer#results', :as => :buyer_results, :via => :get
+  match 'buyer/:user_id/orders(/:seller(/:page))' => 'buyer#orders', :as => :buyer_orders, :via => :get
+  match 'buyer/:user_id/payments(/:seller(/:page))' => 'buyer#payments', :as => :buyer_payments, :via => :get
   match 'buyer/:user_id/paid(/:page)' => 'buyer#paid', :as => :buyer_paid, :via => :get
   match 'buyer/:user_id/closed(/:page)' => 'buyer#closed', :as => :buyer_closed, :via => :get
   match 'buyer/:user_id/fees(/:page)' => 'buyer#fees', :as => :buyer_fees, :via => :get
@@ -76,7 +76,7 @@ Ebid::Application.routes.draw do
     end
   end
   
-  resources :orders, :shallow => true do
+  resources :orders do
     member do
       put :confirm
       put :seller_status
