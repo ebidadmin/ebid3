@@ -30,11 +30,11 @@
   			<%= render 'shared/photo_first', :entry => entry %>
         <div id="details">
 	        <%= content_tag :p, entry.vehicle, :class => 'strong' unless current_user.has_role?('seller') %>
-	        <%= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) unless !current_user.has_role?('seller') %>
+	        <%= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) if current_user.has_role?('seller') %>
 	        <%= content_tag :p, entry.plate_no %>
           <%= content_tag :p, "(created by #{entry.user.username})" if current_user.has_role?("powerbuyer") %>
 	        <%= content_tag :p, "Terms: #{entry.city.name if entry.city} / #{entry.term.term_name if entry.term}" %>
-	        <%= content_tag :p, ('Parts Requested: ' + (link_to entry.line_items.collect(&:quantity).sum, seller_show_path(:brand => entry.brand, :id => entry))).html_safe %>
+	        <%#= content_tag :p, ('Parts Requested: ' + (link_to entry.line_items.collect(&:quantity).sum, seller_show_path(:brand => entry.brand, :id => entry))).html_safe %>
 				  <%= content_tag :p, ('Entry Status: ' + current_status_or_expired?(entry)).html_safe, :class => 'highlight' %>
   			</div>
   		</td>

@@ -4,6 +4,7 @@ Ebid::Application.routes.draw do
 
   devise_for :users
 
+  match 'users/:user_id/entries(-:status(/:page))' => 'entries#index', :as => :user_entries, :via => :get
   resources :users do
     resources :profiles
     member do
@@ -24,8 +25,8 @@ Ebid::Application.routes.draw do
   get 'cart/add'
   get 'cart/remove'
   post 'cart/clear'
-  get 'cart/edit'
-  resources :cart_items, :only => :edit
+  get 'cart/show_fields'
+  put 'cart/edit_item'
   get 'javascripts/dynamic_models'
   get 'javascripts/formtastic_models'
 
@@ -43,7 +44,7 @@ Ebid::Application.routes.draw do
   resources :ranks
   
   match 'admin/dashboard' => 'admin#index', :as => :admin_index, :via => :get
-  match 'admin/entries' => 'admin#entries', :as => :admin_entries, :via => :get
+  match 'admin/entries(/:user_id(/:page))' => 'admin#entries', :as => :admin_entries, :via => :get
   match 'admin/online' => 'admin#online', :as => :admin_online, :via => :get
   match 'admin/bids' => 'admin#bids', :as => :admin_bids, :via => :get
   match 'admin/orders' => 'admin#orders', :as => :admin_orders, :via => :get
@@ -56,7 +57,7 @@ Ebid::Application.routes.draw do
   match 'buyer/:user_id/results(/:status(/:page))' => 'buyer#results', :as => :buyer_results, :via => :get
   match 'buyer/:user_id/orders(/:seller(/:page))' => 'buyer#orders', :as => :buyer_orders, :via => :get
   match 'buyer/:user_id/payments(/:seller(/:page))' => 'buyer#payments', :as => :buyer_payments, :via => :get
-  match 'buyer/:user_id/paid(/:page)' => 'buyer#paid', :as => :buyer_paid, :via => :get
+  match 'buyer/:user_id/paid(/:seller(/:page))' => 'buyer#paid', :as => :buyer_paid, :via => :get
   match 'buyer/:user_id/closed(/:page)' => 'buyer#closed', :as => :buyer_closed, :via => :get
   match 'buyer/:user_id/fees(/:page)' => 'buyer#fees', :as => :buyer_fees, :via => :get
 

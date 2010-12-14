@@ -124,12 +124,21 @@ class EntriesController < ApplicationController
     end 
     redirect_to :back
   end
-  
-  def update_car_model
-    car_models = CarModel.where(:car_brand_id => params[:id]) unless params[:id].blank?
-    render 'car_model_select', :car_models => car_models
+    
+  def reactivate
+    show
+    if @entry.update_attributes(:chargeable_expiry => nil, :expired_at => nil)
+      @line_items.each do |line_item|
+        unless line_item.order_item
+          line_item.update_attribute(:status, 'For Decision') 
+          line_item.bids.update_all(:status => 'For Decision', :fee => nil, :declined => nil, :expired => nil)
+        end
+      end
+    end
+    flash[:notice] = "Entry was reactivated. Please check your 'Results' tab."
+    redirect_to :back
   end
-  
+
   private ##
 
     def start_entry

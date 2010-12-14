@@ -14,10 +14,6 @@ class CartController < ApplicationController
     end
   end
   
-  def edit
-    
-  end
-  
   def remove
     @item = @cart.remove(params[:part_id])
     
@@ -45,4 +41,25 @@ class CartController < ApplicationController
     end
   end
   
+  def show_fields
+    @cart_item = CartItem.find(params[:item])
+    # redirect_to :back
+  end
+  
+  def edit_item
+    @cart_item = CartItem.find(params[:item_id])
+
+    if @cart_item.update_attributes(params[:item])
+      flash[:notice] = "Successfully updated cart item."
+          
+      respond_to do |format|
+        format.html { redirect_to new_user_entry_path(current_user) }
+        format.js { flash.now[:cart_notice] = "Updated #{@cart_item.car_part.name}" }
+      end      
+    else
+      flash[:notice] = "Something went wrong with your cart update.  Please try again."
+      render
+    end
+  end
+
 end

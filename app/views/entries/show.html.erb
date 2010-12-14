@@ -1,7 +1,3 @@
-<% content_for :head do %>
-	<%= stylesheet_link_tag 'shadowbox', :cache => false %>
-<% end %>
-
 <% title "Bids for #{@entry.vehicle}" %>
 
 <%= render 'shared/photo_set' %>
@@ -35,27 +31,9 @@
 			<%= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
 		</td>
 		
-		<% if item.status == "For Decision" %>
-			<% if item.bids.size < 1 %>
-				<td class="bid-box" colspan=4>
-					Sorry, there are no bids for this item.
-				</td>
-			<% else %>
-        <%= render 'bid_selection', :item => item %>
-			<% end -%>
-		<% else %>
-			<td class="bid-box" colspan=4>
-			  <% if item.status == "PO Released" || item.status == "Ordered" || item.status == "For Delivery" %>
-    				<strong><%= item.status %></strong> as of <%= item.order.updated_at.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
-    		<% elsif item.status == "Delivered" %>
-    				<strong>Delivered</strong> as of <%= item.order.delivered.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
-    		<% elsif item.status == "Paid" %>
-    				<strong>Paid</strong> as of <%= item.order.paid.strftime('%b %d') unless item.order%> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
-    		<% else  %>
-    				<strong><%= item.status %></strong>
-    		<% end %>
-  		</td>
-		<% end %>
+		<%= render 'bid_master', :item => item unless current_user.has_role?('admin')  %>
+		<%= render 'admin/bid_master', :item => item if current_user.has_role?('admin') %>
+
 	</tr>
 	<% end %>
 	<% if (@entry.buyer_status == "For Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP") && @entry.expired.nil? %>
@@ -80,6 +58,7 @@
 
 
 <% content_for :javascripts do %>
+	<%= stylesheet_link_tag 'shadowbox', :cache => false %>
 	<%= javascript_include_tag 'shadowbox', :cache => false %>
 	<script type="text/javascript">
 			Shadowbox.init();		

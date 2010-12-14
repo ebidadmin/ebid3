@@ -1,0 +1,2 @@
+$("#part_qty_<%= @cart_item.car_part_id %>").html("<%= escape_javascript(render '/cart/part_qty', :item => @cart_item) %>");
+$("#part_no_<%= @cart_item.car_part_id %>").html("<%= escape_javascript(render '/cart/part_no', :item => @cart_item) %>");

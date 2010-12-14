@@ -1,0 +1,5 @@
+$("#part_qty_<%= @cart_item.car_part_id %>").text("<%= @cart_item.quantity %>");
+$("#part_no_<%= @cart_item.car_part_id %>").html("<%= @cart_item.part_no %>");
+$("#cart_total").html("<%= pluralize @cart.total, 'item' %>");
+$("#cart_notice").html("<%= escape_javascript(render 'cart/cart_notice') %>");
+$("#cart_notice").effect("highlight", {}, 3000)

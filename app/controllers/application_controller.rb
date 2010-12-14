@@ -74,8 +74,8 @@ class ApplicationController < ActionController::Base
         @user_group.push(['All', request_path('all')])
         @current_path = request_path(params[:user_id])
       end
-      @status_tags = @tag_collection.collect { |tag| [tag, request_path(:status => tag)] } if @tag_collection
-      @status_tags.push(['All', request_path(:status => nil)]) if @tag_collection 
+      @status_tags = @tag_collection.collect { |tag| [tag, request_path(:status => tag)] } unless @tag_collection.blank?
+      @status_tags.push(['All', request_path(:status => nil)]) unless @tag_collection.blank?
       @status_path = request_path(:status => params[:status])
       @status = params[:status] unless params[:status].nil?
       @status = @tag_collection if params[:status].nil?
@@ -101,6 +101,8 @@ class ApplicationController < ActionController::Base
         buyer_fees_path(user)
       when 'index'
         user_entries_path(user)
+      when 'entries'
+        admin_entries_path(user)
       end
     end
 

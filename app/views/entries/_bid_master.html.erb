@@ -1,0 +1,24 @@
+<% if item.status == "For Decision" %>
+
+	<% if item.bids.size < 1 %>
+		<td class="bid-box" colspan=4>
+			Sorry, there are no bids for this item.
+		</td>
+	<% else %>
+        <%= render 'bid_selection', :item => item %>
+	<% end -%>
+
+<% else %>
+
+	<td class="bid-box" colspan=4>
+	  <% if item.status == "PO Released" || item.status == "Ordered" || item.status == "For Delivery" %>
+ 				<%= content_tag :strong, item.status %> as of <%= item.order.confirmed.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+ 		<% elsif item.status == "Delivered" %>
+ 				<%= content_tag :strong, 'Delivered' %> as of <%= item.order.delivered.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+ 		<% elsif item.status == "Paid" %>
+ 				<%= content_tag :strong, 'Paid' %> as of <%= item.order.paid.strftime('%b %d') unless item.order%> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+ 		<% else  %>
+ 				<%= content_tag :strong, item.status %>
+ 		<% end %>
+	</td>
+<% end %>

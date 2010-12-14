@@ -16,24 +16,29 @@ class AdminController < ApplicationController
 
   def entries
     @title = 'All Entries'
-    @buyers = Role.find_by_name('buyer').users
-    unless params[:brand].nil?
-      brand = CarBrand.find_by_name(params[:brand])
-      @search = Entry.where(:car_brand => brand).desc.search(params[:search])
+    @user_group = Role.find_by_name('buyer').users.order('username').collect { |user| [user.username_for_menu, admin_entries_path(:user_id => user.username.downcase)] }
+    @user_group.push(['All', admin_entries_path(:user_id => nil)])
+    @current_path = admin_entries_path(params[:user_id])
+    entries = Entry.scoped
+    
+    if params[:user_id]
+      @search = entries.where(:user_id => User.find_by_username(params[:user_id])).search(params[:search])
     else
-      @search = Entry.search(params[:search])
+      @search = entries.search(params[:search])
     end
-    @brand_links = Entry.all.collect(&:car_brand).uniq  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
-    @entries = @search.all.paginate(:page => params[:page], :per_page => 10)
+    @entries = @search.desc.paginate(:page => params[:page], :per_page => 10)
+    render 'entries/index'
   end
 
-  # entries = Entry.online.current.desc
-  # @brand_links = entries.collect(&:car_brand).uniq 
-  # if params[:brand] == 'all'
-  #   @entries = entries.paginate(:page => params[:page], :per_page => 10)
-  # else
-  #   brand = CarBrand.find_by_name(params[:brand])
-  #   @entries = entries.where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
-  # end
+  def online
+    @search = Entry.online.current.desc.search(params[:search])
+    @entries = @search.paginate(:page => params[:page], :per_page => 10)
+    render 'entries/index'  
+  end
 
+  def bids
+    @search = Bid.desc.search(params[:search])
+    @bids = @search.paginate :page => params[:page], :per_page => 10    
+    render 'bids/index' 
+  end
 end

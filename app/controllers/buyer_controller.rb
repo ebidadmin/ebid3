@@ -39,7 +39,7 @@ class BuyerController < ApplicationController
 
   def results
     @title = 'Bidding Results'
-    @tag_collection = ["For Decision", "Ordered-IP", "Declined-IP"]
+    @tag_collection = ["ForDecision", "Ordered-IP", "Declined-IP"]
     initiate_list
     find_entries
     @search = @finder.current.asc.search(params[:search])

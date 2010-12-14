@@ -1,2 +1,2 @@
 <%= item.part_no unless item.part_no.blank? %>
-<%= link_to "(edit)", cart_edit_path, :remote => true %>
+<%= link_to "(edit)", cart_show_fields_path(:item => item), :remote => true %>
