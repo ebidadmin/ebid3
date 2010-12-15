@@ -1,6 +1,10 @@
 class RatingsController < ApplicationController
   def index
-    @ratings = Rating.where(:ratee_id => User.find_by_username(params[:user_id]))
+    if params[:user_id] == 'all'
+      @ratings = Rating.where(:ratee_id => current_user.company.users)
+    else
+      @ratings = Rating.where(:ratee_id => User.find_by_username(params[:user_id]))
+    end
   end
   
   def show

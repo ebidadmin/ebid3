@@ -1,5 +1,5 @@
 <p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
-<%= semantic_form_for @user, :url => new_user_path, :html => {:class => 'col-3'} do |f| %>
+<%= semantic_form_for @user, :html => {:class => 'col-3'} do |f| %>
 	<% f.inputs :name => "Login" do %>
 		<%= f.input :username, :hint => 'This is going to be your login name.' %>
 		<%= f.input :password, :hint => 'Use at least 4 characters.' %>

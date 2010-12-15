@@ -1,9 +1,19 @@
-<%- if order.status == "Delivered" -%>
+<% if order.status == "For Delivery" %>
+	
+	<%= order.status %> (<%= order.confirmed.strftime('%b %d') %>)&nbsp;
+
+<% elsif order.status == "Delivered" %>
+
 	Delivered: <%= order.delivered.strftime('%b %d') unless order.delivered.nil? %><br>
 	<%#= link_to "Rate Seller", new_order_rating_path(order) unless current_user.has_role?('admin') || order.ratings.user_id_equals(current_user).exists? %>
-<%- elsif order.status == "Paid" -%>
+
+<% elsif order.status == "Paid" %>
+
 	<strong><%= order.status %>: <%= order.paid.strftime('%b %d') unless order.paid.nil? %></strong><br>
 	<%#= link_to "Rate Seller", new_order_rating_path(order) unless current_user.has_role?('admin') || order.ratings.user_id_equals(current_user).exists? %>
-<%- else -%>
-	<%= order.status %> (<%= order.confirmed.strftime('%b %d') %>)&nbsp;
-<%- end -%>
+
+<% else %>
+
+	<%= order.status %> (<%= order.created_at.strftime('%b %d') %>)&nbsp;
+
+<% end %>

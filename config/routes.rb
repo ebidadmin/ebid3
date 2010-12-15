@@ -1,8 +1,6 @@
 Ebid::Application.routes.draw do
 
-  get "admin/index"
-
-  devise_for :users
+  devise_for :users, :as => :account
 
   match 'users/:user_id/entries(-:status(/:page))' => 'entries#index', :as => :user_entries, :via => :get
   resources :users do

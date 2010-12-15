@@ -9,7 +9,7 @@ class AdminController < ApplicationController
     @two_and_up_pct = @line_items.two_and_up_pct
     @without_bids = @line_items.without_bids
 
-    @online_entries =  @entries.online.desc.five 
+    @online_entries =  @entries.online.current.desc.five 
     @users = User.active
     # @order = Order.all
   end
@@ -17,14 +17,14 @@ class AdminController < ApplicationController
   def entries
     @title = 'All Entries'
     @user_group = Role.find_by_name('buyer').users.order('username').collect { |user| [user.username_for_menu, admin_entries_path(:user_id => user.username.downcase)] }
-    @user_group.push(['All', admin_entries_path(:user_id => nil)])
+    @user_group.push(['All', admin_entries_path(:user_id => 'all')])
     @current_path = admin_entries_path(params[:user_id])
     entries = Entry.scoped
     
-    if params[:user_id]
-      @search = entries.where(:user_id => User.find_by_username(params[:user_id])).search(params[:search])
-    else
+    if params[:user_id] == 'all'
       @search = entries.search(params[:search])
+    else
+      @search = entries.where(:user_id => User.find_by_username(params[:user_id])).search(params[:search])
     end
     @entries = @search.desc.paginate(:page => params[:page], :per_page => 10)
     render 'entries/index'

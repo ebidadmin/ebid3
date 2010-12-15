@@ -4,7 +4,7 @@
 	<% unless @user.profile.nil? %>
 	<h2>
 		User Profile 
-		<em><%= link_to '(edit profile)', edit_user_profile_path(@user, @profile) %></em>
+		<em><%= link_to '(edit profile)', edit_user_path(@user) %></em>
 	</h2>
 	<ul>		
 	  <li><span>Company:</span><%= link_to "#{@profile.company.name} (view details)", @profile.company if @profile.company -%></li>

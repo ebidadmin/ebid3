@@ -60,10 +60,12 @@
 .dash-entry .count { position: absolute; right: 0; font-size: 18px; }
 .dash-entry .count.highlight { background-color: #FFF6BF; color: #C00; }
 #content-main .dash-entry .link { font-weight: normal; position: absolute; right: 50px; padding: 0 4px; opacity: 1; }
-.dash.supplier { width: 48%; }
+.dash.supplier, .dash.admin { width: 48%; }
 .dash.supplier .dash-entry strong { width: 35%; }
 .dash.supplier #within-term, .dash.supplier #overdue, .dash.supplier #paid, .dash.supplier #closed, #total-bided, #missed-oppty { padding-left: 25px; }
 #content-main .dash.supplier .dash-entry .link { right: 150px; }
+.dash.admin strong { width: 45%;  margin-right: 10px; }
+.dash.admin strong a { font-size: .9em; margin-left: -4px; }
 .dash.full { width: 100%; }
 .dash.full .dash-entry strong { width: 20%; }
 

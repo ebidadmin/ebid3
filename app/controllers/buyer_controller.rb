@@ -6,6 +6,7 @@ class BuyerController < ApplicationController
     @last_activity = current_user.last_sign_in_at
     @ratings = Rating.where(:ratee_id => current_user)
     if current_user.has_role?("powerbuyer")
+      @ratings = Rating.where(:ratee_id => current_user.company.users)
       initiate_list
       delivered = Order.where(:company_id => current_user.company).delivered
       due_soon = delivered.due_soon

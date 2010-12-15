@@ -1,68 +1,26 @@
 <% stylesheet 'admin' %>
 <% title @title %>
 
-<%= content_tag :p, ('Total Entries: ' + @entries.count.to_s) %>
-<%= content_tag :p, ('Total Parts: ' + @line_items.count.to_s) %>
-<%= content_tag :p, ('With Bids: ' + @with_bids.count.to_s + " (#{percentage(@with_bids_pct)})")  %>
-<%= content_tag :p, ('More than 2 Bids: ' + @two_and_up.count.to_s+ " (#{percentage(@two_and_up_pct)})") %>
-<%= content_tag :p, ('Without Bids: ' + @without_bids.count.to_s) %>
+<ul class="dash admin">
+	<h3>Quick Stats</h3>
+	<%= dash_entry_format("entries", "Total Entries", nil,  @entries.count.to_s ) %>
+	<%= dash_entry_format("total-parts", "Total Parts", nil,  @line_items.count.to_s ) %>
+	<%= dash_entry_format("with-bids", "With Bids", percentage(@with_bids_pct),  @with_bids.count.to_s ) %>
+	<%= dash_entry_format("two-up", "More than 2 Bids", percentage(@two_and_up_pct),  @two_and_up.count.to_s ) %>
+	<%= dash_entry_format("no-bids", "Without Bids", nil,  @without_bids.count.to_s ) %>
+</ul>
 
-<div class="dashboard-row">
+<ul class="dash admin last">
+	<h3>Online Entries</h3>
+	<% for entry in @online_entries %>
+	<%= dash_entry_format("online-ent", (link_to entry.vehicle, entry), "#{entry.plate_no} (#{entry.buyer_status} - #{time_ago_in_words entry.updated_at} ago)", entry.user.username ) %>
+	<% end %>
+</ul>
 
-<div class="latest entries">
-	<h2>Online Entries</h2>
-	<table>
-		<tr>
-			<th class="one">Vehicle</th>
-			<th>Author</th>
-			<th class="two">Status</th>
-		</tr>
-		<%- for entry in @online_entries -%>
-		<tr>
-			<td class="one">
-				<p><%= link_to entry.vehicle, entry %></p>
-				<p><%= entry.plate_no %></p>
-			</td>
-			<td>
-				<p><%= entry.user.username %></p>
-			</td>
-			<td class="two">
-				<p><%= entry.buyer_status %></p>
-				<p class="instruction"><%= time_ago_in_words entry.updated_at %> ago</p>
-			</td>
-		</tr>
-		<%- end -%>
-	</table>
-	<p class="page-links"><%= link_to "View All", admin_entries_path %></p>
-</div>
+<ul class="dash admin">
+	<h3>Active Users</h3>
+	<% for user in @users %>
+	<%= dash_entry_format("active-user", user.username, (time_ago_in_words user.current_sign_in_at if user.current_sign_in_at) + ' ago',  active_mark(user) ) %>
+	<% end %>
+</ul>
 
-<div class="latest users">
-	<h2>Active Users</h2>
-	<table>
-		<tr>
-			<th class="one">Profile</th>
-			<th>Last Request</th>
-			<th class="two">Current?</th>
-		</tr>
-		<%- for user in @users -%>
-		<tr>
-			<td class="one">
-				<p>
-					<%= user.username  %>
-				</p>
-			</td>
-			<td>
-				<p class="instruction"><%= time_ago_in_words user.current_sign_in_at if user.current_sign_in_at %> ago</p>
-			</td>
-			<td class="two">
-				<% if user.current_sign_in_at && user.current_sign_in_at > 1.hour.ago %>
-					<%= image_tag '/images/base/yes.png' -%>
-				<% end %>
-			</td>
-		</tr>
-		<%- end -%>
-	</table>
-	<p class="page-links"><%= link_to "View All", users_path %></p>
-
-</div>
-</div>

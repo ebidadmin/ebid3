@@ -1,5 +1,11 @@
 <h3>
+	<% if current_user.has_role?('powerbuyer') %>
+	Your company's average rating:
+	<%= star_images(@ratings.average('stars').to_f) %>
+	<%= content_tag :span, ('based on ' + (link_to (pluralize @ratings.count, 'rating'), user_ratings_path('all'))).html_safe %>
+	<% else %>
 	Your average rating : 
 	<%= star_images(@ratings.average('stars').to_f) %>
 	<%= content_tag :span, ('based on ' + (link_to (pluralize @ratings.count, 'rating'), user_ratings_path(current_user))).html_safe %>
+	<% end %>
 </h3>
