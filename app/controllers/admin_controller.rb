@@ -31,7 +31,8 @@ class AdminController < ApplicationController
   end
 
   def online
-    @search = Entry.online.current.desc.search(params[:search])
+    @title = "What's Online?"
+    @search = Entry.online.current.order('bid_until DESC').search(params[:search])
     @entries = @search.paginate(:page => params[:page], :per_page => 10)
     render 'entries/index'  
   end
@@ -40,5 +41,43 @@ class AdminController < ApplicationController
     @search = Bid.desc.search(params[:search])
     @bids = @search.paginate :page => params[:page], :per_page => 10    
     render 'bids/index' 
+  end
+  
+  def orders
+    @title = "Purchase Orders"
+    @sort_order =" PO date - descending order"
+    @all_orders = Order.recent
+    @search = @all_orders.search(params[:search])
+    @orders = @search.desc.paginate :page => params[:page], :per_page => 10    
+    if params[:status]
+      @orders = Order.where(:status => params[:status]).desc.paginate :page => params[:page], :per_page => 10
+    end
+    render 'orders/index'  
+  end
+  
+  def payments
+    @title = "Delivered Orders - For Payment"
+    @sort_order =" due date (per vehicle) - ascending order"
+    @all_orders = Order.delivered.unpaid.asc
+    @search = @all_orders.search(params[:search])
+    @orders = @search.paginate :page => params[:page], :per_page => 10    
+    render 'orders/index'  
+  end
+  
+  def buyer_fees
+    @title = "Declined Winning Bids"
+    @total_bids = Bid.count
+    @all_declined_bids = Bid.declined
+    @percentage_declined = (@all_declined_bids.count.to_f/@total_bids.to_f) * 100
+    @declined_bids = @all_declined_bids.paginate :page => params[:page], :per_page => 20
+    render 'buyer/fees'
+  end
+
+  def supplier_fees
+    @title = "Transaction Fees for Paid Orders"
+    @sort_order =" date PO was paid - descending order"
+    @all_orders = Order.paid_and_closed
+    @orders = @all_orders.paginate :page => params[:page], :per_page => 10
+    render 'seller/fees'
   end
 end

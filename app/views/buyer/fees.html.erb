@@ -3,9 +3,10 @@
 <%= render 'buyer/filter_by_user' unless @user_group.nil? %>
 
 <% unless @declined_bids.blank? %>
-<h2 id='flash_notice'>Total Transaction Fees: <%= number_to_currency @all_declined_bids.collect(&:fee).sum, :unit => "Php " %></h2>
-<h4>You have declined <%= "#{@all_declined_bids.count} of  #{@total_bids} (#{percentage(@percentage_declined)}) " unless @total_bids.nil? %></h4>
-
+<h2 id='flash_notice'>
+	Total Transaction Fees: <%= number_to_currency @all_declined_bids.collect(&:fee).sum, :unit => "Php " %>
+  <%= content_tag :span, "| you have declined #{@all_declined_bids.count} of  #{@total_bids} (#{percentage(@percentage_declined)})".html_safe unless @total_bids.nil? %>
+</h2>
 <%= will_paginate @declined_bids  %>
 <%= page_info @declined_bids %>
 
@@ -23,7 +24,7 @@
   <tr>
 		<td class="vehicle">	
 			<%= link_to h(entry.vehicle), entry %>
-			<p><%=h entry.plate_no %> <%= "by #{entry.user.username}" if current_user != entry.user %></p>
+			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' if current_user != entry.user %></p>
 		</td>
 		<td class="decline-type">
 		  <%= content_tag :p, entry.buyer_status, :class => 'strong' %>

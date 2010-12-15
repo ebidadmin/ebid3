@@ -38,6 +38,15 @@ class ApplicationController < ActionController::Base
       warden.logout(scope)
     end
 
+    def store_location
+      # session[:return_to] = instance['env']["HTTP_REFERER"]
+    end
+    
+    def redirect_back_or_default(default)
+      redirect_to (session[:return_to] || default)
+      session[:return_to] = nil
+    end
+
   	def check_role(role) 
   	  unless current_user && current_user.has_role?(role) 
   	    flash[:warning] = "Sorry. That page is not included in your access privileges." 

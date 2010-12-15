@@ -1,3 +1,28 @@
 <% title "Edit Rating" %>
 
-<%= render 'form' %>
+<%= form_for [@order, @rating] do |f| %>
+<%= f.error_messages %>
+<div class="first rating">
+	<%= content_tag :h3,  @order.entry.vehicle %>
+	<%= content_tag :p, 'Rated by:', :class => 'label' %>
+	<%= content_tag :p, (@rating.user.profile.full_name + " (#{@rating.user.profile.company.name})"), :class => 'name' %>
+	<%= content_tag :p, 'Rating for:', :class => 'label' %>
+	<%= content_tag :p, (@rating.ratee.profile.full_name + " (#{@rating.ratee.company.name})"), :class => 'name' %>
+	<%= content_tag :p, (f.label :stars, "Performance Rating:") %>
+	<div class='stars'>
+    <% 1.upto(10) do |i| %>
+		 <label for="rating-<%= i %>">
+      <%= f.radio_button :stars, (i.to_f/2).to_f, :id => "#{(i.to_f/2).to_f} stars" %>
+      <%= "#{(i.to_f/2).to_f} stars" %>
+			</label>
+    <% end %>
+	</div>
+	<%= content_tag :p, (f.label :review, "Short Review/Comment:") %>
+	<%= content_tag :p, (f.text_area :review, :rows => 3) %>
+  <%= f.submit %>
+</div>
+<% end %>
+
+<% content_for :javascripts do %>
+	<%= javascript_include_tag 'stars' %>
+<% end %>

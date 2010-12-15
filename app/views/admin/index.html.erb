@@ -22,11 +22,9 @@
 			<td class="one">
 				<p><%= link_to entry.vehicle, entry %></p>
 				<p><%= entry.plate_no %></p>
-				<%= content_tag :p, entry.ref_no if entry.ref_no  %>
 			</td>
 			<td>
-				<p><%= entry.user.profile.full_name %></p>
-				<p><%= entry.user.profile.company.name %></p>
+				<p><%= entry.user.username %></p>
 			</td>
 			<td class="two">
 				<p><%= entry.buyer_status %></p>
@@ -50,17 +48,15 @@
 		<tr>
 			<td class="one">
 				<p>
-					<%= user.profile.full_name if user.profile %>
-					<%= user.username unless user.profile %>
+					<%= user.username  %>
 				</p>
-				<p><%= user.profile.company.name unless user.profile.company.nil? %></p>
 			</td>
 			<td>
-				<p class="instruction"><%= time_ago_in_words user.last_sign_in_at if user.last_sign_in_at %> ago</p>
+				<p class="instruction"><%= time_ago_in_words user.current_sign_in_at if user.current_sign_in_at %> ago</p>
 			</td>
 			<td class="two">
-				<% if user.last_sign_in_at && user.last_sign_in_at > 20.minutes.ago %>
-					<%= image_tag '/images/yes.png' -%>
+				<% if user.current_sign_in_at && user.current_sign_in_at > 1.hour.ago %>
+					<%= image_tag '/images/base/yes.png' -%>
 				<% end %>
 			</td>
 		</tr>

@@ -1,50 +1,54 @@
 <% title "Registered Users" %>
 
-<%= form_tag users_path, :method => 'get' do %>  
-  <p>  
-    <%= text_field_tag :search, params[:search] %>  
-    <%= submit_tag "Search", :name => nil %>  
-  </p>  
-<% end %>
-<%#= paginattion @users %>
+<%= render :partial => 'search_users' %>
+<%= will_paginate @users %>
+<%= page_info @users %>
 
 <table id="users-index">
   <tr>
 		<th>Active?</th>
-    <th>Last Activity</th>
-    <th>User</th>
-    <th>Email</th>
+    <th class='last'>Last Activity</th>
+    <th class='user'>User</th>
+    <th class='rating'>Ave. Rating</th>
     <th>Enabled?</th>
-		<th>Roles</th>
+		<th class='roles'>Roles</th>
+		<th class='birthday'>Birthday</th>
 		<th></th>
   </tr>
   <% for user in @users %>
     <tr>
 			<td>
-				<% if user.last_sign_in_at && user.last_sign_in_at > 5.minutes.ago %>
-					<%= image_tag '/images/yes.png' -%>
+				<% if user.current_sign_in_at && user.current_sign_in_at > 1.hour.ago %>
+					<%= image_tag '/images/base/yes.png' -%>
 				<% end %>
 			</td>
-      <td>
-				<p><%=h user.last_sign_in_at.to_s(:short) unless user.last_sign_in_at.nil? %></p>
-				<p><%=h "(#{time_ago_in_words user.last_sign_in_at} ago)" unless user.last_sign_in_at.nil? %></p>
+      <td class='last'>
+				<p><%=h user.current_sign_in_at.to_s(:short) unless user.current_sign_in_at.nil? %></p>
+				<p><%=h "(#{time_ago_in_words user.current_sign_in_at} ago)" unless user.current_sign_in_at.nil? %></p>
 			</td>
-      <td>
-				<p><%=h user.profile.full_name if user.profile %> (<%=h user.username %>)</p>
+      <td class='user'>
+				<p><%= user.username %></p>
 				<p><%=h user.company.name unless user.company.nil? %></p>
 			</td>
-      <td><%=h user.email %></td>
+      <td class='rating'>
+				<%= star_images(Rating.where(:ratee_id => user).average('stars').to_f) %>
+				<% unless Rating.where(:ratee_id => user).blank? %>
+				<%= content_tag :p, ('based on ' + (link_to (pluralize Rating.where(:ratee_id => user).count, 'rating'), user_ratings_path(user))).html_safe %>
+				<% end %>
+			</td>
       <td>
 				<%= user.enabled ? 'Yes' : 'No' -%>  
 				<%= enabling_toggle(user) %>
       </td>
-			<td>
+			<td class='roles'>
 				<% for role in user.roles %>
 					<%= role.name %>
 				<% end %>
 			</td>
-      <td class="center">
-    		<%= link_to "Account Info", user %>
+			<td class='birthday'><%= user.profile.birthdate.strftime('%b %d') unless user.profile.blank? %></td>
+      <td class="links">
+    		<%= content_tag :p, (link_to "View Info", user) %>
+				<%= content_tag :p, (link_to "Delete", user, :confirm => 'Are you sure? WARNING: This will remove all entries and bids related to this user.', :method => :delete)  %>
 			</td>
     </tr>
   <% end %>

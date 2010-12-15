@@ -7,6 +7,7 @@
 	<%= dash_entry_format("total-items", "Total parts requested", nil,  (number_with_delimiter @line_items_count) ) %>
 	<%= dash_entry_format("total-bided", "Total parts bided on", (number_to_percentage @bid_percentage, :precision => 2), (number_with_delimiter @bids_count) ) %>
 	<%= dash_entry_format("missed-oppty", "Missed opportunity", (number_to_percentage @missed_percentage, :precision => 2), (number_with_delimiter @missed_count) ) %>
+	<%= dash_entry_format("ratings", "Your performance rating", ('based on ' + (link_to (pluralize @ratings.count, 'rating'), user_ratings_path(current_user))).html_safe, star_images(@ratings.average('stars').to_f) ) %>
 </ul>
 <ul class='supplier dash last'>
   <h3>Orders</h3>

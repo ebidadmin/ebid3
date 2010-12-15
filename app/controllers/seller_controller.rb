@@ -3,6 +3,7 @@ class SellerController < ApplicationController
   
   def main
     @last_activity = current_user.last_sign_in_at unless current_user.last_sign_in_at.nil?
+    @ratings = Rating.where(:ratee_id => current_user)
     @last_bid = current_user.bids.last.created_at unless current_user.bids.last.nil?
     @line_items_count = LineItem.all.size
     @bids_count = current_user.bids.collect(&:line_item_id).uniq.count
@@ -52,7 +53,7 @@ class SellerController < ApplicationController
 
   def orders
     @title = "Purchase Orders"
-    @sort_order =" date the PO was released - ascending order"
+    @sort_order =" PO date - descending order"
     @all_orders = Order.by_this_seller(current_user).recent
     @search = @all_orders.search(params[:search])
     @orders = @search.paginate :page => params[:page], :per_page => 10    
@@ -82,7 +83,7 @@ class SellerController < ApplicationController
   
   def fees
     @title = "Transaction Fees for Paid Orders"
-    @sort_order =" date declined - descending order"
+    @sort_order =" date PO was paid - descending order"
     @all_orders = Order.by_this_seller(current_user).paid_and_closed
     @orders = @all_orders.paginate :page => params[:page], :per_page => 10
   end

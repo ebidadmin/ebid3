@@ -1,5 +1,5 @@
 <%= form_for [@order, @rating] do |f| %>
-  <%= f.error_messages %>
+<%= f.error_messages %>
 <div class="first rating">
 	<%= content_tag :h3,  @order.entry.vehicle %>
 	<%= content_tag :p, 'Rated by:', :class => 'label' %>

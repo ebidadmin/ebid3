@@ -1,6 +1,6 @@
 class RatingsController < ApplicationController
   def index
-    @ratings = Rating.all
+    @ratings = Rating.where(:ratee_id => User.find_by_username(params[:user_id]))
   end
   
   def show
@@ -36,15 +36,16 @@ class RatingsController < ApplicationController
   end
   
   def edit
-    @order = Order.find(params[:order_id])
+    store_location
     @rating = Rating.find(params[:id])
+    @order = @rating.order
   end
   
   def update
     @rating = Rating.find(params[:id])
     if @rating.update_attributes(params[:rating])
       flash[:notice] = "Successfully updated rating."
-      redirect_to order_ratings_path
+      redirect_back_or_default user_ratings_path(current_user) #redirect_to user_ratings_path(current_user)
     else
       render :action => 'edit'
     end
@@ -53,7 +54,7 @@ class RatingsController < ApplicationController
   def destroy
     @rating = Rating.find(params[:id])
     @rating.destroy
-    flash[:notice] = "Successfully destroyed rating."
-    redirect_to ratings_url
+    flash[:notice] = "Successfully deleted rating."
+    redirect_to :back
   end
 end

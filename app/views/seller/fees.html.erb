@@ -2,10 +2,10 @@
 
 
 <%- unless @orders.blank? -%>
-<div id='flash_notice'>
+<h2 id='flash_notice'>
   Total Paid Orders: <%= number_to_currency(@all_orders.collect(&:total_order_amounts).sum, :unit => "P ") %> /
   Total Success Fees: <%= number_to_currency(@all_orders.collect(&:total_success_fees).sum, :unit => "P ") %>
-</div>
+</h2>
 
 <%= will_paginate @orders %>
 <%= page_info @orders, @sort_order %>
@@ -30,7 +30,7 @@
   		<div class="po-delivery">	
 	      <%= content_tag :p, 'Delivered: ' + order.delivered.strftime('%b %d'), :class => 'instruction'  unless order.delivered.nil? %>
 	      <%= content_tag :p, 'Paid: ' + order.paid.strftime('%b %d') + 
-						" (#{time_ago_in_words order.paid} ago)", :class => 'instruction'  unless order.paid.nil? %>
+						" (#{time_ago_in_words order.paid} ago)", :class => 'instruction offwhite'  unless order.paid.nil? %>
 			</div>
 			<div class="amount-paid">
   			<%= number_to_currency(order.bids.collect(&:total).sum, :unit => "") + ('<br>').html_safe + link_to("View PO # #{order.id}", order) %>

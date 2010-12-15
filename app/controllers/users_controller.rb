@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  before_filter :check_admin_role, :only => [:index, :destroy, :enable]
+  before_filter :check_admin_role, :only => [:index, :destroy, :enable, :disable]
    
   def index
-    # @search = User.search(params[:search])
-    @users = User.search(params[:search]).order('last_sign_in_at DESC').all
+    @search = User.order('current_sign_in_at DESC').search(params[:search])
+    @users = @search.paginate(:page => params[:page], :per_page => 20)
   end
   
   def show
@@ -44,8 +44,8 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find_by_username(params[:id])
     @user.destroy
-    flash[:notice] = "Successfully destroyed user."
-    redirect_to users_url
+    flash[:notice] = "Successfully deleted user."
+    redirect_to :back
   end
 
 	def enable 

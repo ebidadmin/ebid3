@@ -1,0 +1,5 @@
+<h3>
+	Your average rating : 
+	<%= star_images(@ratings.average('stars').to_f) %>
+	<%= content_tag :span, ('based on ' + (link_to (pluralize @ratings.count, 'rating'), user_ratings_path(current_user))).html_safe %>
+</h3>

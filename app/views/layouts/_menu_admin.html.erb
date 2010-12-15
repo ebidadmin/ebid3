@@ -1,8 +1,10 @@
 <%= nav_link 'Dashboard', admin_index_path %>
-<%= menu_link 'All Entries',  'admin', 'entries' %>
+<%= menu_link 'All Entries',  'admin', 'entries', nil %>
 <%= nav_link 'Bid Board', admin_online_path %>
 <%= nav_link 'Latest Bids', admin_bids_path %>
 <%= nav_link 'Orders',  admin_orders_path %> 
+<%= nav_link 'Payments',  admin_payments_path %> 
+<%= nav_link 'Buyer Fees', admin_buyer_fees_path %> 
+<%= nav_link 'Supplier Fees', admin_supplier_fees_path %> 
 <%= nav_link 'Users & Ratings', users_path %> 
-<%= nav_link 'Fees', admin_fees_path %> 
 <%= nav_link 'Utilities', admin_utilities_path %>

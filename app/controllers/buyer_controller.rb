@@ -4,6 +4,7 @@ class BuyerController < ApplicationController
   def main
     @title = "Buyer's Dashboard"
     @last_activity = current_user.last_sign_in_at
+    @ratings = Rating.where(:ratee_id => current_user)
     if current_user.has_role?("powerbuyer")
       initiate_list
       delivered = Order.where(:company_id => current_user.company).delivered
@@ -39,7 +40,7 @@ class BuyerController < ApplicationController
 
   def results
     @title = 'Bidding Results'
-    @tag_collection = ["ForDecision", "Ordered-IP", "Declined-IP"]
+    @tag_collection = ["For-Decision", "Ordered-IP", "Declined-IP"]
     initiate_list
     find_entries
     @search = @finder.current.asc.search(params[:search])
@@ -48,7 +49,7 @@ class BuyerController < ApplicationController
   end
   
   def orders
-    @title = 'Orders'
+    @title = 'Purchase Orders'
     @sort_order =" PO date - descending order"
     @tag_collection = ["PO Released", "For Delivery"]
     initiate_list
