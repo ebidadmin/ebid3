@@ -1,0 +1,20 @@
+Hi E-Bid Admin!
+
+Bid/s were posted for
+
+	Ref No.:    <%= @entry.ref_no if @entry.ref_no %>
+	Vehicle:    <%= @entry.vehicle %>
+	Plate No.:  <%= @entry.plate_no %>
+
+	
+ITEM BID/S
+
+  <% @bids.group_by(&:line_item).each do |item, bids| %>         
+	<%= item.car_part.name %> 
+	
+		<% for bid in bids %>
+		<%= "Original:          #{ph_currency(bid.amount)}" unless bid.bid_type != "original" %><%= "Replacement: #{ph_currency(bid.amount)}" unless bid.bid_type != "replacement" %><%= "Surplus:          #{ph_currency(bid.amount)}" unless bid.bid_type != "surplus" %>
+		<% end %>
+		
+	<% end %>
+

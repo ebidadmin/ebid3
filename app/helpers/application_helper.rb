@@ -59,4 +59,7 @@ module ApplicationHelper
     end 
   end
   
+  def ph_currency(target)
+    number_to_currency target, :unit => 'P '
+  end
 end

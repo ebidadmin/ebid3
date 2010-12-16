@@ -9,13 +9,13 @@ Bid/s were posted for
 	
 ITEM BID/S
 
-  <% @bids.group_by(&:line_item) do |item, bids| %>         
+  <% @bids.group_by(&:line_item).each do |item, bids| %>         
 	<%= item.car_part.name %> 
+	
 		<% for bid in bids %>
-		<%= "Original:     Yes" unless bid.bid_type != "original" %>
-		<%= "Replacement:  Yes" unless bid.bid_type != "replacement" %>
-		<%= "Surplus:      Yes" unless bid.bid_type != "surplus" %>
+		<%= "Original:         Yes" unless bid.bid_type != "original" %><%= "Replacement: Yes" unless bid.bid_type != "replacement" %><%= "Surplus:          Yes" unless bid.bid_type != "surplus" %>
 		<% end %>
+		
 	<% end %>
 
 You may start deciding on the bids, or wait a while longer for other possible bidders.

@@ -36,12 +36,13 @@ class BidsController < ApplicationController
     if @new_bids.all?(&:valid?)
       @new_bids.each(&:save!)
       BidMailer.delay.bid_alert(@new_bids, @entry)
+      BidMailer.delay.bid_alert_to_admin(@new_bids, @entry)
       flash[:notice] = "Bid/s submitted. Thank you!"
     else
       flash[:warning] = "Something prevented submission of your bid/s. Please check, then try again."
     redirect_to :back
     end
-    respond_with(@new_bids, :location => :back)
+    # respond_with(@new_bids, :location => :back)
   end
 
   def show
