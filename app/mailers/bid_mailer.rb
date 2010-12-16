@@ -14,9 +14,10 @@ class BidMailer < ActionMailer::Base
       )
   end
   
-  def bid_alert_to_admin(bids, entry)
+  def bid_alert_to_admin(bids, entry, seller)
     @bids = bids
     @entry = entry
+    @seller = seller
     mail(
       :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
       :subject => "Admin Notice - bid/s submitted: #{entry.vehicle}"

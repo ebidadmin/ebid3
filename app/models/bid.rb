@@ -8,7 +8,7 @@ class Bid < ActiveRecord::Base
   belongs_to :car_part
   belongs_to :order
 
-  validates :amount, :numericality => true, :presence => true
+  validates :amount, :numericality => {:greater_than => 0}, :presence => true
   
   scope :desc, order('id DESC')
   scope :bt, order('bid_type')

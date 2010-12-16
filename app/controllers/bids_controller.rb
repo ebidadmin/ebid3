@@ -10,37 +10,41 @@ class BidsController < ApplicationController
     @entry = Entry.find(params[:entry_id])
     @line_items = @entry.line_items
     
-    @new_bids = Array.new
     @submitted_bids = params[:bids]
     @submitted_bids.each do |line_item, bidtypes|
       @line_item = LineItem.find(line_item)
 
       bidtypes.reject! { |k, v| v.blank? }
       bidtypes.each do |bid|
-        @existing_bid = current_user.bids.find_by_line_item_id_and_bid_type(line_item, bid[0])
-        if @existing_bid.nil?
-          @new_bid = current_user.bids.build
-      		@new_bid.entry_id = @entry.id
-      		@new_bid.line_item_id = line_item
-      		@new_bid.amount = bid[1]
-      		@new_bid.quantity = @line_item.quantity
-      		@new_bid.total = bid[1].to_f * @line_item.quantity.to_i
-          @new_bid.bid_type = bid[0]
-          @new_bids << @new_bid
-        else
-          @existing_bid.update_attributes!(:amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated')
+        unless bid[1].to_f < 1
+          @new_bids = Array.new
+          @existing_bid = current_user.bids.find_by_line_item_id_and_bid_type(line_item, bid[0])
+          if @existing_bid.nil? 
+            @new_bid = current_user.bids.build
+        		@new_bid.entry_id = @entry.id
+        		@new_bid.line_item_id = line_item
+        		@new_bid.amount = bid[1]
+        		@new_bid.quantity = @line_item.quantity
+        		@new_bid.total = bid[1].to_f * @line_item.quantity.to_i
+            @new_bid.bid_type = bid[0]
+            @new_bids << @new_bid unless @new_bid.amount < 1
+          else
+            @existing_bid.update_attributes!(:amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated')
+          end
         end
       end
     end
-    
-    if @new_bids.all?(&:valid?)
+
+    if @new_bids && @new_bids.all?(&:valid?)
       @new_bids.each(&:save!)
-      BidMailer.delay.bid_alert(@new_bids, @entry)
-      BidMailer.delay.bid_alert_to_admin(@new_bids, @entry)
+      BidMailer.delay.bid_alert(@new_bids, @entry) 
+      BidMailer.delay.bid_alert_to_admin(@new_bids, @entry, current_user)
       flash[:notice] = "Bid/s submitted. Thank you!"
     else
       flash[:warning] = "Something prevented submission of your bid/s. Please check, then try again."
-    redirect_to :back
+      respond_to do |format|
+        format.html { redirect_to seller_show_path(:brand => @entry.brand, :id => @entry.id) }
+      end 
     end
     # respond_with(@new_bids, :location => :back)
   end

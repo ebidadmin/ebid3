@@ -127,7 +127,7 @@ class EntriesController < ApplicationController
     
   def reactivate
     show
-    if @entry.update_attributes(:chargeable_expiry => nil, :expired => nil)
+    if @entry.update_attributes(:buyer_status => 'For Decision', :chargeable_expiry => nil, :expired => nil)
       @line_items.each do |line_item|
         unless line_item.order_item
           line_item.update_attribute(:status, 'For Decision') 

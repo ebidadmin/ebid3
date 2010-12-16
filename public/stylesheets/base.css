@@ -209,7 +209,7 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 @media print {
 body { border-top: 0; color: black; }
 body, .bid-box, .bid-field { background-color: transparent; }
-h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .button, #navigation, #global-links, #subnav { display: none; }
+h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .page-links a, .button, #navigation, #global-links, #subnav { display: none; }
 .selection-list { font-size: 1.2em; font-weight: bold; }
 #order .photo { display: none; }
 #order .vehicle-set span { color: black; }

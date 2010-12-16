@@ -13,8 +13,9 @@ ITEM BID/S
 	<%= item.car_part.name %> 
 	
 		<% for bid in bids %>
-		<%= "Original:          #{ph_currency(bid.amount)}" unless bid.bid_type != "original" %><%= "Replacement: #{ph_currency(bid.amount)}" unless bid.bid_type != "replacement" %><%= "Surplus:          #{ph_currency(bid.amount)}" unless bid.bid_type != "surplus" %>
+		* <%= "Original:          #{ph_currency(bid.amount)}" unless bid.bid_type != "original" %><%= "Replacement: #{ph_currency(bid.amount)}" unless bid.bid_type != "replacement" %><%= "Surplus:          #{ph_currency(bid.amount)}" unless bid.bid_type != "surplus" %>
 		<% end %>
 		
 	<% end %>
 
+BIDDER: <%= @seller.profile.full_name %> (<%= @seller.profile.company.name %>)

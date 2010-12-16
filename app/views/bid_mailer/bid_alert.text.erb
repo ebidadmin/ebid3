@@ -13,7 +13,7 @@ ITEM BID/S
 	<%= item.car_part.name %> 
 	
 		<% for bid in bids %>
-		<%= "Original:         Yes" unless bid.bid_type != "original" %><%= "Replacement: Yes" unless bid.bid_type != "replacement" %><%= "Surplus:          Yes" unless bid.bid_type != "surplus" %>
+		* <%= "Original:         Yes" unless bid.bid_type != "original" %><%= "Replacement: Yes" unless bid.bid_type != "replacement" %><%= "Surplus:          Yes" unless bid.bid_type != "surplus" %>
 		<% end %>
 		
 	<% end %>
