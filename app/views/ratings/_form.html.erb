@@ -1,7 +1,9 @@
 <%= form_for [@order, @rating] do |f| %>
 <%= f.error_messages %>
-<div class="first rating">
-	<%= content_tag :h3,  @order.entry.vehicle %>
+
+<%= render 'rating_info' %>
+
+<div class="second rating">
 	<%= content_tag :p, 'Rated by:', :class => 'label' %>
 	<%= content_tag :p, (current_user.profile.full_name + " (#{current_user.profile.company.name})"), :class => 'name' %>
 	<%= content_tag :p, 'Rating for:', :class => 'label' %>
@@ -13,7 +15,7 @@
 	<%= content_tag :p, (f.label :stars, "Performance Rating:") %>
 	<div class='stars'>
     <% 1.upto(10) do |i| %>
-		 <label for="rating-<%= i %>">
+		 	<label for="rating-<%= i %>">
       <%= f.radio_button :stars, (i.to_f/2).to_f, :id => "#{(i.to_f/2).to_f} stars" %>
       <%= "#{(i.to_f/2).to_f} stars" %>
 			</label>

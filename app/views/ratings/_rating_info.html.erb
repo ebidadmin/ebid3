@@ -1,0 +1,8 @@
+<ul class="dash rating">
+	<%= content_tag :h3, @entry.vehicle %>
+	<%= dash_entry_format("plate-no", "Plate No", nil,  @entry.plate_no) %>
+	<%= dash_entry_format("created", "Created", nil,  @entry.created_at.strftime('%b %d') ) %>
+	<%= dash_entry_format("ordered", "Ordered", nil,  @order.created_at.strftime('%b %d') ) %>
+	<%= dash_entry_format("delivered", "Delivered",  ((pluralize @order.days_to_deliver, 'day') + ' from order date'),  @order.delivered.strftime('%b %d') ) %>
+	<%= dash_entry_format("paid", "Paid", ((pluralize @order.days_to_pay, 'day') + ' from delivery date'),  @order.paid.strftime('%b %d') ) %>
+</ul>

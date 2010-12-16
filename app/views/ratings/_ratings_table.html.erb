@@ -1,0 +1,29 @@
+<table id='ratings-index'>
+  <tr>
+    <th class='order'>Order ID</th>
+    <th class='rater'>Rater</th>
+    <th class='ratee'>Ratee</th>
+    <th class='stars'>Rating</th>
+    <th class='review'>Review</th>
+		<th></th>
+  </tr>
+  <% for rating in @ratings %>
+   <tr>
+     <td class='order'><%= rating.order_id %> <%= link_to '[view]', rating.order %></td>
+     <td class='rater'><%= rating.user.profile.full_name %></td>
+     <td class='ratee'><%= rating.ratee.profile.full_name %></td>
+     <td class='stars'>
+			<%= star_images(rating.stars) %>
+			<%= content_tag :p, rating.created_at.strftime("%b %d, %Y at %R") %>
+		</td>
+     <td class='review'><%= rating.review %></td>
+     <td>
+			<% if current_user.has_role?('admin') || current_user == rating.user %>
+			<%= link_to "Edit", edit_order_rating_path(rating.order, rating) %>
+			<%= link_to "Delete", [rating.order, rating], :confirm => 'Are you sure?', :method => :delete %>
+			<% end %>
+		</td>
+   </tr>
+  <% end %>
+</table>
+

@@ -1,9 +1,9 @@
 class RatingsController < ApplicationController
   def index
     if params[:user_id] == 'all'
-      @ratings = Rating.where(:ratee_id => current_user.company.users)
+      @ratings = Rating.where(:ratee_id => current_user.company.users).desc
     else
-      @ratings = Rating.where(:ratee_id => User.find_by_username(params[:user_id]))
+      @ratings = Rating.where(:ratee_id => User.find_by_username(params[:user_id])).desc
     end
   end
   
@@ -14,7 +14,9 @@ class RatingsController < ApplicationController
   end
   
   def new
+    session['referer'] = request.env["HTTP_REFERER"]
     @order = Order.find(params[:order_id])
+    @entry = @order.entry
     @rating = current_user.ratings.build
   end
   
@@ -29,7 +31,7 @@ class RatingsController < ApplicationController
     end
       
     if @order.ratings << @rating
-      if @order.status == "Paid" && @order.ratings.where(:user_id => current_user).exists? && @order.ratings.where(:ratee_id => current_user).exists?
+      if @order.status == "Paid" && @order.ratings.where(:user_id => current_user.company.users).exists? && @order.ratings.where(:ratee_id => current_user.company.users).exists?
         @order.close
       end
       flash[:notice] = "Successfully submitted your rating. Thanks a lot!"
@@ -40,7 +42,7 @@ class RatingsController < ApplicationController
   end
   
   def edit
-    store_location
+    session['referer'] = request.env["HTTP_REFERER"]
     @rating = Rating.find(params[:id])
     @order = @rating.order
   end
@@ -49,7 +51,8 @@ class RatingsController < ApplicationController
     @rating = Rating.find(params[:id])
     if @rating.update_attributes(params[:rating])
       flash[:notice] = "Successfully updated rating."
-      redirect_back_or_default user_ratings_path(current_user) #redirect_to user_ratings_path(current_user)
+      redirect_to session['referer'] #redirect_to user_ratings_path(current_user)
+      session['referer'] = nil
     else
       render :action => 'edit'
     end
@@ -57,7 +60,10 @@ class RatingsController < ApplicationController
   
   def destroy
     @rating = Rating.find(params[:id])
-    @rating.destroy
+    @order = Order.find(@rating.order)
+    if @rating.destroy
+      @order.revert unless @order.status != 'Closed'
+    end
     flash[:notice] = "Successfully deleted rating."
     redirect_to :back
   end

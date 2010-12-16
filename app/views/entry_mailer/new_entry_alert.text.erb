@@ -11,6 +11,6 @@ A new entry has been created:
 
 Parts: 
 	<% @entry.line_items.each do |li| %>
-	[ <%= li.quantity %> ]  <%= li.car_part.name %>
+	[ <%= li.quantity %> ]  <%= li.car_part.name.html_safe %>
 	<% end %>
 

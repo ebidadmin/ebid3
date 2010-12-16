@@ -23,7 +23,7 @@ class Order < ActiveRecord::Base
   scope :recent, where("status IN ('PO Released', 'For Delivery')")
   scope :total_delivered, where("status IN ('Delivered', 'Paid', 'Closed')")
   scope :delivered, where(:status => 'Delivered')
-  scope :paid, where(:status => 'Paid').order('paid')
+  scope :paid, where(:status => 'Paid').asc2
   scope :closed, where(:status => 'Closed')
   scope :paid_and_closed, where("status IN ('Paid', 'Closed')").order('paid DESC')
 
@@ -76,7 +76,7 @@ class Order < ActiveRecord::Base
     end  
   end  
   
-  def days_overdue
+  def days_overdue # used in ORDERS#INDEX
     (Date.today - pay_until).to_i - 1
   end
 
@@ -84,9 +84,23 @@ class Order < ActiveRecord::Base
     (Time.now - confirmed).to_i - 1
   end
   
+  def days_to_deliver # used in RATINGS#FORM
+    (delivered - created_at.to_date).to_i 
+  end
+  
+  def days_to_pay # used in RATINGS#FORM
+    (paid - delivered).to_i
+  end
+  
   def close
     update_attribute(:status, "Closed")
-    entry.update_attribute(:buyer_status, "Closed")
+    # entry.update_attribute(:buyer_status, "Closed")
     update_associated_status("Closed")
   end
+  
+  def revert
+    update_attribute(:status, "Paid")
+    update_associated_status("Paid")
+  end
+
 end

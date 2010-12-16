@@ -13,7 +13,7 @@
 <ul class="dash admin last">
 	<h3>Online Entries</h3>
 	<% for entry in @online_entries %>
-	<%= dash_entry_format("online-ent", (link_to entry.vehicle, entry), "#{entry.plate_no} (#{entry.buyer_status} - #{time_ago_in_words entry.updated_at} ago)", entry.user.username ) %>
+	<%= dash_entry_format("online-ent", (link_to entry.vehicle, entry) + " #{entry.plate_no}", "(#{time_ago_in_words entry.updated_at} ago)", entry.user.username ) %>
 	<% end %>
 </ul>
 

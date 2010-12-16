@@ -6,10 +6,10 @@
   	<%= nav_link "Home", root_path -%>
   	<%= nav_link "About", site_about_path -%>
 		<% if current_user %> 
-			<%= nav_link "Edit My Profile", edit_user_registration_path  -%>
+			<%= nav_link "Edit My Profile", current_user  -%>
 			<%= nav_link "Logout", destroy_user_session_path -%>
 		<% else %> 
-				<%= nav_link "Sign up", new_user_registration_path -%>
+				<%= nav_link "Sign up", new_user_path -%>
 				<%= nav_link "Sign in", new_user_session_path -%>
 		<% end %>
 	</ul>

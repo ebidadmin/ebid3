@@ -7,4 +7,6 @@ class Rating < ActiveRecord::Base
   belongs_to :order, :counter_cache => true
   
   validates_presence_of :stars
+  
+  scope :desc, order('id DESC')
 end

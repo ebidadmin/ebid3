@@ -1,11 +1,11 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and 
-  devise :database_authenticatable, :registerable,
+  # :token_authenticatable, :confirmable, :lockable and :registerable,
+  devise :database_authenticatable, 
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me
+  # attr_accessible :username, :email, :password, :password_confirmation, :remember_me
   
   has_one :profile, :dependent => :destroy
   accepts_nested_attributes_for :profile, :allow_destroy => true, :reject_if => proc { |obj| obj.blank? }
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   has_many :ratings
   has_many :ratees, :through => :ratings, :dependent => :destroy
 
-  scope :active, where('last_sign_in_at > ?', 24.hours.ago).order('last_sign_in_at DESC').limit(5)
+  scope :active, where('last_sign_in_at > ?', 24.hours.ago).order('current_sign_in_at DESC').limit(5)
   
   validates_presence_of :username, :password, :password_confirmation, :email
   

@@ -8,4 +8,5 @@ public/system/*
 .svn/*
 .git
 .git/*
+lib/development_mail_interceptor.rb
 

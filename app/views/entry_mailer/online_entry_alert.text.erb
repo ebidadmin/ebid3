@@ -19,7 +19,7 @@ Put your bids here: http://www.ebid.com.ph<%= seller_show_path(:user_id => @sell
 
 Parts: 
 	<% @entry.line_items.each do |li| %>
-	[ <%= li.quantity %> ]  <%= li.car_part.name %>
+	[ <%= li.quantity %> ]  <%= li.car_part.name.html_safe %>
 	<% end %>
 
 This entry will be online until: <%= @entry.bid_until.to_s(:long) %> (maximum)

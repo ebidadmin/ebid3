@@ -35,6 +35,7 @@ class BidsController < ApplicationController
     
     if @new_bids.all?(&:valid?)
       @new_bids.each(&:save!)
+      BidMailer.delay.bid_alert(@new_bids, @entry)
       flash[:notice] = "Bid/s submitted. Thank you!"
     else
       flash[:warning] = "Something prevented submission of your bid/s. Please check, then try again."

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :check_admin_role, :only => [:index, :destroy, :enable, :disable]
-   
+  before_filter :authenticate_user!, :except => [:new, :create]
   def index
     @search = User.order('current_sign_in_at DESC').search(params[:search])
     @users = @search.paginate(:page => params[:page], :per_page => 20)

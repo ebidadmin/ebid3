@@ -4,7 +4,10 @@ class EntryMailer < ActionMailer::Base
   
   def new_entry_alert(entry)
     @entry = entry
-    mail(:to => "cymarquez@mac.com", :subject => "New Entry Created")
+    mail(
+      :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
+      :subject => "New Entry Created"
+      )
   end
   
   def online_entry_alert(seller, entry)

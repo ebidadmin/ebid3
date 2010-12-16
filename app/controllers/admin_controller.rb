@@ -58,8 +58,13 @@ class AdminController < ApplicationController
   def payments
     @title = "Delivered Orders - For Payment"
     @sort_order =" due date (per vehicle) - ascending order"
+    @sellers = Role.find_by_name('seller').users.order('username').collect { |seller| [seller.company_name, admin_payments_path(:seller => seller.id)]}
+    @sellers.push(['All', admin_payments_path(:seller => nil)]) unless @sellers.blank?
+    @sellers_path = admin_payments_path(:seller => params[:seller])
+ 
     @all_orders = Order.delivered.unpaid.asc
     @search = @all_orders.search(params[:search])
+    @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
     @orders = @search.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
@@ -79,5 +84,9 @@ class AdminController < ApplicationController
     @all_orders = Order.paid_and_closed
     @orders = @all_orders.paginate :page => params[:page], :per_page => 10
     render 'seller/fees'
+  end
+
+  def utilities
+    
   end
 end
