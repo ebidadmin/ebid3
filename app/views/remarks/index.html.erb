@@ -1,0 +1,17 @@
+<% title "Remarks" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% for remarks in @remarks %>
+    <tr>
+      <td><%= remarks.name %></td>
+      <td><%= link_to "Show", remarks %></td>
+      <td><%= link_to "Edit", edit_remarks_path(remarks) %></td>
+      <td><%= link_to "Destroy", remarks, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Remarks", new_remarks_path %></p>

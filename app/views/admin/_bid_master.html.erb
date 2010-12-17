@@ -13,7 +13,9 @@
 <% else %>
 
 	<td class="bid-box" colspan=4>
-	  <% if item.status == "PO Released" || item.status == "Ordered" || item.status == "For Delivery" %>
+	  <% if item.status == "PO Released" || item.status == "Ordered" %>
+			<%= content_tag :strong, item.status %> as of <%= item.order.created_at.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+		<% elsif item.status == "For Delivery" %>
  				<%= content_tag :strong, item.status %> as of <%= item.order.confirmed.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
  		<% elsif item.status == "Delivered" %>
  				<%= content_tag :strong, 'Delivered' %> as of <%= item.order.delivered.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>

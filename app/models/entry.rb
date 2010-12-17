@@ -21,6 +21,7 @@ class Entry < ActiveRecord::Base
   has_many :bids, :dependent => :destroy
   has_many :orders
   has_many :order_items, :through => :orders
+  has_many :comments, :dependent => :destroy
 
   validates_presence_of :year_model, :car_brand, :car_model, :plate_no, :serial_no, :motor_no, :term
   validates_presence_of :city, :if => :new_city_blank

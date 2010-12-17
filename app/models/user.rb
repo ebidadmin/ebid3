@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_one :seller, :through => :order
   has_many :ratings
   has_many :ratees, :through => :ratings, :dependent => :destroy
+  has_many :comments, :dependent => :destroy
 
   scope :active, where('last_sign_in_at > ?', 24.hours.ago).order('current_sign_in_at DESC').limit(5)
   

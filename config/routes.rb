@@ -41,6 +41,7 @@ Ebid::Application.routes.draw do
   resources :car_brands
   resources :companies
   resources :ranks
+  resources :remarks
   
   match 'admin/dashboard' => 'admin#index', :as => :admin_index, :via => :get
   match 'admin/entries(/:user_id(/:page))' => 'admin#entries', :as => :admin_entries, :via => :get

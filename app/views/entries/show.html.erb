@@ -2,6 +2,7 @@
 
 <%= render 'shared/photo_set' %>
 <%= render 'shared/info_vehicle', :entry => @entry %>
+
 <h4 id="del-status">Status: <%= @entry.buyer_status %></h4>
 
 <%= form_tag accept_bids_path(:entry_id => @entry), :method => :post do  %>

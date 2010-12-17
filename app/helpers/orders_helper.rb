@@ -1,7 +1,7 @@
 module OrdersHelper
   def payment_due_status(order)
     if order.pay_until < Date.today
-      content_tag :p, ("Due Date: #{order.pay_until.strftime('%b %d')} | Overdue: #{order.days_overdue} days"), :class => alert_class(order) 
+      content_tag :p, ("Due Date: #{order.pay_until.strftime('%b %d')} | Overdue: #{pluralize order.days_overdue, 'day'} "), :class => alert_class(order) 
     elsif order.pay_until == Date.today
       content_tag :p, 'Due today!', :class => 'mild-alert'
     else
