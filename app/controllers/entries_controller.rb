@@ -17,7 +17,7 @@ class EntriesController < ApplicationController
   def show
     @entry = Entry.find(params[:id])
     @line_items = @entry.line_items
-    @remarks = Remark.new
+    # @remarks = Remark.new
   end
   
   def new

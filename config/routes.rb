@@ -1,6 +1,8 @@
 Ebid::Application.routes.draw do
 
-  devise_for :users, :as => :account
+  resources :comments
+
+  devise_for :users, :path => :account
 
   match 'users/:user_id/entries(-:status(/:page))' => 'entries#index', :as => :user_entries, :via => :get
   resources :users do
@@ -40,8 +42,7 @@ Ebid::Application.routes.draw do
   resources :car_models
   resources :car_brands
   resources :companies
-  resources :ranks
-  resources :remarks
+  resources :ranks  
   
   match 'admin/dashboard' => 'admin#index', :as => :admin_index, :via => :get
   match 'admin/entries(/:user_id(/:page))' => 'admin#entries', :as => :admin_entries, :via => :get

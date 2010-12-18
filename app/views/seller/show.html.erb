@@ -1,11 +1,12 @@
 <% title "Bids for #{@entry.vehicle}" %>
 
-<%= render 'shared/photo_set' %>
-<%= render 'shared/info_vehicle', :entry => @entry %>
-
 <%= content_tag :h3, 'Status: ' + @entry.buyer_status , :id => 'bidding-message', :class => 'highlight' %>
 
-<%= form_tag bids_path(:entry_id => @entry), :remote => true do |f|  %>
+<%= render 'shared/photo_set' %>
+<%= render 'shared/info_vehicle', :entry => @entry %>
+<%= render 'shared/comments' %>
+
+<%= form_tag bids_path(:entry_id => @entry), :remote => true do %>
 	
 	<table id="item-bids">
 		<%= render 'bid_table' %>
@@ -26,8 +27,8 @@
 <% end %>
 
 <% content_for :javascripts do %>
-	<%= stylesheet_link_tag 'shadowbox', :cache => false %>
-	<%= javascript_include_tag 'shadowbox', :cache => false %>
+	<% stylesheet 'shadowbox' %>
+	<%= javascript_include_tag 'shadowbox' %>
 	<script type="text/javascript">
 			Shadowbox.init();		
 	</script>

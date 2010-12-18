@@ -2,15 +2,12 @@
 
 		<%= link_to "put online", put_online_entry_path(entry) %>
 		<%= link_to "edit", edit_entry_path(entry) %>
-		<%= link_to "remove", entry, 
-			:confirm => 'Are you sure you want to delete this entry?',
-				:method => :delete %>
+		<%= link_to "remove", entry, :confirm => 'Are you sure you want to delete this entry?', :method => :delete %>
 
 <% elsif current_page? buyer_online_path %>
 
   <% unless entry.bids.size < 1  %>
-  	<%= link_to("Decide Now", decide_entry_path(entry), 
-  		:confirm => 'Are you sure? This will take the entry offline. Bidding for this item will stop.') if entry.expired.blank? %>
+  	<%= link_to("Decide Now", decide_entry_path(entry), :confirm => 'Are you sure? This will take the entry offline. Bidding for this item will stop.') if entry.expired.blank? %>
   <% end %>
 
 <% elsif current_page? buyer_results_path %>

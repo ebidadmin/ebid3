@@ -111,7 +111,6 @@ table td .fee { font-size: 1.2em; font-weight: bold; }
 
 /* SUPPLIER - MAIN HUB
 ---------------------------------------------------------------------- */
-#bidding-message { clear: both; margin: 1em 0 0; padding: 15px 0; text-align: center; }
 table#item-bids { clear: both; margin: 4em 0 1em; }
 table .qty { width: 10%; text-align: center; }
 table .partname { text-align: left; }
@@ -160,7 +159,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 /* PHOTO SETS
 ---------------------------------------------------------------------- */
 .photo { float: left; padding: 5px; background-color: rgba(255,255,255,0.9); border: 1px solid #CCC; height: 60px; width: 80px; }
-.photo-set { float: left; width: 33%; }
+.photo-set { float: left; width: 33%; margin-bottom: 2em; }
 .photo-set ul li { float: left; margin: 0 5px 10px 0; }
 .photo-set .photo:hover { border: 1px solid #5f6252; opacity: 1; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
 
@@ -214,9 +213,23 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 /* VEHICLES SETS
 ---------------------------------------------------------------------- */
-.vehicle-set, #show-parts { position: relative; overflow: hidden; float: right; width: 60%; margin-bottom: 2em; }
+.vehicle-set { position: relative; overflow: hidden; float: right; width: 60%; margin-bottom: 2em; }
 .vehicle-set li { clear: both; margin-left: 60px; }
 .vehicle-set li span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 30%; }
+
+/* COMMENTS IN ENTRIES#SHOW
+---------------------------------------------------------------------- */
+#show-comments { border: 1px solid #CCC; clear: both; float: left; margin-bottom: 2em; padding: 10px; width: 938px; overflow: hidden;}
+#show-comments h3 { float: left; }
+#show-comments #comments-list { clear: both; float: left; margin: 0; width: 460px; }
+#show-comments li { clear: both; float: left; margin-bottom: 5px;}
+#show-comments #creator, #show-comments #comment, #show-comments #datetime { float: left; }
+#show-comments #creator { color: #999; font-weight: bold; width: 15%;  }
+#show-comments #comment { width: 65%; }
+#show-comments #datetime { width: 20%; }
+#show-comments form { float: left; width: 460px; text-align: center;}
+#show-comments form input { margin-top: 0; }
+#show-comments form input[type='text'] { margin-right: 10px; }
 
 /* PURCHASE ORDER
 ---------------------------------------------------------------------- */
@@ -234,7 +247,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #del-instructions { width: 450px; }
 #del-instructions li { clear: both; padding-left: 140px; }
 #del-instructions span { font-weight: bold; color: #999; display: block; float: left; margin-left: -140px; width: 30%; }
-#del-status { background-color: #FFF6BF; clear: both; color: #C00; margin-top: 5em; padding: 10px 0; text-align: center; }
+#del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
 #order { clear: both; overflow: hidden; margin: 1.5em 0; border-bottom: 1px solid #999; }
 #order .vehicle-set { float: left; margin: 0 10px 1em; width: 280px; }
 #order .vehicle-set li { clear: both; float: left; width: 280px; }
@@ -259,20 +272,13 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 .first.profile li, .second.usage li { clear: both; }
 .first.profile li span, .second.usage li span { color: #999; float: left; font-weight: bold; width: 25%;}
 
-/* ADMIN - MONITORING */
-table.admin ul.entry-links li { float: none; }
-table.admin li { float: left; width: 100%; }
-table.admin .vehicle ul { margin: 0 0 0 110px; }
-table.admin .vehicle li a { font-size: 1em; }
-table.admin .vehicle li span { width: 40%; }
-table.admin .bid-box ul { margin: 0; overflow: hidden; }
-ul.first.rating li { margin-bottom: 1.5em; }
-.profile { min-height: 300px; }
-.profile li, .usage li, #show-company-info li { margin-bottom: 0.5em; }
-.usage li#pwd { margin-bottom: 1.5em; }
-.col-3 { width: 60%; }
-#search-form span { margin-right: 10px; }
-#search-form { margin-bottom: 10px; }
+
+/* RATINGS#INDEX
+---------------------------------------------------------------------- */
+#ratings-index .order { text-align: center; width: 10%; }
+#ratings-index .rater, #ratings-index .ratee { text-align: left; width: 12%; }
+#ratings-index .stars { text-align: center; width: 15%; }
+#ratings-index .review { background-color: #FFF6BF; text-align: center; width: 40%; }
 
 /* RATINGS#NEW & #SHOW
 ---------------------------------------------------------------------- */
@@ -289,14 +295,3 @@ ul.first.rating li { margin-bottom: 1.5em; }
 #show-rating p { float: left; margin-bottom: .5em; height: 1.4em; line-height: 1.4em; }
 #show-rating .label { clear: both; width: ; }
 
-/* RATINGS#INDEX
----------------------------------------------------------------------- */
-#ratings-index .order { text-align: center; width: 10%; }
-#ratings-index .rater, #ratings-index .ratee { text-align: left; width: 12%; }
-#ratings-index .stars { text-align: center; width: 15%; }
-#ratings-index .review { background-color: #FFF6BF; text-align: center; width: 40%; }
-
-/* AUDIT TRAIL
----------------------------------------------------------------------- */
-#audits .bid-box { max-width: 570px; text-align: left; }
-h2 span { font-size: .9em; color: #999; }

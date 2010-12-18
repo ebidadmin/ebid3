@@ -45,7 +45,7 @@
 
 <% content_for :javascripts do %>
 	<%= javascript_include_tag 'dynamic_models', 'nested_form' %>
-	<%= stylesheet_link_tag 'blitzer/jquery-ui-1.8.6.custom' %>
+	<% stylesheet 'blitzer/jquery-ui-1.8.6.custom' %>
 	<script type="text/javascript" charset="utf-8">
 	$(function() {
 		$('#datepicker').datepicker({ 

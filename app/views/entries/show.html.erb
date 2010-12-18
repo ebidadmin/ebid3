@@ -1,9 +1,10 @@
 <% title "Bids for #{@entry.vehicle}" %>
 
+<%= content_tag :h3, 'Status: ' + @entry.buyer_status , :id => 'bidding-message', :class => 'highlight' %>
+
 <%= render 'shared/photo_set' %>
 <%= render 'shared/info_vehicle', :entry => @entry %>
-
-<h4 id="del-status">Status: <%= @entry.buyer_status %></h4>
+<%= render 'shared/comments' %>
 
 <%= form_tag accept_bids_path(:entry_id => @entry), :method => :post do  %>
 <table class="buyer monitor-bids">
@@ -59,8 +60,8 @@
 
 
 <% content_for :javascripts do %>
-	<%= stylesheet_link_tag 'shadowbox', :cache => false %>
-	<%= javascript_include_tag 'shadowbox', :cache => false %>
+	<% stylesheet 'shadowbox' %>
+	<%= javascript_include_tag 'shadowbox' %>
 	<script type="text/javascript">
 			Shadowbox.init();		
 	</script>

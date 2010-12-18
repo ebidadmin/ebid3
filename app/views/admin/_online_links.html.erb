@@ -5,8 +5,7 @@
 <% elsif entry.buyer_status == 'Online' %>
 
   <% unless entry.bids.size < 1  %>
-  	<%= link_to("Decide Now", decide_entry_path(entry), 
-  		:confirm => 'Are you sure? This will take the entry offline. Bidding for this item will stop.') if entry.expired.blank? %>
+  	<%= link_to("Decide Now", decide_entry_path(entry), :confirm => 'Are you sure? This will take the entry offline. Bidding for this item will stop.') if entry.expired.blank? %>
   <% end %>
 
 <% end %>

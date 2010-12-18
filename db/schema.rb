@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101216081800) do
+ActiveRecord::Schema.define(:version => 20101218010024) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -99,6 +99,15 @@ ActiveRecord::Schema.define(:version => 20101216081800) do
 
   create_table "cities", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.integer  "entry_id"
+    t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -278,6 +287,7 @@ ActiveRecord::Schema.define(:version => 20101216081800) do
 
   create_table "remarks", :force => true do |t|
     t.integer  "user_id"
+    t.string   "user_type"
     t.integer  "entry_id"
     t.text     "remark"
     t.datetime "created_at"
