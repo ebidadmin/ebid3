@@ -10,6 +10,7 @@ del { text-decoration: line-through; }
 table, fieldset { margin-bottom: 1.4em; }
 tfoot { font-style: italic; }
 caption { background: transparent; }
+
 /* GENERAL TYPOGRAPHY
 ---------------------------------------------------------------------- */
 h1 { font-size: 3em; line-height: 1; margin-bottom: 0.5em; }
@@ -33,6 +34,7 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .regular-alert { background-color: white; border-color: #B60002; }
 .comfy-alert { background-color: white; border-color: #CCC; }
 #bidding-message { clear: both; margin: 0 0 1em; padding: 15px 0; text-align: center; }
+
 /* FLASH & ERROR MESSAGES
 ---------------------------------------------------------------------- */
 #flash_notice, #flash_error, #flash_alert, #flash_warning, #errorExplanation, .flash { border: 2px solid; font-size: 1.2em; margin: 0.5em 0; padding: 15px 10px 15px 75px; background-repeat: no-repeat; background-position: 20px center; }
@@ -51,6 +53,7 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .error_messages p { margin: 8px 10px; }
 .error_messages ul { margin: 0; }
 .error_messages ul li { list-style: square inside; margin-left: 10px; }
+
 /* FORMS
 ---------------------------------------------------------------------- */
 fieldset { padding: 1.4em; border: 1px solid #ccc; -moz-border-radius: 1em; -webkit-border-radius: 1em; }
@@ -70,6 +73,7 @@ input[type="submit"], input[type="button"], #content-main a.button { -moz-border
 input[type="submit"]:hover, input[type="button"]:hover, #content-main  a.button:hover { background: #6B9D28; }
 input[type="submit"]:active, input[type="button"]:active, #content-main a.button:active { -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); color: #A9C08C; margin-top: 2px; }
 input#datepicker { margin-right: 10px; }
+
 /* TABLES & PSEUDO TABLES
 ---------------------------------------------------------------------- */
 table { background: transparent; margin: 0 auto 1.5em; width: 100%; border-collapse: collapse; text-align: left; opacity: 0.8; overflow: hidden; }
@@ -84,16 +88,17 @@ li.selection-title span, li.selection-list span { padding: 10px 0 10px 8px; marg
 table tr:last-child, li.selection-list:last-child { border-bottom: 2px solid #999; }
 table tr.selection-total,
 table tr.accept-decline { border-bottom: none; }
+
 /* PAGINATION
 ---------------------------------------------------------------------- */
-#content-main .pagination { clear: both; color: #666666; /
-*padding: 10px 0*/; position: relative; float: left; margin: 0 10px 0 0; }
+#content-main .pagination { clear: both; color: #666666; position: relative; float: left; margin: 0 10px 0 0; }
 #content-main .pagination a:link, #content-main .pagination a:visited, #content-main .pagination a:hover, #content-main .pagination a:active, #content-main .pagination em { background: #FFFFFF none repeat scroll 0 0; margin-right: 1px; padding: 2px 5px; text-decoration: none; color: #999; }
 #content-main .pagination span.current, #content-main .pagination em { background: #C00 none repeat scroll 0 0; color: #FFF; }
 #content-main .pagination a:hover { background: #999; color: #FFF; }
 #content-main .pagination span { background: transparent none repeat scroll 0 0; color: #CCC; margin-right: 1px; padding: 2px 5px; text-decoration: none; border: 1px solid white; }
 #page-info { float: left; padding: 0; }
 .sorting.instruction { float: right; }
+
 /* GENERAL LAYOUT
 ---------------------------------------------------------------------- */
 body { border-top: 5px solid #CCC; font: normal 12px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif; padding: 0px; color: #333; background: #911D00; }
@@ -103,10 +108,11 @@ body { border-top: 5px solid #CCC; font: normal 12px/1.5 'Helvetica Neue', Arial
 #content-main { clear: both; padding: 10px 0; min-height: 200px; position: relative; }
 .box { background: #ddd; padding: 20px; -moz-box-shadow: 0 0 4px #999; -webkit-box-shadow: 0 0 4px #999; -webkit-transition: all 0.1s ease-out; text-align: center; }
 hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; margin: 20px 0; border: none; }
+
 /* MAIN TITLES
 ---------------------------------------------------------------------- */
 .main-title { color: #919191; margin-top: 0.5em; }
-/*.flash { float: right; overflow: hidden; width: 42%; }*/
+
 /* GLOBAL HEADER (adapted from 960gs and martineau.tv)
 ---------------------------------------------------------------------- */
 #header { overflow: hidden; }
@@ -114,6 +120,7 @@ hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; marg
 #header h1:hover { opacity: .75; }
 #header h2 { float: right; display: block; margin: 0.5em 0 0; font-family: Geogia, serif; opacity: .75; font-weight: normal; }
 #header h2 span { font-family: Baskerville,"Goudy Old Style","Palatino","Book Antiqua",serif; font-style: italic; }
+
 /* GLOBAL FOOTER
 ---------------------------------------------------------------------- */
 #footer { border-top: #CCC solid 5px; color: white; font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; margin-bottom: 0; padding: 40px 0; }
@@ -121,6 +128,7 @@ hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; marg
 #footer .links { display: block; float: right; margin: 0; width: 45%; }
 #footer p a { margin-right: .2em; }
 #branding-menu strong, #footer strong { color: #fffca9; }
+
 /* GENERAL LINKS
 ---------------------------------------------------------------------- */
 #content-main a, #call-to-action a { color: #8a1f11; font-weight: bold; opacity: 0.9; text-decoration: none; background-color: white; padding: 4px; }
@@ -128,6 +136,7 @@ hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; marg
 #content-main a:hover, #call-to-action a:hover { color: white; background-color: #8a1f11; }
 .page-links { clear: both; font-size: 1.5em; padding: 10px 0; width: 100%; text-align: center; }
 .page-links input { font-size: 1em; margin: 0; }
+
 /* LINKS & MENUS GALORE!
 ---------------------------------------------------------------------- */
 ul.links li { float: left; display: inline; font-weight: bold; height: 30px; line-height: 30px; margin: 5px 5px 0 0; }
@@ -153,6 +162,7 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 #navigation #label { border-left: solid 1px #ca0002; display: block; line-height: 35px; padding: 0 1em; text-transform: uppercase; font-size: smaller; color: #fff; }
 #navigation li a, #navigation li a:link, #navigation li a:visited { text-decoration: none; display: block; float: left; height: 35px; color: #fff; line-height: 35px; padding: 0 1em; border-right: solid 1px #990000; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; outline: none; }
 #navigation li a:hover, #navigation li a:focus, #navigation li a:active, #navigation #current_page { background: #990000; border-bottom: 4px solid #999; color: #fff; }
+
 /* SUBNAV
 ---------------------------------------------------------------------- */
 /*#header .instruction { color: black; text-transform: none; margin-left: 3em; }*/
@@ -168,6 +178,7 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 #header #search input[type="text"] { margin: 0; width: 5em; }
 #header #search input[type="submit"], #header #search select { margin-top: 0; padding: 5px; }
 #header #search.admin-search, #header #search.supplier-search { float: left; position: relative; }
+
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */
 @media print {
@@ -175,7 +186,7 @@ body { border-top: 0; color: black; }
 body, .bid-box, .bid-field { background-color: transparent; }
 h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .page-links a, .button, #navigation, #global-links, #subnav { display: none; }
 .selection-list { font-size: 1.2em; font-weight: bold; }
-#order .photo { display: none; }
+#order .photo, #show-comments form, #del-status { display: none; }
 #order .vehicle-set span { color: black; }
 .container { padding: 30px; }
 }

@@ -1,5 +1,6 @@
 class BuyerController < ApplicationController
   before_filter :check_buyer_role
+  respond_to :html, :xml, :js, :xls
   
   def main
     @title = "Buyer's Dashboard"
@@ -70,7 +71,11 @@ class BuyerController < ApplicationController
     @search = @all_orders.asc.search(params[:search])    
     @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
     @orders = @search.paginate :page => params[:page], :per_page => 10    
-    render 'orders/index'  
+    
+    respond_to do |format|
+      format.html { render 'orders/index'  }
+      format.xls { send_data @orders.to_xls_data, :filename => 'payments.xls' }
+    end
   end
 
   def paid

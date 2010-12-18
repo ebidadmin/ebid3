@@ -222,7 +222,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #show-comments { border: 1px solid #CCC; clear: both; float: left; margin-bottom: 2em; padding: 10px; width: 938px; overflow: hidden;}
 #show-comments h3 { float: left; }
 #show-comments #comments-list { clear: both; float: left; margin: 0; width: 460px; }
-#show-comments li { clear: both; float: left; margin-bottom: 5px;}
+#show-comments li { clear: both; float: left; margin-bottom: 5px; width: 100%; }
 #show-comments #creator, #show-comments #comment, #show-comments #datetime { float: left; }
 #show-comments #creator { color: #999; font-weight: bold; width: 15%;  }
 #show-comments #comment { width: 65%; }
@@ -244,7 +244,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #supplier-company.multiple { clear: both; background-color: #FFF6BF; }
 #buyer-company h3, #supplier-company h3 { font-size: 1em; color: #999; text-transform: uppercase; }
 #buyer-company h4, #supplier-company h4 { margin-bottom: 0.8em; }
-#del-instructions { width: 450px; }
+#del-instructions { margin-bottom: 5em; width: 450px; }
 #del-instructions li { clear: both; padding-left: 140px; }
 #del-instructions span { font-weight: bold; color: #999; display: block; float: left; margin-left: -140px; width: 30%; }
 #del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
@@ -293,5 +293,5 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #content-main .stars a.rating { background-position: 0 -92px; }
 #content-main .stars a.rating.rating-right { background-position: 0 -115px; }
 #show-rating p { float: left; margin-bottom: .5em; height: 1.4em; line-height: 1.4em; }
-#show-rating .label { clear: both; width: ; }
+#show-rating .label { clear: both;  }
 

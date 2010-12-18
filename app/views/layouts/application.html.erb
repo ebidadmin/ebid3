@@ -30,6 +30,9 @@
 		<div id="footer">
 			<%= render 'layouts/footer' %>
 		</div>
+		<div id="wait" style="display:none">
+		    <img src="/images/shadowbox/loading.gif"> Please wait...
+		</div>
 		<div id="javascripts">
 	    <%= javascript_include_tag :defaults %>
 			<%= yield(:javascripts) %>

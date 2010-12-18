@@ -11,6 +11,9 @@
 	<%= render 'orders/info_instructions', :order => @order %>
 	<h4 id="del-status">Status: <%= @order.status %></h4>
 </div>
+
+<%= render 'shared/comments' %>
+
 <div id="order">
 	<h2>Items in the Order</h2>
 	<%= image_tag @order.entry.photos.first.photo.url(:tiny), :class => "photo", :alt => "Photo of #{ @order.entry.plate_no}" %>
@@ -44,7 +47,6 @@
 				</td>
 		</tr>
 	</table>
-	
 </div>
 
 <div id="confirmation" class="page-links">
