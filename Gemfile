@@ -12,6 +12,7 @@ gem 'jquery-rails'
 gem "nested_form", :git => "git://github.com/madebydna/nested_form.git"
 gem "delayed_job",  :git => 'git://github.com/collectiveidea/delayed_job.git'
 gem 'to_xls'
+gem 'newrelic_rpm'
 
 # Deploy with Capistrano
 gem 'capistrano'

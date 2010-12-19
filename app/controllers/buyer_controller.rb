@@ -10,10 +10,10 @@ class BuyerController < ApplicationController
       @ratings = Rating.where(:ratee_id => current_user.company.users)
       initiate_list
       delivered = Order.where(:company_id => current_user.company).delivered
-      due_soon = delivered.due_soon
+      due_soon = delivered.due_soon.includes(:bids)
       @due_soon_count = due_soon.count
       @due_soon_amount = due_soon.collect(&:total_order_amounts).sum
-      overdue_payments = delivered.overdue
+      overdue_payments = delivered.overdue.includes(:bids)
       @overdue_payments_count = overdue_payments.count
       @overdue_payments_amount = overdue_payments.collect(&:total_order_amounts).sum
     end
@@ -128,7 +128,7 @@ private
     @orders = orders.count
     @released = orders.recent.count
 
-    delivered_items =  orders.delivered
+    delivered_items =  orders.delivered.includes(:bids)
     @delivered = delivered_items.count
     pay_soon = delivered_items.due_soon
     @pay_soon_count = pay_soon.count
@@ -139,7 +139,7 @@ private
     due_later = delivered_items - pay_soon - overdue
     @due_later_count = due_later.count
     @due_later_amount = due_later.collect(&:total_order_amounts).sum
-    o_paid = orders.paid
+    o_paid = orders.paid.includes(:bids)
     @paid_count = o_paid.count
     @paid_amount = o_paid.collect(&:total_order_amounts).sum
   end

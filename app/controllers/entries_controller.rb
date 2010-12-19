@@ -151,6 +151,7 @@ class EntriesController < ApplicationController
     def start_entry
       @search = CarPart.name_like_all(params[:name].to_s.split).ascend_by_name
       @car_parts, @car_parts_count = @search.paginate(:page => params[:page], :per_page => 12, :order => 'name ASC'), @search.count
+      @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
     end
 
 end

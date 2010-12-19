@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
     # helpers for buyer and entries controllers
     def initiate_list
       if current_user.has_role?("powerbuyer")
-        @company_users = current_user.company.users
+        @company_users = current_user.company.users 
         @user_group = @company_users.order('username').collect { |user| [user.username_for_menu, request_path(user.username.downcase)] }
         @user_group.push(['All', request_path('all')])
         @current_path = request_path(params[:user_id])
@@ -125,17 +125,17 @@ class ApplicationController < ActionController::Base
 
     def find_entries
       if params[:user_id] == 'all'
-        @finder = Entry.where(:user_id => @company_users, :buyer_status => @status)
+        @finder = Entry.where(:user_id => @company_users, :buyer_status => @status).includes(:line_items, :term, :city, :car_brand, :car_model, :car_variant, :photos, :orders, :user, :bids)
       else
-        @finder = defined_user.entries.where(:buyer_status => @status)
+        @finder = defined_user.entries.where(:buyer_status => @status).includes(:line_items, :term, :city, :car_brand, :car_model, :car_variant, :photos, :orders, :user, :bids)
       end
     end
 
     def find_orders
       if params[:user_id] == 'all'
-        @all_orders = Order.where(:company_id => current_user.company, :status => @status)
+        @all_orders = Order.where(:company_id => current_user.company, :status => @status).includes(:bids, :entry, :user, :seller, :company)
       else
-        @all_orders = defined_user.orders.where(:status => @status)
+        @all_orders = defined_user.orders.where(:status => @status).includes(:bids, :entry, :user, :seller, :company)
       end
       @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
       @sellers.push(['All', request_path(:seller => nil)]) unless @sellers.blank?
