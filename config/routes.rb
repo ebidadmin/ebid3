@@ -53,6 +53,7 @@ Ebid::Application.routes.draw do
   match 'admin/buyer_fees(/:page)' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
   match 'admin/supplier_fees(/:page)' => 'admin#supplier_fees', :as => :admin_supplier_fees, :via => :get
   match 'admin/utilities' => 'admin#utilities', :as => :admin_utilities, :via => :get
+  match 'admin/expire_entries' => 'admin#expire_entries', :as => :admin_expire_entries, :via => :get
 
   match 'buyer/:user_id/main' => 'buyer#main', :as => :buyer_main, :via => :get
   match 'buyer/:user_id/pending(/:page)' => 'buyer#pending', :as => :buyer_pending, :via => :get
@@ -90,6 +91,7 @@ Ebid::Application.routes.draw do
 
   get "site/index"
   get "site/about"
+  get "site/xmas"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

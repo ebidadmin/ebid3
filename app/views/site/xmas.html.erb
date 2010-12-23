@@ -1,0 +1,17 @@
+<div id="xmas">
+	<%= image_tag 'xmas.jpg' %>
+	<div id="message">
+		<p id="salutation">Dear <%= content_tag :strong, current_user.profile.first_name %>,</p>
+		<p id="first">We thank you for your participation in the E-Bid Community.</p>
+		<p>We encourage you to remain active as our Community grows and prospers. </p>
+		<p>We have high hopes for 2011. Fresh opportunities are opening up,</p>
+		<p>and it will be great if you can be part of it.  </p>
+		<p id="second">May the spirit of Christmas fill your heart. We wish your family </p>
+		<p>prosperity and abundant blessings for 2011.</p>
+		<p id="closing">Sincerely,</p>
+		<p id="guys">Ted, Efren, and Chris</p>
+	</div>
+</div>
+<div class="page-links">
+	<%= link_to 'Go to Dashboard', go_to_main_page_link, :class => 'button' %>
+</div>

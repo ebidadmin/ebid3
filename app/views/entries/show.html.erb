@@ -28,7 +28,7 @@
 		<td class="qty" <%= proper_rowspan(item) %>><%= item.quantity %></td>
 		<td class="partname" <%= proper_rowspan(item) %>>    	
 			<%=h item.car_part.name %> 
-			<%= content_tag :p, "(Part No. <strong>#{item.part_no}</strong>)", :class => 'partnum' unless item.part_no.blank?  %>
+			<%= content_tag :p, "(Part No. <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
 			<%= content_tag :p, (pluralize item.bids.collect(&:user_id).uniq.count, "bidder"), :class => 'strong' unless item.bids.collect(&:user_id).uniq.count < 1 %>
 			<%= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
 		</td>
@@ -38,7 +38,7 @@
 
 	</tr>
 	<% end %>
-	<% if (@entry.buyer_status == "For Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP") && @entry.expired.nil? %>
+	<% if (@entry.buyer_status == "For-Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP") && @entry.expired.nil? %>
 	<tr id="accept-decline">
 	  <td colspan=2></td>
 	  <td colspan=4>

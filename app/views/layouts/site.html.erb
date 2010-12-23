@@ -19,7 +19,7 @@
         <% if current_user %>
           <p>
 						Welcome back <%= current_user.username %>! 
-						<%= link_to 'Go to Main Page',  go_to_main_page_link %>
+						<%= link_to 'Go to Dashboard',  go_to_main_page_link %>
 						or <%= link_to 'Sign out', destroy_user_session_path %>
 					</p>
         <% else %>

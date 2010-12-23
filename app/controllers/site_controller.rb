@@ -8,4 +8,8 @@ class SiteController < ApplicationController
   def about
     
   end
+  
+  def site
+    
+  end
 end

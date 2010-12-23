@@ -295,3 +295,11 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #show-rating p { float: left; margin-bottom: .5em; height: 1.4em; line-height: 1.4em; }
 #show-rating .label { clear: both;  }
 
+/* CHRISTMAS MESSAGE
+---------------------------------------------------------------------- */
+#xmas { font-family: Georgia,"Times New Roman",Times,serif; font-style: italic; position: relative; width: 960px; }
+#xmas #message { position: absolute; top: 150px; left: 225px; }
+#xmas #message p { margin-bottom: 10px; font-size: 16px;}
+#xmas #salutation { font-size: 2em; }
+#xmas #first, #xmas #second, #xmas #closing { padding-top: 20px; }
+#xmas #guys { color: #C00; }
