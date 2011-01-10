@@ -10,6 +10,7 @@ class BidsController < ApplicationController
     @entry = Entry.find(params[:entry_id])
     @line_items = @entry.line_items
     
+    @new_bids = Array.new
     @submitted_bids = params[:bids]
     @submitted_bids.each do |line_item, bidtypes|
       @line_item = LineItem.find(line_item)
@@ -17,7 +18,6 @@ class BidsController < ApplicationController
       bidtypes.reject! { |k, v| v.blank? }
       bidtypes.each do |bid|
         unless bid[1].to_f < 1
-          @new_bids = Array.new
           @existing_bid = current_user.bids.find_by_line_item_id_and_bid_type(line_item, bid[0])
           if @existing_bid.nil? 
             @new_bid = current_user.bids.build
@@ -35,7 +35,8 @@ class BidsController < ApplicationController
       end
     end
 
-    if @new_bids && @new_bids.all?(&:valid?)
+    
+    if @new_bids.compact.length > 0 && @new_bids.all?(&:valid?)
       @new_bids.each(&:save!)
       BidMailer.delay.bid_alert(@new_bids, @entry) 
       BidMailer.delay.bid_alert_to_admin(@new_bids, @entry, current_user)
@@ -46,7 +47,7 @@ class BidsController < ApplicationController
         format.html { redirect_to seller_show_path(:brand => @entry.brand, :id => @entry.id) }
       end 
     end
-    # respond_with(@new_bids, :location => :back)
+    # redirect_to :back # respond_with(@new_bids, :location => :back)
   end
 
   def show

@@ -1,6 +1,6 @@
 <% title "Bids for #{@entry.vehicle}" %>
 
-<%= content_tag :h3, 'Status: ' + @entry.buyer_status , :id => 'bidding-message', :class => 'highlight' %>
+<%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
 
 <%= render 'shared/photo_set' %>
 <%= render 'shared/info_vehicle', :entry => @entry %>
@@ -18,6 +18,8 @@
 	</div>
 	
 <% end %>
+
+<%= content_tag :h3, '', :id => 'bidding-message' %>
 
 <% unless @entry.buyer_status == 'Online' && @entry.expired.nil? %>
   <% content_for :subnav do %>

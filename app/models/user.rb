@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   has_many :ratees, :through => :ratings, :dependent => :destroy
   has_many :comments, :dependent => :destroy
 
-  scope :active, where('last_sign_in_at > ?', 24.hours.ago).order('current_sign_in_at DESC').limit(5)
+  scope :active, where('current_sign_in_at > ?', 24.hours.ago).order('current_sign_in_at DESC')
   
   validates_presence_of :username, :password, :password_confirmation, :email
   
@@ -48,4 +48,5 @@ class User < ActiveRecord::Base
   def company_name
     profile.company.name.upcase
   end
+  
 end
