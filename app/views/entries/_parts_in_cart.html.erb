@@ -1,4 +1,10 @@
 <div id="selection">
+	<% unless @entry.new_record?  -%>
+		<div id="prev-cart">			
+		<%= render 'cart/prev_cart' %>
+		</div>
+	<% end -%>
+
 	<div id="cart">
 		<%= render 'cart/cart' %>
 	</div>

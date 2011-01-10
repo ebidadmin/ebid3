@@ -22,7 +22,7 @@ module EntriesHelper
   end
   
   def proper_rowspan(item)
-    if item.status == "For Decision" 
+    if item.status == "For-Decision" 
       "rowspan = 2" unless item.bids.size < 1
     end
   end

@@ -4,7 +4,7 @@
 	<%= render 'shared/part_titles' %>
 	<% for item in  @entry.line_items %>
 		<li id="item_<%= item.car_part.id %>" class="selection-list">
-			<%= render 'cart/prev_item', :object => item %>
+			<%= render 'cart/prev_item', :item => item %>
 		</li>
 	<% end %>
 </ul>

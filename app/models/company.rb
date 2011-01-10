@@ -1,5 +1,6 @@
 class Company < ActiveRecord::Base
-  attr_accessible :name, :address1, :address2, :zip_code, :city_id, :approver, :approver_position
+  attr_accessible :name, :address1, :address2, :zip_code, :city_id, :approver, :approver_position, 
+  :primary_role, :friend_id, :friend_ids
 
   belongs_to :city
   belongs_to :role, :foreign_key => "primary_role"

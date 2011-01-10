@@ -12,13 +12,13 @@ class ApplicationController < ActionController::Base
       if current_user.has_role?('admin')
         admin_index_path 
       elsif current_user.has_role?('powerbuyer')
-        site_xmas_path #buyer_main_path('all') 
+        buyer_main_path('all') 
       elsif current_user.has_role?('buyer')
-        site_xmas_path #buyer_main_path(current_user) 
+        buyer_main_path(current_user) 
       elsif current_user.has_role?('seller')
-        site_xmas_path #seller_main_path(current_user) 
+        seller_main_path(current_user) 
       else
-        flash[:notice] = "User-privileges not established." 
+        flash[:notice] = "User-privileges not established. Please contact the administrator." 
         root_path
       end
     end

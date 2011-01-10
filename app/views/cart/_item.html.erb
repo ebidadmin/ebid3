@@ -1,5 +1,5 @@
 <%= form_tag cart_edit_item_path(:item_id => item), :remote => true, :method => :put do  %>
-	<span id="part_qty_<%=item.car_part.id %>" class="qty">
+	<span id="part_qty_<%= item.car_part.id %>" class="qty">
 		<%= item.quantity %>
 	</span>
 	<span class="partname">

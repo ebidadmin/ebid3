@@ -1,11 +1,11 @@
-<% if item.status == "For Decision" %>
+<% if item.status == "For-Decision" %>
 
 	<% if item.bids.size < 1 %>
 		<td class="bid-box" colspan=4>
 			Sorry, there are no bids for this item.
 		</td>
 	<% else %>
-        <%= render 'bid_selection', :item => item %>
+    <%= render 'bid_selection', :item => item %>
 	<% end -%>
 
 <% else %>

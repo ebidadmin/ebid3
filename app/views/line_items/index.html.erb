@@ -1,0 +1,27 @@
+<% title "Line Items" %>
+
+<table>
+  <tr>
+    <th>Entry</th>
+    <th>Car Part</th>
+    <th>Part No</th>
+    <th>Quantity</th>
+    <th>Status</th>
+    <th>Bids Count</th>
+  </tr>
+  <% for line_item in @line_items %>
+    <tr>
+      <td><%= line_item.entry_id %></td>
+      <td><%= line_item.car_part_id %></td>
+      <td><%= line_item.part_no %></td>
+      <td><%= line_item.quantity %></td>
+      <td><%= line_item.status %></td>
+      <td><%= line_item.bids_count %></td>
+      <td><%= link_to "Show", line_item %></td>
+      <td><%= link_to "Edit", edit_line_item_path(line_item) %></td>
+      <td><%= link_to "Destroy", line_item, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Line Item", new_line_item_path %></p>

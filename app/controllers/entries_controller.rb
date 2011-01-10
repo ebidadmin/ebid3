@@ -122,8 +122,8 @@ class EntriesController < ApplicationController
   def decide
     show
     unless @entry.bids.blank?
-      if @entry.update_attribute(:buyer_status, "For Decision")
-        @entry.update_associated_status("For Decision")
+      if @entry.update_attribute(:buyer_status, "For-Decision")
+        @entry.update_associated_status("For-Decision")
         flash[:notice] = ("Great! You can now view the winning bids in your <strong>Results</strong> tab.").html_safe
       end
     else

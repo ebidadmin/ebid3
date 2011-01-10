@@ -91,11 +91,10 @@ class AdminController < ApplicationController
   end
 
   def expire_entries
-    @entries = Entry.results.includes(:line_items).first
-    # @entries.each do |entry|
-    #   # entry.expire_online_entry
-    #   entry.expire
-    # end
+    @entries = Entry.online.current.includes(:line_items) + Entry.results.current.includes(:line_items)
+    @entries.each do |entry|
+      entry.expire
+    end
     flash[:notice] = "Successful"
     redirect_to :back  
     # render 'entries/index'

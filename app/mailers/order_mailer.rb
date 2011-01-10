@@ -8,7 +8,7 @@ class OrderMailer < ActionMailer::Base
       mail(
         :to => "#{order.seller.profile.full_name} <#{order.seller.email}>", 
         :subject => "PO Released: #{order.entry.vehicle}", 
-        # :bcc => "cymarquez@ebid.com.ph"
+        :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"]
         )
     end
   end

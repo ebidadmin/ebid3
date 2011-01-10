@@ -1,5 +1,7 @@
 Ebid::Application.routes.draw do
 
+  resources :line_items
+
   resources :comments
 
   devise_for :users, :path => :account

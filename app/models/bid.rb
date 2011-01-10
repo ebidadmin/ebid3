@@ -12,7 +12,7 @@ class Bid < ActiveRecord::Base
   
   scope :desc, order('id DESC')
   scope :bt, order('bid_type')
-  scope :declined, where('declined != ?', '').order('declined DESC')
+  scope :declined, where(:status => 'Declined').order('declined DESC')
 
   def decline_process
     update_attributes(:status => "Declined", :ordered => nil, :order_id => nil, :delivered => nil, :fee => total * 0.0025, :declined => Date.today)
