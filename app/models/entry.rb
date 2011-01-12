@@ -28,6 +28,7 @@ class Entry < ActiveRecord::Base
   validates_associated :city
 
   scope :desc, order('id DESC')
+  scope :desc2, order('bid_until DESC')
   scope :asc, order('bid_until')
   scope :five, limit(5)
 

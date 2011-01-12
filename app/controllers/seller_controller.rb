@@ -25,7 +25,7 @@ class SellerController < ApplicationController
   end
   
   def hub
-    entries = Entry.online.current.desc
+    entries = Entry.online.current.desc2
     @brand_links = entries.collect(&:car_brand).uniq 
     if params[:brand] == 'all'
       @entries = entries.paginate(:page => params[:page], :per_page => 10)
@@ -36,8 +36,8 @@ class SellerController < ApplicationController
   end
   
   def show
-    @entry = Entry.find(params[:id], :joins => [:line_items])
-    @line_items = @entry.line_items
+    @entry = Entry.find(params[:id], :joins => [:line_items, :photos])
+    @line_items = @entry.line_items.online
     company = current_user.company
     unless current_user.has_role?('admin') || @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
       flash[:error] = "Sorry, <strong>#{company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this.".html_safe

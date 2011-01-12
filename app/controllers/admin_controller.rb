@@ -59,6 +59,7 @@ class AdminController < ApplicationController
     @title = "Delivered Orders - For Payment"
     @sort_order =" due date (per vehicle) - ascending order"
     @sellers = Role.find_by_name('seller').users.order('username').collect { |seller| [seller.company_name, admin_payments_path(:seller => seller.id)]}
+    # @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
     @sellers.push(['All', admin_payments_path(:seller => nil)]) unless @sellers.blank?
     @sellers_path = admin_payments_path(:seller => params[:seller])
  

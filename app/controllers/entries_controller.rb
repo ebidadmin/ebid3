@@ -1,5 +1,5 @@
 class EntriesController < ApplicationController
-  before_filter :initialize_cart
+  before_filter :initialize_cart, :except => [:index, :show, :put_online, :relist, :decide, :reactivate]
 
   def index
     @title = "All Entries"
@@ -16,7 +16,7 @@ class EntriesController < ApplicationController
   
   def show
     @entry = Entry.find(params[:id])
-    @line_items = @entry.line_items.includes(:car_part, :bids)
+    @line_items = @entry.line_items.includes(:car_part)
     # @remarks = Remark.new
   end
   
@@ -131,14 +131,26 @@ class EntriesController < ApplicationController
     end 
     redirect_to :back
   end
-    
+
+  def relist
+    show
+    if @line_items.without_bids.update_all(:status => 'Relisted')
+      @entry.update_attributes(:buyer_status => 'Online', :bid_until => Date.today + 1.week, :chargeable_expiry => nil, :expired => nil)
+      flash[:notice] = "Entry was re-listed. Please check your 'Online' tab."
+    else
+      flash[:error] = "Sorry, this entry is not eligible for relisting."
+    end
+    redirect_to :back
+    # mailer
+  end
+
   def reactivate
     show
-    if @entry.update_attributes(:buyer_status => 'For Decision', :chargeable_expiry => nil, :expired => nil)
+    if @entry.update_attributes(:buyer_status => 'For-Decision', :chargeable_expiry => nil, :expired => nil)
       @line_items.each do |line_item|
         unless line_item.order_item
-          line_item.update_attribute(:status, 'For Decision') 
-          line_item.bids.update_all(:status => 'For Decision', :fee => nil, :declined => nil, :expired => nil)
+          line_item.update_attribute(:status, 'For-Decision') 
+          line_item.bids.update_all(:status => 'For-Decision', :fee => nil, :declined => nil, :expired => nil)
         end
       end
     end

@@ -56,7 +56,8 @@
 <p class="page-links">
   <%= link_to "Done!", :back, :class => 'button' %>
   <%= link_to "Edit", edit_entry_path(@entry), :class => 'button' if @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' %>
-</P>
+  <%= link_to "Re-List Items", relist_entry_path(@entry), :class => 'button' unless @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited'  %>
+</p>
 
 
 <% content_for :javascripts do %>

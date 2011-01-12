@@ -68,7 +68,7 @@ class BidsController < ApplicationController
         decline
       end
     else
-      flash[:warning] = ("Ooops! Choose one of the <strong>Low Bids</strong> first before you accept or decline.").html_safe
+      flash[:error] = ("Ooops! Choose one of the <strong>Low Bids</strong> first before you accept or decline.").html_safe
       redirect_to :back
     end
   end

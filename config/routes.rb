@@ -20,6 +20,7 @@ Ebid::Application.routes.draw do
       member do
         get :put_online
         get :decide
+        get :relist
         get :reactivate
       end
    end

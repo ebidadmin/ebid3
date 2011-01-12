@@ -25,7 +25,7 @@
 		<td class="requirements">
       <%= content_tag :p, (content_tag :span, 'Delivery:') + entry.city.name if entry.city %>
       <%= content_tag :p, (content_tag :span, 'Credit:') + entry.term.term_name if entry.term %>
-      <%= content_tag :p, (content_tag :span, 'Quantity:') + (link_to (pluralize entry.line_items.collect(&:quantity).sum, "item"), 
+      <%= content_tag :p, (content_tag :span, 'Quantity:') + (link_to (pluralize entry.line_items.online.collect(&:quantity).sum, "item"), 
 						seller_show_path(:brand => entry.brand, :id => entry)) %>
 		</td>
 		<td class="status">
