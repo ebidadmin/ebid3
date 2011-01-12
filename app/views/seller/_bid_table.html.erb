@@ -8,7 +8,7 @@
 	<td class="qty"><%= item.quantity %></td>
 	<td class="partname">
 		<%=h item.car_part.name %> 
-		<%= content_tag :p, ("(Part No. <strong>#{item.part_no}</strong>)").html_safe, :class => 'partnum' unless item.part_no.blank?  %>
+		<%= content_tag :p, ("(Details: <strong>#{item.part_no}</strong>)").html_safe, :class => 'partnum' unless item.part_no.blank?  %>
 	      <%= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
 	</td>
 	<td class="bid-box">

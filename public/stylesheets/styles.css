@@ -166,6 +166,8 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 /* CREATE ENTRY - PARTS DB
 ---------------------------------------------------------------------- */
 #parts { float: left; width: 38%; min-height: 400px; overflow: hidden; padding: 10px; border: 1px solid #CCCCCC; background-color: #FFF6BF; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
+#parts #instructions { margin: 0.5em; padding: 0.5em; background-color: white;}
+#parts #instructions li { list-style-position: outside; list-style-type: decimal; }
 #parts #search-form { display: block; text-align: center; height: 50px; line-height: 50px; }
 #parts #search-form > input { margin-top: 0; margin-right: 5px; }
 #parts #search-box { width: 50%; }
@@ -257,7 +259,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 ---------------------------------------------------------------------- */
 #order-total, #supplier-total { float: left; margin-right: 25px; }
 
-/* USERS#INDEX
+/* USERS#INDEX 
 ---------------------------------------------------------------------- */
 #users-index th { text-align: left; }
 #users-index .user, #users-index .last { width: 15%; }
@@ -267,10 +269,12 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #users-index .birthday, #users-index .roles { width: 10%; }
 #users-index .links p { margin: 5px 0; text-align: right; }
 
-/* USERS#SHOW
+/* USERS#SHOW & COMPANIES#SHOW
 ---------------------------------------------------------------------- */
-.first.profile li, .second.usage li { clear: both; }
-.first.profile li span, .second.usage li span { color: #999; float: left; font-weight: bold; width: 25%;}
+.first.profile li, .second.usage li, #show-company-info li { clear: both; }
+.first.profile li span, .second.usage li span, #show-company-info li span { color: #999; float: left; font-weight: bold; width: 25%;}
+#show-company-users li { list-style-position: outside; }
+.friend { font-size: 1.5em; }
 
 
 /* RATINGS#INDEX

@@ -28,7 +28,7 @@
 		<td class="qty" <%= proper_rowspan(item) %>><%= item.quantity %></td>
 		<td class="partname" <%= proper_rowspan(item) %>>    	
 			<%=h item.car_part.name %> 
-			<%= content_tag :p, "(Part No. <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
+			<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
 			<%= content_tag :p, (pluralize item.bids.collect(&:user_id).uniq.count, "bidder"), :class => 'strong' unless item.bids.collect(&:user_id).uniq.count < 1 %>
 			<%= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
 		</td>

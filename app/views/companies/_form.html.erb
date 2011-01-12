@@ -2,8 +2,7 @@
 	<%= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
 <% end %>
 
-<% f.inputs do %>
-	<div class="first">
+<%= f.inputs do %>
 	<%= f.input :name, :label => 'Company Name' %>
 	<%= f.input :role, :label => 'Primary Role' if current_user.has_role?('admin') %>
 	<%= f.input :role, :collection => Role.id_not(1), :label => 'Primary Role' unless current_user.has_role?('admin') %>
@@ -13,13 +12,10 @@
 	<%= f.input :city %>
 	<%= f.input :approver %>
 	<%= f.input :approver_position %>
-	</div>
-	<div class="second">
 	<%= f.input :friends, :as => :check_boxes if current_user.has_role?('admin') %>
-	<%= f.input :friends, :as => :check_boxes, :collection => Company.id_not(1).primary_role_not(current_user.company.primary_role) unless current_user.has_role?('admin') %>
-	</div>
+	<%= f.input :friends, :as => :check_boxes, :collection => Company.where("id != 1 AND primary_role != #{current_user.company.role.id}") unless current_user.has_role?('admin') %>
 <% end %>
-<% f.buttons :class => "page-links"  do %>
+<%= f.buttons  do %>
 	<%= f.commit_button 'Submit' %> 
 	<%= link_to "Cancel", :back -%>
 	<% if current_user.has_role?('admin')  %>

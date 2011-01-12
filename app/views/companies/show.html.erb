@@ -3,17 +3,13 @@
 <div class="first">
 <h2>Company Info</h2>
 <ul id="show-company-info">
-	<li><span>Primary Role:</span><%= @company.role.name.capitalize unless @company.primary_role.nil? %></li>
-	<li><span>Address1:</span><%=h @company.address1 %></li>
-	<li><span>Address2:</span><%=h @company.address2 %></li>
-	<li><span>Zip Code:</span><%=h @company.zip_code %></li>
-	<li><span>City:</span><%=h @company.city.name %></li>
-	<li><span>Approver:</span><%=h @company.approver %></li>
-	<li><span>Approver Position:</span><%=h @company.approver_position %></li>
+	<li><span>Primary Role:</span><%= @company.role.name.upcase unless @company.primary_role.nil? %></li>
+	<li><span>Address:</span><%=h @company.address1 %>, <%=h @company.address2 %> <%=h @company.city.name %> <%=h @company.zip_code %></li>
+	<li><span>Approver:</span><%=h @company.approver %>, <%=h @company.approver_position %></li>
 </ul>
 <%- if @company.users -%>
 	<h2>Registered Users: <%= pluralize @company.users.count, 'user' -%></h2>
-	<ol>
+	<ol id="show-company-users">
 	<% for profile in @company.profiles -%>
 		<li>
 			Name: <%= profile.first_name -%> <%= profile.last_name -%><br />

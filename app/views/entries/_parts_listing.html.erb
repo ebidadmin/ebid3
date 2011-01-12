@@ -1,5 +1,9 @@
 <div  id="parts_listing">
-	<p class="instruction"><strong><%= pluralize @car_parts_count, "part" %></strong> found using your search keyword/s <strong><%= params[:name] %></strong></p>
+	<% if params[:name] %>
+		<%= content_tag :p, ((content_tag :strong, (pluralize @car_parts_count, "part") + ' were found') + ' using your search keyword/s ' + (content_tag :strong, params[:name])).html_safe, :class => 'instruction' %>
+	<% else %>
+		<%= content_tag :p, ('There are ' + (content_tag :strong, (pluralize @car_parts_count, "part")) + ' in the database.').html_safe, :class => 'instruction' %>
+	<% end %>
   <ol>
   	<% for car_part in @car_parts -%> 
   		<li>
