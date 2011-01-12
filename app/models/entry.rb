@@ -36,7 +36,7 @@ class Entry < ActiveRecord::Base
   scope :expired, where('expired IS NOT NULL')
 
   scope :pending, where("buyer_status IN ('New', 'Edited')")
-  scope :online, where("buyer_status = ?", 'Online')
+  scope :online, where("buyer_status IN ('Online', 'Relisted')")
   scope :results, where("buyer_status IN ('For-Decision', 'Ordered-IP', 'Declined-IP')")
   scope :declined, where('buyer_status LIKE ?', "%Declined%").desc
   scope :closed, where("buyer_status = ?", 'Closed')

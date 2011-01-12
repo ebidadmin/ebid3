@@ -18,7 +18,7 @@ Put your bids here: http://www.ebid.com.ph<%= seller_show_path(:user_id => @sell
 
 
 Parts: 
-	<% @entry.line_items.each do |li| %>
+	<% @entry.line_items.online.each do |li| %>
 	[ <%= li.quantity %> ]  <%= li.car_part.name.html_safe %>
 	<% end %>
 

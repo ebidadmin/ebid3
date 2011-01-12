@@ -134,14 +134,21 @@ class EntriesController < ApplicationController
 
   def relist
     show
-    if @line_items.without_bids.update_all(:status => 'Relisted')
-      @entry.update_attributes(:buyer_status => 'Online', :bid_until => Date.today + 1.week, :chargeable_expiry => nil, :expired => nil)
+    unless @line_items.without_bids.blank?
+      @line_items.without_bids.update_all(:status => 'Relisted')
+      @entry.update_attributes(:buyer_status => 'Relisted', :bid_until => Date.today + 1.week, :chargeable_expiry => nil, :expired => nil)
       flash[:notice] = "Entry was re-listed. Please check your 'Online' tab."
     else
-      flash[:error] = "Sorry, this entry is not eligible for relisting."
+      flash[:error] = "Sorry, there are no items to relist."
     end
     redirect_to :back
-    # mailer
+    for friend in @entry.user.company.friends
+      unless friend.users.nil?
+        for seller in friend.users
+          EntryMailer.delay.online_entry_alert(seller, @entry)
+        end
+      end
+    end
   end
 
   def reactivate

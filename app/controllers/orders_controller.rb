@@ -29,7 +29,7 @@ class OrdersController < ApplicationController
         bid.update_unselected_bids(@line_item)
         @line_item.update_attribute(:status, "PO Released")
       end
-      @entry.update_status
+      @entry.update_status unless @entry.buyer_status == 'Relisted'
       OrderMailer.delay.order_alert(@orders)
       unless @orders.count < 2
         flash[:notice] = "Your POs have been released and will be processed right away. Thanks!"

@@ -13,7 +13,7 @@
 	</table>
 	
 	<div class="page-links">
-		<%= submit_tag 'Place Bid/s', :class => 'button' unless @entry.buyer_status != 'Online' %>
+		<%= submit_tag 'Place Bid/s', :class => 'button' if @entry.buyer_status == "Online" || @entry.buyer_status == "Relisted"  %>
 	  <%= link_to "[Done]", :back %>
 	</div>
 	
@@ -21,7 +21,7 @@
 
 <%= content_tag :h3, '', :id => 'bidding-message' %>
 
-<% unless @entry.buyer_status == 'Online' && @entry.expired.nil? %>
+<% unless (@entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted') && @entry.expired.nil? %>
   <% content_for :subnav do %>
 	<%= content_tag :div, ("Note: the status of this entry is " + (content_tag :strong, current_status_or_expired?(@entry)) + 
 	". It\'s no longer available for bidding.").html_safe, :id => 'flash_warning'  %>

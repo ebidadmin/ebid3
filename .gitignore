@@ -9,4 +9,5 @@ public/system/*
 .git
 .git/*
 lib/development_mail_interceptor.rb
-
+config/database.yml
+config/initializers/setup_mail.rb

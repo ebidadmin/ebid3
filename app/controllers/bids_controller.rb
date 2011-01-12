@@ -82,7 +82,7 @@ class BidsController < ApplicationController
       @bids.each do |bid|
         bid.decline_process
       end
-      @entry.update_status
+      @entry.update_status unless @entry.buyer_status == 'Relisted'
       flash[:warning] = ("Winning bid was declined.  A minimal Transaction Fee worth 
         <strong>#{ number_to_currency @bids.collect(&:fee).sum, :unit => 'P '}</strong> will be charged 
         to compensate the winning supplier.<br>

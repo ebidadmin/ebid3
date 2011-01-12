@@ -37,7 +37,11 @@ class SellerController < ApplicationController
   
   def show
     @entry = Entry.find(params[:id], :joins => [:line_items, :photos])
-    @line_items = @entry.line_items.online
+    if @entry.buyer_status == 'Relisted'
+      @line_items = @entry.line_items.online
+    else
+      @line_items = @entry.line_items
+    end
     company = current_user.company
     unless current_user.has_role?('admin') || @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
       flash[:error] = "Sorry, <strong>#{company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this.".html_safe

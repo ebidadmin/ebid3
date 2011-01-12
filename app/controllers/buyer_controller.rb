@@ -33,7 +33,7 @@ class BuyerController < ApplicationController
   def online
     @title = 'Online Entries'
     initiate_list
-    @status = "Online"
+    @status = ["Online", "Relisted"]
     find_entries
     @search = @finder.current.desc2.search(params[:search])
     @entries = @search.paginate(:page => params[:page], :per_page => 10)

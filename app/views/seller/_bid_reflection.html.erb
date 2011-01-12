@@ -5,6 +5,6 @@
   <%= render 'bids/bid', :bid => last_bid %>
 <% end %>
 
-<% if last_bid && @entry.buyer_status != 'Online' %>
+<% if last_bid && (@entry.buyer_status == 'Online' || @entry.buyer_status != "Relisted") %>
 <%= content_tag :p, last_bid.status, :class => "status #{quote_class(last_bid.status)}" -%>
 <% end %>

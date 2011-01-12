@@ -38,7 +38,7 @@
 
 	</tr>
 	<% end %>
-	<% if (@entry.buyer_status == "For-Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP") && @entry.expired.nil? %>
+	<% if (@entry.buyer_status == "For-Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP" || @entry.buyer_status == 'Relisted') && @entry.expired.nil? %>
 	<tr id="accept-decline">
 	  <td colspan=2></td>
 	  <td colspan=4>
@@ -56,7 +56,7 @@
 <p class="page-links">
   <%= link_to "Done!", :back, :class => 'button' %>
   <%= link_to "Edit", edit_entry_path(@entry), :class => 'button' if @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' %>
-  <%= link_to "Re-List Items", relist_entry_path(@entry), :class => 'button' unless @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited'  %>
+  <%= link_to "[Relist Un-bided Items]", relist_entry_path(@entry) unless @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' || @entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted'  %>
 </p>
 
 
