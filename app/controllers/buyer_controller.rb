@@ -78,6 +78,17 @@ class BuyerController < ApplicationController
     end
   end
 
+  def payments_print
+    @title = 'Delivered Orders - For Payment'
+    @sort_order =" due date - ascending order"
+    initiate_list
+    @status = "Delivered"
+    find_orders_for_print
+    @search = @all_orders.asc.search(params[:search])    
+    @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
+    @orders = @search.paginate :page => params[:page], :per_page => 15    
+  end
+  
   def paid
     @title = 'Paid Orders - For Rating'
     @sort_order =" date paid - ascending order"
@@ -142,6 +153,17 @@ private
     o_paid = orders.paid.includes(:bids)
     @paid_count = o_paid.count
     @paid_amount = o_paid.collect(&:total_order_amounts).sum
+  end
+  
+  def find_orders_for_print
+    if params[:user_id] == 'all'
+      @all_orders = Order.where(:company_id => current_user.company, :status => @status).includes(:bids, :entry, :user, :seller, :company, :order_items, :line_items)
+    else
+      @all_orders = defined_user.orders.where(:status => @status).includes(:bids, :entry, :user, :seller, :company)
+    end
+    @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
+    @sellers.push(['All', request_path(:seller => nil)]) unless @sellers.blank?
+    @sellers_path = request_path(:seller => params[:seller])
   end
   
 end

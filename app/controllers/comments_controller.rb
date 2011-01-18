@@ -20,6 +20,15 @@ class CommentsController < ApplicationController
       flash[:notice] = "Successfully created comment."
       redirect_to session['referer'] 
       session['referer'] = nil
+      if @comment.user_type == 'seller'
+        EntryMailer.delay.comment_alert(@entry, @comment) 
+      else
+        commenters = @entry.comments.where('user_id != ?', current_user).collect(&:user_id).uniq
+        recipients = User.find(commenters)
+        for recipient in recipients
+          EntryMailer.delay.comment_alert(@entry, @comment, recipient) 
+        end
+      end
     else
       flash[:warning] = "You submitted a blank comment. Please try again."
       redirect_to session['referer'] 
@@ -46,4 +55,11 @@ class CommentsController < ApplicationController
     flash[:notice] = "Successfully destroyed comment."
     redirect_to comments_url
   end
+  
+  private
+    
+    def send_comment_alert(recipient=nil)
+      EntryMailer.delay.comment_alert(@entry, @comment, recipient) unless @comment.user_type == 'admin'
+    end
+    
 end

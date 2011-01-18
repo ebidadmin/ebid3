@@ -19,4 +19,24 @@ class EntryMailer < ActionMailer::Base
       :bcc => "cymarquez@ebid.com.ph"
       )
   end
+  
+  def comment_alert(entry, comment, recipient=nil)
+    @entry = entry
+    @comment = comment
+    if recipient.blank?
+      mail(
+        :to => "#{@entry.user.profile.full_name} <#{@entry.user.email}>", 
+        :subject => "Comment created: #{entry.vehicle}",
+        :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"] 
+        )
+    else
+      @recipient = recipient
+      mail(
+        :to => "#{recipient.profile.full_name} <#{recipient.email}>", 
+        :subject => "Comment created: #{entry.vehicle}",
+        :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"] 
+        )
+    end
+  end
+  
 end

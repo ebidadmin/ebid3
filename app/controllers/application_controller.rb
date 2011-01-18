@@ -104,6 +104,8 @@ class ApplicationController < ActionController::Base
         buyer_orders_path(user)
       when 'payments'
         buyer_payments_path(user)
+      when 'payments_print'
+        buyer_payments_print_path(user)
       when 'paid'
         buyer_paid_path(user)
       when 'fees'

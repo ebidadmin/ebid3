@@ -52,6 +52,18 @@ class OrdersController < ApplicationController
     @order_items1 = @order.bids
   end
 
+  def buyer_paid # Allows buyer to tag PO as 'Paid' if seller hasn't done so yet
+    find_order_and_entry
+    status = params[:buyer_status]
+    
+    if @order.update_attribute(:status, status)
+      flash[:notice] = ("Successfully updated the status of the order to <strong>Paid</strong>.<br>
+      We will notify the seller to confirm your payment.").html_safe
+      redirect_to :back
+      OrderMailer.delay.order_paid_alert(@order, @entry)
+    end
+  end
+
   def confirm # For seller to confirm PO
     find_order_and_entry
     
@@ -65,21 +77,24 @@ class OrdersController < ApplicationController
   def seller_status # For seller to update status of Orders
     # raise params.to_yaml
     find_order_and_entry
-    status = params[:seller_status]
 
-    if @order.update_attribute(:status, status)
-      if status == "Delivered"
-        @order.update_attributes(:delivered => Date.today, :pay_until => Date.today + @entry.term.name.days)
-        flash[:notice] = ("Successfully updated the status of the order to <strong>Delivered</strong>.<br>
-        Please send your invoice to buyer asap so we can help you <strong>track the payment</strong>.").html_safe
-      elsif status == "Paid"
-        @order.update_attribute(:paid, Date.today)
-        flash[:notice] = ("Successfully updated the status of the order to <strong>Paid</strong>.<br>
-        Please rate your buyer to close the order.").html_safe
+    if params[:seller_status] == "Confirm Payment"
+      status = "Paid"
+      tag_as_paid
+    else
+      status = params[:seller_status]
+      if @order.update_attribute(:status, status)
+        if status == "Delivered"
+          @order.update_attributes(:delivered => Date.today, :pay_until => Date.today + @entry.term.name.days)
+          flash[:notice] = ("Successfully updated the status of the order to <strong>Delivered</strong>.<br>
+          Please send your invoice to buyer asap so we can help you <strong>track the payment</strong>.").html_safe
+        elsif status == "Paid"
+          tag_as_paid
+        end
       end
-      @order.update_associated_status(status)
-      redirect_to :back
     end
+    @order.update_associated_status(status)
+    redirect_to :back
   end
 
   private
@@ -87,5 +102,11 @@ class OrdersController < ApplicationController
     def find_order_and_entry
       @order = Order.find(params[:id])
       @entry = @order.entry
+    end
+    
+    def tag_as_paid
+      @order.update_attribute(:paid, Date.today)
+      flash[:notice] = ("Successfully updated the status of the order to <strong>Paid</strong>.<br>
+      Please rate your buyer to close the order.").html_safe
     end
 end

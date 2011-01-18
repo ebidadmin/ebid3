@@ -22,12 +22,12 @@
 
 	<table class="parts-set">
 		<%= render 'shared/part_titles' %>
-		<%- for order_item in  @order_items1 -%>
+		<% for order_item in  @order_items1 %>
 			<tr class="selection-list">	
 				<td class="qty"><%= order_item.quantity %></td>
 				<td class="partname">
-					<%= order_item.line_item.car_part.name %>
-					<%= content_tag :p, "(Part No. <strong>#{order_item.line_item.part_no}</strong>)", :class => 'partnum' unless order_item.line_item.part_no.blank?  %>
+					<%= order_item.line_item.part_name.html_safe %>
+					<%= content_tag :p, "(Details: <strong>#{order_item.line_item.part_no}</strong>)".html_safe, :class => 'partnum' unless order_item.line_item.part_no.blank?  %>
           <%= content_tag :p, "(#{order_item.bid_type})", :class => 'strong' %>
 				</td> 
 				<td class="price">
@@ -37,7 +37,7 @@
 					<%= number_to_currency(order_item.total, :unit => "P ") -%>
 				</td>
 			</tr>	
-		<%- end -%>
+		<% end %>
 		<tr class="selection-total">	
 				<td class="label" colspan=2>
 					Order Total 

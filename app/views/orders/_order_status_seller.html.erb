@@ -1,9 +1,9 @@
-<%- if order.status == "PO Released" -%>
+<% if order.status == "PO Released" %>
 
 	<%= content_tag :p, 'Status: ' + order.status + " (#{time_ago_in_words order.created_at} ago) " %>
 	<%= content_tag :p, ('Please ' + link_to("Confirm the PO", order) + ' now.').html_safe, :class => 'instruction' %>
 
-<%- elsif order.status == "For Delivery" -%>
+<% elsif order.status == "For Delivery" %>
 
 	<%= form_tag seller_status_order_path(order), :method => :put do %>
 		Status: <%= select_tag :seller_status, options_for_select(["For Delivery", "Delivered"], [order.status]), {:onchange => 'this.form.submit()'} %>
@@ -11,7 +11,7 @@
 	<% end %>
 	<%= content_tag :span, ('(Please update this status ' + (content_tag :strong, 'if Delivered') + ') ').html_safe  %>
 
-<%- elsif order.status == "Delivered" -%>
+<% elsif order.status == "Delivered" %>
 
 	<%= form_tag seller_status_order_path(order), :method => :put do %>
 		Status: <%= select_tag :seller_status, options_for_select(["Delivered", "Paid"], [order.status]), {:onchange => 'this.form.submit()'} %>
@@ -19,7 +19,7 @@
 	<% end %>
 	<%= content_tag :p, ('(Please update this status ' + (content_tag :strong, 'if Paid') + ') ').html_safe  %>
 
-<%- elsif order.status == "Paid" -%>
+<% elsif order.status == "Paid" && order.paid != nil %>
 
 	<%= content_tag :p, 'Paid: ' + order.paid.strftime('%b %d'), :class => 'strong' unless order.paid.nil? %>
 	<%= content_tag :span, ("(Please #{link_to 'rate your buyer', new_order_rating_path(order)} to close this item.) ").html_safe, :class => 'instruction' unless order.ratings.where(:user_id => current_user).exists? %>
@@ -29,8 +29,15 @@
     :class => 'instruction highlight' unless order.ratings.where(:ratee_id => current_user).exists? %>
 	<% end %>
 
-<%- elsif order.status == "Closed" -%>
+<% elsif order.status == "Paid" && order.paid == nil %>
+
+	<%= form_tag seller_status_order_path(order), :method => :put do %>
+		<%= content_tag :p, "The Buyer tagged this order as 'Paid'. ", :class => 'instruction mild-alert' %>
+		Pls confirm if Paid: <%= select_tag :seller_status, options_for_select(["Paid", "Confirm Payment"], [order.status]), {:onchange => 'this.form.submit()'} %>
+	<% end %>
+
+<% elsif order.status == "Closed" %>
 
 	<%= content_tag :strong, order.status + ' ' %>
 
-<%- end -%>
+<% end %>

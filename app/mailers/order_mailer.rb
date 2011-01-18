@@ -12,4 +12,14 @@ class OrderMailer < ActionMailer::Base
         )
     end
   end
+  
+  def order_paid_alert(order, entry)
+    @order = order
+    @entry = entry
+    mail(
+      :to => "#{order.seller.profile.full_name} <#{order.seller.email}>", 
+      :subject => "PO Tagged as 'Paid'", 
+      :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"]
+      )
+  end
 end

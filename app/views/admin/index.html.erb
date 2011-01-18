@@ -8,6 +8,7 @@
 	<%= dash_entry_format("with-bids", "With Bids", percentage(@with_bids_pct),  @with_bids.count.to_s ) %>
 	<%= dash_entry_format("two-up", "More than 2 Bids", percentage(@two_and_up_pct),  @two_and_up.count.to_s ) %>
 	<%= dash_entry_format("no-bids", "Without Bids", nil,  @without_bids.count.to_s ) %>
+	<%= dash_entry_format("with-order", "With PO", percentage(@with_order_pct) + ' of With Bids',  @with_order.to_s ) %>
 </ul>
 
 <ul class="dash admin last">

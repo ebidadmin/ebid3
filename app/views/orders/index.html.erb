@@ -4,6 +4,7 @@
 <%#= render 'buyer/filter_by_status' unless @status_tags.nil? %>
 <%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 <%= render 'buyer/filter_by_search' %>
+<%= render 'buyer/print' unless request.parameters['controller'] == ('admin' || 'seller') %>
 
 <%= content_tag :h3, "Total: #{number_to_currency(@all_orders.collect(&:total_order_amounts).sum, :unit => "P ")}", :id => 'order-total' %>
 <%= content_tag :p, "#{User.find(params[:seller]).company_name} only: #{number_to_currency(@search.collect(&:total_order_amounts).sum, :unit => "P ")}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>
@@ -36,7 +37,7 @@
   	<td class="delivery">	
       <%= content_tag :p, (content_tag :span, 'Location: ') + order.deliver_to %>
       <%= content_tag :p, (content_tag :span, 'Credit: ') + entry.term.term_name %>
-      <%= content_tag :p, (content_tag :span, 'Amount: ') + number_to_currency(order.bids.collect(&:total).sum, :unit => "P ") %>
+      <%= content_tag :p, (content_tag :span, 'Amount: ') + number_to_currency(order.order_total, :unit => "P ") %>
   	</td>
   	<td class="status">
   		<%- unless order.seller_confirmation == false -%>
@@ -46,9 +47,9 @@
   		<div>
   		  <%= render 'orders/order_status_buyer', :order => order if current_user.has_role?('admin') || current_user.has_role?('buyer') || current_user == entry.user %>
   			<%= render 'orders/order_status_seller', :order => order if current_user == order.seller %>
-  		  <%= link_to "View PO", order unless current_user == order.seller && order.seller_confirmation == false%>
+  		  <%= link_to "View PO", order unless current_user == order.seller && order.seller_confirmation == false %>
   		  <%= "ID: #{order.id}" if current_user.has_role?('admin') %>
- 				<%= payment_due_status(order) unless (order.pay_until.nil? || order.paid) %>
+ 				<%= payment_due_status(order) unless (order.pay_until.nil? || order.paid || order.status == 'Paid') %>
  		</div>
 	</td>
   </tr>

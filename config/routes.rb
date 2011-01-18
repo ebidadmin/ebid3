@@ -64,6 +64,7 @@ Ebid::Application.routes.draw do
   match 'buyer/:user_id/results(/:status(/:page))' => 'buyer#results', :as => :buyer_results, :via => :get
   match 'buyer/:user_id/orders(/:seller(/:page))' => 'buyer#orders', :as => :buyer_orders, :via => :get
   match 'buyer/:user_id/payments(/:seller(/:page))' => 'buyer#payments', :as => :buyer_payments, :via => :get
+  match 'buyer/:user_id/payments_print(/:seller(/:page))' => 'buyer#payments_print', :as => :buyer_payments_print, :via => :get
   match 'buyer/:user_id/paid(/:seller(/:page))' => 'buyer#paid', :as => :buyer_paid, :via => :get
   match 'buyer/:user_id/closed(/:page)' => 'buyer#closed', :as => :buyer_closed, :via => :get
   match 'buyer/:user_id/fees(/:page)' => 'buyer#fees', :as => :buyer_fees, :via => :get
@@ -88,6 +89,7 @@ Ebid::Application.routes.draw do
     member do
       put :confirm
       put :seller_status
+      put :buyer_paid
     end
     resources :ratings
   end

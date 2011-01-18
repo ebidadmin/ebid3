@@ -9,6 +9,16 @@ module OrdersHelper
     end
   end
   
+  def payment_due_status_for_print(order)
+    if order.pay_until < Date.today
+      content_tag :h5, ("Due Date: #{order.pay_until.strftime('%b %d')} | Overdue: #{pluralize order.days_overdue, 'day'} ")
+    elsif order.pay_until == Date.today
+      content_tag :h5, 'Due today!'
+    else
+      content_tag :h5, "Payment due: #{order.pay_until.strftime('%b %d')} (#{distance_of_time_in_words(Date.today, order.pay_until)} from now)"
+    end
+  end
+
   def alert_class(order)
     if order.days_overdue >= 10
       'red-alert'

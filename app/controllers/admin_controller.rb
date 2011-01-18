@@ -2,12 +2,14 @@ class AdminController < ApplicationController
   def index
     @title = 'Admin Dashboard'
     @entries = Entry.scoped
-    @line_items = LineItem.scoped
+    @line_items = LineItem.scoped #.where('created_at > ?', 3.months.ago)
     @with_bids = @line_items.with_bids
     @with_bids_pct = @line_items.with_bids_pct
     @two_and_up = @line_items.two_and_up
     @two_and_up_pct = @line_items.two_and_up_pct
     @without_bids = @line_items.without_bids
+    @with_order = OrderItem.all.collect(&:line_item_id).uniq.count
+    @with_order_pct = (@with_order.to_f/@with_bids.count.to_f) * 100
 
     @online_entries =  @entries.online.current.desc.five 
     @users = User.active

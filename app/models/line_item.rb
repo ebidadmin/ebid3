@@ -43,4 +43,5 @@ class LineItem < ActiveRecord::Base
 	def self.two_and_up_pct
 	  (two_and_up.count.to_f/self.count.to_f) * 100
 	end
+	
 end

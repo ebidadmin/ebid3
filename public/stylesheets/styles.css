@@ -88,7 +88,7 @@ table .delivery p, table .requirements p { margin-left: 60px; }
 table .vehicle a, table .requirements a, table .terms a { font-size: 1.5em; }
 table .vehicle #details a { font-size: 1.2em; margin-left: -4px; }
 table .status { width: 40%; text-align: center; }
-table .status p { margin-bottom: 5px; }
+table .status p, table .status form { margin-bottom: 5px; }
 table .status #admin-stuff { font-size: .9em; }
 table p span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 30%; }
 table tr#accept-decline { text-align: center; }
@@ -258,7 +258,8 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 /* ORDERS & PAYMENTS LISTS
 ---------------------------------------------------------------------- */
 #order-total, #supplier-total { float: left; margin-right: 25px; }
-
+table#print-payments-list th { text-align: left; }
+table#print-payments-list .stat { width: 25%; }
 /* USERS#INDEX 
 ---------------------------------------------------------------------- */
 #users-index th { text-align: left; }

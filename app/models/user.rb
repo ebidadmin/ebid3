@@ -49,4 +49,7 @@ class User < ActiveRecord::Base
     profile.company.name.upcase
   end
   
+  def power
+    roles
+  end
 end

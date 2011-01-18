@@ -38,6 +38,8 @@ class BidsController < ApplicationController
     
     if @new_bids.compact.length > 0 && @new_bids.all?(&:valid?)
       @new_bids.each(&:save!)
+      # @company = @entry.user.company
+      # powerbuyers = Role.find_by_name('powerbuyer').users
       BidMailer.delay.bid_alert(@new_bids, @entry) 
       BidMailer.delay.bid_alert_to_admin(@new_bids, @entry, current_user)
       flash[:notice] = "Bid/s submitted. Thank you!"
