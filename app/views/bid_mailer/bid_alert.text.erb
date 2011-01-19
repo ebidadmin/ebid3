@@ -10,7 +10,7 @@ Bid/s were posted for
 ITEM BID/S
 
   <% @bids.group_by(&:line_item).each do |item, bids| %>         
-	<%= item.car_part.name %> 
+	<%= item.car_part.name.html_safe %> 
 	
 		<% for bid in bids %>
 		* <%= "Original:         Yes" unless bid.bid_type != "original" %><%= "Replacement: Yes" unless bid.bid_type != "replacement" %><%= "Surplus:          Yes" unless bid.bid_type != "surplus" %>
