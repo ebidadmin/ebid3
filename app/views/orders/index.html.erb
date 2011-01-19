@@ -25,8 +25,8 @@
 			<%= render 'shared/photo_first', :entry => entry  %>
       <div id="details">
   			<%= content_tag :p, (entry.ref_no unless entry.ref_no.nil?)  %>
-  			<%= content_tag :p, entry.vehicle, :class => 'strong'  %>
-  			<%#= content_tag :p, (link_to entry.vehicle, seller_path(entry)) if current_user.has_role?('seller') %>
+        <%= content_tag :p, entry.vehicle, :class => 'strong' unless current_user.has_role?('seller') %>
+        <%= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) if current_user.has_role?('seller') %>
         <%= content_tag :span, entry.plate_no %>
         <%= content_tag :span, "(created by #{entry.user.username})", :class => 'highlight' if current_user.has_role?("powerbuyer") %>
   		</div>

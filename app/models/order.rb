@@ -1,5 +1,5 @@
 class Order < ActiveRecord::Base
-
+  
   require 'date'
   belongs_to :user
   belongs_to :seller, :class_name => "User"
@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
 
   scope :unpaid, where(:paid => nil)
 
-  scope :recent, where("status IN ('PO Released', 'For-Delivery')")
+  scope :recent, where("status IN ('PO Released', 'For-Delivery', 'For Delivery')")
   scope :total_delivered, where("status IN ('Delivered', 'Paid', 'Closed')")
   scope :delivered, where(:status => 'Delivered')
   scope :paid, where(:status => 'Paid').asc2
@@ -31,6 +31,7 @@ class Order < ActiveRecord::Base
   scope :due_soon, delivered.where(:pay_until => Date.today .. Date.today + 1.week).unpaid
   scope :overdue, delivered.where('pay_until < ?', Date.today)
   
+  scope :for_auto_rating, where('ratings_count < ?', 2)
  
   def self.by_this_seller(user)
     where(:seller_id => user)
@@ -90,6 +91,46 @@ class Order < ActiveRecord::Base
   
   def days_to_pay # used in RATINGS#FORM
     (paid - delivered).to_i
+  end
+  
+  def days_not_rated1 # used in RATINGS#AUTO
+    (Date.today - delivered).to_i - 1
+  end
+
+  def days_not_rated2 # used in RATINGS#AUTO
+    (Date.today - paid).to_i - 1
+  end
+  
+  def prompt_payment?
+    (paid - pay_until).to_i 
+  end
+  
+  def compute_rating_for_buyer
+    if prompt_payment? > 60
+      1
+    elsif prompt_payment? > 45
+      2
+    elsif prompt_payment? > 30
+      3
+    elsif prompt_payment? <= 30
+      4
+    else
+      3.5
+    end
+  end
+  
+  def compute_rating_for_seller
+    if days_to_deliver > 7
+      1
+    elsif days_to_deliver > 5
+      2
+    elsif days_to_deliver > 3
+      3
+    elsif days_to_deliver <= 3
+      4
+    else
+      3.5
+    end
   end
   
   def close

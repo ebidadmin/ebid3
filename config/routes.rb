@@ -76,6 +76,7 @@ Ebid::Application.routes.draw do
   match 'seller/:user_id/orders(/:page)' => 'seller#orders', :as => :seller_orders, :via => :get
   match 'seller/:user_id/payments(/:page)' => 'seller#payments', :as => :seller_payments, :via => :get
   match 'seller/:user_id/feedback(/:page)' => 'seller#feedback', :as => :seller_feedback, :via => :get
+  match 'seller/:user_id/closed(/:page)' => 'seller#closed', :as => :seller_closed, :via => :get
   match 'seller/:user_id/fees(/:page)' => 'seller#fees', :as => :seller_fees, :via => :get
 
   resources :bids do
@@ -94,6 +95,10 @@ Ebid::Application.routes.draw do
     resources :ratings
   end
 
+  resources :ratings, :only => :index do
+    get :auto, :on => :collection
+  end
+  
   get "site/index"
   get "site/about"
   get "site/xmas"

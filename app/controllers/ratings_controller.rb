@@ -1,4 +1,6 @@
 class RatingsController < ApplicationController
+  include ActionView::Helpers::TextHelper
+
   def index
     if params[:user_id] == 'all'
       @ratings = Rating.where(:ratee_id => current_user.company.users).desc
@@ -65,6 +67,36 @@ class RatingsController < ApplicationController
       @order.revert unless @order.status != 'Closed'
     end
     flash[:notice] = "Successfully deleted rating."
+    redirect_to :back
+  end
+  
+  def auto
+    @orders = Order.paid.includes(:entry, :user, :company, :ratings)
+    for order in @orders
+      @ratings = Array.new
+      entry = order.entry
+      if order.ratings.where(:user_id => order.company.users).blank?
+        @rating = Rating.new
+        @rating.user_id = order.user_id 
+        @rating.ratee_id = order.seller_id
+        @rating.stars = order.compute_rating_for_seller
+        @rating.review = "Order was delivered #{pluralize order.days_to_deliver, 'day'} from PO date. (Automatic rating: #{pluralize order.days_not_rated1, 'day'} from delivery date)" 
+        @ratings << @rating
+      end
+      if order.ratings.where(:ratee_id => order.company.users).blank?
+        @rating = Rating.new
+        @rating.user_id = order.seller_id
+        @rating.ratee_id = order.user_id 
+        @rating.stars = order.compute_rating_for_buyer
+        @rating.review = "Order was paid #{pluralize order.prompt_payment?, 'day'} from delivery date. (Automatic rating: #{pluralize order.days_not_rated2, 'day'} from payment date)" 
+        @ratings << @rating
+      end
+      order.ratings << @ratings
+      if order.ratings.where(:user_id => order.company.users).exists? && order.ratings.where(:ratee_id => order.company.users).exists?
+        order.close
+      end
+    end
+    flash[:notice] = "Successfully created auto ratings."  
     redirect_to :back
   end
 end

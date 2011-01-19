@@ -20,7 +20,7 @@ module SellerHelper
   end
 
   def quote_class(status)
-    if status == "Paid" || status == "Ordered" || status == "Delivered" || status == "For Delivery"
+    if status == "Paid" || status == "Ordered" || status == "Delivered" || status == "For Delivery" || status == "Closed"
       "green"
     elsif status == "For Decision"  
       "brown"

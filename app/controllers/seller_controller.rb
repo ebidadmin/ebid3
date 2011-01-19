@@ -85,6 +85,15 @@ class SellerController < ApplicationController
     render 'orders/index'  
   end
   
+  def closed
+    @title = "Paid and Closed Orders"
+    @sort_order =" date paid (per vehicle) - ascending order"
+    @all_orders = Order.by_this_seller(current_user).closed.order('paid DESC')
+    @search = @all_orders.search(params[:search])
+    @orders = @search.paginate :page => params[:page], :per_page => 10    
+    render 'orders/index'  
+  end
+  
   def fees
     @title = "Transaction Fees for Paid Orders"
     @sort_order =" date PO was paid - descending order"
