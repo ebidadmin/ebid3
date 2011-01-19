@@ -35,18 +35,12 @@ class BidsController < ApplicationController
       end
     end
 
-    
     if @new_bids.compact.length > 0 && @new_bids.all?(&:valid?)
       @new_bids.each(&:save!)
       @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
       BidMailer.delay.bid_alert(@new_bids, @entry, @powerbuyers) 
       BidMailer.delay.bid_alert_to_admin(@new_bids, @entry, current_user)
       flash[:notice] = "Bid/s submitted. Thank you!"
-    else
-      flash[:warning] = "Something prevented submission of your bid/s. Please check, then try again."
-      respond_to do |format|
-        format.html { redirect_to seller_show_path(:brand => @entry.brand, :id => @entry.id) }
-      end 
     end
     # redirect_to :back # respond_with(@new_bids, :location => :back)
   end
