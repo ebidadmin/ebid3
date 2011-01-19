@@ -4,11 +4,11 @@ class BidMailer < ActionMailer::Base
   default_url_options[:host] = "www.ebid.com.ph"
   default :from => "E-Bid Admin <admin@ebid.com.ph>"
   
-  def bid_alert(bids, entry)
+  def bid_alert(bids, entry, powerbuyers)
     @bids = bids
     @entry = entry
     mail(
-      :to => "#{entry.user.profile.full_name} <#{entry.user.email}>", 
+      :to => powerbuyers, 
       :subject => "Bid/s submitted: #{entry.vehicle}", 
       :bcc => "Chris Marquez <cymarquez@ebid.com.ph>"
       )

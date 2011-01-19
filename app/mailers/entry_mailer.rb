@@ -2,11 +2,12 @@ class EntryMailer < ActionMailer::Base
   # default_url_options[:host] = "www.ebid.com.ph"
   default :from => "E-Bid Admin <admin@ebid.com.ph>"
   
-  def new_entry_alert(entry)
+  def new_entry_alert(entry, powerbuyers)
     @entry = entry
     mail(
-      :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
-      :subject => "New Entry Created"
+      :to => powerbuyers,
+      :subject => "New Entry Created",
+      :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"] 
       )
   end
   
