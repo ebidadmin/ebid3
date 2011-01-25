@@ -52,18 +52,6 @@ class OrdersController < ApplicationController
     @order_items1 = @order.bids
   end
 
-  def buyer_paid # Allows buyer to tag PO as 'Paid' if seller hasn't done so yet
-    find_order_and_entry
-    status = params[:buyer_status]
-    
-    if @order.update_attribute(:status, status)
-      flash[:notice] = ("Successfully updated the status of the order to <strong>Paid</strong>.<br>
-      We will notify the seller to confirm your payment.").html_safe
-      redirect_to :back
-      OrderMailer.delay.order_paid_alert(@order, @entry)
-    end
-  end
-
   def confirm # For seller to confirm PO
     find_order_and_entry
     
@@ -95,6 +83,18 @@ class OrdersController < ApplicationController
     end
     @order.update_associated_status(status)
     redirect_to :back
+  end
+
+  def buyer_paid # Allows buyer to tag PO as 'Paid' if seller hasn't done so yet
+    find_order_and_entry
+    status = params[:buyer_status]
+    
+    if @order.update_attributes(:status => status, :paid_temp => Date.today)
+      flash[:notice] = ("Successfully updated the status of the order to <strong>Paid</strong>.<br>
+      We will notify the seller to confirm your payment.").html_safe
+      redirect_to :back
+      OrderMailer.delay.order_paid_alert(@order, @entry)
+    end
   end
 
   private

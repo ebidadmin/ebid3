@@ -21,7 +21,7 @@ class AdminController < ApplicationController
     @user_group = Role.find_by_name('buyer').users.order('username').collect { |user| [user.username_for_menu, admin_entries_path(:user_id => user.username.downcase)] }
     @user_group.push(['All', admin_entries_path(:user_id => 'all')])
     @current_path = admin_entries_path(params[:user_id])
-    entries = Entry.scoped
+    entries = Entry.scoped.includes(:photos, :user, :car_brand, :car_model, :car_variant, :term, :city, :bids, :orders)
     
     if params[:user_id] == 'all'
       @search = entries.search(params[:search])
@@ -84,7 +84,7 @@ class AdminController < ApplicationController
   def supplier_fees
     @title = "Transaction Fees for Paid Orders"
     @sort_order =" date PO was paid - descending order"
-    @all_orders = Order.paid_and_closed
+    @all_orders = Order.paid_and_closed.payment_valid
     @orders = @all_orders.paginate :page => params[:page], :per_page => 10
     render 'seller/fees'
   end

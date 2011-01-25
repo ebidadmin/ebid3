@@ -26,6 +26,7 @@ class Order < ActiveRecord::Base
   scope :paid, where(:status => 'Paid').asc2
   scope :closed, where(:status => 'Closed')
   scope :paid_and_closed, where("status IN ('Paid', 'Closed')").order('paid DESC')
+  scope :payment_valid, where('paid IS NOT NULL')
 
   scope :within_term, delivered.where('pay_until > ?', Date.today)
   scope :due_soon, delivered.where(:pay_until => Date.today .. Date.today + 1.week).unpaid

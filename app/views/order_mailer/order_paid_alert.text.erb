@@ -14,7 +14,7 @@ Hi <%= @order.seller.profile.first_name %>!
 	PO Released:     <%= @order.created_at.strftime('%b %d, %Y') %>	
 	Date Delivered:  <%= @order.delivered.strftime('%b %d, %Y') %>
 
-Please login to your account to confirm this payment (http://ebid.com.ph<%= seller_feedback_path(:user_id => @order.seller, :search => @entry.plate_no) %>).
+Please login to your account to confirm this payment (http://www.ebid.com.ph<%= seller_feedback_path(:user_id => @order.seller, :search => @entry.plate_no) %>).
 
 In case you cannot confirm this action within three (3) days, it means that you have already received the payment 
 and E-Bid shall consider this PO as "Closed".

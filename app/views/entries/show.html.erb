@@ -23,32 +23,10 @@
     <th class="bid-box price">Surplus</th>
 	</tr>
 	</thead>
-	<% for item in  @line_items %>
-	<tr>
-		<td class="qty" <%= proper_rowspan(item) %>><%= item.quantity %></td>
-		<td class="partname" <%= proper_rowspan(item) %>>    	
-			<%=h item.car_part.name %> 
-			<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
-			<%= content_tag :p, (pluralize item.bids.collect(&:user_id).uniq.count, "bidder"), :class => 'strong' unless item.bids.collect(&:user_id).uniq.count < 1 %>
-			<%= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
-		</td>
-		
-		<%= render 'bid_master', :item => item unless current_user.has_role?('admin')  %>
-		<%= render 'admin/bid_master', :item => item if current_user.has_role?('admin') %>
+	
+	<%= render 'bid_master' unless current_user.has_role?('admin')  %>
+	<%= render 'admin/bid_master' if current_user.has_role?('admin') %>
 
-	</tr>
-	<% end %>
-	<% if (@entry.buyer_status == "For-Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP" || @entry.buyer_status == 'Relisted') && @entry.expired.nil? %>
-	<tr id="accept-decline">
-	  <td colspan=2></td>
-	  <td colspan=4>
-  		<p class="instruction strong">Select bid/s before you decide.</p>  
-    	<%= submit_tag "Accept Selected" -%>
-    	<%= submit_tag "Decline Selected", :confirm => 'Are you sure you want to decline the selected bid/s?',
-    	 			:method => :get %>
-	  </td>
-	</tr>
-	<% end %>
 </table>
 <% end -%>
 
