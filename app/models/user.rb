@@ -19,6 +19,9 @@ class User < ActiveRecord::Base
   has_many :ratings
   has_many :ratees, :through => :ratings, :dependent => :destroy
   has_many :comments, :dependent => :destroy
+  has_many :buyers, :through => :fees
+  has_many :sellers, :through => :fees
+  
 
   scope :active, where('current_sign_in_at > ?', 24.hours.ago).order('current_sign_in_at DESC')
   

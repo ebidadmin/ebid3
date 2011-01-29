@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101218010024) do
+ActiveRecord::Schema.define(:version => 20110126063019) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -172,6 +172,33 @@ ActiveRecord::Schema.define(:version => 20101218010024) do
   add_index "entries", ["term_id"], :name => "index_entries_on_term_id"
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
+  create_table "fees", :force => true do |t|
+    t.integer "buyer_company_id"
+    t.integer "buyer_id"
+    t.integer "seller_company_id"
+    t.integer "seller_id"
+    t.integer "entry_id"
+    t.integer "line_item_id"
+    t.integer "order_id"
+    t.integer "bid_id"
+    t.decimal "bid_total",         :precision => 10, :scale => 2
+    t.decimal "fee",               :precision => 10, :scale => 2
+    t.string  "fee_type"
+    t.date    "created_at"
+    t.date    "remitted"
+    t.decimal "split_amount",      :precision => 10, :scale => 2
+    t.date    "split_date"
+  end
+
+  add_index "fees", ["bid_id"], :name => "index_fees_on_bid_id"
+  add_index "fees", ["buyer_company_id"], :name => "index_fees_on_buyer_company_id"
+  add_index "fees", ["buyer_id"], :name => "index_fees_on_buyer_id"
+  add_index "fees", ["entry_id"], :name => "index_fees_on_entry_id"
+  add_index "fees", ["line_item_id"], :name => "index_fees_on_line_item_id"
+  add_index "fees", ["order_id"], :name => "index_fees_on_order_id"
+  add_index "fees", ["seller_company_id"], :name => "index_fees_on_seller_company_id"
+  add_index "fees", ["seller_id"], :name => "index_fees_on_seller_id"
+
   create_table "friendships", :id => false, :force => true do |t|
     t.integer  "company_id"
     t.integer  "friend_id"
@@ -233,6 +260,7 @@ ActiveRecord::Schema.define(:version => 20101218010024) do
     t.date     "pay_until"
     t.date     "paid"
     t.integer  "ratings_count",                                      :default => 0,             :null => false
+    t.date     "paid_temp"
   end
 
   add_index "orders", ["company_id"], :name => "index_orders_on_company_id"
@@ -287,7 +315,6 @@ ActiveRecord::Schema.define(:version => 20101218010024) do
 
   create_table "remarks", :force => true do |t|
     t.integer  "user_id"
-    t.string   "user_type"
     t.integer  "entry_id"
     t.text     "remark"
     t.datetime "created_at"

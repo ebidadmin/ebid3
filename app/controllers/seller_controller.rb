@@ -25,7 +25,7 @@ class SellerController < ApplicationController
   end
   
   def hub
-    entries = Entry.online.current.desc2
+    entries = Entry.online.current.desc2.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items)
     @brand_links = entries.collect(&:car_brand).uniq 
     if params[:brand] == 'all'
       @entries = entries.paginate(:page => params[:page], :per_page => 10)
@@ -36,7 +36,7 @@ class SellerController < ApplicationController
   end
   
   def show
-    @entry = Entry.find(params[:id], :joins => [:line_items, :photos])
+    @entry = Entry.find(params[:id])
     if @entry.buyer_status == 'Relisted'
       @line_items = @entry.line_items.online.includes(:car_part, :bids)
     else

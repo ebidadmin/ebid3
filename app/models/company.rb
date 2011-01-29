@@ -8,6 +8,8 @@ class Company < ActiveRecord::Base
   has_many :users, :through => :profiles
   has_many :friendships, :dependent => :destroy
   has_many :friends, :through => :friendships
+  has_many :buyer_companies, :through => :fees
+  has_many :seller_companies, :through => :fees
   
   validates_presence_of :name, :address1, :city, :approver
   validates_uniqueness_of :name, :message => "This company is already in our database."

@@ -41,4 +41,21 @@ class LineItemsController < ApplicationController
     flash[:notice] = "Successfully destroyed line item."
     redirect_to line_items_url
   end
+
+  def change
+    @line_item = LineItem.find(params[:id])
+
+    if @line_item.update_attributes(params[:item])
+      flash[:notice] = "Successfully updated cart item."
+          
+      respond_to do |format|
+        format.html { redirect_to new_user_entry_path(current_user) }
+        format.js { flash.now[:cart_notice] = "Updated #{@line_item.car_part.name}" }
+      end      
+    else
+      flash[:notice] = "Something went wrong with your cart update.  Please try again."
+      render
+    end
+  end
+
 end

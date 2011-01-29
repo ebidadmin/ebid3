@@ -3,7 +3,7 @@
 	<%= content_tag :p, 'Status: ' + order.status + " (#{time_ago_in_words order.created_at} ago) " %>
 	<%= content_tag :p, ('Please ' + link_to("Confirm the PO", order) + ' now.').html_safe, :class => 'instruction' %>
 
-<% elsif order.status == "For Delivery" %>
+<% elsif order.status == "For Delivery" || order.status == "For-Delivery" %>
 
 	<%= form_tag seller_status_order_path(order), :method => :put do %>
 		Status: <%= select_tag :seller_status, options_for_select(["For Delivery", "Delivered"], [order.status]), {:onchange => 'this.form.submit()'} %>

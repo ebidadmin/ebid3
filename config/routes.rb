@@ -1,6 +1,8 @@
 Ebid::Application.routes.draw do
 
-  resources :line_items
+  resources :line_items do
+    put :change, :on => :member
+  end
 
   resources :comments
 

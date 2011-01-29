@@ -1,10 +1,11 @@
 <% title @title %>
 
 <%= render 'buyer/filter_by_user' unless @user_group.nil? %>
+<%= render 'buyer/filter_by_search' %>
 
 <% unless @declined_bids.blank? %>
 <h2 id='flash_notice'>
-	Total Transaction Fees: <%= number_to_currency @all_declined_bids.collect(&:fee).sum, :unit => "Php " %>
+	Total Transaction Fees: <%= ph_currency(@all_declined_bids.collect(&:fee).sum) %>
   <%= content_tag :span, "| you have declined #{@all_declined_bids.count} of  #{@total_bids} (#{percentage(@percentage_declined)})".html_safe unless @total_bids.nil? %>
 </h2>
 <%= will_paginate @declined_bids  %>
@@ -27,13 +28,13 @@
 			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' if current_user != entry.user %></p>
 		</td>
 		<td class="decline-type">
-		  <%= content_tag :p, entry.buyer_status, :class => 'strong' %>
+		  <%= content_tag :p, entry.decline_type, :class => 'strong' %>
 		  <%= content_tag :p, "#{bids.count} of #{pluralize entry.line_items.count, 'item'}" %> 	
 			<p class="instruction"><%= display_decline_date(entry) + "#{' (Expired)' unless entry.expired.nil? }" %></p>
 		</td>
 	  <td>
   	<% for bid in bids %>
-	    <%= content_tag :div, bid.line_item.car_part.name, :class => 'part' %>
+	    <%= content_tag :div, bid.line_item.part_name, :class => 'part' %>
 	    <%= content_tag :div, (number_to_currency bid.total, :unit => ""), :class => 'lowest-bid'  %>
 	    <%= content_tag :div, (number_to_currency bid.fee, :unit => ""), :class => 'fee' %>
 			<%#= content_tag :div, bid.user.username, :class => 'instruction' if current_user.has_role?('admin')  -%>

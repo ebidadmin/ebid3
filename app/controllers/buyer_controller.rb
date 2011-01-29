@@ -106,10 +106,10 @@ class BuyerController < ApplicationController
     initiate_list
     find_entries
     if params[:user_id] == 'all'
-      entries = Entry.where(:user_id => @company_users)
+      entries = Entry.where(:user_id => @company_users).search(params[:search])
       @total_bids = entries.collect(&:bids_count).sum
     else
-      entries = defined_user.entries
+      entries = defined_user.entries.search(params[:search])
       @total_bids = Entry.where(:id => entries).collect(&:bids_count).sum
     end
     @all_declined_bids = Bid.where(:entry_id => entries).declined

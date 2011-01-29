@@ -73,12 +73,17 @@ class AdminController < ApplicationController
   end
   
   def buyer_fees
-    @title = "Declined Winning Bids"
+    # @title = "Declined Winning Bids"
+    # @total_bids = Bid.count
+    # @all_declined_bids = Bid.declined.includes(:entry, :line_item)
+    # @percentage_declined = (@all_declined_bids.count.to_f/@total_bids.to_f) * 100
+    # @declined_bids = @all_declined_bids.paginate :page => params[:page], :per_page => 20
+    # render 'buyer/fees'
     @total_bids = Bid.count
-    @all_declined_bids = Bid.declined
-    @percentage_declined = (@all_declined_bids.count.to_f/@total_bids.to_f) * 100
-    @declined_bids = @all_declined_bids.paginate :page => params[:page], :per_page => 20
-    render 'buyer/fees'
+    @all_decline_fees = Fee.declined
+    @percentage_declined = (@all_decline_fees.count.to_f/@total_bids.to_f) * 100
+    @decline_fees = @all_decline_fees.paginate :page => params[:page], :per_page => 20
+    @decline_fees = Fee.declined.inclusions.order('created_at DESC', 'entry_id DESC').paginate :page => params[:page], :per_page => 30
   end
 
   def supplier_fees

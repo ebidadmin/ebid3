@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
   end
   
   def create
-    raise params.to_yaml
+    # raise params.to_yaml
     session['referer'] = request.env["HTTP_REFERER"]
     @entry = Entry.find(params[:entry_id])
     @comment = @entry.comments.build(params[:comment])

@@ -71,7 +71,7 @@ class RatingsController < ApplicationController
   end
   
   def auto
-    @orders = Order.paid.includes(:entry, :user, :company, :ratings)
+    @orders = Order.paid.payment_valid.includes(:entry, :user, :company, :ratings)
     for order in @orders
       @ratings = Array.new
       entry = order.entry

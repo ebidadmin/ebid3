@@ -73,7 +73,7 @@ class EntriesController < ApplicationController
 
     # TODO: UPDATE LINE_ITEMS
     if @entry.update_attributes(params[:entry])
-      EntryMail#er.delay.new_entry_alert(@entry)
+      EntryMailer.delay.new_entry_alert(@entry)
       @cart.destroy
       session[:cart_id] = nil 
       flash[:notice] = "Successfully updated entry."

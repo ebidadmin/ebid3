@@ -5,7 +5,8 @@ class LineItem < ActiveRecord::Base
   has_many :bids, :dependent => :destroy
   has_one :order_item
   has_one :order, :through => :order_item
-
+  has_one :fee
+  
   scope :online, where("status IN ('Online', 'Relisted')")
   scope :with_bids, where('bids_count > 0')
   scope :two_and_up, where('bids_count > 2')

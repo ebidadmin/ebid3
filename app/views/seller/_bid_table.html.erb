@@ -21,9 +21,9 @@
 		<% end %>
 		<% unless item.bids.where(:user_id => current_user).blank? %>
 		<div id="amounts">                                                                                                  
-		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'original')), :class => 'bid-amount' %>
-		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'replacement')), :class => 'bid-amount' %>
-		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'surplus')), :class => 'bid-amount' %>
+		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'original')), :class => 'bid-amount', :id => "original_#{item.id}" %>
+		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'replacement')), :class => 'bid-amount', :id => "replacement_#{item.id}" %>
+		<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'surplus')), :class => 'bid-amount', :id => "surplus_#{item.id}" %>
 		<% else %>
 		<%= content_tag :strong, 'You did not bid on this item.' unless @entry.buyer_status == 'Online' || @entry.buyer_status == "Relisted" %>
 		<% end %>

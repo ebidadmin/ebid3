@@ -10,6 +10,7 @@ class Order < ActiveRecord::Base
   has_many :line_items, :through => :order_items  
   has_many :ratings
   has_many :bids
+  has_many :fees
  
   validates_presence_of :deliver_to, :address1, :phone
 

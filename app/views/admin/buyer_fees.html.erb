@@ -1,0 +1,44 @@
+<% title @title %>
+
+<%= render 'buyer/filter_by_user' unless @user_group.nil? %>
+<%= render 'buyer/filter_by_search' %>
+
+<% unless @decline_fees.blank? %>
+	<h2 id='flash_notice'>
+		Total Transaction Fees: <%= ph_currency(@all_decline_fees.collect(&:fee).sum) %>
+	  <%= content_tag :span, "| you have declined #{@all_decline_fees.count} of  #{@total_bids} (#{percentage(@percentage_declined)})".html_safe unless @total_bids.nil? %>
+	</h2>
+<%= will_paginate @decline_fees  %>
+<%= page_info @decline_fees %>
+
+<table id="admin-buyer-fees">
+	<thead>
+		<th class="vehicle">Vehicle</th>
+		<th class="">
+			<div class="fee-type">Decline Type</div>
+		  <div class="part">Part Description</div>
+		  <div class="lowest-bid">Lowest Bid</div>
+  		<div class="fee">Transaction Fee</div>
+		</th>
+	</thead>
+	<% @decline_fees.group_by(&:entry).each do |entry, fees|  %>
+  <tr>
+		<td class="vehicle">	
+			<%= link_to h(entry.vehicle), entry %>
+			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' if current_user != entry.user %></p>
+		  <%= content_tag :p, "#{fees.count} of #{pluralize entry.line_items.count, 'item'}" %> 	
+		</td>
+	  <td>
+  	<% for fee in fees %>
+	    <%= content_tag :div, fee.fee_type + " #{fee.created_at.strftime('%b %d')}", :class => 'fee-type' %>
+	    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
+	    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'lowest-bid'  %>
+	    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
+			<%#= content_tag :div, bid.user.username, :class => 'instruction' if current_user.has_role?('admin')  -%>
+		<% end %>
+		</td>                          
+	</tr>
+	<% end %>
+</table>
+<% end %>
+

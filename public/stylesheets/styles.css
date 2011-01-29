@@ -101,13 +101,16 @@ table .amount { text-align: center; }
 /* BUYER FEES
 ---------------------------------------------------------------------- */
 table#buyer-fees td div { margin-bottom: 5px; height: 18px; line-height: 18px; }
-table#buyer-fees .vehicle a { font-size: 1em; margin-left: -4px; }
-table#buyer-fees .vehicle { width: 30%; }
-table .decline-type { text-align: left; width: 15%; }
-table .part, table .lowest-bid, table .fee { float: left }
-table .part { clear: both; width: 200px; margin-right: 10px; text-align: left; }
+table#buyer-fees .vehicle a, table#admin-buyer-fees .vehicle a { font-size: 1em; margin-left: -4px; }
+table#buyer-fees .vehicle, table#admin-buyer-fees .vehicle { width: 30%; }
+table#buyer-fees .decline-type { text-align: left; width: 15%; }
+table .part, table .lowest-bid, table .fee { float: left; }
+table#buyer-fees .part { clear: both; width: 200px; margin-right: 10px; text-align: left; }
 table .lowest-bid, table .fee { margin-left: 10px; width: 140px; text-align: right; }
 table td .fee { font-size: 1.2em; font-weight: bold; }
+
+table#admin-buyer-fees .fee-type { float: left; clear: both; margin-right: 10px; text-align: left; width: 15%;}
+table#admin-buyer-fees .part { width: 200px; margin-right: 10px; text-align: left; }
 
 /* SUPPLIER - MAIN HUB
 ---------------------------------------------------------------------- */
