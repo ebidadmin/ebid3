@@ -16,6 +16,7 @@ class EntriesController < ApplicationController
   
   def show
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    @line_items = @entry.line_items
   end
   
   def new
@@ -154,10 +155,11 @@ class EntriesController < ApplicationController
   def reactivate
     show
     if @entry.update_attributes(:buyer_status => 'For-Decision', :chargeable_expiry => nil, :expired => nil)
-      @line_items.each do |line_item|
+      @entry.line_items.each do |line_item|
         unless line_item.order_item
           line_item.update_attribute(:status, 'For-Decision') 
-          line_item.bids.update_all(:status => 'For-Decision', :fee => nil, :declined => nil, :expired => nil)
+          line_item.bids.update_all(:status => 'For-Decision', :declined => nil, :expired => nil)
+          line_item.fee.destroy if line_item.fee
         end
       end
     end

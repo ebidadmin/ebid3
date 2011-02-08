@@ -98,7 +98,7 @@ class BuyerController < ApplicationController
     initiate_list
     @status = ["Paid", "Closed"]
     find_orders
-    @search = @all_orders.asc.search(params[:search])
+    @search = @all_orders.asc2.search(params[:search])
     @search = @all_orders.where(:seller_id => params[:seller]).asc2.search(params[:search]) unless params[:seller].nil?
     @orders = @search.inclusions.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
@@ -153,7 +153,7 @@ private
     due_later = delivered_items - pay_soon - overdue
     @due_later_count = due_later.count
     @due_later_amount = due_later.collect(&:total_order_amounts).sum
-    o_paid = orders.paid_and_closed
+    o_paid = orders.paid_and_closed.payment_valid
     @paid_count = o_paid.count
     @paid_amount = o_paid.collect(&:total_order_amounts).sum
   end

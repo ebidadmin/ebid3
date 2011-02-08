@@ -123,7 +123,7 @@ table .bid-box { width: 60%; overflow: hidden; text-align: center; }
 table .bid-box span { color: #C00; }
 table .bid-box .fields, table .bid-box #amounts { clear: both; overflow: hidden; }
 table .bid-box .bid-field, table .bid-box .bid-amount { float: left; display: inline; width: 32%; min-height: 2.5em; padding: 2px; text-align: right; }
-table .bid-box .bid-field.center { text-align: center; }
+table .bid-box .bid-field.center { color: #919191; text-align: center; }
 table .bid-box #regular { width: 31%; }
 table .bid-box .bid-amount { min-height: 1.5em; }
 table .bid-box .status { float: left; margin-left: 15px; }

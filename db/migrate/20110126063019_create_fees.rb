@@ -54,7 +54,7 @@ class CreateFees < ActiveRecord::Migration
     #     f.created_at = bid.paid
     #   end 
     #   f.save
-    end
+    # end
   end
 
   def self.down

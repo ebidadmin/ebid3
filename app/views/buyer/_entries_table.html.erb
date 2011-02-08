@@ -22,7 +22,6 @@
 		</td>
     <td class="terms">  
       <%= content_tag :p, "#{entry.term.term_name} / #{entry.city.name}" %>
-      <%#= content_tag :p, (link_to (pluralize entry.line_items.count, "item"), entry), :class => 'parts-total' %>
       <%= content_tag :p, (link_to (pluralize entry.line_items_count, "item"), entry), :class => 'parts-total' %>
     </td>
 		<td class="status">

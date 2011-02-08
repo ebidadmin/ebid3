@@ -23,7 +23,8 @@
 		<tr>
 			<td rowspan=<%= orders.count + 1 %> class='vehicle'>	
 				<%= content_tag :p, (entry.ref_no unless entry.ref_no.nil?)  %>
-	      <%= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) %>
+	      <%#= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) %>
+				<%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), entry) %>
 				<%= content_tag :span, entry.plate_no %>
 			</td>
 		</tr>
