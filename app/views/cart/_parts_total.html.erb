@@ -1,0 +1,5 @@
+<% if params[:id] %>
+  <%= @entry.line_items.collect(&:quantity).sum + @cart.total %>
+<% else %>
+  <%= @cart.total %>
+<% end %>

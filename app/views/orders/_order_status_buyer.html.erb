@@ -1,34 +1,38 @@
-<% if order.status == "For Delivery" %>
+<% if order.status == "For Delivery" || order.status == "For-Delivery" %>
 	
 	<%= order.status %> (<%= order.confirmed.strftime('%b %d') %>)&nbsp;
 
 <% elsif order.status == "Delivered" %>
 
+	<% if order.ratings.where(:user_id => @company_users).exists? %>
+    <%= content_tag :p, "Waiting for the seller to rate you also ...  ", 
+    :class => 'instruction highlight' unless order.ratings.where(:ratee_id => current_user).exists? %>
+	<% else %>
+		<%= link_to "Rate Seller", new_order_rating_path(order)  %>
+	<% end %>
+
 	<%= form_tag buyer_paid_order_path(order), :method => :put do %>
 		<%= select_tag :buyer_status, options_for_select(["Delivered", "Paid"], [order.status]), {:onchange => 'this.form.submit()'} %>
 		<%= order.delivered.strftime('%b %d') unless order.delivered.nil? %>
-		<%= content_tag :span, " (Already paid? Just update this menu)"  %> 
+		<%= content_tag :p, " (Update the dropdown menu if paid)"  %> 
 	<% end %>
 
-	<%= link_to "Rate Seller", new_order_rating_path(order) unless current_user.has_role?('admin') || order.ratings.where(:user_id => current_user.company.users).exists? %>
-	<% if order.ratings.where(:user_id => current_user.company.users).exists? %>
-    <%= content_tag :span, "Waiting for the seller to rate you also ...  ", 
-    :class => 'instruction highlight' unless order.ratings.where(:ratee_id => current_user).exists? %>
-	<% end %>
+	<%= payment_due_status(order) %>
 
 <% elsif order.status == "Paid"  && order.paid != nil %>
  
-	<strong><%= order.status %>: <%= order.paid.strftime('%b %d') unless order.paid.nil? %></strong><br>
-
-	<%= link_to "Rate Seller", new_order_rating_path(order) unless current_user.has_role?('admin') || order.ratings.where(:user_id => current_user.company.users).exists? %>
-	<% if order.ratings.where(:user_id => current_user.company.users).exists?  %>
-    <%= content_tag :span, "Waiting for the seller to rate you also ...  ", 
-    :class => 'instruction highlight' unless order.ratings.where(:ratee_id => current_user).exists? %>
+	<% if order.ratings.where(:user_id => current_user.company.users).exists? %>
+	  <%= content_tag :p, "Waiting for the seller to rate you also ...  ", 
+	  :class => 'instruction highlight' unless order.ratings.where(:ratee_id => current_user).exists? %>
+	<% else %>
+		<%= link_to "Rate Seller", new_order_rating_path(order) %>
 	<% end %>
+	
+	<%= content_tag :p, "Paid: #{order.paid.strftime('%b %d')}" unless order.paid.nil? %>
 
 <% elsif order.status == "Paid" && order.paid == nil %>
 
-	<%= content_tag :p, "You tagged this order as 'Paid'. Waiting for Seller's confirmation.", :class => 'instruction mild-alert' %>
+	<%= content_tag :p, "You tagged this order as 'Paid'. <br> Waiting for Seller's confirmation.".html_safe, :class => 'instruction mild-alert' %>
 
 <% else %>
 

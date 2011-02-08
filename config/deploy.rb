@@ -8,21 +8,7 @@ set :scm, :git
 # set :scm_username, 'chrism'
 # set :scm_password, 'Beanstalk21' 
 
-# set :domain, "173.230.150.91"
-# set :user, "root" 
-# set :use_sudo, false
-# set :deploy_to, "/srv/www/ebid.com.ph"
-# ssh_options[:forward_agent] = true
-# set :branch, "master"
-# set :git_shallow_clone, 1
-# set :git_enable_submodules, 1
-# set :rails_env, "production"
-# 
-# role :web, "173.230.150.91"                          # Your HTTP server, Apache/etc
-# role :app, "173.230.150.91"                          # This may be the same as your `Web` server
-# role :db,  "173.230.150.91", :primary => true        # This is where Rails migrations will run
-
-set :domain, "173.255.192.92"
+set :domain, "173.230.150.91"
 set :user, "root" 
 set :use_sudo, false
 set :deploy_to, "/srv/www/ebid.com.ph"
@@ -30,11 +16,25 @@ ssh_options[:forward_agent] = true
 set :branch, "master"
 set :git_shallow_clone, 1
 set :git_enable_submodules, 1
-set :rails_env, "development"
+set :rails_env, "production"
 
-role :web, "173.255.192.92"                          # Your HTTP server, Apache/etc
-role :app, "173.255.192.92"                          # This may be the same as your `Web` server
-role :db,  "173.255.192.92", :primary => true        # This is where Rails migrations will run
+role :web, "173.230.150.91"                          # Your HTTP server, Apache/etc
+role :app, "173.230.150.91"                          # This may be the same as your `Web` server
+role :db,  "173.230.150.91", :primary => true        # This is where Rails migrations will run
+
+# set :domain, "173.255.192.92"
+# set :user, "root" 
+# set :use_sudo, false
+# set :deploy_to, "/srv/www/ebid.com.ph"
+# ssh_options[:forward_agent] = true
+# set :branch, "master"
+# set :git_shallow_clone, 1
+# set :git_enable_submodules, 1
+# set :rails_env, "development"
+# 
+# role :web, "173.255.192.92"                          # Your HTTP server, Apache/etc
+# role :app, "173.255.192.92"                          # This may be the same as your `Web` server
+# role :db,  "173.255.192.92", :primary => true        # This is where Rails migrations will run
 
 # set :domain, "67.23.79.176"
 # set :user, "root" 

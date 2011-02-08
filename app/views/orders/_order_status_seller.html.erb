@@ -9,7 +9,7 @@
 		Status: <%= select_tag :seller_status, options_for_select(["For Delivery", "Delivered"], [order.status]), {:onchange => 'this.form.submit()'} %>
 		<%= content_tag :span, " #{time_ago_in_words order.confirmed} ago"  %> 
 	<% end %>
-	<%= content_tag :span, ('(Please update this status ' + (content_tag :strong, 'if Delivered') + ') ').html_safe  %>
+	<%= content_tag :p, ('(Please update this status ' + (content_tag :strong, 'if Delivered') + ') ').html_safe  %>
 
 <% elsif order.status == "Delivered" %>
 
@@ -19,15 +19,17 @@
 	<% end %>
 	<%= content_tag :p, ('(Please update this status ' + (content_tag :strong, 'if Paid') + ') ').html_safe  %>
 
+	<%= payment_due_status(order) %>
+	
 <% elsif order.status == "Paid" && order.paid != nil %>
 
-	<%= content_tag :p, 'Paid: ' + order.paid.strftime('%b %d'), :class => 'strong' unless order.paid.nil? %>
-	<%= content_tag :span, ("(Please #{link_to 'rate your buyer', new_order_rating_path(order)} to close this item.) ").html_safe, :class => 'instruction' unless order.ratings.where(:user_id => current_user).exists? %>
-
 	<% if order.ratings.where(:user_id => current_user).exists?  %>
-    <%= content_tag :span, "Waiting for the buyer to rate you also ...  ", 
-    :class => 'instruction highlight' unless order.ratings.where(:ratee_id => current_user).exists? %>
+    <%= content_tag :span, "Waiting for the buyer to rate you also ...  ", :class => 'instruction highlight' unless order.ratings.where(:ratee_id => current_user).exists? %>
+	<% else %>
+		<%= content_tag :span, ("(Please #{link_to 'rate your buyer', new_order_rating_path(order)} to close this order) ").html_safe, :class => 'highlight'  %>
 	<% end %>
+
+	<%= content_tag :p, 'Paid: ' + order.paid.strftime('%b %d'), :class => 'strong' unless order.paid.nil? %>
 
 <% elsif order.status == "Paid" && order.paid == nil %>
 

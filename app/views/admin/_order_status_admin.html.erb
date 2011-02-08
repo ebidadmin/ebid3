@@ -1,0 +1,27 @@
+<% if order.status == "For Delivery" || order.status == "For-Delivery" %>
+	
+	<%= order.status %> (<%= order.confirmed.strftime('%b %d') %>)&nbsp;
+
+<% elsif order.status == "Delivered" %>
+
+	<%= form_tag buyer_paid_order_path(order), :method => :put do %>
+		<%= select_tag :buyer_status, options_for_select(["Delivered", "Paid"], [order.status]), {:onchange => 'this.form.submit()'} %>
+		<%= order.delivered.strftime('%b %d') unless order.delivered.nil? %>
+		<%= content_tag :p, " (Update the dropdown menu if paid)"  %> 
+	<% end %>
+
+	<%= payment_due_status(order) %>
+
+<% elsif order.status == "Paid"  && order.paid != nil %>
+ 	
+	<%= content_tag :p, "Paid: #{order.paid.strftime('%b %d')}" unless order.paid.nil? %>
+
+<% elsif order.status == "Paid" && order.paid == nil %>
+
+	<%= content_tag :p, "The Buyer tagged this order as 'Paid'. <br> Waiting for Seller's confirmation.".html_safe, :class => 'instruction mild-alert' %>
+
+<% else %>
+
+	<%= order.status %> (<%= order.created_at.strftime('%b %d') %>)&nbsp;
+
+<% end %>

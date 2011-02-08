@@ -6,6 +6,6 @@
 		<%= item.car_part.name %> <%= remove_link(item.car_part) %>
 	</span>		
 	<span id="part_no_<%= item.car_part.id %>" class="partnum">
-		<%= render '/cart/part_no_edit', :item => item %>
+		<%= render '/cart/part_with_edit', :item => item %>
 	</span>
 <% end %>

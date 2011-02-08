@@ -18,7 +18,9 @@ class SellerController < ApplicationController
     @within_term_percent = (@within_term.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
     @overdue = orders.overdue.collect(&:total_order_amounts).sum
     @overdue_percent = (@overdue.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @paid = orders.paid.collect(&:total_order_amounts).sum
+    @paid_pending = orders.paid.payment_pending.collect(&:total_order_amounts).sum
+    @paid_pending_percent = (@paid_pending.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    @paid = orders.paid.payment_valid.collect(&:total_order_amounts).sum
     @paid_percent = (@paid.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
     @closed = orders.closed.collect(&:total_order_amounts).sum
     @closed_percent = (@closed.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
@@ -51,7 +53,7 @@ class SellerController < ApplicationController
   
   def monitor
     @search = current_user.bids.desc.search(params[:search])
-    @bids = @search.paginate :page => params[:page], :per_page => 10    
+    @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
     render 'bids/index' 
   end
 
@@ -60,9 +62,10 @@ class SellerController < ApplicationController
     @sort_order =" PO date - descending order"
     @all_orders = Order.by_this_seller(current_user).recent
     @search = @all_orders.search(params[:search])
-    @orders = @search.paginate :page => params[:page], :per_page => 10    
     if params[:status]
-      @orders = Order.by_this_seller(current_user).where(:status => params[:status]).desc.paginate :page => params[:page], :per_page => 10
+      @orders = Order.by_this_seller(current_user).where(:status => params[:status]).desc.inclusions_for_seller.paginate :page => params[:page], :per_page => 10
+    else
+      @orders = @search.inclusions_for_seller.paginate :page => params[:page], :per_page => 10    
     end
     render 'orders/index'  
   end
@@ -72,7 +75,7 @@ class SellerController < ApplicationController
     @sort_order =" due date (per vehicle) - ascending order"
     @all_orders = Order.by_this_seller(current_user).delivered.unpaid.asc
     @search = @all_orders.search(params[:search])
-    @orders = @search.paginate :page => params[:page], :per_page => 10    
+    @orders = @search.inclusions_for_seller.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
 
@@ -81,7 +84,7 @@ class SellerController < ApplicationController
     @sort_order =" date paid (per vehicle) - ascending order"
     @all_orders = Order.by_this_seller(current_user).paid
     @search = @all_orders.search(params[:search])
-    @orders = @search.paginate :page => params[:page], :per_page => 10    
+    @orders = @search.inclusions_for_seller.with_ratings.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
   
@@ -95,10 +98,25 @@ class SellerController < ApplicationController
   end
   
   def fees
-    @title = "Transaction Fees for Paid Orders"
+    @title = "Market Fees for Paid Orders"
     @sort_order =" date PO was paid - descending order"
-    @all_orders = Order.by_this_seller(current_user).paid_and_closed
-    @orders = @all_orders.paginate :page => params[:page], :per_page => 10
+    @all_market_fees = Fee.ordered.by_this_seller(current_user)
+    @search = @all_market_fees.search(params[:search])
+    @market_fees = @search.inclusions.with_orders.paginate :page => params[:page], :per_page => 30
+  end
+  
+  def declines
+    @title = "Decline Fees"
+    @all_decline_fees = Fee.by_this_seller(current_user).declined
+    # @total_bids = Bid.count
+    # @percentage_declined = (@all_decline_fees.count.to_f/@total_bids.to_f) * 100
+    @search = @all_decline_fees.search(params[:search])
+    @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
+    @group = @decline_fees.group_by(&:entry)
+
+    # @buyers = @all_decline_fees.collect(&:buyer_company_id).uniq.collect { |buyer| [Company.find(buyer).name, seller_declines_path(:buyer => buyer)] }
+    # @buyers.push(['All', seller_declines_path(:buyer => nil)]) unless @buyers.blank?
+    # @buyers_path = seller_declines_path(:buyer => params[:buyer])
   end
 
 end

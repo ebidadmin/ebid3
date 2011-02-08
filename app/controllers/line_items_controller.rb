@@ -38,8 +38,13 @@ class LineItemsController < ApplicationController
   def destroy
     @line_item = LineItem.find(params[:id])
     @line_item.destroy
-    flash[:notice] = "Successfully destroyed line item."
-    redirect_to line_items_url
+    flash[:notice] = "Successfully deleted line item."
+    # redirect_to line_items_url
+    redirect_to :back
+  end
+  
+  def show_fields
+    @line_item = LineItem.find(params[:id])
   end
 
   def change
@@ -49,7 +54,7 @@ class LineItemsController < ApplicationController
       flash[:notice] = "Successfully updated cart item."
           
       respond_to do |format|
-        format.html { redirect_to new_user_entry_path(current_user) }
+        format.html { redirect_to edit_user_entry_path(current_user) }
         format.js { flash.now[:cart_notice] = "Updated #{@line_item.car_part.name}" }
       end      
     else

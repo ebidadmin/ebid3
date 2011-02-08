@@ -27,7 +27,8 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .green { background-color: #264409; color: #FFF; }
 .brown { color: white; background-color: #8a1f11; }
 .offwhite { background-color: #eaeaea; }
-.white { background-color: #fffeff; }
+.white { background-color: white; }
+.orange { background-color: orange; }
 .red-alert, .mild-alert, .regular-alert, .comfy-alert { border: 2px solid; margin-top: 10px; padding: 5px; }
 .red-alert { background-color: #990000; border-color: #FFD324; color: white; font-weight: bold; }
 .mild-alert { background-color: #FFF6BF; border-color: #FFD324; color: #8a1f11; }
@@ -81,7 +82,7 @@ table th { font-size: 1.2em; font-weight: bold; padding: 10px 8px; border-bottom
 table td { border-bottom: 1px solid #ccc; padding: 6px 8px; }
 table p { margin-bottom: 0; }
 li.selection-title { border-bottom: 2px solid #999; }
-li.selection-list { border-bottom: 1px solid #ccc; height: 3.5em; }
+li.selection-list { border-bottom: 1px solid #ccc; padding: 4px 0;}
 li.selection-list span { font-weight: normal; }
 li.selection-title span, li.selection-list span { padding: 10px 0 10px 8px; margin-right: 0; color: black; opacity: 0.8; }
 .selection-list:hover, td.bid-box.price:hover { background: #eaeaea; opacity: 1; }
@@ -101,7 +102,7 @@ table tr.accept-decline { border-bottom: none; }
 
 /* GENERAL LAYOUT
 ---------------------------------------------------------------------- */
-body { border-top: 5px solid #CCC; font: normal 12px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif; padding: 0px; color: #333; background: #911D00; }
+body { border-top: 5px solid #CCC; font: normal 12px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif; padding: 0px; background: #911D00; }
 #top { background: white; }
 #top .container { padding-bottom: 20px; }
 .container { margin: 0 auto; width: 960px; background: transparent; position: relative; overflow: hidden; }
@@ -170,7 +171,7 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 #header .groups, #header #search { display: block; font-size: smaller; }
 #header .groups { float: left; margin: 0; }
 #header .seller.groups { width: 600px; }
-#header #username, #header #status, #header #seller { float: left; margin-right: 10px; margin-top: 0; }
+#header #username, #header #status, #header #seller, #header #buyer { float: left; margin-right: 10px; margin-top: 0; }
 #header #search { margin: 0; float: right; }
 #header #search p { float: left; height: 30px; line-height: 30px; margin: 5px 15px 0 0; }
 #header #search .label { display: block; margin-left: 0; text-transform: uppercase; color: #C00; font-weight: bold; }
@@ -188,7 +189,7 @@ body { border-top: 0; color: black; }
 body, .bid-box, .bid-field { background-color: transparent; }
 h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .page-links a, table a, .button, #navigation, #global-links, #subnav { display: none; }
 .selection-list { font-size: 1.2em; font-weight: bold; }
-#order .photo, #show-comments form, #del-status { display: none; }
+#order .photo, #show-comments form, #del-status, .photo-set { display: none; }
 #order .vehicle-set span { color: black; }
 .container { padding: 30px; }
 }

@@ -53,12 +53,15 @@ class BuyerController < ApplicationController
   def orders
     @title = 'Purchase Orders'
     @sort_order =" PO date - descending order"
-    @tag_collection = ["PO Released", "For Delivery"]
+    @tag_collection = ["PO Released", "For Delivery", "For-Delivery"]
     initiate_list
     find_orders
-    @search = @all_orders.desc.search(params[:search])
-    @search = @all_orders.where(:seller_id => params[:seller]).desc.search(params[:search]) unless params[:seller].nil?
-    @orders = @search.paginate :page => params[:page], :per_page => 10    
+    if params[:seller].nil?
+      @search = @all_orders.desc.search(params[:search])
+    else
+      @search = @all_orders.where(:seller_id => params[:seller]).desc.search(params[:search]) 
+    end
+    @orders = @search.inclusions.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
 
@@ -70,7 +73,7 @@ class BuyerController < ApplicationController
     find_orders
     @search = @all_orders.asc.search(params[:search])    
     @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
-    @orders = @search.paginate :page => params[:page], :per_page => 10    
+    @orders = @search.inclusions.with_ratings.paginate :page => params[:page], :per_page => 15    
     
     respond_to do |format|
       format.html { render 'orders/index'  }
@@ -86,7 +89,7 @@ class BuyerController < ApplicationController
     find_orders_for_print
     @search = @all_orders.asc.search(params[:search])    
     @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
-    @orders = @search.paginate :page => params[:page], :per_page => 15    
+    @orders = @search.inclusions.paginate :page => params[:page], :per_page => 15    
   end
   
   def paid
@@ -97,24 +100,22 @@ class BuyerController < ApplicationController
     find_orders
     @search = @all_orders.asc.search(params[:search])
     @search = @all_orders.where(:seller_id => params[:seller]).asc2.search(params[:search]) unless params[:seller].nil?
-    @orders = @search.paginate :page => params[:page], :per_page => 10    
+    @orders = @search.inclusions.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
 
   def fees
     @title = "Declined Winning Bids"
-    initiate_list
-    find_entries
     if params[:user_id] == 'all'
-      entries = Entry.where(:user_id => @company_users).search(params[:search])
-      @total_bids = entries.collect(&:bids_count).sum
+      @search = Fee.declined.where(:buyer_company_id => current_user.company)
     else
-      entries = defined_user.entries.search(params[:search])
-      @total_bids = Entry.where(:id => entries).collect(&:bids_count).sum
+      @search = Fee.declined.where(:buyer_id => User.find_by_username(params[:user_id]))
     end
-    @all_declined_bids = Bid.where(:entry_id => entries).declined
-    @percentage_declined = (@all_declined_bids.count.to_f/@total_bids.to_f) * 100
-    @declined_bids = @all_declined_bids.paginate :page => params[:page], :per_page => 20
+    @total_bids = Bid.count
+    @percentage_declined = (@search.count.to_f/@total_bids.to_f) * 100
+    @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
+    @group = @decline_fees.group_by(&:entry)
+    render 'admin/buyer_fees'
   end
 
 private 
@@ -137,6 +138,8 @@ private
     @declined = entries.declined.count
     @closed = entries.closed.count
     @orders = orders.count
+    @order_items = OrderItem.where(:order_id => orders).collect(&:line_item_id).uniq.count unless OrderItem.nil?
+    @with_order_pct = (@order_items.to_f/LineItem.with_bids.where(:entry_id => entries).count.to_f) * 100 unless @order_items.nil? 
     @released = orders.recent.count
 
     delivered_items =  orders.delivered.includes(:bids)
@@ -157,11 +160,11 @@ private
   
   def find_orders_for_print
     if params[:user_id] == 'all'
-      @all_orders = Order.where(:company_id => current_user.company, :status => @status).includes(:bids, :entry, :user, :seller, :company, :order_items, :line_items)
+      @all_orders = Order.where(:company_id => current_user.company, :status => @status)
     else
-      @all_orders = defined_user.orders.where(:status => @status).includes(:bids, :entry, :user, :seller, :company)
+      @all_orders = defined_user.orders.where(:status => @status)
     end
-    @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
+    @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).includes(:company).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
     @sellers.push(['All', request_path(:seller => nil)]) unless @sellers.blank?
     @sellers_path = request_path(:seller => params[:seller])
   end

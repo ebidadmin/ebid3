@@ -1,0 +1,41 @@
+<table id="orders-list">
+	<thead>
+    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
+    <%= content_tag :th, 'Order Items', :class => 'items' %>
+    <%= content_tag :th, 'PO Amount', :class => 'amount' %>
+    <%= content_tag :th, 'Status', :class => 'stat' %>
+	</thead>
+	<% @orders.group_by(&:entry).each do |entry, orders| %>
+	<tr>
+		<td rowspan=<%= orders.count + 1 %> class='vehicle'>	
+			<%= content_tag :p, (entry.ref_no unless entry.ref_no.nil?)  %>
+      <%= content_tag :p, (link_to entry.vehicle, entry)  %>
+			<%= content_tag :span, entry.plate_no %>
+			<%= content_tag :span, "(created by #{entry.user.username})", :class => 'highlight' %>
+		</td>
+	</tr>
+	<% for order in orders %>
+	<tr>
+  	<td >	
+ 			<% for order_item in  order.order_items %>
+				<%= content_tag :p, "[ #{order_item.quantity} ] " + order_item.line_item.part_name %>
+			<% end %>
+	 	</td>
+		<td>
+      <%= content_tag :h5, 'Total: ' + ph_currency(order.order_total) %>
+		  <%= link_to "View PO", order %>
+		</td>
+  	<td class='stat'>
+  		<%= content_tag :p, 'Seller: ' + order.seller.profile.company.name, :class => 'instruction'  %>
+		  <%= render 'orders/order_status_buyer', :order => order %>
+		</td>
+  </tr>
+	<% end %>
+	<% end %>
+	<tr class="totals">
+	  <td>Sub-Total</td>
+	  <td></td>
+	  <td><%= ph_currency(@orders.collect(&:order_total).sum) %></td>
+	  <td></td>
+	</tr>
+</table>

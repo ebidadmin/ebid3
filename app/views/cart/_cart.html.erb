@@ -10,11 +10,11 @@
 </ul>
 
 
-<p id="cart_notice">
+<div id="cart_notice_box">
 	<% if flash[:cart_notice] %> 
 		<%= render "cart/cart_notice" %>
 	<% end %>
-</p>
+</div>
 
 <% unless @cart.cart_items.empty? %> 
 	<%= clear_cart_link %>

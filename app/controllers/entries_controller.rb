@@ -15,8 +15,7 @@ class EntriesController < ApplicationController
   end
   
   def show
-    @entry = Entry.find(params[:id])
-    @line_items = @entry.line_items.includes(:car_part, :bids)
+    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
   end
   
   def new
@@ -40,7 +39,7 @@ class EntriesController < ApplicationController
         session[:cart_id] = nil 
         # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
         EntryMailer.delay.new_entry_alert(@entry)
-        flash[:notice] = "Successfully created Entry ID # #{@entry.id}."
+        flash[:notice] = "Successfully created Entry #{@entry.vehicle}."
         redirect_to buyer_pending_path(current_user)
       else
         flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
@@ -78,7 +77,7 @@ class EntriesController < ApplicationController
       session[:cart_id] = nil 
       flash[:notice] = "Successfully updated entry."
       if current_user.has_role?('admin')
-        redirect_to session['referer'] #redirect_to user_ratings_path(current_user)
+        redirect_to session['referer'] 
         session['referer'] = nil
       else
         redirect_to buyer_pending_path(current_user)

@@ -1,7 +1,7 @@
 <div class="photo-set">
-	<h3>Photos</h3>
+	<!-- <h3>Photos</h3> -->
 	<ul>
-		<p class="instruction">Click a photo to enlarge.</p>
+		<li class="instruction photo">Click on photos to enlarge.</li>
 		<% @entry.photos.each do |photo| %>
 			<%- if photo.processing? -%>
 				<li><%= image_tag '/images/processing_photo.png', :class => "photo", :alt => "Photo of #{@entry.plate_no}" %></li>

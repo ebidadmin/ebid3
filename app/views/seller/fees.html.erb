@@ -1,54 +1,64 @@
 <% title @title %>
+<%= content_tag :p, (content_tag :strong, 'What is a Market Fee? ') + 'It compensates E-Bid for providing you an organized, transparent and efficient market of Buyers. 
+	We use it to maintain the web servers and pays for our expenses to continue giving you this service.', :class => 'instruction' %>
+<%= content_tag :p, (content_tag :strong, 'Can I get a discount? ') + 'Sure! The more you participate, the lesser your market fee. ' + (content_tag :strong, 'All you have to do is bid more and bid fast.'), :class => 'instruction' %>
 
-
-<%- unless @orders.blank? -%>
+<% unless @market_fees.blank? %>
 <h2 id='flash_notice'>
-  Total Paid Orders: <%= number_to_currency(@all_orders.collect(&:total_order_amounts).sum, :unit => "P ") %> /
-  Total Success Fees: <%= number_to_currency(@all_orders.collect(&:total_success_fees).sum, :unit => "P ") %>
+  Total Paid Orders: <%= ph_currency @search.collect(&:bid_total).sum %> /
+  Total Success Fees: <%= ph_currency @search.collect(&:fee).sum %>
 </h2>
 
-<%= will_paginate @orders %>
-<%= page_info @orders, @sort_order %>
+<%= will_paginate @market_fees %>
+<%= page_info @market_fees, @sort_order %>
 
 <table id="supplier-fees">
-	<tr>
+	<thead>
     <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
 		<th>
 	    <%= content_tag :div, 'Delivery', :class => 'po-delivery' %>
-	    <%= content_tag :div, 'PO Amount', :class => 'amount-paid' %>
-	    <%= content_tag :div, 'Success Fee', :class => 'fees' %>
+	    <%= content_tag :div, 'Order Items', :class => 'part' %>
+	    <%= content_tag :div, 'Order Total', :class => 'amount-paid' %>
+	    <%= content_tag :div, 'Market Fee', :class => 'fee' %>
 		</th>
-	</tr>
-	<% @orders.group_by(&:entry).each do |entry, orders| %>
-	<tr>
+	</thead>
+	<% @market_fees.group_by(&:entry).each do |entry, fees| %>
+  <tr>
 		<td class="vehicle">	
-			<%= content_tag :p, entry.vehicle, :class => 'strong'  %>
-      <%= content_tag :p, entry.plate_no %>
+      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), seller_show_path(current_user, entry.brand, entry)) %>
+			<%= content_tag :p, (entry.plate_no + (content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' if current_user != entry.user)).html_safe %>
 		</td>
-		<td class="">
-  	<%- for order in orders -%>
-  		<div class="po-delivery">	
-	      <%= content_tag :p, 'Delivered: ' + order.delivered.strftime('%b %d'), :class => 'instruction'  unless order.delivered.nil? %>
-	      <%= content_tag :p, 'Paid: ' + order.paid.strftime('%b %d') + 
-						" (#{time_ago_in_words order.paid} ago)", :class => 'instruction offwhite'  unless order.paid.nil? %>
+	  <td>
+  	<% fees.group_by(&:order).each do |order, fees| %>
+			<div class="po-delivery">
+	      <%#= content_tag :p, 'Delivered: ' + order.delivered.strftime('%b %d'), :class => 'instruction'  unless order.delivered.nil? %>
+	      <%= content_tag :p, 'Paid: ' + order.paid.strftime('%b %d'), :class => 'instruction highlight'  unless order.paid.nil? %>	
+				<%= link_to "View PO # #{order.id}", order %>
 			</div>
-			<div class="amount-paid">
-  			<%= number_to_currency(order.bids.collect(&:total).sum, :unit => "") + ('<br>').html_safe + link_to("View PO # #{order.id}", order) %>
+			<div class="fee-group">
+			<% for fee in fees %>
+		    <%= content_tag :div, "[ #{fee.line_item.quantity} ] " + fee.line_item.part_name, :class => 'part' %>
+		    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'amount-paid'  %>
+		    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
+				<%= content_tag :div, fee.seller.username, :class => 'seller instruction' -%>
+			<% end %>
 			</div>
-		  <div class="fees">
-  			<%= number_to_currency(order.bids.collect(&:fee).sum, :unit => "") %>
-		  </div>
-  	<%- end -%>
-		</td>
+		<% end %>
+		</td>                          
 	</tr>
-  <%- end -%>
+  <% end %>
 	<tr class="totals">
 	  <td></td>
 	  <td>
 	    <%= content_tag :div, 'Sub-Totals', :class => 'po-delivery' %>
-	    <%= content_tag :div, (number_to_currency(@orders.collect(&:total_order_amounts).sum, :unit => "P ")), :class => 'amount-paid' %>
-	    <%= content_tag :div, (number_to_currency(@orders.collect(&:total_success_fees).sum, :unit => "P ")), :class => 'fees' %>
+			<div class="fee-group">
+		    <%= content_tag :div, '', :class => 'part' %>
+		    <%= content_tag :div, (ph_currency @market_fees.collect(&:bid_total).sum), :class => 'amount-paid' %>
+		    <%= content_tag :div, (ph_currency @market_fees.collect(&:fee).sum), :class => 'fee' %>
+			</div>
 	  </td>
 	</tr>
 </table>
-<%- end -%>
+<% end %>
+
+<%= will_paginate @market_fees %>

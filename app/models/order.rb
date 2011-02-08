@@ -14,6 +14,11 @@ class Order < ActiveRecord::Base
  
   validates_presence_of :deliver_to, :address1, :phone
 
+  scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :photos, :user]], [:seller => :company], [:order_items => [:line_item => :car_part]])
+  scope :inclusions_for_seller, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:order_items => [:line_item => :car_part]])
+  scope :inclusions_for_admin, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:seller => :company], [:order_items => [:line_item => :car_part]])
+  scope :with_ratings, includes(:ratings)
+  
   scope :desc, order('id DESC')
   scope :asc, order('delivered')
   scope :desc2, order('pay_until DESC')
@@ -28,6 +33,7 @@ class Order < ActiveRecord::Base
   scope :closed, where(:status => 'Closed')
   scope :paid_and_closed, where("status IN ('Paid', 'Closed')").order('paid DESC')
   scope :payment_valid, where('paid IS NOT NULL')
+  scope :payment_pending, where('paid IS NULL')
 
   scope :within_term, delivered.where('pay_until > ?', Date.today)
   scope :due_soon, delivered.where(:pay_until => Date.today .. Date.today + 1.week).unpaid
@@ -55,7 +61,10 @@ class Order < ActiveRecord::Base
     elsif status == "Paid"
       bids.update_all(:status => status, :paid => Date.today)
       bids.each do |bid|
-        bid.update_attribute(:fee, bid.total * 0.035)
+        # bid.update_attribute(:fee, bid.total * 0.035)
+        if bid.fee.nil?
+          Fee.compute(bid, status, self.id)
+        end
       end
     else 
       bids.update_all(:status => status)
@@ -66,9 +75,9 @@ class Order < ActiveRecord::Base
     bids.collect(&:total).sum
   end
   
-  def total_success_fees
-    bids.collect(&:fee).sum
-  end
+  # def total_success_fees
+  #   bids.collect(&:fee).sum
+  # end
   
   def self.search(search)  
     if search  

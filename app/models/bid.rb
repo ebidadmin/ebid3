@@ -8,17 +8,21 @@ class Bid < ActiveRecord::Base
   belongs_to :car_part
   belongs_to :order
 
-  has_one :fees
+  has_one :fee
 
   validates :amount, :numericality => {:greater_than => 0}, :presence => true
   
+  scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user, :city, :term]], [:line_item => :car_part], :user)
   scope :desc, order('id DESC')
   scope :bt, order('bid_type')
-  scope :declined, where(:status => 'Declined').order('declined DESC')
+  scope :declined, where(:status => 'Declined')#.order('declined DESC', 'entry_id DESC')
 
   def decline_process
-    update_attributes(:status => "Declined", :ordered => nil, :order_id => nil, :delivered => nil, :fee => total * 0.0025, :declined => Date.today)
+    update_attributes(:status => "Declined", :ordered => nil, :order_id => nil, :delivered => nil, :declined => Date.today)
     update_unselected_bids(line_item_id)
+    if fee.nil?
+      Fee.compute(self, status)
+    end
   end
 
   def update_unselected_bids(line_item)

@@ -2,6 +2,7 @@ Ebid::Application.routes.draw do
 
   resources :line_items do
     put :change, :on => :member
+    get :show_fields, :on => :member
   end
 
   resources :comments
@@ -50,15 +51,16 @@ Ebid::Application.routes.draw do
   resources :ranks  
   
   match 'admin/dashboard' => 'admin#index', :as => :admin_index, :via => :get
-  match 'admin/entries(/:user_id(/:page))' => 'admin#entries', :as => :admin_entries, :via => :get
+  match 'admin/entries(/:user_id(/:status(/:page)))' => 'admin#entries', :as => :admin_entries, :via => :get
   match 'admin/online(/:page)' => 'admin#online', :as => :admin_online, :via => :get
   match 'admin/bids(/:page)' => 'admin#bids', :as => :admin_bids, :via => :get
   match 'admin/orders(/:page)' => 'admin#orders', :as => :admin_orders, :via => :get
   match 'admin/payments(/:seller(/:page))' => 'admin#payments', :as => :admin_payments, :via => :get
   match 'admin/buyer_fees(/:page)' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
-  match 'admin/supplier_fees(/:page)' => 'admin#supplier_fees', :as => :admin_supplier_fees, :via => :get
+  match 'admin/seller_fees(/:page)' => 'admin#seller_fees', :as => :admin_seller_fees, :via => :get
   match 'admin/utilities' => 'admin#utilities', :as => :admin_utilities, :via => :get
   match 'admin/expire_entries' => 'admin#expire_entries', :as => :admin_expire_entries, :via => :get
+  get 'admin/cleanup'
 
   match 'buyer/:user_id/main' => 'buyer#main', :as => :buyer_main, :via => :get
   match 'buyer/:user_id/pending(/:page)' => 'buyer#pending', :as => :buyer_pending, :via => :get
@@ -80,7 +82,8 @@ Ebid::Application.routes.draw do
   match 'seller/:user_id/feedback(/:page)' => 'seller#feedback', :as => :seller_feedback, :via => :get
   match 'seller/:user_id/closed(/:page)' => 'seller#closed', :as => :seller_closed, :via => :get
   match 'seller/:user_id/fees(/:page)' => 'seller#fees', :as => :seller_fees, :via => :get
-
+  get 'seller/declines'
+  
   resources :bids do
     collection do
       post :accept

@@ -4,10 +4,6 @@
 <%= render 'buyer/filter_by_search' %>
 
 <% unless @declined_bids.blank? %>
-<h2 id='flash_notice'>
-	Total Transaction Fees: <%= ph_currency(@all_declined_bids.collect(&:fee).sum) %>
-  <%= content_tag :span, "| you have declined #{@all_declined_bids.count} of  #{@total_bids} (#{percentage(@percentage_declined)})".html_safe unless @total_bids.nil? %>
-</h2>
 <%= will_paginate @declined_bids  %>
 <%= page_info @declined_bids %>
 
@@ -21,7 +17,7 @@
   		<div class="fee">Transaction Fee</div>
 		</th>
 	</thead>
-  <% @declined_bids.group_by(&:entry).each do |entry, bids| %>
+  <% @group.each do |entry, bids| %>
   <tr>
 		<td class="vehicle">	
 			<%= link_to h(entry.vehicle), entry %>
@@ -36,7 +32,7 @@
   	<% for bid in bids %>
 	    <%= content_tag :div, bid.line_item.part_name, :class => 'part' %>
 	    <%= content_tag :div, (number_to_currency bid.total, :unit => ""), :class => 'lowest-bid'  %>
-	    <%= content_tag :div, (number_to_currency bid.fee, :unit => ""), :class => 'fee' %>
+	    <%#= content_tag :div, (number_to_currency bid.fee, :unit => ""), :class => 'fee' unless bid.fee.nil? %>
 			<%#= content_tag :div, bid.user.username, :class => 'instruction' if current_user.has_role?('admin')  -%>
   	<% end %>
 		</td>                          

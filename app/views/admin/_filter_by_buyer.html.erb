@@ -1,0 +1,6 @@
+<% content_for :subnav do %>
+  <ul class="links groups">
+  	<li class="label">Buyer</li>
+		<li><%= select_tag :buyer, options_for_select(@buyers, @buyers_path) %></li>
+  </ul>
+<% end %>

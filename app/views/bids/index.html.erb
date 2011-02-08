@@ -27,7 +27,7 @@
   <% @bids.group_by(&:entry).each do |entry, bids| -%>
   	<tr>
   		<td class="vehicle">
-  			<%= render 'shared/photo_first', :entry => entry %>
+  			<%#= render 'shared/photo_first', :entry => entry %>
         <div id="details">
 	        <%= content_tag :p, entry.vehicle, :class => 'strong' unless current_user.has_role?('seller') %>
 	        <%= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) if current_user.has_role?('seller') %>
@@ -60,6 +60,8 @@
 	</tbody>
 </table>
 <%- end -%>
+
+<%= will_paginate @bids  %>
 
 <p class="page-links">
 <%= link_to "Place More Bids", seller_hub_path(current_user, :brand => 'all'), :class => 'button' %>

@@ -25,7 +25,7 @@ module SellerHelper
     elsif status == "For Decision" || status == "For-Decision"
       "brown"
     elsif status == "Declined" 
-      "white"
+      "orange"
     elsif status == "Lose" 
       "offwhite"
     end

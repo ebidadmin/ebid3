@@ -1,41 +1,39 @@
 <% title "Bids for #{@entry.vehicle}" %>
 
-<%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
-
-<%= render 'shared/photo_set' %>
 <%= render 'shared/info_vehicle', :entry => @entry %>
-<%= render 'shared/comments' %>
+<%= render 'shared/photo_set' %>
+<%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
 
 <%= form_tag accept_bids_path(:entry_id => @entry), :method => :post do  %>
 <table class="buyer monitor-bids">
 	<thead>
-	<tr>
-		<th class="qty" rowspan=2>Qty</th>
-		<th class="partname" rowspan=2>Part Description</th>
-		<th class="bid-box" colspan=4>
-			<strong>Item Bids (unit price)</strong>
+		<%= content_tag :th, 'Qty', :class => 'qty' %>
+		<%= content_tag :th, 'Part Description', :class => 'partname' %>
+		<th class="bid-box">
+			<%= content_tag :h4, 'Bids (unit price)', :class => 'strong' %>
+			<%= content_tag :div, '', :class => 'bid-labels' %>
+			<div class="bid-selection">
+				<%= content_tag :div, 'Original', :class => 'bid-field' %>
+				<%= content_tag :div, 'Replacement', :class => 'bid-field' %>
+				<%= content_tag :div, 'Surplus', :class => 'bid-field' %>
+			</div>
 		</th>
-	</tr>
-	<tr>
-		<th class="bid-box type"></th>
-		<th class="bid-box price">Original</th>
-    <th class="bid-box price">Replacement</th>
-    <th class="bid-box price">Surplus</th>
-	</tr>
 	</thead>
-	
-	<%= render 'bid_master' unless current_user.has_role?('admin')  %>
-	<%= render 'admin/bid_master' if current_user.has_role?('admin') %>
-
+	<% if current_user.has_role?('admin')  %>
+		<%= render 'admin/bid_master' %>
+	<% else %>
+		<%= render 'buyer/bid_master' %>
+	<% end %>
 </table>
-<% end -%>
-
+<% end %>
+<%= render 'shared/comments' %>
 
 <p class="page-links">
   <%= link_to "Done!", :back, :class => 'button' %>
   <%= link_to "Edit", edit_entry_path(@entry), :class => 'button' if @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' %>
   <%= link_to "[Relist Un-bided Items]", relist_entry_path(@entry) unless @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' || @entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted'  %>
 </p>
+
 
 
 <% content_for :javascripts do %>

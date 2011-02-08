@@ -1,5 +1,5 @@
 <div class="vehicle-set">
-	<%= content_tag :h3, entry.vehicle %>
+	<%= content_tag :h3, entry.vehicle if @order%>
 	<ul>
 		<%- if @order -%>
 			<%= content_tag :li, (content_tag :span, 'Ref or Claim No: ') + (content_tag :strong, entry.ref_no), :id => "ref-no" %>

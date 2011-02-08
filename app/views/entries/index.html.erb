@@ -5,7 +5,11 @@
 <%= render 'buyer/filter_by_search' %>
 
 <% unless @entries.count < 1 %>
-	<%= render 'entries/main_table' %>
+	<% unless current_user.has_role?('admin')  %>
+		<%= render 'buyer/entries_table'  %>
+	<% else %>
+		<%= render 'admin/entries_table' %>
+	<% end %>
 <% else %>
 	<%= content_tag :h3, ('Sorry, no entries found under '  + (content_tag :span, "[ #{params[:user_id]} > #{request.parameters['action']} ]", :class => 'highlight')).html_safe %>
 <% end %>

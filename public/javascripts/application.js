@@ -16,6 +16,7 @@ $(function() {
 	$('select#username').bind('change', function() { window.location.pathname = $(this).val() });
 	$('select#status').bind('change', function() { window.location.pathname = ($(this).val()) });
 	$('select#seller').bind('change', function() { window.location.pathname = $(this).val() });
+	$('select#buyer').bind('change', function() { window.location.pathname = $(this).val() });
 	
 });
 

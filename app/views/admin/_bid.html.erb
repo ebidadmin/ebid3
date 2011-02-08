@@ -1,2 +1,2 @@
-<%= number_to_currency bid.amount, :unit => "P " unless bid.nil? -%>
+<%= ph_currency bid.amount unless bid.nil? -%>
 <%= content_tag :span, " #{bid.user.username unless bid.nil?}", :class => 'instruction' -%>

@@ -1,0 +1,65 @@
+<% for item in  @entry.line_items %>
+<tr class="entry-item">
+	<%= content_tag :td, item.quantity, :class => 'qty' %>
+	<td class="partname">    	
+		<%= item.part_name %> 
+		<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
+	</td>
+	<td class="bid-box">
+		<div class="bid-labels">
+			<div class="bidder-count">
+				<%= content_tag :p, 'Bidder/s' %>
+				<%= content_tag :p, item.bids.collect(&:user_id).uniq.count, :class => 'number strong' %>
+			</div>
+			<%= render 'bid_hi_lo_labels' if item.bids_count > 0 && item.status == "For-Decision" %>
+		</div>
+		<div class="bid-selection">
+		<% if item.status == "For-Decision" %>
+			<% if item.bids.size < 1 %>
+					<%= content_tag :span, 'Sorry, there are no bids for this item.' %>
+			<% else %>
+					<%= content_tag :div, high_bid("original", item), :class => 'bid-field' %>
+					<%= content_tag :div, high_bid("replacement", item), :class => 'bid-field' %>
+					<%= content_tag :div, high_bid("surplus", item), :class => 'bid-field' %>
+					<%= fields_for 'bids[]', item do |f| %>
+				  <%= content_tag :div, low_bid("original", item, f), :class => 'bid-field' %>
+				  <%= content_tag :div, low_bid("replacement", item, f), :class => 'bid-field' %>
+				  <%= content_tag :div, low_bid("surplus", item, f), :class => 'bid-field' %>
+			  <% end %>
+			<% end %>
+		<% else %>
+			<% unless item.bids.size < 1 &&  item.status == "Online" %>
+				  <%= content_tag :div, low_bid_no_radiobutton("original", item), :class => 'center bid-field orig' %>
+				  <%= content_tag :div, low_bid_no_radiobutton("replacement", item), :class => 'center bid-field rep' %>
+				  <%= content_tag :div, low_bid_no_radiobutton("surplus", item), :class => 'center bid-field surp' %>
+			<% end %>
+		  <% if item.status == "PO Released" || item.status == "Ordered" %>
+					<%= content_tag :span, item.status %> as of <%= item.order.created_at.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+			<% elsif item.status == "For Delivery" || item.status == "For-Delivery"%>
+					<%= content_tag :span, item.status %> as of <%= item.order.confirmed.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+			<% elsif item.status == "Delivered" %>
+					<%= content_tag :span, 'Delivered' %> as of <%= item.order.delivered.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+			<% elsif item.status == "Paid" %>
+					<%= content_tag :span, 'Paid' %> as of <%= item.order.paid.strftime('%b %d') unless item.order %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+			<% elsif item.status == "Closed" %>
+					<%= content_tag :span, 'Closed' %> as of <%= item.order.paid.strftime('%b %d')  unless item.order.paid.nil? %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) unless item.order.nil? %>
+			<% else  %>
+					<%= content_tag :span, item.status %>
+			<% end %>
+		<% end %>
+		</div>
+	</td>
+</tr>
+<% end %>
+<% if (@entry.buyer_status == "For-Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP" || @entry.buyer_status == 'Relisted') && @entry.expired.nil? %>
+<tr id="accept-decline">
+  <td colspan=2></td>
+  <td>
+		<%= content_tag :p, 'Select bid/s before you decide.', :class => 'instruction strong' %>
+  	<%= submit_tag "Accept Selected" -%>
+  	<%= submit_tag "Decline Selected", :confirm => 'Are you sure you want to decline the selected bid/s?',
+  	 			:method => :get %>
+  </td>
+</tr>
+<% end %>
+

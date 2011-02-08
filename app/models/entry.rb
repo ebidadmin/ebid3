@@ -53,8 +53,20 @@ class Entry < ActiveRecord::Base
 		end
 	end 
 
+	def add_or_edit_line_items_from_cart(cart)
+		cart.cart_items.each do |item|
+		  existing_item = LineItem.where(:entry_id => id, :car_part_id => item.car_part_id)
+		  unless existing_item.nil?
+		    existing_item.update_all(:quantity => item.quantity, :part_no => item.part_no)
+		  else
+  			li = LineItem.from_cart_item(item)
+  			line_items << li 
+  		end
+		end
+	end 
+
 	def create_new_city
-	  create_city(:name => new_city) unless new_city.blank?
+	  create_city(:name => new_city.titlecase) unless new_city.blank?
 	end
 
 	def new_city_blank
@@ -70,15 +82,18 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def update_associated_status(status)
-    if status == "For Decision"
+    if status == "For-Decision"
       line_items.each do |item|
-        item.update_attribute(:status, status) if item.bids 
-        item.update_attribute(:status, "No Bids") if item.bids.blank?
+        unless item.order_item || item.status == 'Declined' || item.status == 'Lose' || item.status == 'Dropped'
+          item.update_attribute(:status, status) if item.bids 
+          item.update_attribute(:status, "No Bids") if item.bids.blank?
+          item.bids.update_all(:status => status) if bids
+        end
       end
     else
       line_items.update_all(:status => status)
+      bids.update_all(:status => status) if bids
     end
-    bids.update_all(:status => status) if bids
 	end
 
 	def update_status

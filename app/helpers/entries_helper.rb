@@ -13,19 +13,11 @@ module EntriesHelper
     button_to "Clear Cart", cart_clear_path, :remote => true
   end 
 
-  def parts_total
-    unless @entry.new_record?
-      pluralize(@entry.line_items.collect(&:quantity).sum + @cart.total, "part") 
-    else
-      pluralize(@cart.total, "part")
-    end
-  end
-  
-  def proper_rowspan(item)
-    if item.status == "For-Decision" 
-      "rowspan = 2" unless item.bids.size < 1
-    end
-  end
+  # def proper_rowspan(item)
+  #   if item.status == 'For-Decision'
+  #   "rowspan = 2" unless item.bids.size < 1  
+  #   end
+  # end
 
   def display_status(entry)
     if entry.buyer_status == ("Edited" || "New" || "Online" || "For Decision" || "For-Decision") 
@@ -82,18 +74,5 @@ module EntriesHelper
     end
   end
   
-  ## Helpers for picking low bids in entries#results
-  def high_bid_display(bid_type, item)
-		("<td class='bid-box price'> 
-		  #{ render 'bids/bid', :bid => item.high_bid(bid_type) }
-		</td>").html_safe
-  end
-  
-  def low_bid_selection(bid_type, item, f)
-		("<td class='bid-box price'>
-			#{ f.radio_button 'id', item.low_bid(bid_type).id unless item.low_bid(bid_type).nil? }
-			#{ render 'bids/bid', :bid => item.low_bid(bid_type) }
-		</td>").html_safe
-  end
 
 end

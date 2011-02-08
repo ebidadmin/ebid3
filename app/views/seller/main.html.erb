@@ -15,8 +15,9 @@
 	<%= dash_entry_format("delivered-orders", "Total Delivered", nil,  (number_to_currency @total_delivered, :unit => "P "), seller_payments_path ) %>
 	<%= dash_entry_format("within-term", "Within Credit Term", percentage(@within_term_percent),  (number_to_currency @within_term, :unit => "P ") ) %>
 	<%= dash_entry_format("overdue", "Overdue", percentage(@overdue_percent),  (number_to_currency @overdue, :unit => "P ") ) %>
-	<%= dash_entry_format("paid", "Paid (needs feedback)", percentage(@paid_percent),  (number_to_currency @paid, :unit => "P ") ) %>
-	<%= dash_entry_format("closed", "Paid (closed)", percentage(@closed_percent),  (number_to_currency @closed, :unit => "P ") ) %>
+	<%= dash_entry_format("paid-pending", "Paid (needs confirmation)", percentage(@paid_pending_percent),  (number_to_currency @paid_pending, :unit => "P ") ) %>
+	<%= dash_entry_format("paid", "Paid (needs rating)", percentage(@paid_percent),  (number_to_currency @paid, :unit => "P ") ) %>
+	<%= dash_entry_format("closed", "Closed", percentage(@closed_percent),  (number_to_currency @closed, :unit => "P ") ) %>
 </ul>
 <p class="page-links">
 <%= link_to "Place Bids", seller_hub_path(current_user, :brand => 'all'), :class => 'button' %>

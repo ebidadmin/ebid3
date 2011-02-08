@@ -45,4 +45,5 @@ class LineItem < ActiveRecord::Base
 	  (two_and_up.count.to_f/self.count.to_f) * 100
 	end
 	
+  
 end

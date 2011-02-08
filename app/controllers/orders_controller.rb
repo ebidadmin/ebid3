@@ -25,7 +25,7 @@ class OrdersController < ApplicationController
       @entry.orders << @orders 
       @bids.each do |bid|
         @line_item = LineItem.find(bid.line_item_id)
-        bid.update_attributes(:status => "PO Released", :ordered => Date.today, :order_id => OrderItem.line_item_id_eq(@line_item).last.order.id, :declined => nil, :expired => nil)
+        bid.update_attributes(:status => "PO Released", :ordered => Date.today, :order_id => OrderItem.line_item_id_eq(@line_item).last.order.id, :fee => nil, :declined => nil, :expired => nil)
         bid.update_unselected_bids(@line_item)
         @line_item.update_attribute(:status, "PO Released")
       end

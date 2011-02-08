@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
     # helpers for buyer and entries controllers
     def initiate_list
       if current_user.has_role?("powerbuyer")
-        @company_users = current_user.company.users 
+        @company_users = current_user.company.users
         @user_group = @company_users.order('username').collect { |user| [user.username_for_menu, request_path(user.username.downcase)] }
         @user_group.push(['All', request_path('all')])
         @current_path = request_path(params[:user_id])
@@ -86,11 +86,14 @@ class ApplicationController < ActionController::Base
       @status_tags = @tag_collection.collect { |tag| [tag, request_path(:status => tag)] } unless @tag_collection.blank?
       @status_tags.push(['All', request_path(:status => nil)]) unless @tag_collection.blank?
       @status_path = request_path(:status => params[:status])
-      @status = params[:status] unless params[:status].nil?
-      @status = @tag_collection if params[:status].nil?
+      unless params[:status].nil?
+        @status = params[:status] 
+      else
+        @status = @tag_collection
+      end 
     end
 
-    def request_path(user)
+    def request_path(user=nil)
       case request.parameters['action']
       when 'main'
         buyer_main_path(user)
@@ -114,6 +117,8 @@ class ApplicationController < ActionController::Base
         user_entries_path(user)
       when 'entries'
         admin_entries_path(user)
+      when 'buyer_fees'
+        admin_buyer_fees_path(user)
       end
     end
 
@@ -135,11 +140,11 @@ class ApplicationController < ActionController::Base
 
     def find_orders
       if params[:user_id] == 'all'
-        @all_orders = Order.where(:company_id => current_user.company, :status => @status).includes(:bids, :entry, :user, :seller, :company)
+        @all_orders = Order.where(:company_id => current_user.company, :status => @status)
       else
-        @all_orders = defined_user.orders.where(:status => @status).includes(:bids, :entry, :user, :seller, :company)
+        @all_orders = defined_user.orders.where(:status => @status)
       end
-      @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
+      @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).includes(:company).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
       @sellers.push(['All', request_path(:seller => nil)]) unless @sellers.blank?
       @sellers_path = request_path(:seller => params[:seller])
     end

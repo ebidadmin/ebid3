@@ -19,6 +19,7 @@
 <ul class="dash">
 	<h3>Orders</h3>
 	<%= dash_entry_format("orders", "Total", "All orders", @orders ) %>
+	<%= dash_entry_format("order-items", "Items Ordered", percentage(@with_order_pct), @order_items ) %>
 	<%= dash_entry_format("released", "New", "PO released", @released, buyer_orders_path(params[:id]) ) %>
 	<%= dash_entry_format("delivered", "Delivered", "Delivered - unpaid", @delivered, buyer_payments_path(params[:id]) ) %>
 	<%= dash_entry_format("orders-paid", "Paid", "Delivered - paid", @paid_count ) %>
