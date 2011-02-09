@@ -1,25 +1,22 @@
 <% title "Bids for #{@entry.vehicle}" %>
 
-<%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
 
 <%= render 'shared/photo_set' %>
 <%= render 'shared/info_vehicle', :entry => @entry %>
+<%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
 <%= render 'shared/comments' %>
 
 <%= form_tag bids_path(:entry_id => @entry), :remote => true do %>
-	
 	<table id="item-bids">
 		<%= render 'bid_table' %>
 	</table>
-	
 	<div class="page-links">
 		<%= submit_tag 'Place Bid/s', :class => 'button' if @entry.buyer_status == "Online" || @entry.buyer_status == "Relisted"  %>
 	  <%= link_to "[Done]", :back %>
 	</div>
-	
 <% end %>
-
 <%= content_tag :h3, '', :id => 'bidding-message' %>
+
 
 <% unless (@entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted') && @entry.expired.nil? %>
   <% content_for :subnav do %>

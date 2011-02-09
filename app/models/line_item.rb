@@ -24,6 +24,11 @@ class LineItem < ActiveRecord::Base
 		li 
 	end 
 	
+	def check_and_update_associated_relationships
+    bids.each { |bid| bid.update_attributes(:quantity => quantity, :total => bid.amount * quantity) } if bids
+    order_item.update_attributes(:quantity => quantity, :total => order_item.price * quantity)  if order_item
+	end
+	
 	def last_bid(user, bid_type)
 	  last_bid = bids.where(:user_id => user, :bid_type => bid_type).last
 	end

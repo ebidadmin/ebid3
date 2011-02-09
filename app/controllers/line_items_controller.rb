@@ -51,6 +51,7 @@ class LineItemsController < ApplicationController
     @line_item = LineItem.find(params[:id])
 
     if @line_item.update_attributes(params[:item])
+      @line_item.check_and_update_associated_relationships
       flash[:notice] = "Successfully updated cart item."
           
       respond_to do |format|

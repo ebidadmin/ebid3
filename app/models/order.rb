@@ -35,7 +35,7 @@ class Order < ActiveRecord::Base
   scope :payment_valid, where('paid IS NOT NULL')
   scope :payment_pending, where('paid IS NULL')
 
-  scope :within_term, delivered.where('pay_until > ?', Date.today)
+  scope :within_term, delivered.where('pay_until >= ?', Date.today)
   scope :due_soon, delivered.where(:pay_until => Date.today .. Date.today + 1.week).unpaid
   scope :overdue, delivered.where('pay_until < ?', Date.today)
   

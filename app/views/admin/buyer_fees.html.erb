@@ -5,7 +5,7 @@
 <%= render 'buyer/filter_by_search' %>
 
 <% unless @decline_fees.blank? %>
-	<h2 id='flash_notice'>
+	<h2 class="highlight">
 		Total Decline Fees: <%= ph_currency(@search.collect(&:fee).sum) %>
 	  <%= content_tag :span, "| you have declined #{@search.count} of  #{@total_bids} (#{percentage(@percentage_declined)})".html_safe unless @total_bids.nil? %>
 	</h2>

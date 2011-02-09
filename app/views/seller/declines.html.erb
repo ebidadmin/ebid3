@@ -7,7 +7,7 @@
   We collect a Decline Fee, ' + (content_tag :strong, 'then you receive 50% of it for your effort in posting the “winning” bid.'), :class => 'instruction' %>
 
 <% unless @decline_fees.blank? %>
-	<h2>
+	<h2 class="highlight">
 		Total Decline Fees Collected: <%= ph_currency(@search.collect(&:fee).sum) %> /
 		Your Share: <%= ph_currency(@search.collect(&:split_amount).sum) %>
 	</h2>

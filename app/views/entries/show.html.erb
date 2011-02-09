@@ -3,6 +3,7 @@
 <%= render 'shared/info_vehicle', :entry => @entry %>
 <%= render 'shared/photo_set' %>
 <%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
+<%= render 'shared/comments' %>
 
 <%= form_tag accept_bids_path(:entry_id => @entry), :method => :post do  %>
 <table class="buyer monitor-bids">
@@ -26,11 +27,10 @@
 	<% end %>
 </table>
 <% end %>
-<%= render 'shared/comments' %>
 
 <p class="page-links">
   <%= link_to "Done!", :back, :class => 'button' %>
-  <%= link_to "Edit", edit_entry_path(@entry), :class => 'button' if @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' %>
+  <%= link_to "Edit", edit_entry_path(@entry), :class => 'button'  %>
   <%= link_to "[Relist Un-bided Items]", relist_entry_path(@entry) unless @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' || @entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted'  %>
 </p>
 

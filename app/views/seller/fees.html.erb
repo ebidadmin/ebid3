@@ -1,12 +1,13 @@
 <% title @title %>
 <%= content_tag :p, (content_tag :strong, 'What is a Market Fee? ') + 'It compensates E-Bid for providing you an organized, transparent and efficient market of Buyers. 
-	We use it to maintain the web servers and pays for our expenses to continue giving you this service.', :class => 'instruction' %>
+	We use it to maintain the web servers and pays for our expenses to continue giving you this service.' + (content_tag :strong, ' We will collect your Market Fee only if the 
+	Buyer has paid the PO to you.'), :class => 'instruction' %>
 <%= content_tag :p, (content_tag :strong, 'Can I get a discount? ') + 'Sure! The more you participate, the lesser your market fee. ' + (content_tag :strong, 'All you have to do is bid more and bid fast.'), :class => 'instruction' %>
 
 <% unless @market_fees.blank? %>
-<h2 id='flash_notice'>
+<h2 class="highlight">
   Total Paid Orders: <%= ph_currency @search.collect(&:bid_total).sum %> /
-  Total Success Fees: <%= ph_currency @search.collect(&:fee).sum %>
+  Total Market Fee: <%= ph_currency @search.collect(&:fee).sum %>
 </h2>
 
 <%= will_paginate @market_fees %>

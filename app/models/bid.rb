@@ -16,6 +16,14 @@ class Bid < ActiveRecord::Base
   scope :desc, order('id DESC')
   scope :bt, order('bid_type')
   scope :declined, where(:status => 'Declined')#.order('declined DESC', 'entry_id DESC')
+  
+  def self.for_this_buyer(user)
+    where(:entry_id => user.entries).count
+  end
+  
+  def self.for_this_company(company)
+    where(:entry_id => company.users.collect(&:entries)).count
+  end
 
   def decline_process
     update_attributes(:status => "Declined", :ordered => nil, :order_id => nil, :delivered => nil, :declined => Date.today)

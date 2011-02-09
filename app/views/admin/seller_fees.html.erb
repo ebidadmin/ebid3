@@ -3,7 +3,7 @@
 <%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 
 <% unless @market_fees.blank? %>
-<h2 id='flash_notice'>
+<h2 class="highlight">
   Total Paid Orders: <%= ph_currency @search.collect(&:bid_total).sum %> /
   Total Success Fees: <%= ph_currency @search.collect(&:fee).sum %>
 </h2>

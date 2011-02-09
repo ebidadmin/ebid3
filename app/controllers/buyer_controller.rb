@@ -108,8 +108,10 @@ class BuyerController < ApplicationController
     @title = "Declined Winning Bids"
     if params[:user_id] == 'all'
       @search = Fee.declined.where(:buyer_company_id => current_user.company)
+      # @total_bids = Bid.for_this_company(current_user.company)
     else
       @search = Fee.declined.where(:buyer_id => User.find_by_username(params[:user_id]))
+      # @total_bids = Bid.for_this_buyer(current_user).count
     end
     @total_bids = Bid.count
     @percentage_declined = (@search.count.to_f/@total_bids.to_f) * 100

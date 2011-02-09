@@ -28,7 +28,7 @@
 			  <% end %>
 			<% end %>
 		<% else %>
-			<% if item.bids.size > 0 &&  item.status != "Online" %>
+			<% if item.bids.size > 0 && item.status != "Online" && item.status != "Relisted" %>
 				  <%= content_tag :div, low_bid_no_radiobutton("original", item), :class => 'center bid-field orig' %>
 				  <%= content_tag :div, low_bid_no_radiobutton("replacement", item), :class => 'center bid-field rep' %>
 				  <%= content_tag :div, low_bid_no_radiobutton("surplus", item), :class => 'center bid-field surp' %>

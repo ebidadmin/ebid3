@@ -16,7 +16,6 @@ class EntriesController < ApplicationController
   
   def show
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
-    @line_items = @entry.line_items
   end
   
   def new
@@ -50,8 +49,8 @@ class EntriesController < ApplicationController
   end
   
   def edit
+    session['referer'] = request.env["HTTP_REFERER"]
     if current_user.has_role?('admin')
-      session['referer'] = request.env["HTTP_REFERER"]
       @entry = Entry.find(params[:id])
     else
       @entry = current_user.entries.find(params[:id])
@@ -68,21 +67,16 @@ class EntriesController < ApplicationController
     else
       @entry = current_user.entries.find(params[:id])
     end
-    @entry.buyer_status = 'Edited' unless current_user.has_role?('admin')
+    # @entry.buyer_status = 'Edited' unless current_user.has_role?('admin')
     @entry.add_line_items_from_cart(@cart) 
 
-    # TODO: UPDATE LINE_ITEMS
     if @entry.update_attributes(params[:entry])
-      EntryMailer.delay.new_entry_alert(@entry)
+      # EntryMailer.delay.new_entry_alert(@entry)
       @cart.destroy
       session[:cart_id] = nil 
       flash[:notice] = "Successfully updated entry."
-      if current_user.has_role?('admin')
-        redirect_to session['referer'] 
-        session['referer'] = nil
-      else
-        redirect_to buyer_pending_path(current_user)
-      end
+      redirect_to session['referer'] 
+      session['referer'] = nil
     else
       if @entry.photos.first.nil?
         @entry.photos.build
@@ -105,7 +99,8 @@ class EntriesController < ApplicationController
   end
 
   def put_online
-    show
+    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    @line_items = @entry.line_items
     if @entry.update_attributes(:buyer_status => "Online", :bid_until => Date.today + 1.week)
       @entry.update_associated_status("Online")
       flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
@@ -121,7 +116,8 @@ class EntriesController < ApplicationController
   end
 
   def decide
-    show
+    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    @line_items = @entry.line_items
     unless @entry.bids.blank?
       if @entry.update_attribute(:buyer_status, "For-Decision")
         @entry.update_associated_status("For-Decision")
@@ -134,7 +130,8 @@ class EntriesController < ApplicationController
   end
 
   def relist
-    show
+    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    @line_items = @entry.line_items
     unless @line_items.without_bids.blank?
       @line_items.without_bids.update_all(:status => 'Relisted')
       @entry.update_attributes(:buyer_status => 'Relisted', :bid_until => Date.today + 1.week, :chargeable_expiry => nil, :expired => nil)
@@ -153,13 +150,13 @@ class EntriesController < ApplicationController
   end
 
   def reactivate
-    show
+    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
     if @entry.update_attributes(:buyer_status => 'For-Decision', :chargeable_expiry => nil, :expired => nil)
       @entry.line_items.each do |line_item|
         unless line_item.order_item
           line_item.update_attribute(:status, 'For-Decision') 
           line_item.bids.update_all(:status => 'For-Decision', :declined => nil, :expired => nil)
-          line_item.fee.destroy if line_item.fee
+          line_item.fee.destroy if line_item.fee #TODO fee should be updated temporarily, not deleted
         end
       end
     end

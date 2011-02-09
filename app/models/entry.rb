@@ -55,7 +55,7 @@ class Entry < ActiveRecord::Base
 
 	def add_or_edit_line_items_from_cart(cart)
 		cart.cart_items.each do |item|
-		  existing_item = LineItem.where(:entry_id => id, :car_part_id => item.car_part_id)
+		  existing_item = LineItem.where(:entry_id => self.id, :car_part_id => item.car_part_id)
 		  unless existing_item.nil?
 		    existing_item.update_all(:quantity => item.quantity, :part_no => item.part_no)
 		  else
@@ -140,8 +140,8 @@ class Entry < ActiveRecord::Base
           line_item.update_attribute(:status, "No Bids")
         end
       end
-    elsif (buyer_status == "For-Decision" || buyer_status == "Ordered-IP" || buyer_status == "Declined-IP")
-      deadline = bid_until + 2.weeks unless bid_until.nil?
+    elsif (buyer_status == "For Decision" || buyer_status == "For-Decision" || buyer_status == "Ordered-IP" || buyer_status == "Declined-IP")
+      deadline = bid_until + 1.week unless bid_until.nil?
       if Date.today > deadline #&& expired_at.nil?
         update_attributes(:chargeable_expiry => true, :expired => Date.today)
         line_items.each do |line_item|
@@ -151,8 +151,9 @@ class Entry < ActiveRecord::Base
               lowest = itembids.order('amount').first
               others = itembids.where('id != ?', lowest)
               line_item.update_attribute(:status, "Expired")
-              lowest.update_attributes(:status => "Declined", :fee => lowest.total * 0.0025, :declined => Date.today, :expired => Date.today) # lowest bid gets decline fee, others are dropped
+              lowest.update_attributes(:status => "Declined", :declined => Date.today, :expired => Date.today) # lowest bid gets decline fee, others are dropped
               others.update_all(:status => 'Dropped', :fee => nil, :declined => nil, :expired => Date.today)
+              Fee.compute(lowest, "Declined")
             else #WITHOUT BIDS
               line_item.update_attribute(:status, "No Bids")
             end

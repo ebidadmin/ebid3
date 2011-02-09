@@ -8,7 +8,11 @@ class BidsController < ApplicationController
   def create
     # raise params.to_yaml
     @entry = Entry.find(params[:entry_id])
-    @line_items = @entry.line_items
+    if @entry.buyer_status == 'Relisted'
+      @line_items = @entry.line_items.online.includes(:car_part, :bids)
+    else
+      @line_items = @entry.line_items.includes(:car_part, :bids)
+    end
     
     @new_bids = Array.new
     @submitted_bids = params[:bids]

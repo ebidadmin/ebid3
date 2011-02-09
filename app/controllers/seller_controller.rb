@@ -12,17 +12,17 @@ class SellerController < ApplicationController
     @missed_percentage = 100 - @bid_percentage
     
     orders = Order.by_this_seller(current_user)
-    @new_orders = orders.recent.collect(&:total_order_amounts).sum
-    @total_delivered = orders.total_delivered.collect(&:total_order_amounts).sum
-    @within_term = orders.within_term.collect(&:total_order_amounts).sum
+    @new_orders = orders.recent.collect(&:order_total).sum
+    @total_delivered = orders.total_delivered.collect(&:order_total).sum
+    @within_term = orders.within_term.collect(&:order_total).sum
     @within_term_percent = (@within_term.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @overdue = orders.overdue.collect(&:total_order_amounts).sum
+    @overdue = orders.overdue.collect(&:order_total).sum
     @overdue_percent = (@overdue.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @paid_pending = orders.paid.payment_pending.collect(&:total_order_amounts).sum
+    @paid_pending = orders.paid.payment_pending.collect(&:order_total).sum
     @paid_pending_percent = (@paid_pending.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @paid = orders.paid.payment_valid.collect(&:total_order_amounts).sum
+    @paid = orders.paid.payment_valid.collect(&:order_total).sum
     @paid_percent = (@paid.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @closed = orders.closed.collect(&:total_order_amounts).sum
+    @closed = orders.closed.collect(&:order_total).sum
     @closed_percent = (@closed.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
   end
   

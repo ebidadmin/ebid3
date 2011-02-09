@@ -179,6 +179,10 @@ class AdminController < ApplicationController
       Fee.compute(bid, bid.status)
     end
   end
+  all_orders = Order.find(:all, :include => :bids)
+  all_orders.each do |order|
+    order.update_attribute(:order_total, order.bids.collect(&:total).sum)
+  end
   
   flash[:notice] = "Successful cleanup"
   redirect_to request.env["HTTP_REFERER"]
