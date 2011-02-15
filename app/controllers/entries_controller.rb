@@ -22,6 +22,7 @@ class EntriesController < ApplicationController
     @entry = Entry.new
     2.times {@entry.photos.build}
     @entry.date_of_loss = Date.today
+    @entry.term_id = 4
     start_entry
   end
   
@@ -106,13 +107,16 @@ class EntriesController < ApplicationController
       flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
     end
     redirect_to :back
-    for friend in @entry.user.company.friends
-      unless friend.users.nil?
-        for seller in friend.users
-          EntryMailer.delay.online_entry_alert(seller, @entry)
-        end
-      end
-    end
+    # for friend in @entry.user.company.friends
+    #   unless friend.users.nil?
+    #     for seller in friend.users
+    #       EntryMailer.delay.online_entry_alert(seller, @entry)
+    #     end
+    #   end
+    # end
+    # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
+    @friends = @entry.user.company.friends.map {|f| f.users.collect{ |u| "#{u.profile.full_name} <#{u.email}>" }}
+    EntryMailer.delay.online_entry_alert(@friends, @entry)
   end
 
   def decide

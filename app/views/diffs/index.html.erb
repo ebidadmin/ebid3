@@ -1,0 +1,51 @@
+<% title @title %>
+
+<%= render 'admin/filter_by_buyer' if @buyers %>
+<%= render 'buyer/filter_by_search' %>
+
+<%= will_paginate @entries  %>
+<%= page_info @entries %>
+
+<% unless @entries.blank? %>
+<table id="diff">
+	<thead>
+    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
+		<th class="">
+	    <%= content_tag :div, 'Part Description', :class => 'part' %>
+	    <%= content_tag :div, 'Diff Computations', :class => 'amounts' %>
+		</th>
+	</thead>
+	<% @entries.each do |entry| %>
+  <tr>
+		<td class="vehicle">	
+			<%= entry.vehicle %>
+			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' if current_user != entry.user %></p>
+			<%#= active_diff_mark(entry) %>
+		</td>
+	  <td>
+  	<% for line_item in entry.line_items %>
+	    <%= content_tag :div, "[ #{line_item.quantity} ] " + line_item.part_name, :class => 'part' %>
+			<div class="amounts">
+	    <%= content_tag :div, 'E-Bid', :class => 'labels ebid' %>
+			<% unless line_item.bids.blank? %>
+			  <%= content_tag :div, admin_low_bid("original", line_item), :class => 'amount' %>
+			  <%= content_tag :div, admin_low_bid("replacement", line_item), :class => 'amount' %>
+			  <%= content_tag :div, admin_low_bid("surplus", line_item), :class => 'amount' %>
+			<% else %>
+		    <%= content_tag :div, 'No Bids Submitted', :class => 'no-bid' %>
+			<% end %>
+	    <%= content_tag :div, 'Manual', :class => 'labels manual' %>
+			<% unless line_item.diffs.blank? %>
+			<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("original")), :class => 'amount' %>
+			<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("replacement")), :class => 'amount' %>
+			<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("surplus")), :class => 'amount' %>
+			<% end %>
+			</div>
+		<% end %>
+		</td>                          
+	</tr>
+	<% end %>
+</table>
+<% end %>
+
+<%= will_paginate @entries  %>

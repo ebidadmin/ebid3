@@ -32,7 +32,7 @@
 			<% elsif item.status == "Delivered" %>
 					<%= content_tag :span, 'Delivered' %> as of <%= item.order.delivered.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
 			<% elsif item.status == "Paid" %>
-					<%= content_tag :span, 'Paid' %> as of <%= item.order.paid.strftime('%b %d') unless item.order %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
+					<%= content_tag :span, 'Paid' %> as of <%= item.order.paid.strftime('%b %d')  %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
 			<% elsif item.status == "Closed" %>
 					<%= content_tag :span, 'Closed' %> as of <%= item.order.paid.strftime('%b %d')  unless item.order.paid.nil? %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) unless item.order.nil? %>
 			<% else  %>

@@ -1,0 +1,9 @@
+<% if last_diff %>
+	<% if last_diff.canvass_amount != last_diff.canvass_total  %>
+	  Each: <%= ph_currency last_diff.canvass_amount %><br>
+	  Total: <%= ph_currency last_diff.canvass_total %>
+	<% else %>
+	  <%= ph_currency last_diff.canvass_amount %>
+	<% end %>
+	<%= content_tag :p, 'Diff: ' + (ph_currency last_diff.diff) if last_diff.diff %>
+<% end %>

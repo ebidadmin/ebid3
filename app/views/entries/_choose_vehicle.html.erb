@@ -32,7 +32,8 @@
 <div class="column">
   <%= f.label :date_of_loss %><br />
 	<p class='instruction'>Click on the calendar icon to select a date.</p>
-  <%= f.text_field :date_of_loss, :id => 'datepicker' %>
+ <%= f.text_field :date_of_loss, :id => 'datepicker' %>
+	<p class='instruction'>Format: YYYY-MM-DD</p>
 </div>
 <div class="column-2">
   <%= f.label :city_id, 'Deliver To' %><br />
@@ -46,7 +47,6 @@
 </div>
 
 <% content_for :javascripts do %>
-	<%= javascript_include_tag 'dynamic_models', 'nested_form' %>
 	<% stylesheet 'blitzer/jquery-ui-1.8.6.custom' %>
 	<script type="text/javascript" charset="utf-8">
 	$(function() {

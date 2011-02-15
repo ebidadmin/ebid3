@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110126063019) do
+ActiveRecord::Schema.define(:version => 20110210064012) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -28,12 +28,12 @@ ActiveRecord::Schema.define(:version => 20110126063019) do
     t.integer  "order_id"
     t.date     "delivered"
     t.date     "paid"
-    t.decimal  "fee",          :precision => 10, :scale => 2
-    t.date     "remitted"
     t.date     "declined"
     t.date     "expired"
+    t.integer  "car_brand_id"
   end
 
+  add_index "bids", ["car_brand_id"], :name => "index_bids_on_car_brand_id"
   add_index "bids", ["entry_id"], :name => "index_bids_on_entry_id"
   add_index "bids", ["line_item_id"], :name => "index_bids_on_line_item_id"
   add_index "bids", ["order_id"], :name => "index_bids_on_order_id"
@@ -140,11 +140,39 @@ ActiveRecord::Schema.define(:version => 20110126063019) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "diffs", :force => true do |t|
+    t.integer  "buyer_company_id"
+    t.integer  "buyer_id"
+    t.integer  "seller_company_id"
+    t.integer  "seller_id"
+    t.integer  "entry_id"
+    t.integer  "line_item_id"
+    t.integer  "bid_id"
+    t.decimal  "amount",             :precision => 10, :scale => 2
+    t.integer  "quantity",                                          :default => 1, :null => false
+    t.decimal  "total",              :precision => 10, :scale => 2
+    t.string   "bid_type"
+    t.decimal  "canvass_amount",     :precision => 10, :scale => 2
+    t.decimal  "canvass_total",      :precision => 10, :scale => 2
+    t.decimal  "diff",               :precision => 10, :scale => 2
+    t.integer  "canvass_company_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "diffs", ["bid_id"], :name => "index_diffs_on_bid_id"
+  add_index "diffs", ["buyer_company_id"], :name => "index_diffs_on_buyer_company_id"
+  add_index "diffs", ["buyer_id"], :name => "index_diffs_on_buyer_id"
+  add_index "diffs", ["canvass_company_id"], :name => "index_diffs_on_canvass_company_id"
+  add_index "diffs", ["entry_id"], :name => "index_diffs_on_entry_id"
+  add_index "diffs", ["line_item_id"], :name => "index_diffs_on_line_item_id"
+  add_index "diffs", ["seller_company_id"], :name => "index_diffs_on_seller_company_id"
+  add_index "diffs", ["seller_id"], :name => "index_diffs_on_seller_id"
+
   create_table "entries", :force => true do |t|
     t.integer  "user_id"
     t.string   "ref_no"
     t.integer  "year_model",        :default => 2010
-    t.integer  "car_brand_id",      :default => 0
     t.integer  "car_model_id",      :default => 0
     t.integer  "car_variant_id",    :default => 0
     t.string   "plate_no"
@@ -163,12 +191,15 @@ ActiveRecord::Schema.define(:version => 20110126063019) do
     t.integer  "bids_count"
     t.date     "expired"
     t.boolean  "chargeable_expiry", :default => false
+    t.integer  "company_id"
+    t.integer  "car_brand_id"
   end
 
   add_index "entries", ["car_brand_id"], :name => "index_entries_on_car_brand_id"
   add_index "entries", ["car_model_id"], :name => "index_entries_on_car_model_id"
   add_index "entries", ["car_variant_id"], :name => "index_entries_on_car_variant_id"
   add_index "entries", ["city_id"], :name => "index_entries_on_city_id"
+  add_index "entries", ["company_id"], :name => "index_entries_on_company_id"
   add_index "entries", ["term_id"], :name => "index_entries_on_term_id"
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
@@ -181,12 +212,13 @@ ActiveRecord::Schema.define(:version => 20110126063019) do
     t.integer "line_item_id"
     t.integer "order_id"
     t.integer "bid_id"
-    t.decimal "bid_total",         :precision => 10, :scale => 2
-    t.decimal "fee",               :precision => 10, :scale => 2
+    t.decimal "bid_total",                       :precision => 10, :scale => 2
+    t.string  "bid_type",          :limit => 40,                                :null => false
+    t.decimal "fee",                             :precision => 10, :scale => 2
     t.string  "fee_type"
     t.date    "created_at"
     t.date    "remitted"
-    t.decimal "split_amount",      :precision => 10, :scale => 2
+    t.decimal "split_amount",                    :precision => 10, :scale => 2
     t.date    "split_date"
   end
 

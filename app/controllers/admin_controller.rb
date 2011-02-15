@@ -48,7 +48,16 @@ class AdminController < ApplicationController
   end
 
   def bids
-    @search = Bid.desc.search(params[:search])
+    bids = Bid.desc
+    @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq)
+    if params[:brand] == 'all'
+      @search = bids.search(params[:search])
+    elsif params[:brand]
+      brand = CarBrand.find_by_name(params[:brand])
+      @search = bids.where(:car_brand_id => brand).search(params[:search])
+    else
+      @search = bids.search(params[:search])
+    end
     @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
     render 'bids/index' 
   end
@@ -135,7 +144,7 @@ class AdminController < ApplicationController
   end
 
   def expire_entries
-    @entries = Entry.online.current.includes(:line_items) + Entry.results.current.includes(:line_items)
+    @entries = Entry.where(:user_id => [34, 37]) #Entry.online.current.includes(:line_items) + Entry.results.current.includes(:line_items)
     @entries.each do |entry|
       entry.expire
     end
@@ -155,36 +164,32 @@ class AdminController < ApplicationController
   #     item.bids_count = item.bids.count
   #   end
   # end
-  bids = Bid.where(:status => ['Delivered', 'For-Decision', 'Paid', 'Closed'])
-  bids.each do |bid|
-    bid.update_attributes(:declined => nil, :expired => nil)
-    if bid.status == 'Paid' || bid.status == 'Closed'
-      if bid.fee.nil?
-        Fee.compute(bid, 'Paid', bid.order_id)
+  # bids = Bid.where(:status => ['Delivered', 'For-Decision', 'Paid', 'Closed'])
+  # bids.each do |bid|
+  #   bid.update_attributes(:declined => nil, :expired => nil)
+  # end
+    orders = Order.paid_and_closed.payment_valid
+    orders.each do |order|
+      order.bids.each do |bid|
+        bid.update_attributes(:status => order.status, :paid => order.paid)
+        if bid.fee.nil?
+          Fee.compute(bid, bid.status, bid.order_id)
+        end
       end
     end
-  end
-  orders = Order.paid_and_closed.payment_valid
-  orders.each do |order|
-    order.bids.each do |bid|
-      bid.update_attributes(:status => order.status, :paid => order.paid)
+    bids = Bid.declined
+    bids.each do |bid|
       if bid.fee.nil?
-        Fee.compute(bid, bid.status, bid.order_id)
+        Fee.compute(bid, bid.status)
       end
     end
-  end
-  bids = Bid.declined
-  bids.each do |bid|
-    if bid.fee.nil?
-      Fee.compute(bid, bid.status)
-    end
-  end
-  all_orders = Order.find(:all, :include => :bids)
-  all_orders.each do |order|
-    order.update_attribute(:order_total, order.bids.collect(&:total).sum)
-  end
+    # all_orders = Order.find(:all, :include => :bids)
+    # all_orders.each do |order|
+    #   order.update_attribute(:order_total, order.bids.collect(&:total).sum)
+    # end
   
   flash[:notice] = "Successful cleanup"
   redirect_to request.env["HTTP_REFERER"]
   end
+
 end

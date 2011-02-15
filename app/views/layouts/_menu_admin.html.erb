@@ -2,6 +2,8 @@
 <%= menu_link 'All Entries',  'admin', 'entries', 'all' %>
 <%= nav_link 'Bid Board', admin_online_path %>
 <%= nav_link 'Latest Bids', admin_bids_path %>
+<%#= content_tag :li, (link_to 'Latest Bids', admin_bids_path(:brand => 'all'), :id => current?(admin_bids_path)) %>
+<%= nav_link 'Diffs', diffs_path %>
 <%= nav_link 'Orders',  admin_orders_path %> 
 <%= nav_link 'Payments',  admin_payments_path %> 
 <%= nav_link 'Buyer Fees', admin_buyer_fees_path %> 

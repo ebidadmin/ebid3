@@ -2,5 +2,7 @@
 
 <%= render 'form' %>
 
-<% javascript "formtastic_models" %>
+<% content_for :javascripts do %>
+	<%= javascript_include_tag  "formtastic_models" %>
+<% end %>
 <% stylesheet 'formtastic', 'formtastic_changes' %>

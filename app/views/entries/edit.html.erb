@@ -20,3 +20,7 @@
 		or <%= link_to "Cancel", user_entries_path(current_user) %>
 	</p>
 <% end %>
+
+<% content_for :javascripts do %>
+	<%= javascript_include_tag 'dynamic_models2', 'nested_form' %>
+<% end %>

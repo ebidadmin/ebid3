@@ -1,0 +1,13 @@
+<% title 'Rationalize Car Parts' %>
+
+<%= form_tag do_rationalization_line_items_path, :method => :put  do %>
+<%= hidden_field_tag :orig_part, params[:id] %>
+
+<p>Part ID <%= text_field_tag :car_part_id, params[:id] %></p>
+<ul>  
+  <% for item in @line_items %>
+  <li><strong><%= item.id %></strong> <%= item.car_part_id  %> - <%= link_to item.entry.vehicle, entry_path(item.entry) %> (<%= item.entry.plate_no %>)</li>
+  <% end %>
+</ul>  
+<%= submit_tag 'Rationalize!' %>
+<% end %>

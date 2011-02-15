@@ -4,6 +4,11 @@ class JavascriptsController < ApplicationController
     @car_variants = CarVariant.all
   end
 
+  def dynamic_models2
+    @car_models = CarModel.all
+    @car_variants = CarVariant.all
+  end
+
   def formtastic_models
     @car_models = CarModel.all
   end

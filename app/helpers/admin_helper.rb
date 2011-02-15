@@ -27,4 +27,8 @@ module AdminHelper
 		render 'admin/bid', :bid => item.low_bid(bid_type) unless item.low_bid(bid_type).nil? 
   end
   
+  def diff_amount(bid_type, item)
+    render 'admin/diff', :diff => item.diff
+  end
+  
 end

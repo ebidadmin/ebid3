@@ -5,6 +5,7 @@ class CarBrand < ActiveRecord::Base
   belongs_to :car_origin
   has_many :car_models
   has_many :entries
+  has_many :bids
   
   validates_presence_of :name
   

@@ -1,0 +1,30 @@
+<% @bids.group_by(&:entry).each do |entry, bids| -%>
+	<tr>
+		<td class="vehicle">
+      <div id="details">
+				<%= link_to truncate(entry.vehicle, :length => 35), entry %>
+        <%= content_tag :p, entry.plate_no %>
+        <%= content_tag :span, "(by #{entry.user.username})", :class => 'highlight' %>
+        <%= content_tag :p, "Terms: #{entry.city.name if entry.city} / #{entry.term.term_name if entry.term}" %>
+        <%= content_tag :p, "Parts: #{entry.line_items_count.to_i}"  %>
+			</div>
+		</td>
+		<td class="bid-box">
+   		<% bids.group_by(&:line_item).each do |line_item, bids| %>
+	 		  <%= content_tag :div, line_item.part_name, :class => 'part-desc' %>
+   		  <div class="bid-group">
+   			<% for bid in bids  -%>
+   			  <div class="amount">
+   			    <%= ph_currency(bid.amount) %><br>
+            <%= content_tag :span, "#{bid.created_at.strftime('%b %d')} / #{bid.user.username }", :class => 'instruction' %>
+   			  </div>
+          <div class="bid-type">
+    				<%= bid.bid_type -%> <%= "- Lot" if bid.lot == true %>
+          </div>  
+   				<%= content_tag :div, bid.status, :class => "status #{quote_class(bid.status)}" -%>
+   			<% end %>
+   		  </div>
+ 			<% end %>
+		</td>
+	</tr>
+<% end %>

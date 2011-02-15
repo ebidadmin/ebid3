@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
   has_many :comments, :dependent => :destroy
   has_many :buyers, :through => :fees
   has_many :sellers, :through => :fees
+  has_many :buyers, :through => :diffs
+  has_many :sellers, :through => :diffs
   
 
   scope :active, where('current_sign_in_at > ?', 24.hours.ago).order('current_sign_in_at DESC')

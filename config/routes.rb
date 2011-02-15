@@ -1,8 +1,12 @@
 Ebid::Application.routes.draw do
 
+  resources :diffs, :only => [:index, :show, :create]
+
   resources :line_items do
     put :change, :on => :member
     get :show_fields, :on => :member
+    get :rationalize, :on => :collection
+    put :do_rationalization, :on => :collection
   end
 
   resources :comments
@@ -35,6 +39,7 @@ Ebid::Application.routes.draw do
   get 'cart/show_fields'
   put 'cart/edit_item'
   get 'javascripts/dynamic_models'
+  get 'javascripts/dynamic_models2'
   get 'javascripts/formtastic_models'
 
   get 'photos/add', :as => :add_photo
@@ -53,7 +58,7 @@ Ebid::Application.routes.draw do
   match 'admin/dashboard' => 'admin#index', :as => :admin_index, :via => :get
   match 'admin/entries(/:user_id(/:status(/:page)))' => 'admin#entries', :as => :admin_entries, :via => :get
   match 'admin/online(/:page)' => 'admin#online', :as => :admin_online, :via => :get
-  match 'admin/bids(/:page)' => 'admin#bids', :as => :admin_bids, :via => :get
+  match 'admin/bids(/:page(/:brand))' => 'admin#bids', :as => :admin_bids, :via => :get
   match 'admin/orders(/:page)' => 'admin#orders', :as => :admin_orders, :via => :get
   match 'admin/payments(/:seller(/:page))' => 'admin#payments', :as => :admin_payments, :via => :get
   match 'admin/buyer_fees(/:page)' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
@@ -75,7 +80,8 @@ Ebid::Application.routes.draw do
 
   match 'seller/:user_id/main' => 'seller#main', :as => :seller_main, :via => :get
   match 'seller/:user_id/hub/:brand(/page-(:page))' => 'seller#hub', :as => :seller_hub, :via => :get
-  match 'seller/:user_id/hub/:brand/:id' => 'seller#show', :as => :seller_show, :via => :get
+  match 'seller/show/:id' => 'seller#show', :as => :seller_show, :via => :get
+  # match 'seller/:user_id/hub/:brand/:id' => 'seller#show', :as => :seller_show, :via => :get
   match 'seller/:user_id/monitor(/:page)' => 'seller#monitor', :as => :seller_monitor, :via => :get
   match 'seller/:user_id/orders(/:page)' => 'seller#orders', :as => :seller_orders, :via => :get
   match 'seller/:user_id/payments(/:page)' => 'seller#payments', :as => :seller_payments, :via => :get
@@ -88,15 +94,17 @@ Ebid::Application.routes.draw do
     collection do
       post :accept
       post :decline
+      post :calc_diff
     end
   end
-  
+    
   resources :orders do
     member do
       put :confirm
       put :seller_status
       put :buyer_paid
     end
+    get :auto_paid, :on => :collection
     resources :ratings
   end
 

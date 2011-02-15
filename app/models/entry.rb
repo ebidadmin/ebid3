@@ -23,6 +23,7 @@ class Entry < ActiveRecord::Base
   has_many :order_items, :through => :orders
   has_many :comments, :dependent => :destroy
   has_many :fees
+  has_many :diffs
 
   validates_presence_of :year_model, :car_brand, :car_model, :plate_no, :serial_no, :motor_no, :term
   validates_presence_of :city, :if => :new_city_blank
@@ -43,9 +44,11 @@ class Entry < ActiveRecord::Base
   scope :closed, where("buyer_status = ?", 'Closed')
   scope :alive, where("buyer_status != ?", 'Removed')
   
-  scope :with_bids, where('bids_count > 0')
-  scope :without_bids, where('bids_count < 1')
+  scope :with_bids, where("bids_count > ?", 0)
+  scope :without_bids, where('bids_count < ?', 1)
 
+  scope :inclusions, includes([:line_items => [:car_part]], :user, :car_brand, :car_model, :car_variant)
+  
 	def add_line_items_from_cart(cart)
 		cart.cart_items.each do |item|
 			li = LineItem.from_cart_item(item)
@@ -81,6 +84,9 @@ class Entry < ActiveRecord::Base
     car_brand.name.downcase
 	end
 	
+	def buyer_company #used in diffs#index
+	  user.company
+	end
 	def update_associated_status(status)
     if status == "For-Decision"
       line_items.each do |item|
@@ -152,7 +158,7 @@ class Entry < ActiveRecord::Base
               others = itembids.where('id != ?', lowest)
               line_item.update_attribute(:status, "Expired")
               lowest.update_attributes(:status => "Declined", :declined => Date.today, :expired => Date.today) # lowest bid gets decline fee, others are dropped
-              others.update_all(:status => 'Dropped', :fee => nil, :declined => nil, :expired => Date.today)
+              others.update_all(:status => 'Dropped', :declined => nil, :expired => Date.today)
               Fee.compute(lowest, "Declined")
             else #WITHOUT BIDS
               line_item.update_attribute(:status, "No Bids")
@@ -164,12 +170,12 @@ class Entry < ActiveRecord::Base
     end
 	end
 
-  def decline_type
-    if expired.blank? 
-      "Declined (by user)"
-    else
-      "Expired"
-    end 
-  end
+  # def decline_type
+  #   if expired.blank? 
+  #     "Declined (by user)"
+  #   else
+  #     "Expired"
+  #   end 
+  # end
   
 end

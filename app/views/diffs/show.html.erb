@@ -1,0 +1,56 @@
+<% title "Diff for #{@entry.vehicle}" %>
+
+<%= render 'shared/info_vehicle', :entry => @entry %>
+<%= content_tag :h3, 'Status: ' + @entry.buyer_status + " (#{@entry.user.username})", :class => 'highlight' %>
+
+<%= form_tag diffs_path(:entry_id => @entry), :method => :post, :remote => true do  %>
+<table class="buyer">
+	<thead>
+		<%= content_tag :th, 'Qty', :class => 'qty' %>
+		<%= content_tag :th, 'Part Description', :class => 'partname' %>
+		<th class="bid-box">
+			<%= content_tag :h4, 'Manual Canvass (unit price)', :class => 'strong' %>
+		</th>
+	</thead>
+	<% for item in  @entry.line_items %>
+	<tr class="entry-item">
+		<%= content_tag :td, item.quantity, :class => 'qty' %>
+		<td class="partname">    	
+			<%= item.part_name %> 
+			<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
+	    <%= content_tag :p, "ID: #{item.id}" %>
+		</td>
+		<td class="bid-box">
+			<div class="bid-labels">
+				<div class="bidder-count">
+					<%= content_tag :p, 'Bidder/s' %>
+					<%= content_tag :p, item.bids.collect(&:user_id).uniq.count, :class => 'number strong' %>
+				</div>
+			</div>
+			<div class="bid-selection">
+				<% if item.bids.size > 0 && item.status != "Online" && item.status != "Relisted" %>
+					  <%= content_tag :div, low_bid_no_radiobutton("original", item), :class => 'bid-field orig' %>
+					  <%= content_tag :div, low_bid_no_radiobutton("replacement", item), :class => 'bid-field rep' %>
+					  <%= content_tag :div, low_bid_no_radiobutton("surplus", item), :class => 'bid-field surp' %>
+				<% end %>                                                                                                                       
+				<%= content_tag :div, (content_tag :span, 'Orig ') + (text_field_tag "diffs[#{item.id}][original]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
+				<%= content_tag :div, (content_tag :span, 'Rep ') + (text_field_tag "diffs[#{item.id}][replacement]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
+				<%= content_tag :div, (content_tag :span, 'Surp ') +(text_field_tag "diffs[#{item.id}][surplus]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
+				<div id="amounts_<%= item.id %>">                                                                                                  
+					<%= render 'diffs/diff_set', :item => item %>
+				</div>		
+			</div>
+		</td>
+	</tr>
+	<% end %>
+	<div class='page-links'>
+		
+	<%= select_tag :canvass_company_id, options_for_select(Company.where("id != 1 AND primary_role = 3").order('name ASC').collect { |c| [c.name, c.id] }), :include_blank => true  %>
+	</div>
+</table>
+<div class="page-links">
+	<%= submit_tag 'Submit Diff/s', :class => 'button'  %>
+  <%= link_to "[Done]", :back %>
+</div>
+<% end %>
+<%= content_tag :h3, '', :id => 'bidding-message' %>

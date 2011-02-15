@@ -19,7 +19,7 @@
   		</p></li> -->
   		<%= profile.input :phone %>
   		<%= profile.input :fax %>
-  		<%= profile.input :birthdate, :as => :string, :input_html => {:id => 'datepicker'}, :hint => 'We want to remember you on your birthday.' %>
+  		<%= profile.input :birthdate, :as => :string, :input_html => {:id => 'datepicker'}, :hint => 'We want to remember you on your birthday. (Format: YYYY-MM-DD)' %>
   	<% end %>
   <% end %>
 	<% f.buttons do %>
@@ -32,8 +32,11 @@
 	<% end %>
 <% end %>
 
-<% content_for :javascripts do %>
+<% content_for :head do %>
 	<%= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
+<% end %>
+
+<% content_for :javascripts do %>
 	<%= stylesheet_link_tag 'blitzer/jquery-ui-1.8.6.custom' %>
 	<script type="text/javascript" charset="utf-8">
 	$(function() {

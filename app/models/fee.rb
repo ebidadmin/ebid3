@@ -36,7 +36,8 @@ class Fee < ActiveRecord::Base
     f.line_item_id = bid.line_item_id
     f.bid_id = bid.id
     f.bid_total = bid.total
-    if status == 'Paid'
+    f.bid_type = bid.bid_type
+    if status == 'Paid' || status == 'Closed'
       f.fee = bid.total * 0.035
       f.fee_type = 'Ordered'
       f.order_id = order if order

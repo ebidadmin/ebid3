@@ -5,7 +5,8 @@ class LineItem < ActiveRecord::Base
   has_many :bids, :dependent => :destroy
   has_one :order_item
   has_one :order, :through => :order_item
-  has_one :fee
+  has_many :fees
+  has_many :diffs
   
   scope :online, where("status IN ('Online', 'Relisted')")
   scope :with_bids, where('bids_count > 0')
@@ -41,6 +42,11 @@ class LineItem < ActiveRecord::Base
     # self.bids.bid_type_eq(bid_type).status_does_not_equal('Ordered').descend_by_amount.last
     bids.where(:bid_type => bid_type).order('amount').first
 	end
+	
+	def last_diff(bid_type)
+	  diffs.where(:bid_type => bid_type).last
+	end
+	
 	
 	def self.with_bids_pct
 	  (with_bids.count.to_f/self.count.to_f) * 100

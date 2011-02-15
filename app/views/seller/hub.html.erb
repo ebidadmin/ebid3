@@ -17,7 +17,8 @@
 		<td class="vehicle">
 			<%= render 'shared/photo_first', :entry => entry %>
       <div id="details">
-        <%= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) %>
+        <%#= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) %>
+        <%= content_tag :p, (link_to entry.vehicle, seller_show_path(:id => entry)) %>
         <%= content_tag :p, entry.plate_no %>
         <%= content_tag :p, "(created by #{entry.user.username})" if current_user.has_role?("powerbuyer") %>
 			</div>
@@ -25,17 +26,17 @@
 		<td class="requirements">
       <%= content_tag :p, (content_tag :span, 'Delivery:') + entry.city.name if entry.city %>
       <%= content_tag :p, (content_tag :span, 'Credit:') + entry.term.term_name if entry.term %>
-      <%= content_tag :p, (content_tag :span, 'Quantity:') + (link_to (pluralize entry.line_items.online.collect(&:quantity).sum, "item"), 
-						seller_show_path(:brand => entry.brand, :id => entry)) %>
+      <%#= content_tag :p, (content_tag :span, 'Parts:') + (link_to (pluralize entry.line_items.online.collect(&:quantity).sum, "item"), seller_show_path(:brand => entry.brand, :id => entry)) %>
+      <%= content_tag :p, (content_tag :span, 'Parts:') + (link_to (pluralize entry.line_items.online.collect(&:quantity).sum, "item"), seller_show_path(:brand => entry.brand, :id => entry)) %>
 		</td>
 		<td class="status">
       <%#= content_tag :p, display_status(entry) %>
       <%= content_tag :p, 'Online until: '+ entry.bid_until.strftime('%b %d') + ' (maximum)' %>
 			<p class="instruction large">
 				<% unless entry.bids.user_id_eq(current_user).blank? %>
-				(<%= image_tag '/images/base/yes.png' -%> you posted Item Bids <%= link_to 'here', seller_show_path(:brand => entry.brand, :id => entry) %> )
+				(<%= image_tag '/images/base/yes.png' -%> you posted Item Bids <%= link_to 'here', seller_show_path(:id => entry) %> )
 				<% else %>
-				<%= link_to 'bid here', seller_show_path(:brand => entry.brand, :id => entry) %> 
+				<%= link_to 'bid here', seller_show_path(:id => entry) %> 
 				<% end %>
 			</p>
 		</td>

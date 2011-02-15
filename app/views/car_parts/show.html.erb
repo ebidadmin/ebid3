@@ -1,12 +1,9 @@
-<% title "Car Part" %>
+<% title "#{@car_part.id} #{@car_part.name}" %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @car_part.name %>
-</p>
+<%= render 'relationships', :car_part => @car_part %>
 
 <p>
   <%= link_to "Edit", edit_car_part_path(@car_part) %> |
-  <%= link_to "Destroy", @car_part, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", car_parts_path %>
+  <%= link_to "Delete", @car_part, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "Back", :back %>
 </p>

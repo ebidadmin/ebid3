@@ -2,9 +2,15 @@ class CarPartsController < ApplicationController
   before_filter :initialize_cart
   before_filter :check_buyer_role
   before_filter :check_admin_role, :except => [:new, :create, :search]
+  respond_to :html, :js
 
   def index
-    @car_parts = CarPart.all
+    unless params[:orig].nil?
+      @search = CarPart.name_like_all(params[:name].to_s.split).where(:id => [params[:orig], params[:new]]).ascend_by_name
+    else
+      @search = CarPart.name_like_all(params[:name].to_s.split).ascend_by_name
+    end
+    @car_parts = @search.includes(:line_items).paginate :page => params[:page], :per_page => 15
   end
   
   def show
@@ -49,7 +55,7 @@ class CarPartsController < ApplicationController
     @car_part = CarPart.find(params[:id])
     name = @car_part.name
     @car_part.destroy
-    flash[:notice] = "Deleted <strong>#{name}</strong>."
+    flash[:notice] = "Deleted <strong>#{name}</strong>.".html_safe
     redirect_to :back
   end
 

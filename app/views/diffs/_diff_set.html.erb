@@ -1,0 +1,5 @@
+<% unless item.diffs.blank? %>
+<%= content_tag :div, (render 'diff_reflection', :last_diff => item.last_diff('original')), :class => 'bid-amount' %>
+<%= content_tag :div, (render 'diff_reflection', :last_diff => item.last_diff('replacement')), :class => 'bid-amount' %>
+<%= content_tag :div, (render 'diff_reflection', :last_diff => item.last_diff('surplus')), :class => 'bid-amount' %>
+<% end %>

@@ -33,7 +33,7 @@
   	<% for fee in fees %>
 	    <%= content_tag :div, "#{fee.fee_type}: #{content_tag :span, fee.created_at.strftime('%b %d'), :class => 'instruction'}".html_safe, :class => 'fee-type' %>
 	    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
-	    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'lowest-bid'  %>
+	    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => "") + " #{display_bid_type(fee)}".html_safe, :class => 'lowest-bid'  %>
 	    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
 			<%= content_tag :div, fee.seller.username, :class => 'seller instruction' -%>
 		<% end %>

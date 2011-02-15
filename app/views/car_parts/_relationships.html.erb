@@ -1,0 +1,18 @@
+<ul>
+  <h3>Line Items</h3>
+  <% for item in car_part.line_items %>
+  <li><strong><%= item.id %></strong> <%= item.car_part_id  %> - <%#= link_to item.entry.vehicle, monitor_indl_admin_path(:id => item.entry) %> (<%= current_status_or_expired?(item.entry) %>)</li>
+  <% end %>
+</ul>
+<ul>
+  <h3>Bids</h3>
+  <% for bid in car_part.bids %>
+  <li><strong><%= bid.line_item_id %></strong>: <%= bid.line_item.car_part_id %> <%= bid.user.username %></li>
+  <% end %>
+</ul>
+<ul>
+  <h3>Order Items</h3>
+  <% for order in car_part.order_items %>
+  <li><strong><%= order.line_item_id %></strong>: <%= order.line_item.car_part_id %> <%= order.order.status %></li>
+  <% end %>
+</ul>

@@ -42,7 +42,7 @@
 	  	<td class='stat'>
   			<%= content_tag :p, 'Buyer: ' + order.company.name, :class => 'instruction'  %>
 	  		<%= content_tag :p, 'Seller: ' + order.seller.profile.company.name, :class => 'instruction'  %>
-			  <%= render 'order_status_admin', :order => order %>
+			  <%= render 'admin/order_status_admin', :order => order %>
 			</td>
 	  </tr>
 		<% end %>

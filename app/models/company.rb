@@ -10,6 +10,9 @@ class Company < ActiveRecord::Base
   has_many :friends, :through => :friendships
   has_many :buyer_companies, :through => :fees
   has_many :seller_companies, :through => :fees
+  has_many :buyer_companies, :through => :diffs
+  has_many :seller_companies, :through => :diffs
+  has_many :canvass_companies, :through => :diffs
   
   validates_presence_of :name, :address1, :city, :approver
   validates_uniqueness_of :name, :message => "This company is already in our database."

@@ -97,6 +97,28 @@ class OrdersController < ApplicationController
     end
   end
 
+  def auto_paid
+    orders = Order.paid.paid_null
+    orders.each do |order|
+     order.bids.each do |bid|
+        if bid.paid
+          order.update_attribute(:paid, bid.paid)
+        elsif order.paid_temp
+          order.update_attribute(:paid, order.paid_temp)
+        else
+          order.update_attribute(:paid, order.pay_until + 1.week)
+        end        
+        if bid.fee.nil?
+          Fee.compute(bid, 'Paid', order.id)
+        end
+       end
+      order.bids.update_all(:status => 'Paid', :paid => order.paid)
+      order.line_items.update_all(:status => 'Paid')
+    end
+    flash[:notice] = "Successfully tagged payments."
+    redirect_to :back
+  end
+
   private
     
     def find_order_and_entry

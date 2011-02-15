@@ -1,5 +1,7 @@
+<% @line_items.each do |line_item| %>
+	$("#amounts_<%= line_item.id %>").html("<%= escape_javascript(render 'seller/bid_set', :item => line_item) %>")
+<% end %>
 $("#bidding-message").text("Thanks for bidding!");
-$("#item-bids").html("<%= escape_javascript(render 'seller/bid_table') %>")
-$("form")[0].reset();    
 $("#bidding-message").effect("highlight", {}, 3000)
+$("form")[0].reset();    
 

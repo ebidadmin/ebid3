@@ -1,0 +1,75 @@
+class DiffsController < ApplicationController
+  respond_to :html, :js
+
+  def index
+    if current_user.has_role?('admin')
+      @search = Entry.bids_count_gt(0).desc.search(params[:search])
+      # @buyers = @search.collect(&:buyer_company).uniq.collect { |buyer| [Company.find(buyer).name, diffs_path(:buyer => buyer)] }
+      # @buyers.push(['All', diffs_path(:buyer => nil)]) unless @buyers.blank?
+      # @buyers_path = diffs_path(:buyer => params[:buyer])
+    else
+      @search = Entry.bids_count_gt(0).where(:user_id => current_user.company.users).desc.search(params[:search])
+    end
+    @entries = @search.inclusions.paginate :page => params[:page], :per_page => 5
+  end
+
+  def show
+    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+  end
+  
+  def create
+    # raise params.to_yaml
+    @entry = Entry.find(params[:entry_id])
+    @line_items = @entry.line_items
+    
+    @new_diffs = Array.new
+    @submitted_diffs = params[:diffs]
+    @submitted_diffs.each do |line_item, difftypes|
+      @line_item = LineItem.find(line_item)
+
+      difftypes.reject! { |k, v| v.blank? }
+      difftypes.each do |diff|
+        unless diff[1].to_f < 1
+          @existing_diff = Diff.find_by_line_item_id_and_bid_type(line_item, diff[0])
+          if @existing_diff.nil? 
+            @new_diff = Diff.new
+        		@new_diff.buyer_company_id = @entry.user.company.id
+        		@new_diff.buyer_id = @entry.user_id
+        		@new_diff.entry_id = @entry.id
+        		@new_diff.line_item_id = line_item
+            @new_diff.bid_type = diff[0]
+        		@new_diff.canvass_amount = diff[1]
+        		@new_diff.canvass_total = diff[1].to_f * @line_item.quantity.to_i
+            @new_diff.canvass_company_id = params[:canvass_company_id]
+            @existing_bid = Bid.find_by_line_item_id_and_bid_type(line_item, diff[0])
+        		unless @existing_bid.nil? 
+          		@new_diff.seller_company_id = @existing_bid.user.company.id
+          		@new_diff.seller_id = @existing_bid.user_id
+          		@new_diff.bid_id = @existing_bid.id 
+          		@new_diff.amount = @existing_bid.amount 
+          		@new_diff.quantity = @existing_bid.quantity
+          		@new_diff.total = @existing_bid.total
+          		@new_diff.diff = @new_diff.total - @new_diff.canvass_total
+        		end
+            @new_diffs << @new_diff unless @new_diff.canvass_amount < 1
+          else
+            new_total = diff[1].to_f * @line_item.quantity.to_i
+            @existing_diff.update_attributes!(:canvass_amount => diff[1], :canvass_total => new_total, :diff => (@existing_diff.total - new_total if @existing_diff.total), :canvass_company_id => params[:canvass_company_id])
+          end
+        end
+      end
+      # @line_items = Array.new
+      # @line_items << @line_item
+    end
+
+    if @new_diffs.compact.length > 0 && @new_diffs.all?(&:valid?)
+      @new_diffs.each(&:save!)
+      flash[:notice] = "Diff/s submitted. Thank you!"
+    end
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js 
+    end      
+  end
+
+end

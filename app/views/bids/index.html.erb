@@ -1,12 +1,7 @@
 <% title "Monitor Bids"%>
 
-<% content_for :subnav do %>
-  <%= form_tag request.parameters, :id => 'search', :method => :get do |f| %>
-      <p class="label">Search</p>
-    	<p><span>Plate No.</span> <%= text_field_tag :search, params[:search], :id => 'search-box' %></p>
-    	<p><%= submit_tag "Go!" %></p>
-  <%- end -%>
-<% end %>
+<%= render 'buyer/filter_by_search' %>
+<%= render 'seller/filter_by_brand' unless @brand_links.nil? %>
 
 <%= will_paginate @bids  %>
 <%= page_info @bids %>
@@ -24,42 +19,14 @@
 		</th>
 	</thead>
 	<tbody>
-  <% @bids.group_by(&:entry).each do |entry, bids| -%>
-  	<tr>
-  		<td class="vehicle">
-  			<%#= render 'shared/photo_first', :entry => entry %>
-        <div id="details">
-	        <%= content_tag :p, entry.vehicle, :class => 'strong' unless current_user.has_role?('seller') %>
-	        <%= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) if current_user.has_role?('seller') %>
-	        <%= content_tag :p, entry.plate_no %>
-          <%= content_tag :p, "(created by #{entry.user.username})" if current_user.has_role?("powerbuyer") %>
-	        <%= content_tag :p, "Terms: #{entry.city.name if entry.city} / #{entry.term.term_name if entry.term}" %>
-	        <%#= content_tag :p, ('Parts Requested: ' + (link_to entry.line_items.collect(&:quantity).sum, seller_show_path(:brand => entry.brand, :id => entry))).html_safe %>
-				  <%= content_tag :p, ('Entry Status: ' + current_status_or_expired?(entry)).html_safe, :class => 'highlight' %>
-  			</div>
-  		</td>
-  		<td class="bid-box">
-     		<% bids.group_by(&:line_item).each do |line_item, bids| %>
-     		  <%= content_tag :div, line_item.car_part.name, :class => 'part-desc' -%>
-     		  <div class="bid-group">
-     			<% for bid in bids  -%>
-     			  <div class="amount">
-     			    <%= number_to_currency(bid.amount, :unit => "P ") %><br>
-               <%= content_tag :span, "#{bid.created_at.strftime('%b %d')} #{'/ ' + bid.user.username if current_user.has_role?('admin')}", :class => 'instruction' %>
-     			  </div>
-             <div class="bid-type">
-       				<%= bid.bid_type -%> <%= "- Lot" if bid.lot == true %>
-             </div>  
-     				<%= content_tag :div, bid.status, :class => "status #{quote_class(bid.status)}" -%>
-     			<% end -%>
-     		  </div>
-   			<% end -%>
-  		</td>
-  	</tr>
-  <% end -%>
+	<% if current_user.has_role?('admin') %>
+	  <%= render 'admin/monitor_bids' %>
+	<% else %>
+	  <%= render 'seller/monitor_bids' %>
+	<% end %>
 	</tbody>
 </table>
-<%- end -%>
+<% end %>
 
 <%= will_paginate @bids  %>
 

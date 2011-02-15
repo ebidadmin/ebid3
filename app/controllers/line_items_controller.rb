@@ -64,4 +64,16 @@ class LineItemsController < ApplicationController
     end
   end
 
+  def rationalize
+    @line_items = LineItem.car_part_id_eq(params[:id])
+  end
+
+  def do_rationalization
+    @line_items = LineItem.car_part_id_eq(params[:orig_part])
+    @line_items.update_all(:car_part_id => params[:car_part_id])
+    # TODO update associated 
+    flash[:notice] = "Successfully rationalized line_items."
+    redirect_to car_parts_path(:orig => params[:orig_part], :new => params[:car_part_id])
+  end
+
 end

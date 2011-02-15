@@ -1,0 +1,29 @@
+<%= will_paginate @car_parts, :inner_window => 2 %> 
+<p class='instruction'>(<%= page_entries_info @car_parts %>)</p>
+<table >
+<tr>
+  <th>ID</th>
+  <th>Name</th>
+  <th>Requests</th>
+  <th>Bids</th>
+  <th>Orders</th>
+  <th></th>
+  <th></th>
+</tr>
+<% for car_part in @car_parts %>
+  <tr>
+ 		<td><%= car_part.id %></td>
+		<td><%=h car_part.name %></td>
+		<%= occurrence(car_part.line_items) %>
+		<%= occurrence(car_part.bids) %>
+		<%= occurrence(car_part.order_items) %>
+		<td>
+		  <%= link_to "View", car_part %>
+		  <%= link_to "Edit", edit_car_part_path(car_part) %>
+		  <%= link_to "Delete", car_part, :confirm => 'Are you sure?', :method => :delete if car_part.line_items.count < 1 %>
+		</td>
+		<td><%= link_to "Rationalize", rationalize_line_items_path(:id => car_part, :name => @name) unless car_part.line_items.count < 1 %></td>
+ 	</tr>
+<% end %>
+</table>
+<%= will_paginate @car_parts, :inner_window => 2 %> 

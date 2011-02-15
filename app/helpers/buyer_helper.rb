@@ -26,14 +26,15 @@ module BuyerHelper
 		render 'bids/bid', :bid => item.low_bid(bid_type) unless item.low_bid(bid_type).nil? 
   end
 
-  # helper for computing buyer fees
-  def display_decline_date(entry)
-    if entry.expired
-      entry.expired.strftime('%b %d')
-    else
-      entry.updated_at.strftime('%b %d')
+  # helper for buyer fees
+  def display_bid_type(fee)
+    case fee.bid_type
+    when 'original' then type = 'o'
+    when 'replacement' then type = 'r'
+    when 'surplus' then type = 's'
     end
+      
+    content_tag :span, type, :class => 'instruction strong'
   end
-
   
 end

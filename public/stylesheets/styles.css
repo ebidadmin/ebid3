@@ -53,8 +53,7 @@
 .dash.last { margin-right: 0; }
 .dash.notices { width: 65%; }
 .dash h3 { background-color: #e5e5e5; padding: 8px 0; text-align: center; }
-#entries, #expired, #expired-2, #expired-3, #declined, #order-items, #delivered,
-#last-bid, #new-orders, #closed, #feature, #missed-oppty { border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; }
+#entries, #expired, #expired-2, #expired-3, #declined, #order-items, #order-items2, #delivered, #last-bid, #new-orders, #closed, #feature, #missed-oppty { border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; }
 .dash-entry { clear: both; height: 20px; line-height: 20px; margin: 0 0 10px; position: relative; }
 .dash-entry strong { float: left; width: 30%; }
 .dash-entry .count { position: absolute; right: 0; font-size: 18px; }
@@ -62,7 +61,7 @@
 #content-main .dash-entry .link { font-weight: normal; position: absolute; right: 50px; padding: 0 4px; opacity: 1; }
 .dash.supplier, .dash.admin, .dash.rating { width: 48%; }
 .dash.supplier .dash-entry strong { width: 35%; }
-.dash.supplier #within-term, .dash.supplier #overdue, .dash.supplier #paid-pending, .dash.supplier #paid, .dash.supplier #closed, #total-bided, #missed-oppty { padding-left: 25px; }
+.dash.supplier #within-term, .dash.supplier #overdue, .dash.supplier #paid-pending, .dash.supplier #paid, .dash.supplier #closed, #total-bided, #missed-oppty, #order-items2 { padding-left: 25px; }
 #content-main .dash.supplier .dash-entry .link { right: 150px; }
 .dash.rating p { text-align: center; }
 .dash.admin strong { width: 45%;  margin-right: 10px; }
@@ -193,6 +192,21 @@ table#supplier-fees .vehicle a { font-size: 1em; margin-left: -4px; }
 table#supplier-fees .seller { width: 35px; }
 table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; }
 
+/* DIFF TABLE
+---------------------------------------------------------------------- */
+
+#diff .vehicle { width: 25%; }
+#diff .vehicle a { font-size: 1em; margin-left: -4px; }
+#diff div { float: left; margin-bottom: 5px; min-height: 18px; line-height: 18px; }
+#diff td .part { clear: both; }
+#diff .part { width: 200px; }
+#diff .amounts { margin-left: 10px; width: 490px; }
+#diff .amounts .amount { margin-left: 10px; text-align: right; width: 135px; }
+#diff .amounts .labels { clear: both; font-weight: bold; width: 50px; }
+#diff .amounts .ebid { color: #C00; }
+#diff .amounts .manual { color: green; }
+#diff .amounts .no-bid { color: #919191; margin-left: 10px; text-align: center; width: 420px;  }
+#diff .amounts div span { color: #C00; font-size: 0.8em;}
 
 /* PHOTO SETS
 ---------------------------------------------------------------------- */

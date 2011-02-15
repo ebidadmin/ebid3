@@ -10,6 +10,8 @@ class SellerController < ApplicationController
     @bid_percentage = (@bids_count.to_f / @line_items_count.to_f) * 100
     @missed_count = @line_items_count - @bids_count
     @missed_percentage = 100 - @bid_percentage
+    @order_items = OrderItem.order_seller_id_eq(current_user).count
+    @order_items_percentage = (@order_items.to_f / @bids_count.to_f) * 100
     
     orders = Order.by_this_seller(current_user)
     @new_orders = orders.recent.collect(&:order_total).sum
@@ -27,7 +29,7 @@ class SellerController < ApplicationController
   end
   
   def hub
-    entries = Entry.online.current.desc2.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items)
+    entries = Entry.online.current.desc2.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos)
     @brand_links = entries.collect(&:car_brand).uniq 
     if params[:brand] == 'all'
       @entries = entries.paginate(:page => params[:page], :per_page => 10)
@@ -45,14 +47,23 @@ class SellerController < ApplicationController
       @line_items = @entry.line_items.includes(:car_part, :bids)
     end
     company = current_user.company
-    unless current_user.has_role?('admin') || @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
+    unless @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
       flash[:error] = "Sorry, <strong>#{company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this.".html_safe
       redirect_to :back
     end 
   end
   
   def monitor
-    @search = current_user.bids.desc.search(params[:search])
+    bids = current_user.bids.desc
+    @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq)
+    if params[:brand] == 'all'
+      @search = bids.search(params[:search])
+    elsif params[:brand]
+      brand = CarBrand.find_by_name(params[:brand])
+      @search = bids.where(:car_brand_id => brand).search(params[:search])
+    else
+      @search = bids.search(params[:search])
+    end
     @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
     render 'bids/index' 
   end

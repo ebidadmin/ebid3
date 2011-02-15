@@ -1,0 +1,7 @@
+<% @line_items.each do |line_item| %>
+	$("#amounts_<%= line_item.id %>").html("<%= escape_javascript(render 'diffs/diff_set', :item => line_item) %>")
+<% end %>
+
+$("#bidding-message").text("Diffs submitted!");
+$("#bidding-message").effect("highlight", {}, 3000)
+$("form")[0].reset();    

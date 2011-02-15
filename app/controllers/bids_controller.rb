@@ -46,7 +46,10 @@ class BidsController < ApplicationController
       BidMailer.delay.bid_alert_to_admin(@new_bids, @entry, current_user)
       flash[:notice] = "Bid/s submitted. Thank you!"
     end
-    # redirect_to :back # respond_with(@new_bids, :location => :back)
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js 
+    end      
   end
 
   def show

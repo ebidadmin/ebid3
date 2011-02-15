@@ -5,10 +5,12 @@ class Bid < ActiveRecord::Base
   belongs_to :user, :counter_cache => true
   belongs_to :entry, :counter_cache => true
   belongs_to :line_item, :counter_cache => true
+  belongs_to :car_brand
   belongs_to :car_part
   belongs_to :order
 
   has_one :fee
+  has_one :diff
 
   validates :amount, :numericality => {:greater_than => 0}, :presence => true
   
@@ -24,7 +26,7 @@ class Bid < ActiveRecord::Base
   def self.for_this_company(company)
     where(:entry_id => company.users.collect(&:entries)).count
   end
-
+  
   def decline_process
     update_attributes(:status => "Declined", :ordered => nil, :order_id => nil, :delivered => nil, :declined => Date.today)
     update_unselected_bids(line_item_id)

@@ -4,6 +4,7 @@ class CarPart < ActiveRecord::Base
   
   has_many :line_items
   has_many :entries, :through => :line_items
+  has_many :order_items, :through => :line_items
   has_many :bids, :through => :line_items
   
   has_many :cart_items
@@ -15,6 +16,6 @@ class CarPart < ActiveRecord::Base
   protected
   
   def strip_blanks
-    self.name = self.name.strip
+    self.name = self.name.strip.titlecase
   end
 end
