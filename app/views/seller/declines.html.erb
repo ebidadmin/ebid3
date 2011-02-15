@@ -28,7 +28,7 @@
 	<% @group.each do |entry, fees|  %>
   <tr>
 		<td class="vehicle">	
-      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), seller_show_path(current_user, entry.brand, entry)) %>
+      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), seller_show_path(:id => entry)) %>
 			<p><%= entry.plate_no %></p>
 		  <%= content_tag :p, "#{fees.count} of #{pluralize entry.line_items.count, 'item'}" %> 	
 		</td>

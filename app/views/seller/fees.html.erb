@@ -27,7 +27,7 @@
   <tr>
 		<td class="vehicle">	
       <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), seller_show_path(current_user, entry.brand, entry)) %>
-			<%= content_tag :p, (entry.plate_no + (content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' if current_user != entry.user)).html_safe %>
+			<%= content_tag :p, entry.plate_no  %>
 		</td>
 	  <td>
   	<% fees.group_by(&:order).each do |order, fees| %>

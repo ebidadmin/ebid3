@@ -1,7 +1,7 @@
-class AddColumsToBids < ActiveRecord::Migration
+class AddColumnsToBids < ActiveRecord::Migration
   def self.up
-    remove_column :bids, :fee
-    remove_column :bids, :remitted
+    # remove_column :bids, :fee
+    # remove_column :bids, :remitted
     add_column :bids, :car_brand_id, :integer
     for bid in Bid.all
       bid.update_attribute(:car_brand_id, bid.entry.car_brand.id)

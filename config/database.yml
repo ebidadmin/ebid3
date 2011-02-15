@@ -11,10 +11,10 @@ development:
   reconnect: false
   database: ebid
   pool: 5
-  username: ebiduser
-  password: Manager12
-  # username: rails
-  # password: chrism
+  # username: ebiduser
+  # password: Manager12
+  username: rails
+  password: chrism
 
 production:
   adapter: mysql2

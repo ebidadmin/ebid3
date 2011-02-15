@@ -164,10 +164,10 @@ class AdminController < ApplicationController
   #     item.bids_count = item.bids.count
   #   end
   # end
-  # bids = Bid.where(:status => ['Delivered', 'For-Decision', 'Paid', 'Closed'])
-  # bids.each do |bid|
-  #   bid.update_attributes(:declined => nil, :expired => nil)
-  # end
+  bids = Bid.where(:status => ['Delivered', 'For-Decision', 'Paid', 'Closed'])
+  bids.each do |bid|
+    bid.update_attributes(:declined => nil, :expired => nil)
+  end
     orders = Order.paid_and_closed.payment_valid
     orders.each do |order|
       order.bids.each do |bid|

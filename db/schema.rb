@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(:version => 20110210064012) do
     t.integer  "order_id"
     t.date     "delivered"
     t.date     "paid"
+    t.decimal  "fee",          :precision => 10, :scale => 2
+    t.date     "remitted"
     t.date     "declined"
     t.date     "expired"
     t.integer  "car_brand_id"
@@ -173,6 +175,7 @@ ActiveRecord::Schema.define(:version => 20110210064012) do
     t.integer  "user_id"
     t.string   "ref_no"
     t.integer  "year_model",        :default => 2010
+    t.integer  "car_brand_id",      :default => 0
     t.integer  "car_model_id",      :default => 0
     t.integer  "car_variant_id",    :default => 0
     t.string   "plate_no"
@@ -192,7 +195,6 @@ ActiveRecord::Schema.define(:version => 20110210064012) do
     t.date     "expired"
     t.boolean  "chargeable_expiry", :default => false
     t.integer  "company_id"
-    t.integer  "car_brand_id"
   end
 
   add_index "entries", ["car_brand_id"], :name => "index_entries_on_car_brand_id"
@@ -212,13 +214,13 @@ ActiveRecord::Schema.define(:version => 20110210064012) do
     t.integer "line_item_id"
     t.integer "order_id"
     t.integer "bid_id"
-    t.decimal "bid_total",                       :precision => 10, :scale => 2
-    t.string  "bid_type",          :limit => 40,                                :null => false
-    t.decimal "fee",                             :precision => 10, :scale => 2
+    t.decimal "bid_total",         :precision => 10, :scale => 2
+    t.string  "bid_type"
+    t.decimal "fee",               :precision => 10, :scale => 2
     t.string  "fee_type"
     t.date    "created_at"
     t.date    "remitted"
-    t.decimal "split_amount",                    :precision => 10, :scale => 2
+    t.decimal "split_amount",      :precision => 10, :scale => 2
     t.date    "split_date"
   end
 
