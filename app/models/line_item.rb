@@ -46,8 +46,7 @@ class LineItem < ActiveRecord::Base
 	def last_diff(bid_type)
 	  diffs.where(:bid_type => bid_type).last
 	end
-	
-	
+
 	def self.with_bids_pct
 	  (with_bids.count.to_f/self.count.to_f) * 100
 	end
@@ -56,5 +55,8 @@ class LineItem < ActiveRecord::Base
 	  (two_and_up.count.to_f/self.count.to_f) * 100
 	end
 	
+	def tat
+	  ((bids.first.created_at - created_at)/86400).to_i
+	end
   
 end

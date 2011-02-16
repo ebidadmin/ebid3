@@ -1,6 +1,8 @@
 Ebid::Application.routes.draw do
 
-  resources :diffs, :only => [:index, :show, :create]
+  resources :diffs, :only => [:index, :show, :create] do
+    get :summary, :on => :collection
+  end
 
   resources :line_items do
     put :change, :on => :member

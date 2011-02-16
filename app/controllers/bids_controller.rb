@@ -31,6 +31,7 @@ class BidsController < ApplicationController
         		@new_bid.quantity = @line_item.quantity
         		@new_bid.total = bid[1].to_f * @line_item.quantity.to_i
             @new_bid.bid_type = bid[0]
+            @new_bid.car_brand_id = @entry.car_brand_id
             @new_bids << @new_bid unless @new_bid.amount < 1
           else
             @existing_bid.update_attributes!(:amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated')

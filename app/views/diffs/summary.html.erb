@@ -1,0 +1,15 @@
+<%#= content_tag :p, "Total Manual Canvass: #{@manual_canvass.count}"  %>
+<%#= content_tag :p, "No Bids: #{@without_bids}"  %>
+<ul class="dash diff" id="diff">
+	<h3>E-Bid vs Manual Canvass</h3>
+	<%= dash_entry_format("total-ent", "Total Entries Created", nil,  @entries.count ) %>
+	<%= dash_entry_format("line-items", "Total Parts Requested", nil, @line_items.count ) %>
+	<%= dash_entry_format("w-ebid", "With E-Bid", nil, @with_bids ) %>
+	<%= dash_entry_format("ebid-manual", "With E-Bid & Manual Canvass", nil, @with_ebid_and_manual ) %>
+	<%= dash_entry_format("ebid-lower", "E-Bid is lower", nil,  @ebid_lower ) %>
+	<%= dash_entry_format("ebid-higher", "E-Bid is higher", nil,  @ebid_higher ) %>
+	<%= dash_entry_format("same", "No Difference", nil,  @same ) %>
+	<%= dash_entry_format("ebid-only", "E-Bid Only --  No Manual Canvass", nil,  @with_ebid_no_manual ) %>
+	<%= dash_entry_format("manual-only", "No E-Bid -- Manual Only", nil,  @no_ebid_manual_only ) %>
+	<%= dash_entry_format("no-price", "No E-Bid -- No Manual", nil,  @no_submission ) %>
+</ul>

@@ -8,7 +8,7 @@ class DiffsController < ApplicationController
       # @buyers.push(['All', diffs_path(:buyer => nil)]) unless @buyers.blank?
       # @buyers_path = diffs_path(:buyer => params[:buyer])
     else
-      @search = Entry.bids_count_gt(0).where(:user_id => current_user.company.users).desc.search(params[:search])
+      @search = Entry.bids_count_gt(0).where(:company_id => current_user.company).desc.search(params[:search])
     end
     @entries = @search.inclusions.paginate :page => params[:page], :per_page => 5
   end
@@ -72,4 +72,18 @@ class DiffsController < ApplicationController
     end      
   end
 
+  def summary
+    @entries = Entry.where(:company_id => current_user.company)
+    @line_items = LineItem.where(:entry_id => @entries)
+    @with_bids = @line_items.with_bids.count
+    @without_bids = @line_items.without_bids.count
+    @manual_canvass = Diff.scoped
+    @with_ebid_and_manual = @manual_canvass.diff_not_null.count
+    @ebid_lower = Diff.where('diff < ?', 0).count
+    @ebid_higher = Diff.where('diff > ?', 0).count
+    @same = Diff.where('diff = ?', 0).count
+    @with_ebid_no_manual = @with_bids - @with_ebid_and_manual
+    @no_ebid_manual_only = @manual_canvass.diff_null.count
+    @no_submission = @line_items.count - @with_ebid_and_manual - @with_ebid_no_manual - @no_ebid_manual_only
+  end
 end

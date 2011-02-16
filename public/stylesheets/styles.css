@@ -197,16 +197,22 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 #diff .vehicle { width: 25%; }
 #diff .vehicle a { font-size: 1em; margin-left: -4px; }
-#diff div { float: left; margin-bottom: 5px; min-height: 18px; line-height: 18px; }
+#diff div { float: left; margin-bottom: 5px; min-height: 20px; line-height: 18px; }
 #diff td .part { clear: both; }
 #diff .part { width: 200px; }
 #diff .amounts { margin-left: 10px; width: 490px; }
 #diff .amounts .amount { margin-left: 10px; text-align: right; width: 135px; }
 #diff .amounts .labels { clear: both; font-weight: bold; width: 50px; }
-#diff .amounts .ebid { color: #C00; }
+#diff .amounts .ebid { color: #C00; min-height: 3em; }
 #diff .amounts .manual { color: green; }
 #diff .amounts .no-bid { color: #919191; margin-left: 10px; text-align: center; width: 420px;  }
 #diff .amounts div span { color: #C00; font-size: 0.8em;}
+
+.dash.diff  { width: 48%; }
+#diff .dash-entry strong { width: 60%; }
+#diff #w-ebid, #diff #manual-only, #diff #no-price { padding-left: 15px; }
+#diff #ebid-manual, #diff #ebid-only { padding-left: 30px; }
+#diff #ebid-lower, #diff #ebid-higher, #diff #same { padding-left: 45px; }
 
 /* PHOTO SETS
 ---------------------------------------------------------------------- */

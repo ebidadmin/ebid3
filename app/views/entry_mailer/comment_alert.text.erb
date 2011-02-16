@@ -18,7 +18,7 @@ Comment/remark:
 
  
 <% if @recipient && @recipient.has_role?('seller') %>
-View it here:	http://www.ebid.com.ph<%= seller_show_path(:user_id => @recipient.username, :brand => @entry.car_brand.name.downcase, :id => @entry.id) %>
+View it here:	http://www.ebid.com.ph<%= seller_show_path(:id => @entry.id) %>
 <% else %>
 View it here:	http://www.ebid.com.ph<%= entry_path(@entry) %>
 <% end %>

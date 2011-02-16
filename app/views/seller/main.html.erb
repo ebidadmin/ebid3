@@ -8,7 +8,7 @@
 	<%= dash_entry_format("total-items", "Total parts requested", nil,  (number_with_delimiter @line_items_count) ) %>
 	<%= dash_entry_format("total-bided", "Total parts bided on", percentage(@bid_percentage), (number_with_delimiter @bids_count), nil, nil, 'highlight' ) %>
 	<%= dash_entry_format("missed-oppty", "Missed opportunity", percentage(@missed_percentage), (number_with_delimiter @missed_count) ) %>
-	<%= dash_entry_format("order-items2", "Parts Ordered", percentage(@order_items_percentage) + ' of what you bided on', (number_with_delimiter @order_items), nil, nil, 'highlight'  ) %>
+	<%= dash_entry_format("order-items2", "Parts Ordered", "#{percentage(@order_items_percentage)} of what you bided on" , (number_with_delimiter @order_items), nil, nil, 'highlight'  ) %>
 </ul>
 <ul class='supplier dash last'>
   <h3>Orders</h3>

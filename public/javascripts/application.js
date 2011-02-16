@@ -18,6 +18,18 @@ $(function() {
 	$('select#seller').bind('change', function() { window.location.pathname = $(this).val() });
 	$('select#buyer').bind('change', function() { window.location.pathname = $(this).val() });
 	
+	$("#entry_submit").bind("click", function() {
+    $(".spinner").toggle() ;
+	});
+
+	// $("#navigation a").bind("click", function() {
+	//     $(".spinner").toggle() ;
+	// });
+
+	// $(".pagination a").bind("click", function() {
+	//     $(".spinner").toggle() ;
+	// });
+
 });
 
 // jQuery.ajaxSetup({ 

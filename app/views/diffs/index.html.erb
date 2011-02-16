@@ -28,6 +28,9 @@
 			<div class="amounts">
 	    <%= content_tag :div, 'E-Bid', :class => 'labels ebid' %>
 			<% unless line_item.bids.blank? %>
+			  <%= content_tag :div, admin_high_bid("original", line_item), :class => 'amount' %>
+			  <%= content_tag :div, admin_high_bid("replacement", line_item), :class => 'amount' %>
+			  <%= content_tag :div, admin_high_bid("surplus", line_item), :class => 'amount' %>
 			  <%= content_tag :div, admin_low_bid("original", line_item), :class => 'amount' %>
 			  <%= content_tag :div, admin_low_bid("replacement", line_item), :class => 'amount' %>
 			  <%= content_tag :div, admin_low_bid("surplus", line_item), :class => 'amount' %>
