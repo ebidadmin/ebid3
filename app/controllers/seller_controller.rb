@@ -29,13 +29,13 @@ class SellerController < ApplicationController
   end
   
   def hub
-    entries = Entry.online.current.desc2.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos)
+    entries = Entry.online.current.desc2
     @brand_links = entries.collect(&:car_brand).uniq 
     if params[:brand] == 'all'
-      @entries = entries.paginate(:page => params[:page], :per_page => 10)
+      @entries = entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).paginate(:page => params[:page], :per_page => 10)
     else
       brand = CarBrand.find_by_name(params[:brand])
-      @entries = entries.where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
+      @entries = entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
     end
   end
   

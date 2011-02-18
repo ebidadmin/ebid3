@@ -27,8 +27,8 @@
 				<td class="qty"><%= order_item.quantity %></td>
 				<td class="partname">
 					<%= order_item.line_item.part_name.html_safe %>
-					<%= content_tag :p, "(Details: <strong>#{order_item.line_item.part_no}</strong>)".html_safe, :class => 'partnum' unless order_item.line_item.part_no.blank?  %>
-          <%= content_tag :p, "(#{order_item.bid_type})", :class => 'strong' %>
+					<%= content_tag :p, "(Details: #{content_tag :strong, order_item.line_item.part_no})".html_safe, :class => 'partnum' unless order_item.line_item.part_no.blank?  %>
+          <%= content_tag :p, "(#{order_item.bid_type})".html_safe, :class => 'strong' %>
 				</td> 
 				<td class="price">
 					<%= number_to_currency(order_item.amount, :unit => "P ") -%>

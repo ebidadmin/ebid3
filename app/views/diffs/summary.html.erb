@@ -4,12 +4,12 @@
 	<h3>E-Bid vs Manual Canvass</h3>
 	<%= dash_entry_format("total-ent", "Total Entries Created", nil,  @entries.count ) %>
 	<%= dash_entry_format("line-items", "Total Parts Requested", nil, @line_items.count ) %>
-	<%= dash_entry_format("w-ebid", "With E-Bid", nil, @with_bids ) %>
-	<%= dash_entry_format("ebid-manual", "With E-Bid & Manual Canvass", nil, @with_ebid_and_manual ) %>
-	<%= dash_entry_format("ebid-lower", "E-Bid is lower", nil,  @ebid_lower ) %>
-	<%= dash_entry_format("ebid-higher", "E-Bid is higher", nil,  @ebid_higher ) %>
-	<%= dash_entry_format("same", "No Difference", nil,  @same ) %>
-	<%= dash_entry_format("ebid-only", "E-Bid Only --  No Manual Canvass", nil,  @with_ebid_no_manual ) %>
-	<%= dash_entry_format("manual-only", "No E-Bid -- Manual Only", nil,  @no_ebid_manual_only ) %>
+	<%= dash_entry_format("w-ebid", "With E-Bid", nil, @with_bids.count ) %>
+	<%= dash_entry_format("ebid-manual", "With E-Bid & Manual Canvass", "Total E-Bid #{ph_currency(@with_ebid_and_manual.collect(&:total).sum)} / Total Canvass #{ph_currency(@with_ebid_and_manual.collect(&:canvass_total).sum)} / Net Diff (#{ph_currency(@with_ebid_and_manual.collect(&:diff).sum)})", @with_ebid_and_manual.count ) %>
+	<%= dash_entry_format("ebid-lower", "E-Bid is lower", "E-Bid #{ph_currency(@ebid_lower.collect(&:total).sum)} / Canvass #{ph_currency(@ebid_lower.collect(&:canvass_total).sum)} / Diff (#{ph_currency(@ebid_lower.collect(&:diff).sum)})",  @ebid_lower.count ) %>
+	<%= dash_entry_format("ebid-higher", "E-Bid is higher", "E-Bid #{ph_currency(@ebid_higher.collect(&:total).sum)} / Canvass #{ph_currency(@ebid_higher.collect(&:canvass_total).sum)} / Diff (#{ph_currency(@ebid_higher.collect(&:diff).sum)})",  @ebid_higher.count ) %>
+	<%= dash_entry_format("same", "No Difference", "E-Bid #{ph_currency(@same.collect(&:total).sum)} / Canvass #{ph_currency(@same.collect(&:canvass_total).sum)} / Diff (#{ph_currency(@same.collect(&:diff).sum)})",  @same.count ) %>
+	<%= dash_entry_format("ebid-only", "E-Bid Only --  No Manual Canvass", "E-Bid only #{ph_currency(@with_ebid_no_manual.collect(&:compute_lowest_bids).sum)}",  (@with_ebid_no_manual.count - 5) ) %>
+	<%= dash_entry_format("manual-only", "No E-Bid -- Manual Only", "Manual Canvass only #{ph_currency(@no_ebid_manual_only.collect(&:canvass_total).sum)}",  @no_ebid_manual_only.count ) %>
 	<%= dash_entry_format("no-price", "No E-Bid -- No Manual", nil,  @no_submission ) %>
 </ul>

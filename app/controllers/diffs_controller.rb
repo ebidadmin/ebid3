@@ -75,15 +75,15 @@ class DiffsController < ApplicationController
   def summary
     @entries = Entry.where(:company_id => current_user.company)
     @line_items = LineItem.where(:entry_id => @entries)
-    @with_bids = @line_items.with_bids.count
-    @without_bids = @line_items.without_bids.count
+    @with_bids = @line_items.with_bids
+    # @without_bids = @line_items.without_bids.count
     @manual_canvass = Diff.scoped
-    @with_ebid_and_manual = @manual_canvass.diff_not_null.count
-    @ebid_lower = Diff.where('diff < ?', 0).count
-    @ebid_higher = Diff.where('diff > ?', 0).count
-    @same = Diff.where('diff = ?', 0).count
-    @with_ebid_no_manual = @with_bids - @with_ebid_and_manual
-    @no_ebid_manual_only = @manual_canvass.diff_null.count
-    @no_submission = @line_items.count - @with_ebid_and_manual - @with_ebid_no_manual - @no_ebid_manual_only
+    @with_ebid_and_manual = @manual_canvass.diff_not_null
+    @ebid_lower = @manual_canvass.where('diff < ?', 0)
+    @ebid_higher = @manual_canvass.where('diff > ?', 0)
+    @same = @manual_canvass.where('diff = ?', 0)
+    @with_ebid_no_manual = @with_bids - LineItem.where(:id => @manual_canvass.collect(&:line_item_id).uniq)
+    @no_ebid_manual_only = @manual_canvass.diff_null
+    @no_submission = @line_items.count - @with_bids.count - @no_ebid_manual_only.count
   end
 end

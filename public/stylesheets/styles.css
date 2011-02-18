@@ -208,11 +208,12 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #diff .amounts .no-bid { color: #919191; margin-left: 10px; text-align: center; width: 420px;  }
 #diff .amounts div span { color: #C00; font-size: 0.8em;}
 
-.dash.diff  { width: 48%; }
-#diff .dash-entry strong { width: 60%; }
+.dash.diff  { width: 100%; font-size: 1.2em;}
+#diff .dash-entry strong { width: 40%; }
 #diff #w-ebid, #diff #manual-only, #diff #no-price { padding-left: 15px; }
 #diff #ebid-manual, #diff #ebid-only { padding-left: 30px; }
-#diff #ebid-lower, #diff #ebid-higher, #diff #same { padding-left: 45px; }
+#diff #ebid-lower, #diff #ebid-higher, #diff #same { padding-left: 60px; }
+#diff li span.instruction { font-style: normal; opacity: 1;}
 
 /* PHOTO SETS
 ---------------------------------------------------------------------- */
