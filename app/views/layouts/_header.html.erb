@@ -1,5 +1,5 @@
 <div id="header">
-	<%= link_to (content_tag :h1, "E-Bid Auto Parts Auction System"), '#' %>
+	<%= link_to (content_tag :h1, "E-Bid Auto Parts Auction System"), root_path %>
 	<h2 id="slogan">The hub for auto parts buyers <span>&amp;</span> sellers</h2>
 	<ul id="global-links" class="links">
 		<%= content_tag :li, "Welcome back #{current_user.username}!", :id => 'name' if current_user  %>

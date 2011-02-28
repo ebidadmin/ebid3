@@ -18,25 +18,25 @@ class EntryMailer < ActionMailer::Base
     end
   end
   
-  # def online_entry_alert(seller, entry)
-  #   @seller = seller
-  #   @entry = entry
-  #   mail(
-  #     :to => "#{seller.profile.full_name} <#{seller.email}>", 
-  #     :subject => "New Entry is now online: #{entry.vehicle}", 
-  #     :bcc => "cymarquez@ebid.com.ph"
-  #     )
-  # end
-
-  def online_entry_alert(friends, entry)
-    @friends = friends
+  def online_entry_alert(seller, entry)
+    @seller = seller
     @entry = entry
     mail(
-      :bcc => friends, 
+      :to => "#{seller.profile.full_name} <#{seller.email}>", 
       :subject => "New Entry is now online: #{entry.vehicle}", 
       :bcc => "cymarquez@ebid.com.ph"
       )
   end
+
+  # def online_entry_alert(friends, entry)
+  #   @friends = friends
+  #   @entry = entry
+  #   mail(
+  #     :bcc => friends, 
+  #     :subject => "New Entry is now online: #{entry.vehicle}", 
+  #     :bcc => "cymarquez@ebid.com.ph"
+  #     )
+  # end
   
   def comment_alert(entry, comment, recipient=nil)
     @entry = entry

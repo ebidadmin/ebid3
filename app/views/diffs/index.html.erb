@@ -19,8 +19,9 @@
   <tr>
 		<td class="vehicle">	
 			<%= content_tag :p, entry.ref_no %>
-			<%= content_tag :p, entry.vehicle %>
+			<%= content_tag :p, truncate(entry.vehicle) %>
 			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight'  %></p>
+			<%= content_tag :h4, "First Bid: " + distance_of_time_in_words(entry.line_items.first.created_at, entry.line_items.first.bids.first.created_at) unless entry.line_items.first.bids.blank? %>
 			<%#= active_diff_mark(entry) %>
 		</td>
 	  <td>

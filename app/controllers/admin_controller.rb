@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   def index
     @title = 'Admin Dashboard'
     @entries = Entry.scoped
-    @line_items = LineItem.scoped#.where('created_at > ?', 6.months.ago)
+    @line_items = LineItem.where('created_at > ?', 6.months.ago)
     @with_bids = @line_items.with_bids
     @with_bids_pct = @line_items.with_bids_pct
     @two_and_up = @line_items.two_and_up
@@ -154,38 +154,38 @@ class AdminController < ApplicationController
   end
 
   def cleanup
-    # entries = Entry.all
-    # for entry in entries
-    #   entry.line_items_count = entry.line_items.count
-    #   entry.bids_count = entry.bids.count
-    #   entry.company_id = entry.user.company.id
-    #   entry.save!
-    # end
-    line_items = LineItem.all
-    for item in line_items
-      item.bids_count = item.bids.count
-      item.save!
+    entries = Entry.all
+    for entry in entries
+      entry.line_items_count = entry.line_items.count
+      entry.bids_count = entry.bids.count
+      entry.company_id = entry.user.company.id
+      entry.save!
     end
-  # end
-  # bids = Bid.where(:status => ['Delivered', 'For-Decision', 'Paid', 'Closed'])
-  # bids.each do |bid|
-  #   bid.update_attributes(:declined => nil, :expired => nil)
-  # end
-  #   orders = Order.paid_and_closed.payment_valid
-  #   orders.each do |order|
-  #     order.bids.each do |bid|
-  #       bid.update_attributes(:status => order.status, :paid => order.paid)
-  #       if bid.fee.nil?
-  #         Fee.compute(bid, bid.status, bid.order_id)
-  #       end
-  #     end
-  #   end
-  #   bids = Bid.declined
-  #   bids.each do |bid|
-  #     if bid.fee.nil?
-  #       Fee.compute(bid, bid.status)
-  #     end
-  #   end
+ 
+    # line_items = LineItem.all
+    # for item in line_items
+    #   item.bids_count = item.bids.count
+    #   item.save!
+    # end
+    # bids = Bid.where(:status => ['Delivered', 'For-Decision', 'Paid', 'Closed'])
+    # bids.each do |bid|
+    #   bid.update_attributes(:declined => nil, :expired => nil)
+    # end
+    # orders = Order.paid_and_closed.payment_valid
+    # orders.each do |order|
+    #   order.bids.each do |bid|
+    #     bid.update_attributes(:status => order.status, :paid => order.paid)
+    #     if bid.fee.nil?
+    #       Fee.compute(bid, bid.status, bid.order_id)
+    #     end
+    #   end
+    # end
+    # bids = Bid.declined
+    # bids.each do |bid|
+    #   if bid.fee.nil?
+    #     Fee.compute(bid, bid.status)
+    #   end
+    # end
     # all_orders = Order.find(:all, :include => :bids)
     # all_orders.each do |order|
     #   order.update_attribute(:order_total, order.bids.collect(&:total).sum)

@@ -30,7 +30,7 @@ class Entry < ActiveRecord::Base
   validates_associated :city
 
   scope :desc, order('id DESC')
-  scope :desc2, order('bid_until DESC')
+  scope :desc2, order('bid_until DESC', 'id DESC')
   scope :asc, order('bid_until')
   scope :five, limit(5)
 
@@ -46,6 +46,8 @@ class Entry < ActiveRecord::Base
   
   scope :with_bids, where("bids_count > ?", 0)
   scope :without_bids, where('bids_count < ?', 1)
+  
+  scope :latest, where('created_at >= ?', 5.days.ago)
 
   scope :inclusions, includes([:line_items => [:car_part]], :user, :car_brand, :car_model, :car_variant)
   

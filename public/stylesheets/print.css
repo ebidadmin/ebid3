@@ -1,0 +1,45 @@
+body { font-family: Verdana, Arial, Tahoma; font-size: 12px; color: #000000; padding: 0; margin: 0;}
+ul { padding: 0; }
+li { list-style-type: none;  }
+#print-header { border-bottom: 1px solid black; margin: 0px auto; overflow: hidden; position: relative; width: 800px;  }
+#print-header h1 { height: 95px; background: transparent url(../images/base/ebidlogo.jpg) no-repeat; margin: 0; text-indent: -9999px; overflow: hidden;  }
+#print-nav { float: left; margin: 0; padding: 0; position: absolute; bottom: 5px; right: 0; }
+#print-nav li { float: left; display: inline; height: 30px; line-height: 30px; margin-right: 10px; }
+#print-nav li a {  color: black; float: left; padding: 0 8px; text-decoration: none; }
+#print-icon { background: url(../images/base/print.gif) no-repeat 8px 6px; text-indent: -9999px; overflow: hidden; width: 62px; }
+#print-nav li a:hover { color: #3e4044; background-color: #e5e5e5; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
+
+.container { clear: both; margin: 20px auto; width: 800px; background: transparent; position: relative; overflow: hidden; }
+
+.vehicle-set { float: left; margin-bottom: 20px; width: 60%; }
+.vehicle-set li { clear: both;  }
+.vehicle-set li span { font-weight: bold; display: block; float: left; width: 40%; }
+
+#show-comments { clear: both; margin-bottom: 2em; overflow: hidden; }
+#comments-list li { float: left; margin: 0 0 10px 0; width: 100%;}
+#creator, #comment { float: left; }
+#creator { clear: both; font-weight: bold; margin-right: 10px; width: 15%;  }
+#comment { width: 67%; margin-right: 10px; }
+#datetime { float: right; font-weight: bold; text-align: right; width: 15%; }
+form { display: none; }
+
+table { border-collapse: collapse; margin: 0 auto 1.5em; width: 100%; text-align: center; overflow: hidden; }
+th { font-weight: bold; padding: 8px; border-bottom: 1px solid black; }
+td { border-bottom: 1px solid black; padding: 6px 8px; }
+table p { margin: 0 0 5px; }
+
+.strong { font-weight: bold; }
+.qty { width: 10%; }
+.partname { text-align: left; }
+.bid-box { width: 60%; }
+.bid-box h4 { border-bottom: 1px solid #999; margin: 0 0 10px; padding-bottom: 10px;}
+.bid-box span { font-weight: bold; min-height: 2.5em; line-height: 2.5em; text-decoration: underline; }
+.bid-labels { display: inline; float: left; width: 25%; margin-right: 2%; min-height: 1.5em; }
+.bid-selection { border-left: 1px solid white; display: inline; float: left; min-height: 1.5em; width: 72%;}
+.bid-type { min-height: 1.5em; text-align: left; }
+.bid-field { float: left; display: inline; width: 32%; min-height: 1.5em; text-align: right; }
+
+@media print {
+	#print-nav, form { display: none; }
+}
+

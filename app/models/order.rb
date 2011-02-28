@@ -27,11 +27,11 @@ class Order < ActiveRecord::Base
   scope :unpaid, where(:paid => nil)
 
   scope :recent, where(:status => ['PO Released', 'For-Delivery', 'For Delivery'])
-  scope :total_delivered, where("status IN ('Delivered', 'Paid', 'Closed')")
+  scope :total_delivered, where(:status => ['Delivered', 'Paid', 'Closed'])
   scope :delivered, where(:status => 'Delivered')
   scope :paid, where(:status => 'Paid').asc2
   scope :closed, where(:status => 'Closed')
-  scope :paid_and_closed, where("status IN ('Paid', 'Closed')").order('paid DESC')
+  scope :paid_and_closed, where(:status => ['Paid', 'Closed']).order('paid DESC')
   scope :payment_valid, where('paid IS NOT NULL')
   scope :payment_pending, where('paid IS NULL')
 

@@ -1,0 +1,58 @@
+<% title "Bid Results: #{@entry.vehicle}" %>
+
+<%= render 'shared/info_vehicle', :entry => @entry %>
+<%= render 'shared/comments' unless @entry.comments.blank?  %>
+
+<table class="buyer monitor-bids">
+	<thead>
+		<%= content_tag :th, 'Qty', :class => 'qty' %>
+		<%= content_tag :th, 'Part Description', :class => 'partname' %>
+		<th class="bid-box">
+			<%= content_tag :h4, 'Bids (unit price)' %>
+			<%= content_tag :div, '', :class => 'bid-labels' %>
+			<div class="bid-selection">
+				<%= content_tag :div, 'Orig', :class => 'bid-field' %>
+				<%= content_tag :div, 'Rep', :class => 'bid-field' %>
+				<%= content_tag :div, 'Surp', :class => 'bid-field' %>
+			</div>
+		</th>
+	</thead>
+	<% for item in  @entry.line_items %>
+	<tr class="entry-item">
+		<%= content_tag :td, item.quantity, :class => 'qty' %>
+		<td class="partname">    	
+			<%= content_tag :p, item.part_name, :class => 'strong' %> 
+			<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
+			<%= content_tag :p, "Bidder/s: #{item.bids.collect(&:user_id).uniq.count}", :class => 'number' %>
+		</td>
+		<td class="bid-box">
+			<% if item.bids.size > 0 && item.status != "Online" && item.status != "Relisted" %>
+				<div class="bid-labels">
+					<%= render 'bid_hi_lo_labels'  %>
+				</div>
+				<div class="bid-selection">
+					<%= content_tag :div, high_bid("original", item), :class => 'bid-field' %>
+					<%= content_tag :div, high_bid("replacement", item), :class => 'bid-field' %>
+					<%= content_tag :div, high_bid("surplus", item), :class => 'bid-field' %>
+				  <%= content_tag :div, low_bid_no_radiobutton("original", item), :class => 'center bid-field orig' %>
+				  <%= content_tag :div, low_bid_no_radiobutton("replacement", item), :class => 'center bid-field rep' %>
+				  <%= content_tag :div, low_bid_no_radiobutton("surplus", item), :class => 'center bid-field surp' %>
+				</div>
+			  <% if item.status == "PO Released" || item.status == "Ordered" %>
+						<%= content_tag :span, item.status %> as of <%= item.order.created_at.strftime('%b %d, %Y') %>
+				<% elsif item.status == "For Delivery" || item.status == "For-Delivery"%>                      
+						<%= content_tag :span, item.status %> as of <%= item.order.confirmed.strftime('%b %d, %Y') %> 
+				<% elsif item.status == "Delivered" %>                                                         
+						<%= content_tag :span, 'Delivered' %> as of <%= item.order.delivered.strftime('%b %d, %Y') %> 
+				<% elsif item.status == "Paid" %>
+						<%= content_tag :span, 'Paid' %> as of <%= item.order.paid.strftime('%b %d, %Y') %> 
+				<% elsif item.status == "Closed" %>
+						<%= content_tag :span, 'Closed' %> as of <%= item.order.paid.strftime('%b %d, %Y')  unless item.order.paid.nil? %> 
+				<% else  %>
+						<%= content_tag :span, item.status unless item.status == "For-Decision" %>
+				<% end %>
+			<% end %>
+		</td>
+	</tr>
+	<% end %>
+</table>

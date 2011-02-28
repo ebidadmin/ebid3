@@ -17,6 +17,11 @@ class EntriesController < ApplicationController
   def show
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
   end
+
+  def print
+    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    render :layout => 'print'
+  end
   
   def new
     @entry = Entry.new
@@ -68,7 +73,7 @@ class EntriesController < ApplicationController
     else
       @entry = current_user.entries.find(params[:id])
     end
-    # @entry.buyer_status = 'Edited' unless current_user.has_role?('admin')
+    @entry.buyer_status = 'Edited' unless current_user.has_role?('admin')
     @entry.add_line_items_from_cart(@cart) 
 
     if @entry.update_attributes(params[:entry])
@@ -107,16 +112,16 @@ class EntriesController < ApplicationController
       flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
     end
     redirect_to :back
-    # for friend in @entry.user.company.friends
-    #   unless friend.users.nil?
-    #     for seller in friend.users
-    #       EntryMailer.delay.online_entry_alert(seller, @entry)
-    #     end
-    #   end
-    # end
+    for friend in @entry.user.company.friends
+      unless friend.users.nil?
+        for seller in friend.users
+          EntryMailer.delay.online_entry_alert(seller, @entry)
+        end
+      end
+    end
     # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
-    @friends = @entry.user.company.friends.map {|f| f.users.collect{ |u| "#{u.profile.full_name} <#{u.email}>" }}
-    EntryMailer.delay.online_entry_alert(@friends, @entry)
+    # @friends = @entry.user.company.friends.map {|f| f.users.collect{ |u| "#{u.profile.full_name} <#{u.email}>" }}
+    # EntryMailer.delay.online_entry_alert(@friends, @entry)
   end
 
   def decide

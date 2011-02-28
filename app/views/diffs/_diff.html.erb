@@ -1,3 +1,3 @@
 <%= ph_currency diff.canvass_amount unless diff.nil? %>
-<%= content_tag :span, " #{truncate(diff.canvass_company.name, :length => 7, :omission => '')}", :class => 'instruction' unless diff.nil? %>
+<%= content_tag :span, " #{truncate(diff.canvass_company.name, :length => 7, :omission => '')}", :class => 'instruction' unless diff.blank? %>
 <%= content_tag :p, (ph_currency diff.diff), :class => 'orange' unless diff.blank? %>
