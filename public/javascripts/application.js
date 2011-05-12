@@ -22,6 +22,7 @@ $(function() {
     $(".spinner").toggle() ;
 	});
 
+	$('#navigation').tabs();
 	// $("#navigation a").bind("click", function() {
 	//     $(".spinner").toggle() ;
 	// });

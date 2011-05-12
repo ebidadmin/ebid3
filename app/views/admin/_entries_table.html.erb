@@ -3,11 +3,11 @@
 <%= content_tag :span, " - #{params[:status]}", :class => 'strong highlight' if params[:status] %>
 
 <table id="online-list">
-	<thead>
+	<tr>
     <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
     <%= content_tag :th, 'Terms', :class => 'terms' %>
     <%= content_tag :th, 'Status', :class => 'status' %>
-	</thead>
+	</tr>
 	<tbody>
 	<%- for entry in @entries -%>
 	<tr>
@@ -29,13 +29,13 @@
 			<p class="instruction">
 			  <%= display_number_of_bidders(entry) unless (entry.buyer_status == "New" || entry.buyer_status == "Edited") %>
 			  <%= "| #{content_tag :abbr, (pluralize entry.orders.count, 'order'), :class => 'highlight'}".html_safe unless entry.orders.blank? %>
+      </p>
 
 				<div id='admin-stuff' class='comfy-alert'>
 			  <%= "Max bidding: #{entry.bid_until.strftime('%b %d')} |" if entry.bid_until  %>
 				<%= "ID: #{entry.id}" %>
         <%= render 'admin/online_links', :entry => entry %>
 				</div>
-      </p>
 		</td>
 	</tr>
 	<%- end -%>

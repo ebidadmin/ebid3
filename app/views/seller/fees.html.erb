@@ -1,8 +1,12 @@
 <% title @title %>
-<%= content_tag :p, (content_tag :strong, 'What is a Market Fee? ') + 'It compensates E-Bid for providing you an organized, transparent and efficient market of Buyers. 
-	We use it to maintain the web servers and pays for our expenses to continue giving you this service.' + (content_tag :strong, ' We will collect your Market Fee only if the 
-	Buyer has paid the PO to you.'), :class => 'instruction' %>
-<%= content_tag :p, (content_tag :strong, 'Can I get a discount? ') + 'Sure! The more you participate, the lesser your market fee. ' + (content_tag :strong, 'All you have to do is bid more and bid fast.'), :class => 'instruction' %>
+
+<% content_for :subnav do %>
+	<%= form_tag seller_fees_path, :method => :get do  %>
+		From: <%= text_field_tag :start, params[:start], :id => 'start' %>
+		To: <%= text_field_tag :end, Date.today.end_of_month, :id => 'end' %>
+		<%= submit_tag "Search" %>
+	<% end %>
+<% end %>
 
 <% unless @market_fees.blank? %>
 <h2 class="highlight">
@@ -26,7 +30,7 @@
 	<% @market_fees.group_by(&:entry).each do |entry, fees| %>
   <tr>
 		<td class="vehicle">	
-      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), seller_show_path(current_user, entry.brand, entry)) %>
+      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), seller_show_path(:id => entry.id)) %>
 			<%= content_tag :p, entry.plate_no  %>
 		</td>
 	  <td>
@@ -63,3 +67,24 @@
 <% end %>
 
 <%= will_paginate @market_fees %>
+
+<% content_for :javascripts do %>
+	<% stylesheet 'blitzer/jquery-ui-1.8.6.custom' %>
+	<script type="text/javascript" charset="utf-8">
+	$(function() {
+		var dates = $( "#start, #end" ).datepicker({
+			dateFormat: "yy-mm-dd",
+			maxDate: 0,
+			onSelect: function( selectedDate ) {
+				var option = this.id == "from" ? "minDate" : "maxDate",
+					instance = $( this ).data( "datepicker" ),
+					date = $.datepicker.parseDate(
+						instance.settings.dateFormat ||
+						$.datepicker._defaults.dateFormat,
+						selectedDate, instance.settings );
+				dates.not( this ).datepicker( "option", option, date );
+			}
+		});
+	});
+	</script>
+<% end %>

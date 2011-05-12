@@ -5,12 +5,12 @@ class SellerController < ApplicationController
     @last_activity = current_user.last_sign_in_at unless current_user.last_sign_in_at.nil?
     @ratings = Rating.where(:ratee_id => current_user)
     @last_bid = current_user.bids.last.created_at unless current_user.bids.last.nil?
-    @line_items_count = LineItem.all.size
-    @bids_count = current_user.bids.collect(&:line_item_id).uniq.count
+    @line_items_count = LineItem.metered.size
+    @bids_count = current_user.bids.metered.collect(&:line_item_id).uniq.count
     @bid_percentage = (@bids_count.to_f / @line_items_count.to_f) * 100
     @missed_count = @line_items_count - @bids_count
     @missed_percentage = 100 - @bid_percentage
-    @order_items = OrderItem.order_seller_id_eq(current_user).count
+    @order_items = OrderItem.order_seller_id_eq(current_user).metered.count
     @order_items_percentage = (@order_items.to_f / @bids_count.to_f) * 100
     
     orders = Order.by_this_seller(current_user)
@@ -29,7 +29,7 @@ class SellerController < ApplicationController
   end
   
   def hub
-    entries = Entry.online.current.desc2
+    entries = Entry.results.current.desc2
     @brand_links = entries.collect(&:car_brand).uniq 
     if params[:brand] == 'all'
       @entries = entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).paginate(:page => params[:page], :per_page => 10)
@@ -65,7 +65,7 @@ class SellerController < ApplicationController
       @search = bids.search(params[:search])
     end
     @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
-    render 'bids/index' 
+    # render 'bids/index' 
   end
 
   def orders
@@ -109,9 +109,14 @@ class SellerController < ApplicationController
   end
   
   def fees
+    # raise params.to_yaml
     @title = "Market Fees for Paid Orders"
     @sort_order =" date PO was paid - descending order"
-    @all_market_fees = Fee.ordered.by_this_seller(current_user)
+    if params[:start]
+      @all_market_fees = Fee.created_at_gte(params[:start]).ordered.by_this_seller(current_user)
+    else
+      @all_market_fees = Fee.created_at_gte(Date.today.beginning_of_month).ordered.by_this_seller(current_user)
+    end
     @search = @all_market_fees.search(params[:search])
     @market_fees = @search.inclusions.with_orders.paginate :page => params[:page], :per_page => 30
   end

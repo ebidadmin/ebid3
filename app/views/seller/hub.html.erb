@@ -13,6 +13,7 @@
 		<th class="status">Status</th>
 	</thead>
 	<%- for entry in @entries -%>
+	<% if entry.company.friends.include?(current_user.company) %>
 	<tr>
 		<td class="vehicle">
 			<%= render 'shared/photo_first', :entry => entry %>
@@ -40,6 +41,7 @@
 			</p>
 		</td>
 	</tr>
+	<% end %>
 	<%- end -%>
 </table>
 <%- end -%>

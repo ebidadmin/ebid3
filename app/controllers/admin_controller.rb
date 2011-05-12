@@ -10,6 +10,7 @@ class AdminController < ApplicationController
     @without_bids = @line_items.without_bids
     @with_order = OrderItem.all.collect(&:line_item_id).uniq.count
     @with_order_pct = (@with_order.to_f/@with_bids.count.to_f) * 100
+    @orders = Order.scoped.collect(&:total_order_amounts).sum
     @paid = Order.paid_and_closed.payment_valid.collect(&:total_order_amounts).sum
 
     @online_entries =  @entries.online.current.desc.five 
@@ -144,7 +145,7 @@ class AdminController < ApplicationController
   end
 
   def expire_entries
-    @entries = Entry.where(:user_id => [34, 37]) #Entry.online.current.includes(:line_items) + Entry.results.current.includes(:line_items)
+    @entries = Entry.online.current.includes(:line_items) + Entry.results.current.includes(:line_items)
     @entries.each do |entry|
       entry.expire
     end

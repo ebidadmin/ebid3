@@ -5,6 +5,8 @@ class OrderItem < ActiveRecord::Base
   belongs_to :order, :counter_cache => true
   has_one :car_part, :through => :line_item
   
+  scope :metered, where('order_items.created_at >= ?', '2011-04-16')
+  
   def self.populate(order, user_bids)
     user_bids.each do |bid|
       order_item = OrderItem.new(

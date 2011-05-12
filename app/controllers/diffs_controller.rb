@@ -41,7 +41,7 @@ class DiffsController < ApplicationController
         		@new_diff.canvass_amount = diff[1]
         		@new_diff.canvass_total = diff[1].to_f * @line_item.quantity.to_i
             @new_diff.canvass_company_id = params[:canvass_company_id]
-            @existing_bid = Bid.find_by_line_item_id_and_bid_type(line_item, diff[0])
+            @existing_bid = Bid.find_by_line_item_id_and_bid_type_and_lot(line_item, diff[0], nil) #Bid.find_by_line_item_id_and_bid_type(line_item, diff[0])
         		unless @existing_bid.nil? 
           		@new_diff.seller_company_id = @existing_bid.user.company.id
           		@new_diff.seller_id = @existing_bid.user_id

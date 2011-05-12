@@ -21,8 +21,9 @@
 			<%= content_tag :p, entry.ref_no %>
 			<%= content_tag :p, truncate(entry.vehicle) %>
 			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight'  %></p>
-			<%= content_tag :h4, "First Bid: " + distance_of_time_in_words(entry.line_items.first.created_at, entry.line_items.first.bids.first.created_at) unless entry.line_items.first.bids.blank? %>
+			<%= content_tag :h4, "First Bid: " + distance_of_time_in_words(entry.created_at, entry.bids.first.created_at) unless entry.bids.blank? %>
 			<%#= active_diff_mark(entry) %>
+			<%= link_to 'Compute Diff', diff_path(entry) %>
 		</td>
 	  <td>
   	<% for line_item in entry.line_items %>

@@ -257,7 +257,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 /*----- 2. PO Parts Lists -----*/
 .first table.parts-set { float: left; width: 100%; margin: 2em 0; }
-#order table.parts-set { float: right; width: 540px; margin-bottom: 1.5em; }
+/*#order table.parts-set { float: right; width: 540px; margin-bottom: 1.5em; }*/
 #order span.partname { width: 25%; }
 #order span.partnum { width: 25%; text-align: center; }
 .price { width: 20%; text-align: right; padding: 10px 8px 10px 0; }

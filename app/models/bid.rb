@@ -19,6 +19,8 @@ class Bid < ActiveRecord::Base
   scope :bt, order('bid_type')
   scope :declined, where(:status => 'Declined')#.order('declined DESC', 'entry_id DESC')
   
+  scope :metered, where('bids.created_at >= ?', '2011-04-16')
+  
   def self.for_this_buyer(user)
     where(:entry_id => user.entries).count
   end

@@ -191,20 +191,20 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
   left: 0;
   opacity: 0.75;
 }
-.spinner span { background: url('../images/shadowbox/loading.gif') no-repeat;
+.spinner span { background: url('/images/shadowbox/loading.gif') no-repeat;
 color:#fff; display:inline-block; font-weight:200; font-size:16px; padding-left:34px; position: fixed; top: 45%; left: 45%; }
 
 
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */
 @media print {
-body { border-top: 0; color: black; }
-body, table td.bid-box, .bid-field { background-color: transparent; }
-h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .page-links a, table a, .button, #navigation, #global-links, #subnav { display: none; }
-.selection-list { font-size: 1.2em; font-weight: bold; }
-#order .photo, #show-comments form, #del-status, .photo-set, .spinner span { display: none; }
-#order .vehicle-set span { color: black; }
-.container { padding: 30px; }
-table .bid-box { background-color: none; }
-table#item-bids { font-size: 1.5em; }
+	body { border-top: 0; color: black; }
+	body, table td.bid-box, .bid-field { background-color: transparent; }
+	h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .page-links a, table a, .button, #navigation, #global-links, #subnav { display: none; }
+	.selection-list { font-size: 1.2em; font-weight: bold; }
+	#order .photo, #show-comments form, #del-status, .photo-set, .spinner span { display: none; }
+	#order .vehicle-set span { color: black; }
+	.container { padding: 30px; }
+	table .bid-box { background-color: none; }
+	table#item-bids { font-size: 1.5em; }
 }

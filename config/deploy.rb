@@ -1,26 +1,13 @@
 $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require 'rvm/capistrano'
 require "bundler/capistrano"
+set :rvm_bin_path, "/usr/local/bin/"
 
 set :application, "ebid"
 set :repository,  "git@github.com:ebidadmin/ebid3.git"
 set :scm, :git
 # set :scm_username, 'chrism'
 # set :scm_password, 'Beanstalk21' 
-
-# set :domain, "173.230.150.91"
-# set :user, "root" 
-# set :use_sudo, false
-# set :deploy_to, "/srv/www/ebid.com.ph"
-# ssh_options[:forward_agent] = true
-# set :branch, "master"
-# set :git_shallow_clone, 1
-# set :git_enable_submodules, 1
-# set :rails_env, "production"
-# 
-# role :web, "173.230.150.91"                          # Your HTTP server, Apache/etc
-# role :app, "173.230.150.91"                          # This may be the same as your `Web` server
-# role :db,  "173.230.150.91", :primary => true        # This is where Rails migrations will run
 
 set :domain, "74.207.254.124"
 set :user, "root" 
@@ -38,17 +25,6 @@ role :app, "74.207.254.124"                          # This may be the same as y
 role :db,  "74.207.254.124", :primary => true        # This is where Rails migrations will run
 
 
-# If you are using Passenger mod_rails uncomment this:
-# if you're still using the script/reapear helper you will need
-# these http://github.com/rails/irs_process_scripts
-
-# namespace :deploy do
-#   task :start do ; end
-#   task :stop do ; end
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-#   end
-# end
 
 namespace :deploy do
   desc "Start apache server" 

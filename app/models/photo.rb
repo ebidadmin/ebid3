@@ -36,7 +36,7 @@ class Photo < ActiveRecord::Base
   def regenerate_styles!
     self.photo.reprocess! 
     self.processing = false   
-    self.save(false)
+    self.save(:validate => false) #save(false)
   end
 
   # detect if our source file has changed

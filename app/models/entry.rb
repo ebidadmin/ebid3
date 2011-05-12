@@ -12,6 +12,7 @@ class Entry < ActiveRecord::Base
   belongs_to :car_variant
   belongs_to :city
   belongs_to :term
+  belongs_to :company
 
   has_many :photos, :dependent => :destroy
   accepts_nested_attributes_for :photos, :reject_if => lambda { |a| a.values.all?(&:blank?) }, :allow_destroy => true
@@ -38,7 +39,8 @@ class Entry < ActiveRecord::Base
   scope :expired, where('expired IS NOT NULL')
 
   scope :pending, where("buyer_status IN ('New', 'Edited')")
-  scope :online, where("buyer_status IN ('Online', 'Relisted')")
+  # scope :online, where("buyer_status IN ('Online', 'Relisted')")
+  scope :online, where(:buyer_status => ['Online', 'Relisted']).where('bid_until >= ?', Date.today)
   scope :results, where("buyer_status IN ('For-Decision', 'Ordered-IP', 'Declined-IP')")
   scope :declined, where('buyer_status LIKE ?', "%Declined%").desc
   scope :closed, where("buyer_status = ?", 'Closed')

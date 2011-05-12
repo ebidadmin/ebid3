@@ -40,6 +40,6 @@ table p { margin: 0 0 5px; }
 .bid-field { float: left; display: inline; width: 32%; min-height: 1.5em; text-align: right; }
 
 @media print {
-	#print-nav, form { display: none; }
+	#print-header, #print-nav, form { display: none; }
 }
 

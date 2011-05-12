@@ -174,7 +174,7 @@ ActiveRecord::Schema.define(:version => 20110210064012) do
   create_table "entries", :force => true do |t|
     t.integer  "user_id"
     t.string   "ref_no"
-    t.integer  "year_model",        :default => 2010
+    t.integer  "year_model",        :default => 2011
     t.integer  "car_brand_id",      :default => 0
     t.integer  "car_model_id",      :default => 0
     t.integer  "car_variant_id",    :default => 0
@@ -343,14 +343,6 @@ ActiveRecord::Schema.define(:version => 20110210064012) do
     t.integer  "ratee_id"
     t.decimal  "stars",      :precision => 3, :scale => 1
     t.text     "review"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "remarks", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "entry_id"
-    t.text     "remark"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

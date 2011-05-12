@@ -1,0 +1,42 @@
+<%= will_paginate @bids  %>
+<%= page_info @bids %>
+
+<table id="supplier-fees">
+	<thead>
+    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
+		<th>
+	    <%= content_tag :div, 'Part Description', :class => 'part-desc' %>
+	    <%= content_tag :div, 'Orig', :class => 'bid-amount' %>
+	    <%= content_tag :div, 'Rep', :class => 'bid-amount' %>
+	    <%= content_tag :div, 'Surp', :class => 'bid-amount' %>
+		</th>
+	</thead>
+	<% @bids.group_by(&:entry).each do |entry, bids| -%>
+  <tr>
+		<td class="vehicle">	
+      <%= content_tag :p, (truncate(entry.vehicle, :length => 35) + (link_to '[view details]', seller_show_path(:id => entry.id))).html_safe %>
+			<%= content_tag :p, entry.plate_no  %>
+		</td>
+	  <td>
+   		<% bids.group_by(&:line_item).each do |line_item, bids| %>
+				<div class="part">
+			    <%= content_tag :p, "[ #{line_item.quantity} ] " + line_item.part_name %>
+					<%= content_tag :p, "TAT: " + distance_of_time_in_words(line_item.created_at, line_item.bids.first.created_at) unless line_item.bids.blank? %>
+				</div>
+				<div class="amounts">
+				<% unless line_item.bids.blank? %>
+				  <%= content_tag :div, admin_high_bid("original", line_item), :class => 'amount' %>
+				  <%= content_tag :div, admin_high_bid("replacement", line_item), :class => 'amount' %>
+				  <%= content_tag :div, admin_high_bid("surplus", line_item), :class => 'amount' %>
+				  <%= content_tag :div, admin_low_bid("original", line_item), :class => 'amount' %>
+				  <%= content_tag :div, admin_low_bid("replacement", line_item), :class => 'amount' %>
+				  <%= content_tag :div, admin_low_bid("surplus", line_item), :class => 'amount' %>
+				<% else %>
+			    <%= content_tag :div, 'No Bids Submitted', :class => 'no-bid' %>
+				<% end %>
+  <% end %>
+		</td>                          
+	</tr>
+<% end %>
+</table>
+

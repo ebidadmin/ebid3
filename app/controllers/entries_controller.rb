@@ -39,13 +39,14 @@ class EntriesController < ApplicationController
       redirect_to new_user_entry_path(current_user)
     else
       @entry = Entry.new(params[:entry])
-      @entry.add_line_items_from_cart(@cart) 
+      @entry.add_line_items_from_cart(@cart)
+      @entry.company_id = current_user.company.id
       if current_user.entries << @entry
         @cart.destroy
         session[:cart_id] = nil 
         # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
         EntryMailer.delay.new_entry_alert(@entry)
-        flash[:notice] = "Successfully created Entry #{@entry.vehicle}."
+        flash[:notice] = "Successfully created Entry # #{@entry.id}."
         redirect_to buyer_pending_path(current_user)
       else
         flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
@@ -73,7 +74,7 @@ class EntriesController < ApplicationController
     else
       @entry = current_user.entries.find(params[:id])
     end
-    @entry.buyer_status = 'Edited' unless current_user.has_role?('admin')
+    # @entry.buyer_status = 'Edited' unless current_user.has_role?('admin')
     @entry.add_line_items_from_cart(@cart) 
 
     if @entry.update_attributes(params[:entry])

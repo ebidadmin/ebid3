@@ -8,10 +8,12 @@ class LineItem < ActiveRecord::Base
   has_one :fee
   has_many :diffs
   
-  scope :online, where("status IN ('Online', 'Relisted')")
+  scope :online, where(:status => ['Online', 'Relisted'])
   scope :with_bids, where('bids_count > 0')
   scope :two_and_up, where('bids_count > 2')
   scope :without_bids, where('bids_count < 1')
+
+  scope :metered, where('line_items.created_at >= ?', '2011-04-16')
 
 	def part_name
 	  self.car_part.name
