@@ -52,6 +52,13 @@ class OrdersController < ApplicationController
     @order_items1 = @order.bids
   end
 
+  def print
+    find_order_and_entry
+    @order_items = @order.order_items
+    @order_items1 = @order.bids
+    render :layout => 'print'
+  end
+
   def confirm # For seller to confirm PO
     find_order_and_entry
     

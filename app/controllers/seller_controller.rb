@@ -3,7 +3,7 @@ class SellerController < ApplicationController
   
   def main
     @last_activity = current_user.last_sign_in_at unless current_user.last_sign_in_at.nil?
-    @ratings = Rating.where(:ratee_id => current_user)
+    @ratings = Rating.where(:ratee_id => current_user).metered
     @last_bid = current_user.bids.last.created_at unless current_user.bids.last.nil?
     @line_items_count = LineItem.metered.size
     @bids_count = current_user.bids.metered.collect(&:line_item_id).uniq.count
@@ -29,13 +29,16 @@ class SellerController < ApplicationController
   end
   
   def hub
-    entries = Entry.results.current.desc2
-    @brand_links = entries.collect(&:car_brand).uniq 
+    all_entries = Entry.online.current.desc2
+    @friend_entries = all_entries.user_company_friendships_friend_id_eq(current_user.company)
+    @brand_links = @friend_entries.collect(&:car_brand).uniq  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
+    # @brand_links = entries.collect(&:car_brand).uniq 
+
     if params[:brand] == 'all'
-      @entries = entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).paginate(:page => params[:page], :per_page => 10)
+      @entries = @friend_entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).paginate(:page => params[:page], :per_page => 10)
     else
       brand = CarBrand.find_by_name(params[:brand])
-      @entries = entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
+      @entries = @friend_entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
     end
   end
   
@@ -47,14 +50,15 @@ class SellerController < ApplicationController
       @line_items = @entry.line_items.includes(:car_part, :bids)
     end
     company = current_user.company
-    unless @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
+    # unless @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
+    unless @entry.user.company.friends.include?(company)
       flash[:error] = "Sorry, <strong>#{company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this.".html_safe
       redirect_to :back
     end 
   end
   
   def monitor
-    bids = current_user.bids.desc
+    bids = current_user.bids.metered.desc
     @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq)
     if params[:brand] == 'all'
       @search = bids.search(params[:search])
@@ -114,8 +118,10 @@ class SellerController < ApplicationController
     @sort_order =" date PO was paid - descending order"
     if params[:start]
       @all_market_fees = Fee.created_at_gte(params[:start]).ordered.by_this_seller(current_user)
+      @start_date = params[:start]
     else
-      @all_market_fees = Fee.created_at_gte(Date.today.beginning_of_month).ordered.by_this_seller(current_user)
+      @all_market_fees = Fee.ordered.metered.by_this_seller(current_user)
+      @start_date = '2011-04-16'
     end
     @search = @all_market_fees.search(params[:search])
     @market_fees = @search.inclusions.with_orders.paginate :page => params[:page], :per_page => 30
@@ -123,7 +129,7 @@ class SellerController < ApplicationController
   
   def declines
     @title = "Decline Fees"
-    @all_decline_fees = Fee.by_this_seller(current_user).declined
+    @all_decline_fees = Fee.by_this_seller(current_user).declined.metered
     # @total_bids = Bid.count
     # @percentage_declined = (@all_decline_fees.count.to_f/@total_bids.to_f) * 100
     @search = @all_decline_fees.search(params[:search])

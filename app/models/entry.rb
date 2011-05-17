@@ -40,7 +40,7 @@ class Entry < ActiveRecord::Base
 
   scope :pending, where("buyer_status IN ('New', 'Edited')")
   # scope :online, where("buyer_status IN ('Online', 'Relisted')")
-  scope :online, where(:buyer_status => ['Online', 'Relisted']).where('bid_until >= ?', Date.today)
+  scope :online, where(:buyer_status => ['Online', 'Relisted']).where('entries.bid_until >= ?', Date.today)
   scope :results, where("buyer_status IN ('For-Decision', 'Ordered-IP', 'Declined-IP')")
   scope :declined, where('buyer_status LIKE ?', "%Declined%").desc
   scope :closed, where("buyer_status = ?", 'Closed')
@@ -91,6 +91,7 @@ class Entry < ActiveRecord::Base
 	def buyer_company #used in diffs#index
 	  user.company
 	end
+
 	def update_associated_status(status)
     if status == "For-Decision"
       line_items.each do |item|

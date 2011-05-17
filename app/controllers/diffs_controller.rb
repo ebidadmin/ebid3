@@ -73,7 +73,7 @@ class DiffsController < ApplicationController
   end
 
   def summary
-    @entries = Entry.where(:company_id => current_user.company)
+    @entries = Entry.where(:company_id => current_user.company, :created_at => ('2010-12-01'..'2011-02-01'))
     @line_items = LineItem.where(:entry_id => @entries)
     @with_bids = @line_items.with_bids
     # @without_bids = @line_items.without_bids.count

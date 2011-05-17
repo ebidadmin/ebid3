@@ -9,7 +9,7 @@ li { list-style-type: none;  }
 #print-icon { background: url(../images/base/print.gif) no-repeat 8px 6px; text-indent: -9999px; overflow: hidden; width: 62px; }
 #print-nav li a:hover { color: #3e4044; background-color: #e5e5e5; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
 
-.container { clear: both; margin: 20px auto; width: 800px; background: transparent; position: relative; overflow: hidden; }
+.container { clear: both; margin: 15px auto; width: 800px; background: transparent; position: relative; overflow: hidden; }
 
 .vehicle-set { float: left; margin-bottom: 20px; width: 60%; }
 .vehicle-set li { clear: both;  }
@@ -39,7 +39,28 @@ table p { margin: 0 0 5px; }
 .bid-type { min-height: 1.5em; text-align: left; }
 .bid-field { float: left; display: inline; width: 32%; min-height: 1.5em; text-align: right; }
 
+/* PURCHASE ORDER
+---------------------------------------------------------------------- */
+
+.first { float: left; overflow: hidden; width: 380px; min-height: 200px;  margin: 0 10px 20px 0;  }
+.second { float: right; width: 380px; border-left: 1px solid black; padding-left: 20px; margin-bottom: 1.5em;}
+.first h2, .second h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid black; }
+.first .who { color: #C00; }
+.first .full-name { margin-top: 1.2em; font-weight: bold; }
+.first .highlight, .highlight { background-color: #FFF6BF; padding: 0 10px; }
+#buyer-company, #supplier-company { float: left; overflow: hidden; width: 48%; }
+#buyer-company { margin-right: 10px; }
+#del-instructions li { clear: both; padding-left: 140px; }
+#del-instructions span { fdisplay: block; float: left; margin-left: -140px; width: 50%; }
+#del-instructions #deliver-to, #del-instructions #date-released { font-weight: bold; }
+#del-instructions #instr { border-top: 1px dotted black; border-bottom: 1px dotted black; font-weight: bold; margin-top: 20px; padding-top: 5px; padding-bottom: 5px;}
+#del-instructions #address, #del-instructions #date-released, #del-instructions #date-delivered { padding-top: 20px; }
+#del-instructions #overdue, #del-instructions #date-paid { color: #C00; font-size: 1.2em; font-weight: bold; padding-top: 20px; }
+#del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
+#order .price { width: 20%; text-align: right; padding: 10px 8px 10px 0; }
+#order .selection-total { font-weight: bold; font-size: 1.2em; text-align: right; }
+
 @media print {
-	#print-header, #print-nav, form { display: none; }
+	#print-header, #print-nav, form, #confirmation { display: none; }
 }
 

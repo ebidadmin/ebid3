@@ -1,7 +1,7 @@
 <% title "Bids for #{@entry.vehicle}" %>
 
 <% content_for :subnav do %>
-	<%= link_to 'Print Preview', print_entry_path(@entry) %>
+	<%= link_to 'Print Preview', print_entry_path(@entry), :id => 'print-preview' %>
 <% end %>
 <%= render 'shared/info_vehicle', :entry => @entry %>
 <%= render 'shared/photo_set' %>

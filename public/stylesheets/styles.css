@@ -148,6 +148,16 @@ table#monitor-bids .amount { text-align: right; }
 table#monitor-bids th .amount { margin-left: 15px; }
 table#monitor-bids td .amount { clear: both; margin-left: 0; }
 
+#supplier-bids .vehicle { width: 25%; }
+#supplier-bids .vehicle a { font-size: 1em; margin-left: -4px; }
+#supplier-bids .part { clear: both; float: left; margin-bottom: 5px; width: 40%; }
+#supplier-bids .bid-group { float: left; margin-left: 2%; margin-bottom: 5px; position: relative; width: 58%; }
+#supplier-bids td .bid-group { min-height: 4.5em; }
+#supplier-bids .amount { width: 130px;}
+#supplier-bids .original { clear: both; position: absolute; left: 4px; top: 0; }
+#supplier-bids .replacement { left: 142px; position: absolute; top: 0; }
+#supplier-bids .surplus { left: 278px; position: absolute; top: 0; }
+#supplier-bids .stat { text-align: center; }
 /* SUPPLIER - ORDERS
 ---------------------------------------------------------------------- */
 
@@ -279,6 +289,11 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 .vehicle-set { position: relative; overflow: hidden; float: left; width: 40%; }
 .vehicle-set li { clear: both; margin-left: 60px; }
 .vehicle-set li span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 40%; }
+#deliver-to, #term {
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-top: 8px;
+}
 
 /* COMMENTS IN ENTRIES#SHOW
 ---------------------------------------------------------------------- */
@@ -296,8 +311,8 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 /* PURCHASE ORDER
 ---------------------------------------------------------------------- */
-.first { float: left; overflow: hidden; width: 460px; min-height: 200px; padding-right: 20px; margin: 0 10px 20px 0; border-right: 1px solid #999; }
-.second { float: right; width: 460px; }
+.first { float: left; overflow: hidden; width: 460px; min-height: 200px;  margin: 0 10px 20px 0;  }
+.second { float: right; width: 460px; border-left: 1px solid #999; padding-left: 20px; margin-bottom: 1.5em;}
 .first h2, .second h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999; }
 .first .who { color: #C00; }
 .first .vehicle-set { width: 100%; margin-bottom: 2em; }
@@ -307,12 +322,14 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #supplier-company.multiple { clear: both; background-color: #FFF6BF; }
 #buyer-company h3, #supplier-company h3 { font-size: 1em; color: #999; text-transform: uppercase; }
 #buyer-company h4, #supplier-company h4 { margin-bottom: 0.8em; }
-#del-instructions { margin-bottom: 5em; width: 450px; }
+#del-instructions { width: 450px; }
 #del-instructions li { clear: both; padding-left: 140px; }
 #del-instructions span { font-weight: bold; color: #999; display: block; float: left; margin-left: -140px; width: 30%; }
+#del-instructions #address, #del-instructions #date-released, #del-instructions #date-delivered { padding-top: 20px; }
+#del-instructions #overdue, #del-instructions #date-paid { color: #C00; font-size: 1.2em; font-weight: bold; padding-top: 20px; }
 #del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
 #order { clear: both; overflow: hidden; margin: 1.5em 0; border-bottom: 1px solid #999; }
-#order .vehicle-set { float: left; margin: 0 10px 1em; width: 280px; }
+#order .vehicle-set { float: left; margin: 0 0 1em; width: 100%; }
 #order .vehicle-set li { clear: both; float: left; width: 280px; }
 #order li span { width: 40%; }
 
@@ -350,7 +367,8 @@ table#print-payments-list .stat { width: 25%; }
 #ratings-index .order { text-align: center; width: 10%; }
 #ratings-index .rater, #ratings-index .ratee { text-align: left; width: 12%; }
 #ratings-index .stars { text-align: center; width: 15%; }
-#ratings-index .review { background-color: #FFF6BF; text-align: center; width: 40%; }
+#ratings-index .review { background-color: #FFF6BF; width: 51%; }
+#ratings-index td .review { text-align: left; }
 
 /* RATINGS#NEW & #SHOW
 ---------------------------------------------------------------------- */

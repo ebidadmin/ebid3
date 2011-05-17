@@ -9,4 +9,5 @@ class Rating < ActiveRecord::Base
   validates_presence_of :stars
   
   scope :desc, order('id DESC')
+  scope :metered, where('ratings.created_at >= ?', '2011-04-16')
 end

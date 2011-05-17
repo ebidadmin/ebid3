@@ -106,6 +106,7 @@ Ebid::Application.routes.draw do
       put :confirm
       put :seller_status
       put :buyer_paid
+      get :print
     end
     get :auto_paid, :on => :collection
     resources :ratings

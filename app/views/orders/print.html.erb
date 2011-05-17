@@ -1,8 +1,4 @@
-<% title "Purchase Order" -%>
-
-<% content_for :subnav do %>
-	<%= link_to 'Print Preview', print_order_path(@order), :id => 'print-preview' %>
-<% end %>
+<% title "Purchase Order" %>
 
 <div class="first">
 	<h2>Transaction</h2>
@@ -18,7 +14,7 @@
 <%#= render 'shared/comments' %>
 
 <div id="order">
-	<h2>Items in the Order</h2>
+	<h2>Particulars</h2>
 	<%#= image_tag @order.entry.photos.first.photo.url(:tiny), :class => "photo", :alt => "Photo of #{ @order.entry.plate_no}" %>
 	<%= render 'shared/info_vehicle', :entry => @entry %>
 	<%= render 'shared/info_parts' if current_user.has_role?('admin')  -%>

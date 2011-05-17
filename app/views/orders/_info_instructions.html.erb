@@ -1,8 +1,14 @@
 <ul id="del-instructions">
-	<li><h4><span>Deliver to:</span> <%= order.deliver_to -%></h4></li>
-	<li><span>Address:</span> <%= order.address1 -%><%= ", #{order.address2}" unless order.address2.blank? -%></li>
-	<li><span>Contact person:</span> <%= order.contact_person -%></li>
-  <li><span>Phone:</span> <%= order.phone -%></li>
-	<li><span>Fax:</span> <%= order.fax -%></li>
-  <li><span>Special Instructions:</span> <%= order.instructions -%></li>
+	<%= content_tag :li, ((content_tag :span, 'Deliver to: ') + order.deliver_to), :id => 'deliver-to' %>
+	<%= content_tag :li, ((content_tag :span, 'Address: ') +  order.address1 + (", #{order.address2}" unless order.address2.blank?)), :id => 'address' %>
+	<%= content_tag :li, ((content_tag :span, 'Contact person: ') + order.contact_person), :id => 'contact-person' %>
+	<%= content_tag :li, ((content_tag :span, 'Phone: ') + order.phone), :id => 'phone' %>
+	<%= content_tag :li, ((content_tag :span, 'Fax: ') + order.fax), :id => 'fax' unless order.fax.blank? %>
+	<%= content_tag :li, ((content_tag :span, 'Special Instructions: ') + order.instructions), :id => 'instr' unless order.instructions.blank? %>
+	<%= content_tag :li, ((content_tag :span, 'PO Date: ') + order.created_at.strftime('%d-%b-%Y, %a')), :id => 'date-released' %>
+	<%= content_tag :li, ((content_tag :span, 'PO Accepted: ') + order.confirmed.strftime('%d-%b-%Y, %a')), :id => 'date-confirmed' unless order.confirmed.nil? %>
+	<%= content_tag :li, ((content_tag :span, 'Delivered: ') + order.delivered.strftime('%d-%b-%Y, %a')), :id => 'date-delivered' unless order.delivered.nil? %>
+	<%= content_tag :li, ((content_tag :span, 'Due Date: ') + order.pay_until.strftime('%d-%b-%Y, %a')), :id => 'date-due' unless order.pay_until.nil? %>
+	<%= content_tag :li, ((content_tag :span, 'Paid: ') + order.paid.strftime('%d-%b-%Y, %a')), :id => 'date-paid' unless order.paid.nil? %>
+	<%= content_tag :li, ((content_tag :span, 'Overdue: ') + (pluralize order.days_overdue, 'day')), :id => 'overdue' if order.pay_until && order.days_overdue > 0 %>
 </ul>

@@ -1,40 +1,44 @@
+<%= render 'seller/filter_by_brand' if @brand_links.count > 1 %>
+
+
 <%= will_paginate @bids  %>
 <%= page_info @bids %>
 
-<table id="supplier-fees">
+<table id="supplier-bids">
 	<thead>
     <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
 		<th>
-	    <%= content_tag :div, 'Part Description', :class => 'part-desc' %>
-	    <%= content_tag :div, 'Orig', :class => 'bid-amount' %>
-	    <%= content_tag :div, 'Rep', :class => 'bid-amount' %>
-	    <%= content_tag :div, 'Surp', :class => 'bid-amount' %>
+	    <%= content_tag :div, 'Part Description', :class => 'part' %>
+			<div class="bid-group">
+		    <%= content_tag :div, 'Orig', :class => 'amount original' %>
+		    <%= content_tag :div, 'Rep', :class => 'amount replacement' %>
+		    <%= content_tag :div, 'Surp', :class => 'amount surplus' %>
+			</div>
 		</th>
 	</thead>
 	<% @bids.group_by(&:entry).each do |entry, bids| -%>
   <tr>
 		<td class="vehicle">	
-      <%= content_tag :p, (truncate(entry.vehicle, :length => 35) + (link_to '[view details]', seller_show_path(:id => entry.id))).html_safe %>
+      <%= content_tag :p, (content_tag :strong, truncate(entry.vehicle, :length => 30)).html_safe %>
 			<%= content_tag :p, entry.plate_no  %>
+			<%= content_tag :p, "Status: #{display_status(entry)}".html_safe  %>
+			<%= content_tag :p, (link_to '[view details]', seller_show_path(:id => entry.id)) %>
 		</td>
 	  <td>
    		<% bids.group_by(&:line_item).each do |line_item, bids| %>
 				<div class="part">
-			    <%= content_tag :p, "[ #{line_item.quantity} ] " + line_item.part_name %>
-					<%= content_tag :p, "TAT: " + distance_of_time_in_words(line_item.created_at, line_item.bids.first.created_at) unless line_item.bids.blank? %>
+			    <%= content_tag :b, "[ #{line_item.quantity} ] " + line_item.part_name %>
 				</div>
-				<div class="amounts">
-				<% unless line_item.bids.blank? %>
-				  <%= content_tag :div, admin_high_bid("original", line_item), :class => 'amount' %>
-				  <%= content_tag :div, admin_high_bid("replacement", line_item), :class => 'amount' %>
-				  <%= content_tag :div, admin_high_bid("surplus", line_item), :class => 'amount' %>
-				  <%= content_tag :div, admin_low_bid("original", line_item), :class => 'amount' %>
-				  <%= content_tag :div, admin_low_bid("replacement", line_item), :class => 'amount' %>
-				  <%= content_tag :div, admin_low_bid("surplus", line_item), :class => 'amount' %>
-				<% else %>
-			    <%= content_tag :div, 'No Bids Submitted', :class => 'no-bid' %>
-				<% end %>
-  <% end %>
+				<div class="bid-group">
+				<% for bid in bids  %>
+					<div class="amount <%= bid.bid_type %>">
+						<%= content_tag :p, ph_currency(bid.amount) %>
+						<%= content_tag :p, "speed: " + distance_of_time_in_words(line_item.created_at, bid.created_at) %>
+						<%= content_tag :p, bid.status, :class => "#{quote_class(bid.status)}"  %>
+					</div>
+   			<% end %>
+				</div>
+		  <% end %>
 		</td>                          
 	</tr>
 <% end %>

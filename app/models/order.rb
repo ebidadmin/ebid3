@@ -91,6 +91,10 @@ class Order < ActiveRecord::Base
   def days_overdue # used in ORDERS#INDEX
     (Date.today - pay_until).to_i - 1
   end
+  
+  def paid_but_overdue # used in ORDERS#SHOW
+    (paid - pay_until).to_i 
+  end
 
   def days_ordered
     (Time.now - confirmed).to_i - 1
@@ -118,13 +122,15 @@ class Order < ActiveRecord::Base
   
   def compute_rating_for_buyer
     if prompt_payment? > 60
-      1
+      0
     elsif prompt_payment? > 45
-      2
+      1
     elsif prompt_payment? > 30
-      3
-    elsif prompt_payment? <= 30
+      2
+    elsif prompt_payment? > 15
       4
+    elsif prompt_payment? <= 15
+      5
     else
       3.5
     end
@@ -132,13 +138,17 @@ class Order < ActiveRecord::Base
   
   def compute_rating_for_seller
     if days_to_deliver > 7
-      1
+      0
     elsif days_to_deliver > 5
-      2
+      1
     elsif days_to_deliver > 3
+      2
+    elsif days_to_deliver > 2
       3
-    elsif days_to_deliver <= 3
+    elsif days_to_deliver > 1
       4
+    elsif days_to_deliver <= 1
+      5
     else
       3.5
     end

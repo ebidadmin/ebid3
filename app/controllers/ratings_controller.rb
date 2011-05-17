@@ -3,9 +3,9 @@ class RatingsController < ApplicationController
 
   def index
     if params[:user_id] == 'all'
-      @ratings = Rating.where(:ratee_id => current_user.company.users).desc
+      @ratings = Rating.where(:ratee_id => current_user.company.users).metered.desc
     else
-      @ratings = Rating.where(:ratee_id => User.find_by_username(params[:user_id])).desc
+      @ratings = Rating.where(:ratee_id => User.find_by_username(params[:user_id])).metered.desc
     end
   end
   
@@ -80,7 +80,7 @@ class RatingsController < ApplicationController
         @rating.user_id = order.user_id 
         @rating.ratee_id = order.seller_id
         @rating.stars = order.compute_rating_for_seller
-        @rating.review = "Order was delivered #{pluralize order.days_to_deliver, 'day'} from PO date. (Automatic rating: #{pluralize order.days_not_rated1, 'day'} from delivery date)" 
+        @rating.review = "Order was delivered #{pluralize order.days_to_deliver, 'day'} from PO date. (System-generated rating: #{pluralize order.days_not_rated1, 'day'} from delivery date)" 
         @ratings << @rating
       end
       if order.ratings.where(:ratee_id => order.company.users).blank?
@@ -88,7 +88,7 @@ class RatingsController < ApplicationController
         @rating.user_id = order.seller_id
         @rating.ratee_id = order.user_id 
         @rating.stars = order.compute_rating_for_buyer
-        @rating.review = "Order was paid #{pluralize order.prompt_payment?, 'day'} from delivery date. (Automatic rating: #{pluralize order.days_not_rated2, 'day'} from payment date)" 
+        @rating.review = "Order was paid #{pluralize order.prompt_payment?, 'day'} from delivery date. (System-generated rating: #{pluralize order.days_not_rated2, 'day'} from payment date)" 
         @ratings << @rating
       end
       order.ratings << @ratings

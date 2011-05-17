@@ -13,6 +13,8 @@ class Fee < ActiveRecord::Base
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], [:line_item => :car_part], :seller )
   scope :with_orders, includes(:order)
   
+  scope :metered, where('fees.created_at >= ?', '2011-04-16')
+  
   def self.search(search)  
     if search  
       finder = Entry.where('plate_no LIKE ? ', "%#{search}%") 
