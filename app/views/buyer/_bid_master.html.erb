@@ -4,6 +4,8 @@
 	<td class="partname">    	
 		<%= item.part_name %> 
 		<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
+		<%= content_tag :h5, "Bidding Speed: " + distance_of_time_in_words(@entry.created_at, item.bids.first.created_at) unless item.bids.first.blank? %>
+		<%= content_tag :h5, "Bidding Speed: " + distance_of_time_in_words(item.bids.first.bid_speed) unless item.bids.first.blank? %>
 	</td>
 	<td class="bid-box">
 		<div class="bid-labels">

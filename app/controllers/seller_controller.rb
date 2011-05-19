@@ -5,13 +5,28 @@ class SellerController < ApplicationController
     @last_activity = current_user.last_sign_in_at unless current_user.last_sign_in_at.nil?
     @ratings = Rating.where(:ratee_id => current_user).metered
     @last_bid = current_user.bids.last.created_at unless current_user.bids.last.nil?
-    @line_items_count = LineItem.metered.size
-    @bids_count = current_user.bids.metered.collect(&:line_item_id).uniq.count
-    @bid_percentage = (@bids_count.to_f / @line_items_count.to_f) * 100
-    @missed_count = @line_items_count - @bids_count
-    @missed_percentage = 100 - @bid_percentage
-    @order_items = OrderItem.order_seller_id_eq(current_user).metered.count
-    @order_items_percentage = (@order_items.to_f / @bids_count.to_f) * 100
+    # @line_items_count = LineItem.metered.size
+    # @bids_count = current_user.bids.metered.collect(&:line_item_id).uniq.count
+    # @bid_percentage = (@bids_count.to_f / @line_items_count.to_f) * 100
+    # @missed_count = @line_items_count - @bids_count
+    # @missed_percentage = 100 - @bid_percentage
+    # @order_items = OrderItem.order_seller_id_eq(current_user).metered.count
+    # @order_items_percentage = (@order_items.to_f / @bids_count.to_f) * 100
+    @own_bids = current_user.bids.metered
+    @days = (Time.now.to_date - '2011-04-16'.to_date).to_f
+    @average = (@own_bids.count/@days).round(2)
+    @line_items = LineItem.metered.count
+    @bided = @own_bids.collect(&:line_item_id).uniq.count
+    @missed = @line_items - @bided
+    @orig = @own_bids.where(:bid_type => 'original').count
+    @rep = @own_bids.where(:bid_type => 'replacement').count
+    @surp = @own_bids.where(:bid_type => 'surplus').count
+    @ordered = OrderItem.order_seller_id_eq(current_user).metered.count
+    @cancelled = @own_bids.where("bids.status LIKE ?", "%Cancelled%").count
+    @pending = @own_bids.where(:status => 'For-Decision').count
+    @declined = @own_bids.where(:status => 'Declined').count
+    @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired']).count
+    @new = @own_bids.where(:status => ['Submitted', 'Updated']).count
     
     orders = Order.by_this_seller(current_user)
     @new_orders = orders.recent.collect(&:order_total).sum
@@ -141,4 +156,23 @@ class SellerController < ApplicationController
     # @buyers_path = seller_declines_path(:buyer => params[:buyer])
   end
 
+  def index
+    @own_bids = current_user.bids.metered
+    @days = (Time.now.to_date - '2011-04-16'.to_date).to_f
+    @average = @own_bids.count/@days
+    @line_items = LineItem.metered.count
+    @bided = @own_bids.collect(&:line_item_id).uniq.count
+    @missed = @line_items - @bided
+    @orig = @own_bids.where(:bid_type => 'original').count
+    @rep = @own_bids.where(:bid_type => 'replacement').count
+    @surp = @own_bids.where(:bid_type => 'surplus').count
+    @ordered = OrderItem.order_seller_id_eq(current_user).metered.count
+    @cancelled = @own_bids.where("bids.status LIKE ?", "%Cancelled%").count
+    @pending = @own_bids.where(:status => 'For-Decision').count
+    @declined = @own_bids.where(:status => 'Declined').count
+    @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired']).count
+    @new = @own_bids.where(:status => ['Submitted', 'Updated']).count
+  end
+  
+  
 end

@@ -6,7 +6,7 @@
 <%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
 <%= render 'shared/comments' %>
 
-<%= form_tag bids_path(:entry_id => @entry), :remote => true do %>
+<%= form_tag bids_path(:entry_id => @entry), :id => 'bid-form', :remote => true do %>
 	<table id="item-bids">
 		<%= render 'bid_table' %>
 	</table>

@@ -22,14 +22,23 @@ class BidMailer < ActionMailer::Base
     end
   end
   
-  def bid_alert_to_admin(bids, entry, seller)
+  def bid_alert_to_admin(bids, entry, seller, update = nil)
     @bids = bids
     @entry = entry
     @seller = seller
-    mail(
-      :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
-      :subject => "Admin Notice - bid/s submitted: #{entry.vehicle}"
-      )
+    
+    if update.nil?
+      mail(
+        :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
+        :subject => "#{seller.profile.full_name} just bidded on #{entry.vehicle}"
+        )
+    else
+      mail(
+        :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
+        :subject => "#{seller.profile.full_name} UPDATED bid/s on #{entry.vehicle}"
+        )
+    end  
   end
+
   
 end

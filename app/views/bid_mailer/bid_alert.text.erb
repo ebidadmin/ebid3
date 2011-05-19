@@ -1,4 +1,4 @@
-Hi <%= @entry.user.profile.first_name %>!
+Hello <%= @entry.user.profile.first_name %>!
 
 Bid/s were posted for
 
@@ -13,9 +13,11 @@ ITEM BID/S
 	<%= item.car_part.name.html_safe %> 
 	
 		<% for bid in bids %>
-		* <%= "Original:         Yes" unless bid.bid_type != "original" %><%= "Replacement: Yes" unless bid.bid_type != "replacement" %><%= "Surplus:          Yes" unless bid.bid_type != "surplus" %>
+		* <%= "Original:           Yes" unless bid.bid_type != "original" %><%= "Replacement: Yes" unless bid.bid_type != "replacement" %><%= "Surplus:           Yes" unless bid.bid_type != "surplus" %> <%= "" %>
 		<% end %>
 		
 	<% end %>
+
+BIDDING SPEED (TAT): <%= distance_of_time_in_words(@bids.first.bid_speed) %>
 
 You may start deciding on the bids, or wait a while longer for other possible bidders.

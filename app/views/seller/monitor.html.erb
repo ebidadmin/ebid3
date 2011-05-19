@@ -7,7 +7,7 @@
 <table id="supplier-bids">
 	<thead>
     <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
-		<th>
+		<th id='th-two'>
 	    <%= content_tag :div, 'Part Description', :class => 'part' %>
 			<div class="bid-group">
 		    <%= content_tag :div, 'Orig', :class => 'amount original' %>
@@ -24,7 +24,7 @@
 			<%= content_tag :p, "Status: #{display_status(entry)}".html_safe  %>
 			<%= content_tag :p, (link_to '[view details]', seller_show_path(:id => entry.id)) %>
 		</td>
-	  <td>
+	  <td id='td-two'>
    		<% bids.group_by(&:line_item).each do |line_item, bids| %>
 				<div class="part">
 			    <%= content_tag :b, "[ #{line_item.quantity} ] " + line_item.part_name %>
@@ -33,7 +33,7 @@
 				<% for bid in bids  %>
 					<div class="amount <%= bid.bid_type %>">
 						<%= content_tag :p, ph_currency(bid.amount) %>
-						<%= content_tag :p, "speed: " + distance_of_time_in_words(line_item.created_at, bid.created_at) %>
+						<%= content_tag :p, "speed: " + distance_of_time_in_words(bid.bid_speed) %>
 						<%= content_tag :p, bid.status, :class => "#{quote_class(bid.status)}"  %>
 					</div>
    			<% end %>
@@ -44,3 +44,4 @@
 <% end %>
 </table>
 
+<%= will_paginate @bids  %>

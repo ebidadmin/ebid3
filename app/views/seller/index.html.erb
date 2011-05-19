@@ -1,0 +1,27 @@
+<ul class='supplier dash'>
+  <h3><%= current_user.username.upcase %>'s Activity (since 16 Apr 2011)</h3>
+	<%= dash_entry_format("total-items", "Total parts requested", nil,  (number_with_delimiter @line_items) ) %>
+	<%= dash_entry_format("total-items", "Bidded", nil,  (number_with_delimiter @bided) ) %>
+	<%= dash_entry_format("total-items", "Missed opportunity", nil,  (number_with_delimiter @missed) ) %>
+	<%= dash_entry_format("total-items", "Total Submission", nil,  (number_with_delimiter @own_bids.count) ) %>
+	<%= dash_entry_format("total-items", "Original", nil,  (number_with_delimiter @orig) ) %>
+	<%= dash_entry_format("total-items", "Replacement", nil,  (number_with_delimiter @rep) ) %>
+	<%= dash_entry_format("total-items", "Surplus", nil,  (number_with_delimiter @surp) ) %>
+	<%= dash_entry_format("total-items", "Ordered", nil,  (number_with_delimiter @ordered) ) %>
+	<%= dash_entry_format("total-items", "Ordered but cannot supply", nil,  (number_with_delimiter @cancelled) ) %>
+	<%= dash_entry_format("total-items", "Declined", nil,  (number_with_delimiter @declined) ) %>
+	<%= dash_entry_format("total-items", "Lose", nil,  (number_with_delimiter @lose) ) %>
+	<%= dash_entry_format("total-items", "Pending", nil,  (number_with_delimiter @pending) ) %>
+	<%= dash_entry_format("total-items", "New", nil,  (number_with_delimiter @new) ) %>
+	<%= dash_entry_format("total-items", "Days", nil,  (pluralize(@days.to_i, 'day')) ) %>
+	<%= dash_entry_format("total-items", "Average", nil,  @average ) %>
+</ul>
+
+
+<%= dash_entry_format("total-items", "Total parts requested", nil,  (number_with_delimiter @line_items_count) ) %>
+<%= dash_entry_format("total-bided", "Total parts bided on", percentage(@bid_percentage), (number_with_delimiter @bids_count), nil, nil, 'highlight' ) %>
+<%#= dash_entry_format("bids", "New Bids", nil, nil, nil, nil, 'highlight' ) %>
+<%#= dash_entry_format("bids", "For Decision", nil, nil, nil, nil, 'highlight' ) %>
+<%#= dash_entry_format("bids", "Ordred", nil, nil, nil, nil, 'highlight' ) %>
+<%= dash_entry_format("missed-oppty", "Missed opportunity", percentage(@missed_percentage), (number_with_delimiter @missed_count) ) %>
+<%= dash_entry_format("order-items2", "Parts Ordered", "#{percentage(@order_items_percentage)} of what you bided on" , (number_with_delimiter @order_items), nil, nil, 'highlight'  ) %>

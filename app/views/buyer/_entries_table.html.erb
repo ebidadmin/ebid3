@@ -31,6 +31,7 @@
         <%= render 'entries/online_links', :entry => entry %>
 			  <%= "| #{content_tag :abbr, (pluralize entry.orders.count, 'order'), :class => 'highlight'}".html_safe unless entry.orders.blank? %>
       </p>
+			<%= content_tag :h5, "Bidding Speed: " + distance_of_time_in_words(entry.bids.first.bid_speed) unless entry.bids.first.blank? %>
 		</td>
 	</tr>
 	<%- end -%>

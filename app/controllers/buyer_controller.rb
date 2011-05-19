@@ -5,9 +5,9 @@ class BuyerController < ApplicationController
   def main
     @title = "Buyer's Dashboard"
     @last_activity = current_user.last_sign_in_at
-    @ratings = Rating.where(:ratee_id => current_user)
+    @ratings = Rating.metered.where(:ratee_id => current_user)
     if current_user.has_role?("powerbuyer")
-      @ratings = Rating.where(:ratee_id => current_user.company.users)
+      @ratings = Rating.metered.where(:ratee_id => current_user.company.users)
       initiate_list
       delivered = Order.where(:company_id => current_user.company).delivered
       due_soon = delivered.due_soon.includes(:bids)
@@ -130,15 +130,15 @@ private
       entries = defined_user.entries
       orders = defined_user.orders
     end
-    @total = entries.count
-    @pending = entries.pending.count
+    @total = entries.metered.count
+    @pending = entries.pending.metered.count
     @online = entries.online.current.count
-    @decision = entries.results.current.count
-    @expired = entries.where(:buyer_status => 'Expired').count
+    @decision = entries.results.current.metered.count
+    @expired = entries.where(:buyer_status => 'Expired').metered.count
     @expired2 = entries.online.expired.count
-    @expired3 = entries.results.expired.count
-    @declined = entries.declined.count
-    @closed = entries.closed.count
+    @expired3 = entries.results.expired.metered.count
+    @declined = entries.declined.metered.count
+    @closed = entries.closed.metered.count
     @orders = orders.count
     @order_items = OrderItem.where(:order_id => orders).collect(&:line_item_id).uniq.count unless OrderItem.nil?
     @with_order_pct = (@order_items.to_f/LineItem.with_bids.where(:entry_id => entries).count.to_f) * 100 unless @order_items.nil? 

@@ -8,7 +8,7 @@
 	<% @orders.group_by(&:entry).each do |entry, orders| %>
 	<tr>
 		<td rowspan=<%= orders.count + 1 %> class='vehicle'>	
-			<%= content_tag :p, (entry.ref_no unless entry.ref_no.nil?)  %>
+			<%#= content_tag :p, entry.ref_no unless entry.ref_no.nil? %>
       <%#= content_tag :p, (link_to entry.vehicle, seller_show_path(current_user, entry.brand, entry)) %>
       <%= content_tag :p, (link_to entry.vehicle, seller_show_path(:id => entry)) %>
 			<%= content_tag :span, entry.plate_no %>
@@ -30,6 +30,12 @@
   			<%= content_tag :p, 'Buyer: ' + order.company.name, :class => 'instruction'  %>
   		<%- end -%>
 			<%= render 'orders/order_status_seller', :order => order %>
+			<%# if order.pay_until && order.paid.nil? %>
+				<%#= content_tag :p , ('Overdue: ' + (pluralize order.days_overdue, 'day')), :id => 'overdue' if order.days_overdue > 0 %>
+			<% if order.paid && order.paid_but_overdue %>
+				<%= content_tag :p , ('Overdue: ' + (pluralize order.paid_but_overdue, 'day')), :id => 'overdue' if order.paid_but_overdue > 0 %>
+				<%= content_tag :p , 'Paid before due date!', :id => 'overdue' if order.paid_but_overdue <= 0 %>
+			<% end %>
 		</td>
   </tr>
 	<% end %>

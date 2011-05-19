@@ -37,8 +37,9 @@ class Entry < ActiveRecord::Base
 
   scope :current, where(:expired => nil)
   scope :expired, where('expired IS NOT NULL')
+  scope :metered, where('entries.created_at >= ?', '2011-04-16')
 
-  scope :pending, where("buyer_status IN ('New', 'Edited')")
+  scope :pending, where(:buyer_status => ['New', 'Edited'])
   # scope :online, where("buyer_status IN ('Online', 'Relisted')")
   scope :online, where(:buyer_status => ['Online', 'Relisted']).where('entries.bid_until >= ?', Date.today)
   scope :results, where("buyer_status IN ('For-Decision', 'Ordered-IP', 'Declined-IP')")

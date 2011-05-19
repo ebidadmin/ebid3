@@ -1,10 +1,12 @@
-Hi E-Bid Admin!
+Hello E-Bid Admin!
 
 Bid/s were posted for
 
-	Ref No.:    <%= @entry.ref_no if @entry.ref_no %>
-	Vehicle:    <%= @entry.vehicle %>
+	Ref No.:     <%= @entry.ref_no if @entry.ref_no %>
+	Vehicle:     <%= @entry.vehicle %>
 	Plate No.:  <%= @entry.plate_no %>
+	
+	User:	<%= @entry.user.username %> (<%= @entry.user.company.name %>)
 
 	
 ITEM BID/S
@@ -13,9 +15,11 @@ ITEM BID/S
 	<%= item.car_part.name.html_safe %> 
 	
 		<% for bid in bids %>
-		* <%= "Original:          #{ph_currency(bid.amount)}" unless bid.bid_type != "original" %><%= "Replacement: #{ph_currency(bid.amount)}" unless bid.bid_type != "replacement" %><%= "Surplus:          #{ph_currency(bid.amount)}" unless bid.bid_type != "surplus" %>
+		* <%= "Original:            #{ph_currency(bid.amount)}" unless bid.bid_type != "original" %><%= "Replacement:  #{ph_currency(bid.amount)}" unless bid.bid_type != "replacement" %><%= "Surplus:            #{ph_currency(bid.amount)}" unless bid.bid_type != "surplus" %>
 		<% end %>
 		
 	<% end %>
 
 BIDDER: <%= @seller.profile.full_name %> (<%= @seller.profile.company.name %>)
+
+BIDDING SPEED: <%= distance_of_time_in_words(@bids.first.bid_speed) %>

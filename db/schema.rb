@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110210064012) do
+ActiveRecord::Schema.define(:version => 20110518033036) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -28,11 +28,10 @@ ActiveRecord::Schema.define(:version => 20110210064012) do
     t.integer  "order_id"
     t.date     "delivered"
     t.date     "paid"
-    t.decimal  "fee",          :precision => 10, :scale => 2
-    t.date     "remitted"
     t.date     "declined"
     t.date     "expired"
     t.integer  "car_brand_id"
+    t.integer  "bid_speed"
   end
 
   add_index "bids", ["car_brand_id"], :name => "index_bids_on_car_brand_id"
@@ -174,7 +173,7 @@ ActiveRecord::Schema.define(:version => 20110210064012) do
   create_table "entries", :force => true do |t|
     t.integer  "user_id"
     t.string   "ref_no"
-    t.integer  "year_model",        :default => 2011
+    t.integer  "year_model",        :default => 2010
     t.integer  "car_brand_id",      :default => 0
     t.integer  "car_model_id",      :default => 0
     t.integer  "car_variant_id",    :default => 0

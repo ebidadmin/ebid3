@@ -1,7 +1,7 @@
 <div class="vehicle-set">
-	<%= content_tag :h3, entry.vehicle if @order%>
+	<%= content_tag :h3, entry.vehicle if @order %>
 	<ul>
-		<%- if @order -%>
+		<%- if @order && @order.seller_confirmation == true -%>
 			<%= content_tag :li, (content_tag :span, 'Ref or Claim No: ') + (content_tag :strong, entry.ref_no), :id => "ref-no" %>
 		<%- end -%>	  
 		<%= content_tag :li, (content_tag :span, 'Plate No: ') + (content_tag :strong, entry.plate_no), :id => "plate-no" %>

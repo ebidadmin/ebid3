@@ -1,6 +1,6 @@
 class Bid < ActiveRecord::Base
   attr_accessible :user_id, :entry_id, :line_item_id, :amount, :quantity, :total,
-    :bid_type, :status, :ordered, :order_id, :delivered, :paid, :fee, :remitted, :declined, :expired
+    :bid_type, :status, :ordered, :order_id, :delivered, :paid, :fee, :remitted, :declined, :expired, :bid_speed
      
   belongs_to :user, :counter_cache => true
   belongs_to :entry, :counter_cache => true
@@ -53,5 +53,4 @@ class Bid < ActiveRecord::Base
       scoped  
     end  
   end  
-  
 end

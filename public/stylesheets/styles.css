@@ -73,11 +73,11 @@
 ---------------------------------------------------------------------- */
 table#lot-bids th, 
 table th.bid-box, 
-table th.status { background: #797979; color: #FFF; }
+table th.status, #th-two { background: #797979; color: #FFF; }
 table th strong, table th .strong { color: #fff6bf; font-size: 1.5em; }
 table td.bid-box, 
 table td.status, 
-table td.fees { background-color: #eaeaea; }
+table td.fees, #td-two { background-color: #eaeaea; }
 /*#fff6bf*/
 table .vehicle, th.vehicle, td.vehicle { width: 40%; }
 table .vehicle #details { float: left; margin-left: 10px; width: 260px; }

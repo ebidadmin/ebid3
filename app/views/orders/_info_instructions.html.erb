@@ -7,8 +7,13 @@
 	<%= content_tag :li, ((content_tag :span, 'Special Instructions: ') + order.instructions), :id => 'instr' unless order.instructions.blank? %>
 	<%= content_tag :li, ((content_tag :span, 'PO Date: ') + order.created_at.strftime('%d-%b-%Y, %a')), :id => 'date-released' %>
 	<%= content_tag :li, ((content_tag :span, 'PO Accepted: ') + order.confirmed.strftime('%d-%b-%Y, %a')), :id => 'date-confirmed' unless order.confirmed.nil? %>
-	<%= content_tag :li, ((content_tag :span, 'Delivered: ') + order.delivered.strftime('%d-%b-%Y, %a')), :id => 'date-delivered' unless order.delivered.nil? %>
+	<%= content_tag :li, ((content_tag :span, 'Delivered: ') + order.delivered.strftime('%d-%b-%Y, %a') + " (#{pluralize order.days_to_deliver, 'day'} from PO Date)"), :id => 'date-delivered' unless order.delivered.nil? %>
 	<%= content_tag :li, ((content_tag :span, 'Due Date: ') + order.pay_until.strftime('%d-%b-%Y, %a')), :id => 'date-due' unless order.pay_until.nil? %>
 	<%= content_tag :li, ((content_tag :span, 'Paid: ') + order.paid.strftime('%d-%b-%Y, %a')), :id => 'date-paid' unless order.paid.nil? %>
-	<%= content_tag :li, ((content_tag :span, 'Overdue: ') + (pluralize order.days_overdue, 'day')), :id => 'overdue' if order.pay_until && order.days_overdue > 0 %>
+	<% if order.pay_until && order.paid.nil? %>
+		<%= content_tag :li, ((content_tag :span, 'Overdue: ') + (pluralize order.days_overdue, 'day')), :id => 'overdue' if order.days_overdue > 0 %>
+	<% elsif order.paid && order.paid_but_overdue %>
+		<%= content_tag :li, ((content_tag :span, 'Overdue: ') + (pluralize order.paid_but_overdue, 'day')), :id => 'overdue' if order.paid_but_overdue > 0 %>
+		<%= content_tag :li, 'Paid before due date!', :id => 'overdue' if order.paid_but_overdue <= 0 %>
+	<% end %>
 </ul>

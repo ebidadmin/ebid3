@@ -56,6 +56,7 @@ class OrdersController < ApplicationController
     find_order_and_entry
     @order_items = @order.order_items
     @order_items1 = @order.bids
+    # @line_items = @entry.line_items
     render :layout => 'print'
   end
 

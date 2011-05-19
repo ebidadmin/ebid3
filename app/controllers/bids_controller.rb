@@ -15,6 +15,7 @@ class BidsController < ApplicationController
     end
     
     @new_bids = Array.new
+    @existing_bids = Array.new
     @submitted_bids = params[:bids]
     @submitted_bids.each do |line_item, bidtypes|
       @line_item = LineItem.find(line_item)
@@ -32,9 +33,11 @@ class BidsController < ApplicationController
         		@new_bid.total = bid[1].to_f * @line_item.quantity.to_i
             @new_bid.bid_type = bid[0]
             @new_bid.car_brand_id = @entry.car_brand_id
+            @new_bid.bid_speed = (Time.now - @line_item.created_at).to_i
             @new_bids << @new_bid unless @new_bid.amount < 1
           else
-            @existing_bid.update_attributes!(:amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated')
+            @existing_bid.update_attributes!(:amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated', :bid_speed => (Time.now - @line_item.created_at).to_i)
+            @existing_bids << @existing_bid unless @existing_bid.amount < 1
           end
         end
       end
@@ -46,6 +49,9 @@ class BidsController < ApplicationController
       BidMailer.delay.bid_alert(@new_bids, @entry) 
       BidMailer.delay.bid_alert_to_admin(@new_bids, @entry, current_user)
       flash[:notice] = "Bid/s submitted. Thank you!"
+    end
+    if @existing_bids.compact.length > 0
+      BidMailer.delay.bid_alert_to_admin(@existing_bids, @entry, current_user, 1)
     end
     respond_to do |format|
       format.html { redirect_to :back }
