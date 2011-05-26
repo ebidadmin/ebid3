@@ -25,7 +25,7 @@
   <tr>
 		<td class="vehicle">	
 			<%= link_to truncate(entry.vehicle, :length => 35), entry %>
-			<%= content_tag :p, (entry.plate_no + (content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' if current_user != entry.user)).html_safe %>
+			<%= content_tag :p, (entry.plate_no + (content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' )).html_safe %>
 		</td>
 	  <td>
   	<% fees.group_by(&:order).each do |order, fees| %>

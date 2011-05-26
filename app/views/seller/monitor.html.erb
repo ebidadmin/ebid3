@@ -21,7 +21,7 @@
 		<td class="vehicle">	
       <%= content_tag :p, (content_tag :strong, truncate(entry.vehicle, :length => 30)).html_safe %>
 			<%= content_tag :p, entry.plate_no  %>
-			<%= content_tag :p, "Status: #{display_status(entry)}".html_safe  %>
+			<%= content_tag :p, display_status(entry), :class => 'instruction'  %>
 			<%= content_tag :p, (link_to '[view details]', seller_show_path(:id => entry.id)) %>
 		</td>
 	  <td id='td-two'>
@@ -33,7 +33,7 @@
 				<% for bid in bids  %>
 					<div class="amount <%= bid.bid_type %>">
 						<%= content_tag :p, ph_currency(bid.amount) %>
-						<%= content_tag :p, "speed: " + distance_of_time_in_words(bid.bid_speed) %>
+						<%= content_tag :p, "speed: " + distance_of_time_in_words(bid.bid_speed), :class => 'instruction'   %>
 						<%= content_tag :p, bid.status, :class => "#{quote_class(bid.status)}"  %>
 					</div>
    			<% end %>

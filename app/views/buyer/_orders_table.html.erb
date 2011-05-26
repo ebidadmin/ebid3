@@ -23,7 +23,7 @@
 	 	</td>
 		<td>
       <%= content_tag :h5, 'Total: ' + ph_currency(order.order_total) %>
-		  <%= link_to "View PO", order %>
+		  <%= link_to "View PO", order, :class => 'button' %>
 		</td>
   	<td class='stat'>
   		<%= content_tag :p, 'Seller: ' + order.seller.profile.company.name, :class => 'instruction'  %>

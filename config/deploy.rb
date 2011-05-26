@@ -9,10 +9,10 @@ set :scm, :git
 # set :scm_username, 'chrism'
 # set :scm_password, 'Beanstalk21' 
 
-set :domain, "74.207.254.124"
+set :domain, "96.126.101.209"
 set :user, "root" 
 set :use_sudo, false
-set :deploy_to, "/srv/www/ebid.com.ph"
+set :deploy_to, "/srv/www/ebidlabs.com"
 ssh_options[:forward_agent] = true
 set :branch, "master"
 set :git_shallow_clone, 1
@@ -20,9 +20,9 @@ set :git_enable_submodules, 1
 # set :rails_env, "development"
 set :rails_env, "production"
 
-role :web, "74.207.254.124"                          # Your HTTP server, Apache/etc
-role :app, "74.207.254.124"                          # This may be the same as your `Web` server
-role :db,  "74.207.254.124", :primary => true        # This is where Rails migrations will run
+role :web, "96.126.101.209"                          # Your HTTP server, Apache/etc
+role :app, "96.126.101.209"                          # This may be the same as your `Web` server
+role :db,  "96.126.101.209", :primary => true        # This is where Rails migrations will run
 
 
 

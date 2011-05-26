@@ -60,8 +60,8 @@ class AdminController < ApplicationController
       @search = bids.search(params[:search])
     end
     @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
-    # render 'bids/index' 
-    render 'seller/monitor' 
+    render 'bids/index' 
+    # render 'seller/monitor' 
   end
   
   def orders

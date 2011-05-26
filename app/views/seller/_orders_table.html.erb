@@ -23,7 +23,7 @@
 	 	</td>
 		<td>
       <%= content_tag :h5, 'Total: ' + ph_currency(order.order_total) %>
-		  <%= link_to "View PO", order unless order.seller_confirmation == false %>
+		  <%= link_to "View PO", order, :class => 'button' unless order.seller_confirmation == false %>
 		</td>
   	<td class='stat'>
   		<%- unless order.seller_confirmation == false -%>

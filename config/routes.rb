@@ -13,7 +13,7 @@ Ebid::Application.routes.draw do
 
   resources :comments
 
-  devise_for :users, :path => :account
+  # devise_for :users, :path => :account
 
   match 'users/:user_id/entries(-:status(/:page))' => 'entries#index', :as => :user_entries, :via => :get
   resources :users do

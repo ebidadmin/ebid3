@@ -153,7 +153,7 @@ class Entry < ActiveRecord::Base
         end
       end
     elsif (buyer_status == "For Decision" || buyer_status == "For-Decision" || buyer_status == "Ordered-IP" || buyer_status == "Declined-IP")
-      deadline = bid_until + 1.week unless bid_until.nil?
+      deadline = bid_until + 3.days unless bid_until.nil?
       if Date.today > deadline #&& expired_at.nil?
         update_attributes(:chargeable_expiry => true, :expired => Date.today)
         line_items.each do |line_item|

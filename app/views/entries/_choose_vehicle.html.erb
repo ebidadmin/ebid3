@@ -1,7 +1,7 @@
 <%#= f.error_messages %>
 <div class="full-column">
   <%= f.label :vehicle %><br>  
-	<%= f.select :year_model, (Date.today.year-30..Date.today.year).to_a.reverse %>			
+	<%= f.select :year_model, (Date.today.year-30..Date.today.year).to_a.reverse, :selected => Date.today.year %>			
   <%= f.grouped_collection_select :car_brand_id,  @car_origins, :car_brands, :name, :id, :name, {:include_blank => 'Select Brand'} %>
 	<span id="car_model_field">
 	<%= f.collection_select :car_model_id, CarModel.all, :id, :name, {:include_blank => 'Select Model'} %>
