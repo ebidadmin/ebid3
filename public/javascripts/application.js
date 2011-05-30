@@ -18,33 +18,7 @@ $(function() {
 	$('select#seller').bind('change', function() { window.location.pathname = $(this).val() });
 	$('select#buyer').bind('change', function() { window.location.pathname = $(this).val() });
 	
-	$("#entry_submit").bind("click", function() {
+	$("#entry_submit, .pagination a").bind("click", function() {
     $(".spinner").toggle() ;
 	});
-
-	$('#navigation').tabs();
-	// $("#navigation a").bind("click", function() {
-	//     $(".spinner").toggle() ;
-	// });
-
-	// $(".pagination a").bind("click", function() {
-	//     $(".spinner").toggle() ;
-	// });
-
 });
-
-// jQuery.ajaxSetup({ 
-//   'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
-// })
-// 
-// jQuery.fn.submitWithAjax = function() {
-//   this.submit(function() {
-//     $.post(this.action, $(this).serialize(), null, "script");
-//     return false;
-//   })
-//   return this;
-// };
-// 
-// $(document).ready(function() {
-//   $("#new_review").submitWithAjax();
-// })

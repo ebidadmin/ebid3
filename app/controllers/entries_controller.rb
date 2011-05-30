@@ -57,7 +57,7 @@ class EntriesController < ApplicationController
   
   def edit
     session['referer'] = request.env["HTTP_REFERER"]
-    if current_user.has_role?('admin')
+    if current_user.has_role?('admin') || current_user.has_role?('powerbuyer')
       @entry = Entry.find(params[:id])
     else
       @entry = current_user.entries.find(params[:id])
@@ -69,7 +69,7 @@ class EntriesController < ApplicationController
   end
   
   def update
-    if current_user.has_role?('admin')
+    if current_user.has_role?('admin') || current_user.has_role?('powerbuyer')
       @entry = Entry.find(params[:id])
     else
       @entry = current_user.entries.find(params[:id])

@@ -49,7 +49,7 @@
 
 /* BUYER & SUPPLIER - DASHBOARD
 ---------------------------------------------------------------------- */
-.dash { display: inline; float: left; margin-right: 3%; width: 31.2%; }
+.dash { display: inline; float: left; margin-right: 2%; width: 31.2%; }
 .dash.last { margin-right: 0; }
 .dash.notices { width: 65%; }
 .dash h3 { background-color: #e5e5e5; padding: 8px 0; text-align: center; }
@@ -153,10 +153,10 @@ table#monitor-bids td .amount { clear: both; margin-left: 0; }
 #supplier-bids .part { clear: both; float: left; margin-bottom: 5px; width: 40%; }
 #supplier-bids .bid-group { float: left; margin-left: 2%; margin-bottom: 5px; position: relative; width: 58%; }
 #supplier-bids td .bid-group { min-height: 4.5em; }
-#supplier-bids .amount { width: 130px;}
-#supplier-bids .original { clear: both; position: absolute; left: 4px; top: 0; }
-#supplier-bids .replacement { left: 142px; position: absolute; top: 0; }
-#supplier-bids .surplus { left: 278px; position: absolute; top: 0; }
+#supplier-bids .amount { width: 130px; }
+#supplier-bids .original { clear: both; position: absolute; left: 4px;  }
+#supplier-bids .replacement { left: 142px; position: absolute;  }
+#supplier-bids .surplus { left: 278px; position: absolute;  }
 #supplier-bids .stat { text-align: center; }
 /* SUPPLIER - ORDERS
 ---------------------------------------------------------------------- */
@@ -311,8 +311,8 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 /* PURCHASE ORDER
 ---------------------------------------------------------------------- */
-.first { float: left; overflow: hidden; width: 460px; min-height: 200px;  margin: 0 10px 20px 0;  }
-.second { float: right; width: 460px; border-left: 1px solid #999; padding-left: 20px; margin-bottom: 1.5em;}
+.first { float: left; overflow: hidden; width: 458px; min-height: 200px;  margin: 0 10px 20px 0;  }
+.second { float: right; width: 458px; border-left: 1px solid #999; padding-left: 20px; margin-bottom: 1.5em;}
 .first h2, .second h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999; }
 .first .who { color: #C00; }
 .first .vehicle-set { width: 100%; margin-bottom: 2em; }

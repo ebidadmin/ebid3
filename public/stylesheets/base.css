@@ -76,7 +76,7 @@ input[type="submit"]:hover, input[type="button"]:hover, #content-main  a.button:
 input[type="submit"]:active, input[type="button"]:active, #content-main a.button:active { -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); color: #A9C08C; margin-top: 2px; }*/
 input#datepicker { margin-right: 10px; }
 
-input[type="submit"], input[type="button"], #content-main a.button, #header a.button, .button {
+input[type="submit"], input[type="button"], #content-main a.button, #header a.button, .button, form.formtastic input[type="submit"] {
     background: #5C5C5C url(../images/btn_bkg.png) repeat-x scroll 0 0;
     border: medium none;
     border-radius: 7px 7px 7px 7px;
@@ -93,7 +93,8 @@ input[type="submit"], input[type="button"], #content-main a.button, #header a.bu
     text-decoration: none;
     text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.3);
 }
-input[type="submit"]:hover, input[type="button"]:hover, #content-main  a.button:hover,.button:hover {
+input[type="submit"], input[type="button"], form.formtastic input[type="submit"] { padding: 10px 15px; }
+input[type="submit"]:hover, input[type="button"]:hover, #content-main  a.button:hover,.button:hover, form.formtastic input[type="submit"]:hover {
     background-color: #D02200;
     text-decoration: none;
 }
@@ -129,7 +130,7 @@ table tr.accept-decline { border-bottom: none; }
 body { border-top: 5px solid #CCC; font: normal 12px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif; padding: 0px; background: #911D00; }
 #top { background: white; }
 #top .container { padding-bottom: 20px; }
-.container { margin: 0 auto; width: 960px; background: transparent; position: relative; overflow: hidden; }
+.container { margin: 0 auto; width: 960px;  position: relative; overflow: hidden; }
 #content-main { clear: both; padding: 10px 0; min-height: 200px; position: relative; }
 .box { background: #ddd; padding: 20px; -moz-box-shadow: 0 0 4px #999; -webkit-box-shadow: 0 0 4px #999; -webkit-transition: all 0.1s ease-out; text-align: center; }
 hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; margin: 20px 0; border: none; }
@@ -215,9 +216,17 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
   left: 0;
   opacity: 0.75;
 }
-.spinner span { background: url('/images/shadowbox/loading.gif') no-repeat;
-color:#fff; display:inline-block; font-weight:200; font-size:16px; padding-left:34px; position: fixed; top: 45%; left: 45%; }
 
+.spinner img { z-index: 100;
+  position: relative;
+  top: 40%;
+  left: 45%;
+  background-color: #333;
+  background-color: rgba(0, 0, 0, 0.70);
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  padding: 50px; }
+  
 #print-preview {
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -255,3 +264,4 @@ color:#fff; display:inline-block; font-weight:200; font-size:16px; padding-left:
 	table .bid-box { background-color: none; }
 	table#item-bids { font-size: 1.5em; }
 }
+

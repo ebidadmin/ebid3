@@ -66,7 +66,7 @@ class SellerController < ApplicationController
     end
     company = current_user.company
     # unless @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
-    unless @entry.user.company.friends.include?(company)
+    unless @entry.user.company.friends.include?(company) || current_user.has_role?('admin')
       flash[:error] = "Sorry, <strong>#{company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this.".html_safe
       redirect_to :back
     end 

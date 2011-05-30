@@ -34,7 +34,7 @@
 					<div class="amount <%= bid.bid_type %>">
 						<%= content_tag :p, ph_currency(bid.amount) %>
 						<%= content_tag :p, "speed: " + distance_of_time_in_words(bid.bid_speed), :class => 'instruction'   %>
-						<%= content_tag :p, bid.status, :class => "#{quote_class(bid.status)}"  %>
+						<%= content_tag :p, bid.bid_type, :class => "#{quote_class(bid.status)}"  %>
 					</div>
    			<% end %>
 				</div>
