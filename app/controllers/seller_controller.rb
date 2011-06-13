@@ -12,35 +12,86 @@ class SellerController < ApplicationController
     # @missed_percentage = 100 - @bid_percentage
     # @order_items = OrderItem.order_seller_id_eq(current_user).metered.count
     # @order_items_percentage = (@order_items.to_f / @bids_count.to_f) * 100
-    @own_bids = current_user.bids.metered
-    @days = (Time.now.to_date - '2011-04-16'.to_date).to_f
-    @average = (@own_bids.count/@days).round(2)
-    @line_items = LineItem.metered.count
-    @bided = @own_bids.collect(&:line_item_id).uniq.count
-    @missed = @line_items - @bided
-    @orig = @own_bids.where(:bid_type => 'original').count
-    @rep = @own_bids.where(:bid_type => 'replacement').count
-    @surp = @own_bids.where(:bid_type => 'surplus').count
-    @ordered = OrderItem.order_seller_id_eq(current_user).metered.count
-    @cancelled = @own_bids.where("bids.status LIKE ?", "%Cancelled%").count
-    @pending = @own_bids.where(:status => 'For-Decision').count
-    @declined = @own_bids.where(:status => 'Declined').count
-    @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired']).count
-    @new = @own_bids.where(:status => ['Submitted', 'Updated']).count
+    @line_items = LineItem.scoped
+      @li_all = @line_items.count
+      @li_m = @line_items.metered.count
+      @li_f = @line_items.ftm.count
+    @own_bids = current_user.bids
+      @ob_all = @own_bids.collect(&:line_item_id).uniq.count
+      @ob_all_pct = (@ob_all.to_f / @li_all.to_f) * 100
+      @ob_m = @own_bids.metered.collect(&:line_item_id).uniq.count
+      @ob_m_pct = (@ob_m.to_f / @li_m.to_f) * 100
+      @ob_f = @own_bids.ftm.collect(&:line_item_id).uniq.count
+      @ob_f_pct = (@ob_f.to_f / @li_f.to_f) * 100
+    @missed = @li_all -  @ob_all
+      @msd_all_pct = (@missed.to_f / @li_all.to_f) * 100
+      @msd_m = @li_m - @ob_m
+      @msd_m_pct = (@msd_m.to_f / @li_m.to_f) * 100
+      @msd_f = @li_f - @ob_f
+      @msd_f_pct = (@msd_f.to_f / @li_f.to_f) * 100
+    @total_bids =  @own_bids.count
+      @tb_m = @own_bids.metered.count
+      @tb_f = @own_bids.ftm.count
+    @orig = @own_bids.where(:bid_type => 'original')
+      @orig_all = @orig.count
+      @orig_m = @orig.metered.count
+      @orig_f = @orig.ftm.count
+    @rep = @own_bids.where(:bid_type => 'replacement')
+      @rep_all = @rep.count
+      @rep_m = @rep.metered.count
+      @rep_f = @rep.ftm.count
+    @surp = @own_bids.where(:bid_type => 'surplus')
+      @surp_all = @surp.count
+      @surp_m = @surp.metered.count
+      @surp_f = @surp.ftm.count
+    @ordered = OrderItem.order_seller_id_eq(current_user)
+    # @ordered = Order.seller_id_eq(current_user)
+    # @ordered = @own_bids.where(:status => ['Ordered', 'For-Delivery', 'Delivered', 'Closed'])
+    # @ordered = @own_bids.where('bids.order_id IS NOT NULL')
+      @ordered_all = @ordered.count
+      @ordered_all_pct = (@ordered_all.to_f / @ob_all.to_f) * 100
+      @ordered_m = @ordered.metered.count
+      @ordered_m_pct = (@ordered_m.to_f / @ob_m.to_f) * 100
+      @ordered_f = @ordered.ftm.count
+      @ordered_f_pct = (@ordered_f.to_f / @ob_f.to_f) * 100
+    @cancelled = @ordered.where("status LIKE ?", "%Cancelled%")
+      @canc_all = @cancelled.count
+      @canc_m = @cancelled.metered.count
+      @canc_f = @cancelled.ftm.count
+    @pending = @own_bids.where(:status => 'For-Decision')
+      @pend_all = @pending.count
+      @pend_m = @pending.metered.count
+      @pend_f = @pending.ftm.count
+    @declined = @own_bids.where(:status => 'Declined')
+      @decl_all = @declined.count
+      @decl_m = @declined.metered.count
+      @decl_f = @declined.ftm.count
+    @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired'])
+      @lose_all = @lose.count
+      @lose_m = @lose.metered.count
+      @lose_f = @lose.ftm.count
+    @new = @own_bids.where(:status => ['Submitted', 'Updated'])
+      @new_all = @new.count
+      @new_m = @new.metered.count
+      @new_f = @new.ftm.count
+    @days_m = (Time.now.to_date - '2011-04-16'.to_date).to_f
+    @average_m = (@tb_m/@days_m).round(2)
+    @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
+    @average_f = (@tb_f/@days_f).round(2)
     
-    orders = Order.by_this_seller(current_user)
-    @new_orders = orders.recent.collect(&:order_total).sum
-    @total_delivered = orders.total_delivered.collect(&:order_total).sum
-    @within_term = orders.within_term.collect(&:order_total).sum
-    @within_term_percent = (@within_term.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @overdue = orders.overdue.collect(&:order_total).sum
-    @overdue_percent = (@overdue.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @paid_pending = orders.paid.payment_pending.collect(&:order_total).sum
-    @paid_pending_percent = (@paid_pending.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @paid = orders.paid.payment_valid.collect(&:order_total).sum
-    @paid_percent = (@paid.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @closed = orders.closed.collect(&:order_total).sum
-    @closed_percent = (@closed.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    # orders = Order.by_this_seller(current_user)
+    # @new_orders = orders.recent.collect(&:order_total).sum
+    # @total_delivered = orders.total_delivered.collect(&:order_total).sum
+    # @within_term = orders.within_term.collect(&:order_total).sum
+    # @within_term_percent = (@within_term.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    # @overdue = orders.overdue.collect(&:order_total).sum
+    # @overdue_percent = (@overdue.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    # @paid_pending = orders.paid.payment_pending.collect(&:order_total).sum
+    # @paid_pending_percent = (@paid_pending.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    # @paid = orders.paid.payment_valid.collect(&:order_total).sum
+    # @paid_percent = (@paid.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    # @closed = orders.closed.collect(&:order_total).sum
+    # @closed_percent = (@closed.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
   end
   
   def hub
@@ -130,13 +181,14 @@ class SellerController < ApplicationController
   def fees
     # raise params.to_yaml
     @title = "Market Fees for Paid Orders"
-    @sort_order =" date PO was paid - descending order"
+    # @sort_order =" date PO was paid - descending order"
     if params[:start]
       @all_market_fees = Fee.created_at_gte(params[:start]).ordered.by_this_seller(current_user)
       @start_date = params[:start]
     else
       @all_market_fees = Fee.ordered.metered.by_this_seller(current_user)
       @start_date = '2011-04-16'
+      @end_date = Date.today #'2011-05-31'
     end
     @search = @all_market_fees.search(params[:search])
     @market_fees = @search.inclusions.with_orders.paginate :page => params[:page], :per_page => 30
