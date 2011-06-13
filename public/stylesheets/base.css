@@ -210,7 +210,7 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 .spinner {
   height: 100%;
   width: 100%;
-  background: #060606 center center; 
+  /*background: #060606 center center;*/ 
   position: fixed;
   top: 0;
   left: 0;

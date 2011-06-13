@@ -27,7 +27,12 @@ class User < ActiveRecord::Base
 
   scope :active, where('current_sign_in_at > ?', 24.hours.ago).order('current_sign_in_at DESC')
   
-  validates_presence_of :username, :password, :password_confirmation, :email
+  validates_presence_of :username, :email
+  validates_presence_of [:password, :password_confirmation], :if => :password_required?
+  
+  def password_required? 
+    encrypted_password.blank? || !password.blank?
+  end
   
   def has_role?(rolename) 
     self.roles.find_by_name(rolename) ? true : false

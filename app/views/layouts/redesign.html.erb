@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      <%= content_for?(:title) ? "E-Bid Inc. - The Philippines' Vehicle Parts Auction Hub | " + yield(:title) : "E-Bid Inc. - The Philippines' Vehicle Parts Auction Hub" %>
+    </title>
+		<%= stylesheet_link_tag 'application', :media => "all" %>
+    <%= csrf_meta_tag %>
+		<link rel="shortcut icon" href="/images/base/favicon.ico" />
+		<%= yield(:head) %>
+  </head>
+
+  <body>
+    
+         <%= yield %>
+  </body>
+</html>

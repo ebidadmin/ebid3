@@ -25,3 +25,42 @@
 <%#= dash_entry_format("bids", "Ordred", nil, nil, nil, nil, 'highlight' ) %>
 <%= dash_entry_format("missed-oppty", "Missed opportunity", percentage(@missed_percentage), (number_with_delimiter @missed_count) ) %>
 <%= dash_entry_format("order-items2", "Parts Ordered", "#{percentage(@order_items_percentage)} of what you bided on" , (number_with_delimiter @order_items), nil, nil, 'highlight'  ) %>
+
+
+
+<ul class='supplier dash'>
+  <h3><%= current_user.username.upcase %>'s Activity (since 16 Apr 2011)</h3>
+	<%= dash_entry_format("ratings", "Your performance rating", ('based on ' + (link_to (pluralize @ratings.count, 'rating'), user_ratings_path(current_user))).html_safe, star_images(@ratings.average('stars').to_f) ) %>
+	<%= dash_entry_format("last-login", "Last sign-in", "#{time_ago_in_words @last_activity} ago",  @last_activity.strftime('%b %d %R') ) %>
+	<%= dash_entry_format("last-bid", "Last bid", "#{time_ago_in_words @last_bid} ago",  @last_bid.strftime('%b %d %R') ) unless @last_bid.nil? %>
+	<%= dash_entry_format("total-items", "Total parts requested", nil,  (number_with_delimiter @line_items) ) %>
+	<%= dash_entry_format("total-items", "Parts you bidded on", nil,  (number_with_delimiter @bided) ) %>
+	<%= dash_entry_format("last-bid", "Missed opportunity", nil,  (number_with_delimiter @missed) ) %>
+	<%= dash_entry_format("last-bid", "Total Bids Submitted", nil,  (number_with_delimiter @own_bids.count) ) %>
+	<%= dash_entry_format("total-bided", "Original", nil,  (number_with_delimiter @orig) ) %>
+	<%= dash_entry_format("total-bided", "Replacement", nil,  (number_with_delimiter @rep) ) %>
+	<%= dash_entry_format("missed-oppty", "Surplus", nil,  (number_with_delimiter @surp) ) %>
+	<%= dash_entry_format("total-bided", "Ordered", nil,  (number_with_delimiter @ordered) ) %>
+	<%= dash_entry_format("total-bided", "Ordered but cannot supply", nil,  (number_with_delimiter @cancelled) ) %>
+	<%= dash_entry_format("total-bided", "Declined", nil,  (number_with_delimiter @declined) ) %>
+	<%= dash_entry_format("total-bided", "Lose", nil,  (number_with_delimiter @lose) ) %>
+	<%= dash_entry_format("total-bided", "Pending", nil,  (number_with_delimiter @pending) ) %>
+	<%= dash_entry_format("missed-oppty", "New", nil,  (number_with_delimiter @new) ) %>
+	<%= dash_entry_format("total-items", "Metered Days", nil,  (pluralize(@days.to_i, 'day')) ) %>
+	<%= dash_entry_format("last-bid", "Average Bids", nil,  "#{@average} per day" ) %>
+</ul>
+<ul class='supplier dash last'>
+  <h3>Orders</h3>
+	<%= dash_entry_format("new-orders", "New POs", nil,  ph_currency(@new_orders), seller_orders_path ) %>
+	<%= dash_entry_format("delivered-orders", "Total Delivered", nil,  ph_currency(@total_delivered), seller_payments_path ) %>
+	<%= dash_entry_format("within-term", "Within Credit Term", percentage(@within_term_percent),  ph_currency(@within_term) ) %>
+	<%= dash_entry_format("overdue", "Overdue", percentage(@overdue_percent),  ph_currency(@overdue) ) %>
+	<%= dash_entry_format("paid-pending", "Paid (needs confirmation)", percentage(@paid_pending_percent),  ph_currency(@paid_pending) ) %>
+	<%= dash_entry_format("paid", "Paid (needs rating)", percentage(@paid_percent),  ph_currency(@paid) ) %>
+	<%= dash_entry_format("closed", "Closed", percentage(@closed_percent),  ph_currency(@closed) ) %>
+</ul>
+<p class="page-links">
+<%= link_to "Place Bids", seller_hub_path(current_user, :brand => 'all'), :class => 'button' %>
+<%= link_to "Monitor Bids", seller_monitor_path, :class => 'button' %>
+<%= link_to "Check Orders", seller_orders_path, :class => 'button' %>
+</p>

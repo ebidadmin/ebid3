@@ -6,8 +6,8 @@
 
 <% elsif current_page? buyer_online_path %>
 
-  <% if entry.bids.size > 1 && entry.created_at < 2.hours.ago  %>
-  	<%= link_to("Decide Now", decide_entry_path(entry), :confirm => 'Are you sure? This will take the entry offline. Bidding for this item will stop.') if entry.expired.blank? %>
+	<% if entry.bids.present? && Time.now > entry.created_at + 150.minutes  %>
+  	<%= link_to("Decide Now", decide_entry_path(entry), :confirm => 'Are you sure? This will take the entry offline. Bidding for this item will stop.') if entry.expired.blank?  %>
   <% end %>
 
 <% elsif current_page? buyer_results_path %>

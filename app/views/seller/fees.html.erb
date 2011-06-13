@@ -2,7 +2,7 @@
 
 <% content_for :subnav do %>
 	<%= form_tag seller_fees_path, :method => :get do  %>
-		Start Date: <%= text_field_tag :start, @start_date, :id => 'start' %>
+		For the period <%= text_field_tag :start, @start_date, :id => 'start', :size => 12 %>	to <%= text_field_tag :end, @end_date, :id => 'end', :size => 12 %>
 		<%= submit_tag "Search" %>
 	<% end %>
 <% end %>
@@ -20,44 +20,45 @@
 	<thead>
     <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
 		<th>
-	    <%= content_tag :div, 'Delivery', :class => 'po-delivery' %>
-	    <%= content_tag :div, 'Order Items', :class => 'part' %>
-	    <%= content_tag :div, 'Order Total', :class => 'amount-paid' %>
+	    <%= content_tag :div, 'Parts Ordered', :class => 'part' %>
+	    <%= content_tag :div, 'Amount Paid', :class => 'amount-paid' %>
+			<%= content_tag :div, 'Bidding Speed', :class => 'speed' -%>
+			<%= content_tag :div, 'Rate', :class => 'rate' -%>
 	    <%= content_tag :div, 'Market Fee', :class => 'fee' %>
 		</th>
 	</thead>
 	<% @market_fees.group_by(&:entry).each do |entry, fees| %>
   <tr>
 		<td class="vehicle">	
-      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), seller_show_path(:id => entry.id)) %>
+      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 30), seller_show_path(:id => entry.id)) %>
 			<%= content_tag :p, entry.plate_no  %>
 		</td>
 	  <td>
   	<% fees.group_by(&:order).each do |order, fees| %>
-			<div class="po-delivery">
-	      <%#= content_tag :p, 'Delivered: ' + order.delivered.strftime('%b %d'), :class => 'instruction'  unless order.delivered.nil? %>
-	      <%= content_tag :p, 'Paid: ' + order.paid.strftime('%b %d'), :class => 'instruction highlight'  unless order.paid.nil? %>	
-				<%= link_to "View PO # #{order.id}", order %>
-			</div>
-			<div class="fee-group">
-			<% for fee in fees %>
-		    <%= content_tag :div, "[ #{fee.line_item.quantity} ] " + fee.line_item.part_name, :class => 'part' %>
-		    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'amount-paid'  %>
-		    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
-				<%= content_tag :div, fee.seller.username, :class => 'seller instruction' -%>
-			<% end %>
+			<div class="po-group">
+				<% for fee in fees %>
+			    <%= content_tag :div, "[ #{fee.line_item.quantity} ] " + fee.line_item.part_name, :class => 'part' %>
+			    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'amount-paid'  %>
+					<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' -%>
+					<%= content_tag :div, percentage(fee.fee_rate), :class => 'rate instruction' -%>
+			    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
+					<%#= content_tag :div, fee.seller.username, :class => 'seller instruction' -%>
+					<%#= content_tag :div, fee.created_at.to_s(:short), :class => 'instruction' -%>
+				<% end %>
+				<%= link_to "View PO", order, :class => 'button' %>
 			</div>
 		<% end %>
 		</td>                          
 	</tr>
   <% end %>
 	<tr class="totals">
-	  <td></td>
+    <%= content_tag :td, 'Sub-Totals', :class => 'vehicle' %>
 	  <td>
-	    <%= content_tag :div, 'Sub-Totals', :class => 'po-delivery' %>
-			<div class="fee-group">
+			<div class="po-group">
 		    <%= content_tag :div, '', :class => 'part' %>
 		    <%= content_tag :div, (ph_currency @market_fees.collect(&:bid_total).sum), :class => 'amount-paid' %>
+		    <%= content_tag :div, '', :class => 'speed' %>
+		    <%= content_tag :div, '', :class => 'rate' %>
 		    <%= content_tag :div, (ph_currency @market_fees.collect(&:fee).sum), :class => 'fee' %>
 			</div>
 	  </td>
@@ -74,6 +75,8 @@
 		var dates = $( "#start, #end" ).datepicker({
 			dateFormat: "yy-mm-dd",
 			maxDate: 0,
+			changeMonth: true,
+			changeYear: true,
 			onSelect: function( selectedDate ) {
 				var option = this.id == "from" ? "minDate" : "maxDate",
 					instance = $( this ).data( "datepicker" ),

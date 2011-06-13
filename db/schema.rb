@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110518033036) do
+ActiveRecord::Schema.define(:version => 20110611023024) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -124,6 +124,10 @@ ActiveRecord::Schema.define(:version => 20110518033036) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "primary_role"
+    t.date     "trial_start"
+    t.date     "trial_end"
+    t.date     "metering_date"
+    t.decimal  "perf_ratio",        :precision => 5, :scale => 2
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -221,6 +225,8 @@ ActiveRecord::Schema.define(:version => 20110518033036) do
     t.date    "remitted"
     t.decimal "split_amount",      :precision => 10, :scale => 2
     t.date    "split_date"
+    t.integer "bid_speed"
+    t.decimal "fee_rate",          :precision => 5,  :scale => 3
   end
 
   add_index "fees", ["bid_id"], :name => "index_fees_on_bid_id"
@@ -265,6 +271,7 @@ ActiveRecord::Schema.define(:version => 20110518033036) do
     t.string   "source"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "bid_id"
   end
 
   add_index "order_items", ["line_item_id"], :name => "index_order_items_on_line_item_id"

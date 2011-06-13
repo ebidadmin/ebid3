@@ -21,4 +21,6 @@ $(function() {
 	$("#entry_submit, .pagination a").bind("click", function() {
     $(".spinner").toggle() ;
 	});
+	
+	// $("#jMenu").jMenu();
 });

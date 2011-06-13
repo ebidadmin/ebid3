@@ -2,11 +2,9 @@ class ApplicationController < ActionController::Base
   # include RoleSystem
   protect_from_forgery
   before_filter :authenticate_user!
+  # layout 'redesign'
 
   private
-    # def stored_location_for(resource_or_scope)
-    #   nil
-    # end
 
     def after_sign_in_path_for(resource_or_scope)
       if current_user.has_role?('admin')
@@ -21,6 +19,10 @@ class ApplicationController < ActionController::Base
         flash[:notice] = "User-privileges not established. Please contact the administrator." 
         root_path
       end
+    end
+
+    def after_sign_out_path_for(resource_or_scope)
+      new_user_session_path
     end
 
     def sign_out(resource_or_scope=nil)

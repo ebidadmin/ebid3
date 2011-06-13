@@ -3,7 +3,7 @@ module SellerHelper
   # helper for seller#main
   def percentage(computation)
     if computation > 0
-      number_to_percentage computation, :precision => 1
+      number_to_percentage computation, :precision => 2
     else
       nil
     end

@@ -14,7 +14,7 @@
   		<!-- <li><p class="inline-hints">New company? Add your company here -%></p></li> -->
   		<%= profile.input :first_name  %>
   		<%= profile.input :last_name %>
-  		<%= profile.input :rank, :label => 'Position', :collection => Rank.ascend_by_name, :hint => "Create a new position? Click #{link_to 'here', new_rank_path}" %>
+  		<%= profile.input :rank, :label => 'Position', :collection => Rank.ascend_by_name, :hint => "Create a new position? Click #{link_to 'here', new_rank_path}".html_safe %>
   		<!-- <li><p id="rank" class="inline-hints">
   		</p></li> -->
   		<%= profile.input :phone %>
@@ -41,15 +41,12 @@
 	<script type="text/javascript" charset="utf-8">
 	$(function() {
 		$('#datepicker').datepicker({ 
-				dateFormat: "yy-mm-dd",
+				dateFormat: "mm-dd-yy",
 				maxDate: 0,
 				showButtonPanel: true, 
-				showOn: "button",
-				buttonImage: "/images/calendar.gif",
-				buttonImageOnly: true,
 				changeMonth: true,
 				changeYear: true,
-				yearRange: '1945:2010'
+				yearRange: '1945:2011'
 		});
 	});
 	</script>

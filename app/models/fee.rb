@@ -57,4 +57,30 @@ class Fee < ActiveRecord::Base
     end
     f.save
   end
+  
+  def seller_discount
+    if bid.bid_speed < 4.hours
+      0.5
+    elsif bid.bid_speed <= 8.hours
+      0.25
+    else
+      0
+    end 
+  end
+  
+  def buyer_discount(base_rate)
+    unless bid.blank?
+      if bid.bid_speed < 4.hours
+        0
+      elsif bid.bid_speed <= 8.hours
+        base_rate * 0.25
+      elsif bid.bid_speed <= 16.hours
+        base_rate * 0.50
+      elsif bid.bid_speed > 16.hours
+        base_rate * 1.00
+      end 
+    else
+      0
+    end
+  end
 end

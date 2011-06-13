@@ -100,7 +100,7 @@ class AdminController < ApplicationController
   
   def buyer_fees
     @title = "Decline Fees"
-    @all_decline_fees = Fee.declined
+    @all_decline_fees = Fee.declined.metered
     @total_bids = Bid.count
     @percentage_declined = (@all_decline_fees.count.to_f/@total_bids.to_f) * 100
     if params[:buyer]
@@ -156,13 +156,13 @@ class AdminController < ApplicationController
   end
 
   def cleanup
-    entries = Entry.all
-    for entry in entries
-      entry.line_items_count = entry.line_items.count
-      entry.bids_count = entry.bids.count
-      entry.company_id = entry.user.company.id
-      entry.save!
-    end
+    # entries = Entry.all
+    # for entry in entries
+    #   entry.line_items_count = entry.line_items.count
+    #   entry.bids_count = entry.bids.count
+    #   entry.company_id = entry.user.company.id
+    #   entry.save!
+    # end
  
     # line_items = LineItem.all
     # for item in line_items
@@ -192,9 +192,27 @@ class AdminController < ApplicationController
     # all_orders.each do |order|
     #   order.update_attribute(:order_total, order.bids.collect(&:total).sum)
     # end
+
+    all_orders = Order.scoped.includes(:order_items)
+    all_orders.each do |order|
+      order.order_items_count = order.order_items.count
+      order.save!
+    end
     
     flash[:notice] = "Successful cleanup"
     redirect_to request.env["HTTP_REFERER"]
+  end
+
+  def change_status
+    # raise params.to_yaml
+    @entry = Entry.find(params[:id])
+    @line_items = @entry.line_items
+    status =  params[:admin_status]
+    if @entry.update_attribute(:buyer_status, status)
+      @entry.update_associated_status(status)
+      flash[:notice] = ("Changed the status to <strong>#{status}</strong>.").html_safe
+    end
+    redirect_to :back
   end
 
 end

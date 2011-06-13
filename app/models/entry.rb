@@ -102,6 +102,9 @@ class Entry < ActiveRecord::Base
           item.bids.update_all(:status => status) if bids
         end
       end
+    elsif status == "Online"
+      line_items.update_all(:status => status)
+      bids.update_all(:status => 'Submitted') if bids
     else
       line_items.update_all(:status => status)
       bids.update_all(:status => status) if bids

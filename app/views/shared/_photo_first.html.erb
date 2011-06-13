@@ -1,5 +1,7 @@
-<% if entry.photos.first.processing? %>
+<% if entry.photos.first && entry.photos.first.processing? %>
 	<%= image_tag '/images/processing_photo.png', :class => "photo", :alt => "Photo of #{entry.plate_no}" %>
+<% elsif entry.photos.blank? %>
+	<%= content_tag :p, 'No photos submitted', :class => "photo" %>
 <% else %>
    <%= image_tag entry.photos.first.photo.url(:tiny), :class => "photo", :alt => "Photo of #{entry.plate_no}" %>
 <% end %>

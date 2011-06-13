@@ -2,10 +2,12 @@ class OrderItem < ActiveRecord::Base
 
   belongs_to :entry
   belongs_to :line_item
+  belongs_to :bid
   belongs_to :order, :counter_cache => true
   has_one :car_part, :through => :line_item
   
   scope :metered, where('order_items.created_at >= ?', '2011-04-16')
+  scope :ftm, where('order_items.created_at >= ?', Time.now.beginning_of_month)
   
   def self.populate(order, user_bids)
     user_bids.each do |bid|

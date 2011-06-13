@@ -69,6 +69,7 @@ Ebid::Application.routes.draw do
   match 'admin/utilities' => 'admin#utilities', :as => :admin_utilities, :via => :get
   match 'admin/expire_entries' => 'admin#expire_entries', :as => :admin_expire_entries, :via => :get
   get 'admin/cleanup'
+  put 'admin/change_status'
 
   match 'buyer/:user_id/main' => 'buyer#main', :as => :buyer_main, :via => :get
   match 'buyer/:user_id/pending(/:page)' => 'buyer#pending', :as => :buyer_pending, :via => :get

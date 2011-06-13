@@ -10,6 +10,7 @@ class Bid < ActiveRecord::Base
   belongs_to :order
 
   has_one :fee
+  has_one :order_item
   has_one :diff
 
   validates :amount, :numericality => {:greater_than => 0}, :presence => true
@@ -20,7 +21,8 @@ class Bid < ActiveRecord::Base
   scope :declined, where(:status => 'Declined')#.order('declined DESC', 'entry_id DESC')
   
   scope :metered, where('bids.created_at >= ?', '2011-04-16')
-  
+  scope :ftm, where('bids.created_at >= ?', Time.now.beginning_of_month)
+    
   def self.for_this_buyer(user)
     where(:entry_id => user.entries).count
   end

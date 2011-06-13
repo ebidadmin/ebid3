@@ -59,7 +59,7 @@
 .dash-entry .count { position: absolute; right: 0; font-size: 18px; }
 .dash-entry .count.highlight { background-color: #FFF6BF; color: #C00; }
 #content-main .dash-entry .link { font-weight: normal; position: absolute; right: 50px; padding: 0 4px; opacity: 1; }
-.dash.supplier, .dash.admin, .dash.rating { width: 48%; }
+.dash.supplier, .dash.admin, .dash.rating { width: 49%; }
 .dash.supplier .dash-entry strong { width: 35%; }
 .dash.supplier #within-term, .dash.supplier #overdue, .dash.supplier #paid-pending, .dash.supplier #paid, .dash.supplier #closed, #total-bided, #missed-oppty, #order-items2 { padding-left: 25px; }
 #content-main .dash.supplier .dash-entry .link { right: 150px; }
@@ -165,7 +165,7 @@ table#monitor-bids td .amount { clear: both; margin-left: 0; }
 /* BUYER FEES
 ---------------------------------------------------------------------- */
 table .part, table .lowest-bid, table .fee, table .seller { display: inline; float: left; }
-table .lowest-bid, table .fee { margin-left: 10px; width: 140px; text-align: right; }
+table .lowest-bid/*, table .fee*/ { margin-left: 10px; width: 140px; text-align: right; }
 table td .fee { font-size: 1.2em; font-weight: bold; }
 
 table#buyer-fees td div { margin-bottom: 5px; height: 18px; line-height: 18px; }
@@ -190,20 +190,22 @@ table#seller-split .part { text-align: left; }
 /* SUPPLIER FEES
 ---------------------------------------------------------------------- */
 
-table .fee-group { float: left; }
-table .po-delivery, table .amount-paid { display: inline; float: left; }
-table .po-delivery { clear: both; width: 18%; text-align: center; }
-table#supplier-fees .part { margin-left: 15px; min-height: 18px; width: 200px;}
-table#supplier-fees td .part { clear: both; }
-table .amount-paid { margin-left: 10px; width: 140px; text-align: right; }
-table#supplier-fees td div { margin-bottom: 5px; line-height: 18px; }
-table#supplier-fees .vehicle { width: 25%; }
-table#supplier-fees .vehicle a { font-size: 1em; margin-left: -4px; }
-table#supplier-fees .seller { width: 35px; }
-table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; }
-
-/* DIFF TABLE
----------------------------------------------------------------------- */
+#supplier-fees th.vehicle, #supplier-fees th .part { text-align: left; }
+#supplier-fees .vehicle { width: 20%; }
+#supplier-fees .vehicle a { font-size: 1em; margin-left: -4px; }
+#supplier-fees .vehicle + td { width: 80%; }
+#supplier-fees .po-group a {  display: inline; float: right; margin-right: 0; }
+#supplier-fees .po-group { clear: both; margin-top: 10px; margin-bottom: 10px; overflow: hidden; }
+#supplier-fees .part, #supplier-fees .amount-paid, #supplier-fees .speed, #supplier-fees .rate, #supplier-fees .fee { display: inline; float: left; line-height: 18px; min-height: 18px; }
+#supplier-fees .part { clear: both; width: 25%;}
+#supplier-fees .amount-paid, #supplier-fees .fee, #supplier-fees .speed, #supplier-fees .rate { margin-left: 5px; text-align: right; }
+#supplier-fees .amount-paid, #supplier-fees .fee { width: 15%;  }
+#supplier-fees .speed { width: 20%; }
+#supplier-fees .rate { width: 10%; }
+table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
+ 
+ /* DIFF TABLE
+----------------------------------------------------------------------*/ 
 
 #diff .vehicle { width: 25%; }
 #diff .vehicle a { font-size: 1em; margin-left: -4px; }
@@ -312,7 +314,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 /* PURCHASE ORDER
 ---------------------------------------------------------------------- */
 .first { float: left; overflow: hidden; width: 458px; min-height: 200px;  margin: 0 10px 20px 0;  }
-.second { float: right; width: 458px; border-left: 1px solid #999; padding-left: 20px; margin-bottom: 1.5em;}
+.second { float: right; width: 450px; border-left: 1px solid #999; padding-left: 20px; margin-bottom: 1.5em;}
 .first h2, .second h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999; }
 .first .who { color: #C00; }
 .first .vehicle-set { width: 100%; margin-bottom: 2em; }
@@ -399,3 +401,5 @@ table#print-payments-list .stat { width: 25%; }
 
 #chnwyr { float: left; margin: 0 50px 20px 0; text-align: center; }
 #chnwyr img { border: 1px solid #CCC; padding: 5px; }
+
+#supplier-stats { width: 600px; text-align: right;}

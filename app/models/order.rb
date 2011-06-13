@@ -40,6 +40,9 @@ class Order < ActiveRecord::Base
   scope :overdue, delivered.where('pay_until < ?', Date.today)
   
   scope :for_auto_rating, where('ratings_count < ?', 2)
+
+  scope :metered, where('orders.created_at >= ?', '2011-04-16')
+  scope :ftm, where('orders.created_at >= ?', Time.now.beginning_of_month)
  
   def self.by_this_seller(user)
     where(:seller_id => user)

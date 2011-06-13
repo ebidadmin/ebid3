@@ -21,9 +21,9 @@ module EntriesHelper
 
   def display_status(entry)
     if entry.buyer_status == ("Edited" || "New" || "Online" || "For Decision" || "For-Decision") 
-      ("#{current_status_or_expired?(entry)} #{online_date_status(entry)} | Created: #{entry.created_at.strftime('%b %d, %a')}").html_safe
+      ("#{current_status_or_expired?(entry)} #{online_date_status(entry)} | Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')}").html_safe
     else
-      ("#{current_status_or_expired?(entry)} (Created: #{entry.created_at.strftime('%b %d, %a')})").html_safe
+      ("#{current_status_or_expired?(entry)} (Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')})").html_safe
     end
   end
 

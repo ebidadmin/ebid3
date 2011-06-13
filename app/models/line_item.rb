@@ -14,6 +14,7 @@ class LineItem < ActiveRecord::Base
   scope :without_bids, where('bids_count < 1')
 
   scope :metered, where('line_items.created_at >= ?', '2011-04-16')
+  scope :ftm, where('line_items.created_at >= ?', Time.now.beginning_of_month)
 
 	def part_name
 	  self.car_part.name
