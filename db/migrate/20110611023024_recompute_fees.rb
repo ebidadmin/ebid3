@@ -7,6 +7,7 @@ class RecomputeFees < ActiveRecord::Migration
     
     add_column :fees, :bid_speed, :integer
     add_column :fees, :fee_rate, :decimal, :precision => 5, :scale => 3
+    add_column :fees, :order_paid, :date
     
     for company in Company.all
       if company.primary_role == 2 # buyer
@@ -38,6 +39,7 @@ class RecomputeFees < ActiveRecord::Migration
           elsif ratio >= 80         
             fee.fee_rate = 2.0 - fee.seller_discount
           end
+          fee.order_paid = fee.order.paid
         else # Decline Fees
           ratio = fee.buyer_company.perf_ratio
           if ratio < 10
@@ -64,5 +66,6 @@ class RecomputeFees < ActiveRecord::Migration
     remove_column :companies, :metering_date
     remove_column :fees, :fee_rate
     remove_column :fees, :bid_speed
+    remove_column :fees, :order_paid
   end
 end

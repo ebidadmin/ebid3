@@ -1,56 +1,63 @@
 <% title "Supplier's Dashboard" %>
 
+
+<div class="aside">
+	<%= link_to "Place Bids", seller_hub_path(current_user, :brand => 'all'), :class => 'button' %>
+	<%= link_to "Monitor Bids", seller_monitor_path, :class => 'button' %>
+	<%= link_to "Check Orders", seller_orders_path, :class => 'button' %>
+</div>
+
 <table id="supplier-stats">
 	<%= content_tag :th, '' %>
 	<%= content_tag :th, 'All-Time' %>
 	<%= content_tag :th, 'Since 16 Apr 2011' %>
 	<%= content_tag :th, "This month<br> #{Time.now.strftime('%b %Y')}".html_safe %>
 	<tr>
-		<%= content_tag :td, 'Total parts requested' %>
+		<%= content_tag :td, 'Total parts requested', :class => 'label' %>
 		<%= content_tag :td, (number_with_delimiter @li_all) %>
 		<%= content_tag :td, (number_with_delimiter @li_m)  %>
 		<%= content_tag :td, (number_with_delimiter @li_f) %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Parts you bidded on' %>
+		<%= content_tag :td, 'Parts you bidded on', :class => 'label' %>
 		<%#= content_tag :td, (number_with_delimiter @ob_all) %>
 		<%= content_tag :td, "(#{percentage( @ob_all_pct)}) #{number_with_delimiter  @ob_all}"  %>
 		<%= content_tag :td, "(#{percentage( @ob_m_pct)}) #{number_with_delimiter  @ob_m}"  %>
 		<%= content_tag :td, "(#{percentage( @ob_f_pct)}) #{number_with_delimiter  @ob_f}"  %>
 	</tr>
-	<tr>
-		<%= content_tag :td, 'Missed opportunity' %>
+	<tr class='divide'>
+		<%= content_tag :td, 'Missed opportunity', :class => 'label' %>
 		<%#= content_tag :td, (number_with_delimiter @missed) %>
 		<%= content_tag :td, "(#{percentage( @msd_all_pct)}) #{number_with_delimiter  @missed}"  %>
 		<%= content_tag :td, "(#{percentage( @msd_m_pct)}) #{number_with_delimiter  @msd_m}"  %>
 		<%= content_tag :td, "(#{percentage( @msd_f_pct)}) #{number_with_delimiter  @msd_f}"  %>
 	</tr>
-	<tr>
-		<%= content_tag :td, 'Total Bids Submitted' %>
+	<tr class='divide'>
+		<%= content_tag :td, 'Total Bids Submitted', :class => 'label' %>
 		<%= content_tag :td, (number_with_delimiter @total_bids) %>
 		<%= content_tag :td, (number_with_delimiter @tb_m)  %>
 		<%= content_tag :td, (number_with_delimiter @tb_f)  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Original' %>
+		<%= content_tag :td, 'Original', :class => 'label indent' %>
 		<%= content_tag :td, (number_with_delimiter @orig_all) %>
 		<%= content_tag :td, (number_with_delimiter @orig_m)  %>
 		<%= content_tag :td, (number_with_delimiter @orig_f)  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Replacement' %>
+		<%= content_tag :td, 'Replacement', :class => 'label indent' %>
 		<%= content_tag :td, (number_with_delimiter @rep_all) %>
 		<%= content_tag :td, (number_with_delimiter @rep_m)  %>
 		<%= content_tag :td, (number_with_delimiter @rep_f)  %>
 	</tr>
-	<tr>
-		<%= content_tag :td, 'Surplus' %>
+	<tr class='divide'>
+		<%= content_tag :td, 'Surplus', :class => 'label indent' %>
 		<%= content_tag :td, (number_with_delimiter @surp_all) %>
 		<%= content_tag :td, (number_with_delimiter @surp_m)  %>
 		<%= content_tag :td, (number_with_delimiter @surp_f)  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Ordered from You' %>
+		<%= content_tag :td, 'Ordered from You', :class => 'label indent' %>
 		<%#= content_tag :td, (number_with_delimiter @ordered_all) %>
 		<%= content_tag :td, "(#{percentage( @ordered_all_pct)}) #{number_with_delimiter @ordered_all}"  %>
 		<%#= content_tag :td, (number_with_delimiter @ordered_m)  %>
@@ -59,45 +66,66 @@
 		<%= content_tag :td, "(#{percentage( @ordered_f_pct)}) #{number_with_delimiter @ordered_f}"  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Ordered but cannot supply' %>
+		<%= content_tag :td, 'Ordered but cannot supply', :class => 'label indent' %>
 		<%= content_tag :td, (number_with_delimiter @canc_all) %>
 		<%= content_tag :td, (number_with_delimiter @canc_m)  %>
 		<%= content_tag :td, (number_with_delimiter @canc_f)  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'For Decision' %>
+		<%= content_tag :td, 'For Decision', :class => 'label indent' %>
 		<%= content_tag :td, (number_with_delimiter @pend_all) %>
 		<%= content_tag :td, (number_with_delimiter @pend_m)  %>
 		<%= content_tag :td, (number_with_delimiter @pend_f)  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Declined' %>
+		<%= content_tag :td, 'Declined', :class => 'label indent' %>
 		<%= content_tag :td, (number_with_delimiter @decl_all) %>
 		<%= content_tag :td, (number_with_delimiter @decl_m)  %>
 		<%= content_tag :td, (number_with_delimiter @decl_f)  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Lose/Dropped/Expired' %>
+		<%= content_tag :td, 'Lose/Dropped/Expired', :class => 'label indent' %>
 		<%= content_tag :td, (number_with_delimiter @lose_all) %>
 		<%= content_tag :td, (number_with_delimiter @lose_m)  %>
 		<%= content_tag :td, (number_with_delimiter @lose_f)  %>
 	</tr>
-	<tr>
-		<%= content_tag :td, 'Newly Submitted' %>
+	<tr class='divide'>
+		<%= content_tag :td, 'Newly Submitted', :class => 'label indent' %>
 		<%= content_tag :td, (number_with_delimiter @new_all) %>
 		<%= content_tag :td, (number_with_delimiter @new_m)  %>
 		<%= content_tag :td, (number_with_delimiter @new_f)  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Metered Days' %>
+		<%= content_tag :td, 'Metered Days', :class => 'label' %>
 		<%= content_tag :td, '' %>
 		<%= content_tag :td, (pluralize(@days_m.to_i, 'day'))  %>
 		<%= content_tag :td, (pluralize(@days_f.to_i, 'day'))  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Average Number of Bids' %>
+		<%= content_tag :td, 'Average Number of Bids', :class => 'label' %>
 		<%= content_tag :td, '' %>
 		<%= content_tag :td, "#{@average_m} per day"  %>
 		<%= content_tag :td, "#{@average_f} per day"  %>
 	</tr>
 </table>
+
+<ul class='supplier dash right'>
+  <h3>Orders</h3>
+	<%= dash_entry_format("new-orders", "New POs", nil,  ph_currency(@new_orders), seller_orders_path ) %>
+	<%= dash_entry_format("delivered-orders", "Total Delivered", nil,  ph_currency(@total_delivered), seller_payments_path ) %>
+	<%= dash_entry_format("within-term", "Within Credit Term", percentage(@within_term_percent),  ph_currency(@within_term) ) %>
+	<%= dash_entry_format("overdue", "Overdue", percentage(@overdue_percent),  ph_currency(@overdue) ) %>
+	<%= dash_entry_format("paid-pending", "Paid (needs confirmation)", percentage(@paid_pending_percent),  ph_currency(@paid_pending) ) %>
+	<%= dash_entry_format("paid", "Paid (needs rating)", percentage(@paid_percent),  ph_currency(@paid) ) %>
+	<%= dash_entry_format("closed", "Closed", percentage(@closed_percent),  ph_currency(@closed) ) %>
+</ul>
+
+<% content_for :aside do %>
+	<ul id='own-info'>
+		<%= content_tag :h3, 'Your Profile' %>
+		<%= content_tag :li, "Your rating: #{star_images(@ratings.average('stars').to_f)}".html_safe %>
+		<%= content_tag :li, "Last sign-in: #{@last_activity.strftime('%b %d, %Y %R')}".html_safe %>
+		<%= content_tag :li, "Last bid: #{@last_bid.strftime('%b %d, %Y %R')}".html_safe unless @last_bid.nil? %>
+		<%= content_tag :li, "" %>
+	</ul>
+<% end %>

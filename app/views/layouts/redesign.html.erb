@@ -11,7 +11,41 @@
   </head>
 
   <body>
-    
-         <%= yield %>
+		<div class='container'>
+				
+				<ul class='nav main'>
+					<%= content_tag :li, (link_to 'Dashboard', seller_main_path(current_user)) %> 
+					<li>
+						<%= link_to 'Online Bidding', seller_hub_path(current_user, :brand => 'all') %>
+						<ul>
+							<%= content_tag :li, (link_to 'Place Bids', seller_hub_path(current_user, :brand => 'all')) %> 
+							<%= content_tag :li, (link_to 'Monitor Bids', seller_monitor_path(current_user)) %> 
+						</ul>
+					</li>
+					<%= content_tag :li, (link_to 'New Orders', seller_orders_path(current_user)) %>
+					<li>
+						<%= link_to 'Payments', seller_payments_path(current_user) %>
+						<ul>
+							<%= content_tag :li, (link_to 'Track Payments', seller_payments_path(current_user)) %>
+							<%= content_tag :li, (link_to 'Paid', seller_feedback_path(current_user)) %>
+							<%= content_tag :li, (link_to 'Closed', seller_closed_path(current_user)) %>
+						</ul>
+					</li> 
+					<li>
+						<%= link_to 'Fees', seller_fees_path(current_user) %>
+						<ul>
+							<%= content_tag :li, (link_to 'Market Fees', seller_fees_path(current_user)) %>
+							<%= content_tag :li, (link_to 'Decline Fees', seller_declines_path(current_user)) %>
+						</ul>
+					</li>
+				</ul>
+				
+			<div class='main'>
+	      <%= yield %>
+			</div>
+			<div class='aside'>
+	      <%= yield :aside %>
+			</div>
+		</div>
   </body>
 </html>

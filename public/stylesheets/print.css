@@ -10,6 +10,7 @@ li { list-style-type: none;  }
 #print-nav li a:hover { color: #3e4044; background-color: #e5e5e5; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
 
 .container { clear: both; margin: 15px auto; width: 800px; background: transparent; position: relative; overflow: hidden; }
+.instruction { font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; }
 
 .vehicle-set { float: left; margin-bottom: 20px; width: 60%; }
 .vehicle-set li { clear: both;  }
@@ -59,6 +60,18 @@ table p { margin: 0 0 5px; }
 #del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
 #order .price { width: 20%; text-align: right; padding: 10px 8px 10px 0; }
 #order .selection-total { font-weight: bold; font-size: 1.2em; text-align: right; }
+
+/* FEES
+---------------------------------------------------------------------- */
+
+#supplier-fees .vehicle { text-align: left; width: 25%;}
+#supplier-fees .part, #supplier-fees .amount-paid, #supplier-fees .speed, #supplier-fees .rate, #supplier-fees .fee { display: inline; float: left; line-height: 18px; min-height: 18px; }
+#supplier-fees .part { clear: both;  text-align: left; width: 30%;}
+#supplier-fees .amount-paid, #supplier-fees .fee, #supplier-fees .speed, #supplier-fees .rate { margin-left: 5px; text-align: right; }
+#supplier-fees .amount-paid, #supplier-fees .fee { width: 18%;  }
+#supplier-fees .speed { width: 20%; }
+#supplier-fees .rate { width: 10%; }
+table .totals { font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
 
 @media print {
 	#print-header, #print-nav, form, #confirmation { display: none; }

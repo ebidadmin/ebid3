@@ -151,4 +151,32 @@ class ApplicationController < ActionController::Base
       @sellers_path = request_path(:seller => params[:seller])
     end
     
+    # for seller fees
+    def start_date
+      if params[:start]
+        @start_date = params[:start].to_date
+      else
+        @start_date = '2011-04-16'.to_date
+      end
+    end
+    
+    def end_date
+      if params[:end]
+        @end_date = params[:end].to_date
+      else
+        @end_date = Date.today
+      end
+    end
+    
+    def seller_company
+      if current_user.has_role?('admin')
+        if params[:seller]
+          @seller_company = Company.find(params[:seller]).name
+        else
+          @seller_company = 'All Suppliers'
+        end
+      else
+        @seller_company = current_user.company_name
+      end
+    end
 end

@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(:version => 20110611023024) do
     t.date    "split_date"
     t.integer "bid_speed"
     t.decimal "fee_rate",          :precision => 5,  :scale => 3
+    t.date    "order_paid"
   end
 
   add_index "fees", ["bid_id"], :name => "index_fees_on_bid_id"

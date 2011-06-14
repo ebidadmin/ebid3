@@ -8,7 +8,7 @@ class Fee < ActiveRecord::Base
   belongs_to :order
   belongs_to :bid
   
-  scope :ordered, where(:fee_type => 'Ordered').order('created_at DESC', 'entry_id DESC')
+  scope :ordered, where(:fee_type => 'Ordered').order('order_paid DESC')
   scope :declined, where(:fee_type => ['Declined', 'Expired']).order('created_at DESC', 'entry_id DESC')
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], [:line_item => :car_part], :seller )
   scope :with_orders, includes(:order)
@@ -23,9 +23,27 @@ class Fee < ActiveRecord::Base
       scoped  
     end  
   end  
+  
+  def self.date_range(start_date = nil, end_date = nil)
+    if end_date.present?
+      where(:order_paid => start_date..end_date)
+    elsif start_date.present?
+      where(:order_paid => start_date..Date.today)
+    else
+      where('fees.order_paid >= ?', '2011-04-16')
+    end
+  end
 
-  def self.by_this_seller(user)
-    where(:seller_id => user)
+  def self.by_this_seller(id, indicator = nil)
+    if id.present?
+      if indicator == 'comp'
+        where(:seller_company_id => id)
+      else
+        where(:seller_id => id)
+      end
+    else
+      scoped
+    end
   end
 
   def self.compute(bid, status, order=nil)

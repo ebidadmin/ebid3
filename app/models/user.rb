@@ -37,6 +37,10 @@ class User < ActiveRecord::Base
   def has_role?(rolename) 
     self.roles.find_by_name(rolename) ? true : false
   end
+  
+  def primary_role
+    company.primary_role
+  end
 
   def to_param 
     #{}"#{id}-#{username.downcase}"

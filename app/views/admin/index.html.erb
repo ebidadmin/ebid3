@@ -23,7 +23,7 @@
 <ul class="dash admin">
 	<h3>Active Users</h3>
 	<% for user in @users %>
-	<%= dash_entry_format("active-user", user.username, (time_ago_in_words user.current_sign_in_at if user.current_sign_in_at) + ' ago',  active_mark(user) ) %>
+	<%= dash_entry_format("active-user", (link_to user.username, user), (time_ago_in_words user.current_sign_in_at if user.current_sign_in_at) + ' ago',  active_mark(user) ) %>
 	<% end %>
 </ul>
 

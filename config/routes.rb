@@ -92,6 +92,7 @@ Ebid::Application.routes.draw do
   match 'seller/:user_id/feedback(/:page)' => 'seller#feedback', :as => :seller_feedback, :via => :get
   match 'seller/:user_id/closed(/:page)' => 'seller#closed', :as => :seller_closed, :via => :get
   match 'seller/:user_id/fees(/:page)' => 'seller#fees', :as => :seller_fees, :via => :get
+  match 'seller/:user_id/fees_print(/:page)' => 'seller#fees_print', :as => :seller_fees_print, :via => :get
   get 'seller/declines'
   get 'seller/index'
   

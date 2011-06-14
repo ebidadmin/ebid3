@@ -1,0 +1,63 @@
+<% unless @market_fees.blank? %>
+
+<%= content_tag :h1, "Market Fees for #{@seller_company}" %>
+<%= content_tag :p, "(For the period #{@start_date.to_s(:long)} to #{@end_date.to_s(:long)})" %>
+
+<h2>
+  Total Paid Orders: <%= ph_currency @search.collect(&:bid_total).sum %> /
+  Total Market Fee: <%= ph_currency @search.collect(&:fee).sum %>
+</h2>
+
+
+<table id="supplier-fees">
+	<thead>
+    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
+		<th>
+	    <%= content_tag :div, 'Parts Ordered', :class => 'part' %>
+	    <%= content_tag :div, 'Amount Paid', :class => 'amount-paid' %>
+			<%= content_tag :div, 'Bidding Speed', :class => 'speed' -%>
+			<%= content_tag :div, 'Rate', :class => 'rate' -%>
+	    <%= content_tag :div, 'Market Fee', :class => 'fee' %>
+		</th>
+	</thead>
+	<% @market_fees.group_by(&:entry).each do |entry, fees| %>
+  <tr>
+		<td class="vehicle">	
+      <%= content_tag :p, entry.vehicle %>
+			<p>
+				<%= entry.plate_no %>
+				<%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' unless current_user.primary_role != 1 %>
+			</p>
+		</td>
+	  <td>
+  	<% fees.group_by(&:order).each do |order, fees| %>
+			<div class="po-group">
+				<% for fee in fees %>
+			    <%= content_tag :div, "[ #{fee.line_item.quantity} ] " + fee.line_item.part_name, :class => 'part' %>
+			    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'amount-paid'  %>
+					<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' -%>
+					<%= content_tag :div, percentage(fee.fee_rate), :class => 'rate instruction' -%>
+					<div class='fee'>
+				    <%= content_tag :p, (number_to_currency fee.fee, :unit => "") %>
+						<%= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>
+					</div>
+				<% end %>
+			</div>
+		<% end %>
+		</td>                          
+	</tr>
+  <% end %>
+	<tr class="totals">
+    <%= content_tag :td, 'Sub-Totals', :class => 'vehicle' %>
+	  <td>
+			<div class="po-group">
+		    <%= content_tag :div, '', :class => 'part' %>
+		    <%= content_tag :div, (ph_currency @market_fees.collect(&:bid_total).sum), :class => 'amount-paid' %>
+		    <%= content_tag :div, '', :class => 'speed' %>
+		    <%= content_tag :div, '', :class => 'rate' %>
+		    <%= content_tag :div, (ph_currency @market_fees.collect(&:fee).sum), :class => 'fee' %>
+			</div>
+	  </td>
+	</tr>
+</table>
+<% end %>

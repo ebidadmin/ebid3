@@ -3,7 +3,7 @@ class Entry < ActiveRecord::Base
     :city_id, :new_city, :term_id, :photos_attributes, :bid_until, :buyer_status, :chargeable_expiry, :expired
     
   attr_accessor :new_city
-  before_save :create_new_city
+  before_save :create_new_city, :convert_numbers
 
   belongs_to :user, :counter_cache => true
 
@@ -74,11 +74,17 @@ class Entry < ActiveRecord::Base
 	end 
 
 	def create_new_city
-	  create_city(:name => new_city.titlecase) unless new_city.blank?
+	  create_city(:name => new_city.strip.titlecase) unless new_city.blank?
 	end
 
 	def new_city_blank
 	  new_city.blank?
+	end
+	
+	def convert_numbers
+	  self.plate_no.upcase!
+	  self.motor_no.upcase!
+	  self.serial_no.upcase!
 	end
 
 	def vehicle

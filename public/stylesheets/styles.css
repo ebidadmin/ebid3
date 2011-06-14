@@ -202,6 +202,7 @@ table#seller-split .part { text-align: left; }
 #supplier-fees .amount-paid, #supplier-fees .fee { width: 15%;  }
 #supplier-fees .speed { width: 20%; }
 #supplier-fees .rate { width: 10%; }
+#supplier-fees .fee .instruction { font-size: 11px;font-weight: normal; }
 table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
  
  /* DIFF TABLE
@@ -402,4 +403,13 @@ table#print-payments-list .stat { width: 25%; }
 #chnwyr { float: left; margin: 0 50px 20px 0; text-align: center; }
 #chnwyr img { border: 1px solid #CCC; padding: 5px; }
 
-#supplier-stats { width: 600px; text-align: right;}
+#supplier-stats { float: left; width: 73%; text-align: right; }
+#supplier-stats .label { color: #C00; font-size: 1.1em; font-weight: bold; text-align: left; }
+#supplier-stats th { background-color: #E5E5E5; border: 0; font-size: 1.2em;}
+#supplier-stats td { font-size: 18px; border: 0; }
+#supplier-stats .indent { padding-left: 50px; }
+#supplier-stats .divide { border-bottom: 2px solid #999; }
+
+.supplier.right { float: left; width: 73% }
+.aside { float: right; width: 23%; }
+.aside .button { width: 80%; text-align: center;}

@@ -79,19 +79,19 @@ class SellerController < ApplicationController
     @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
     @average_f = (@tb_f/@days_f).round(2)
     
-    # orders = Order.by_this_seller(current_user)
-    # @new_orders = orders.recent.collect(&:order_total).sum
-    # @total_delivered = orders.total_delivered.collect(&:order_total).sum
-    # @within_term = orders.within_term.collect(&:order_total).sum
-    # @within_term_percent = (@within_term.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    # @overdue = orders.overdue.collect(&:order_total).sum
-    # @overdue_percent = (@overdue.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    # @paid_pending = orders.paid.payment_pending.collect(&:order_total).sum
-    # @paid_pending_percent = (@paid_pending.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    # @paid = orders.paid.payment_valid.collect(&:order_total).sum
-    # @paid_percent = (@paid.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    # @closed = orders.closed.collect(&:order_total).sum
-    # @closed_percent = (@closed.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    orders = Order.by_this_seller(current_user)
+    @new_orders = orders.recent.collect(&:order_total).sum
+    @total_delivered = orders.total_delivered.collect(&:order_total).sum
+    @within_term = orders.within_term.collect(&:order_total).sum
+    @within_term_percent = (@within_term.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    @overdue = orders.overdue.collect(&:order_total).sum
+    @overdue_percent = (@overdue.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    @paid_pending = orders.paid.payment_pending.collect(&:order_total).sum
+    @paid_pending_percent = (@paid_pending.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    @paid = orders.paid.payment_valid.collect(&:order_total).sum
+    @paid_percent = (@paid.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    @closed = orders.closed.collect(&:order_total).sum
+    @closed_percent = (@closed.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
   end
   
   def hub
@@ -179,19 +179,28 @@ class SellerController < ApplicationController
   end
   
   def fees
-    # raise params.to_yaml
     @title = "Market Fees for Paid Orders"
     # @sort_order =" date PO was paid - descending order"
-    if params[:start]
-      @all_market_fees = Fee.created_at_gte(params[:start]).ordered.by_this_seller(current_user)
-      @start_date = params[:start]
-    else
-      @all_market_fees = Fee.ordered.metered.by_this_seller(current_user)
-      @start_date = '2011-04-16'
-      @end_date = Date.today #'2011-05-31'
-    end
+    @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(current_user)
+    start_date
+    end_date
     @search = @all_market_fees.search(params[:search])
     @market_fees = @search.inclusions.with_orders.paginate :page => params[:page], :per_page => 30
+    @period_path = seller_fees_path(current_user)
+  end
+  
+  def fees_print
+    if current_user.has_role?('admin')
+      @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(params[:seller], 'comp')
+    else
+      @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(current_user)
+    end
+    start_date
+    end_date
+    seller_company
+    @search = @all_market_fees.search(params[:search])
+    @market_fees = @search.inclusions.with_orders
+    render :layout => 'print'
   end
   
   def declines
@@ -225,6 +234,5 @@ class SellerController < ApplicationController
     @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired']).count
     @new = @own_bids.where(:status => ['Submitted', 'Updated']).count
   end
-  
-  
+    
 end

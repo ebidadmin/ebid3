@@ -108,11 +108,6 @@ class AdminController < ApplicationController
     else
       @search = @all_decline_fees.search(params[:search])
     end
-    # if params[:seller]
-    #   @search = @all_decline_fees.where(:seller_company_id => params[:seller]).search(params[:search])
-    # else
-    #   @search = @all_decline_fees.search(params[:search])
-    # end
     @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
     @group = @decline_fees.group_by(&:entry)
 
@@ -128,17 +123,17 @@ class AdminController < ApplicationController
   def seller_fees
     @title = "Market Fees for Paid Orders"
     @sort_order =" date PO was paid - descending order"
-    @all_market_fees = Fee.ordered
-    if params[:seller]
-      @search = @all_market_fees.where(:seller_company_id => params[:seller]).search(params[:search])
-    else
-      @search = @all_market_fees.search(params[:search])
-    end
+    @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(params[:seller], 'comp')
+    start_date # defined in AppController
+    end_date
+    @search = @all_market_fees.search(params[:search])
     @market_fees = @search.inclusions.with_orders.paginate :page => params[:page], :per_page => 30
 
-    @sellers = @all_market_fees.collect(&:seller_company_id).uniq.collect { |seller| [Company.find(seller).name, admin_seller_fees_path(:seller => seller)] }
+    @sellers = Fee.ordered.collect(&:seller_company_id).uniq.collect { |seller| [Company.find(seller).name, admin_seller_fees_path(:seller => seller)] }
     @sellers.push(['All', admin_seller_fees_path(:seller => nil)]) unless @sellers.blank?
     @sellers_path = admin_seller_fees_path(:seller => params[:seller])
+    @period_path = admin_seller_fees_path
+    render 'seller/fees'
   end
 
   def utilities

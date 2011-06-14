@@ -195,6 +195,7 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 #header #subnav { float: left; overflow: hidden; padding: 5px 0; position: relative; width: 100%; }
 #header .groups, #header #search { display: block; font-size: smaller; }
 #header .groups { float: left; margin: 0; }
+#header .groups input { margin-top: 0; }
 #header .seller.groups { width: 600px; }
 #header #username, #header #status, #header #seller, #header #buyer { float: left; margin-right: 10px; margin-top: 0; }
 #header #search { margin: 0; float: right; }
