@@ -79,14 +79,25 @@ class Fee < ActiveRecord::Base
     f.bid_id = bid.id
     f.bid_total = bid.total
     f.bid_type = bid.bid_type
-    if status == 'Paid' || status == 'Closed'
-      f.fee = bid.total * 0.035
+    f.bid_speed = bid.bid_speed 
+    if status == 'Paid' || status == 'Closed' # Market Fees
       f.fee_type = 'Ordered'
       f.order_id = order if order
       f.created_at = bid.paid if bid.paid
-    else
-      f.fee = bid.total * 0.0025
-      f.split_amount = f.fee/2
+      f.order_paid = f.order.paid.to_date
+      ratio = f.seller_company.perf_ratio
+      if ratio < 70
+        f.fee_rate = 3.5 - f.seller_discount
+      elsif ratio < 80         
+        f.fee_rate = 3.0 - f.seller_discount
+      elsif ratio >= 80       
+        f.fee_rate = 2.0 - f.seller_discount
+      end
+      f.fee = f.bid_total * (f.fee_rate.to_f/100)
+      f.perf_ratio = ratio
+    else                                      # Decline Fees
+      # f.fee = bid.total * 0.0025
+      # f.split_amount = f.fee/2
       if bid.expired
         f.created_at = bid.expired
         f.fee_type = 'Expired'
@@ -94,10 +105,24 @@ class Fee < ActiveRecord::Base
         f.created_at = bid.declined
         f.fee_type = 'Declined'
       end
+      ratio = f.buyer_company.perf_ratio
+      if ratio < 10
+        f.fee_rate = 0.5 - f.buyer_discount(0.5).to_f
+      elsif ratio < 30
+        f.fee_rate = 0.375 - f.buyer_discount(0.375).to_f
+      elsif ratio < 50
+        f.fee_rate = 0.25 - f.buyer_discount(0.25).to_f
+      elsif ratio >= 50
+        f.fee_rate = 0
+      end
+      f.fee = f.bid_total * (f.fee_rate.to_f/100)
+      f.split_amount = f.fee/2 
+      f.perf_ratio = ratio
     end
     f.save
   end
   
+    
   def seller_discount
     if bid.bid_speed < 4.hours
       0.5

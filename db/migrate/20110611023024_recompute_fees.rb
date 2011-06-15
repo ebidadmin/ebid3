@@ -6,6 +6,7 @@ class RecomputeFees < ActiveRecord::Migration
     add_column :companies, :perf_ratio, :decimal, :precision => 5, :scale => 2
     
     add_column :fees, :bid_speed, :integer
+    add_column :fees, :perf_ratio, :decimal, :precision => 5, :scale => 2
     add_column :fees, :fee_rate, :decimal, :precision => 5, :scale => 3
     add_column :fees, :order_paid, :date
     
@@ -40,6 +41,9 @@ class RecomputeFees < ActiveRecord::Migration
             fee.fee_rate = 2.0 - fee.seller_discount
           end
           fee.order_paid = fee.order.paid
+          fee.fee = fee.bid_total * (fee.fee_rate.to_f/100)
+          fee.split_amount = nil
+          fee.perf_ratio = ratio
         else # Decline Fees
           ratio = fee.buyer_company.perf_ratio
           if ratio < 10
@@ -51,9 +55,10 @@ class RecomputeFees < ActiveRecord::Migration
           elsif ratio >= 50
             fee.fee_rate = 0
           end
+          fee.fee = fee.bid_total * (fee.fee_rate.to_f/100)
+          fee.split_amount = fee.fee/2 
+          fee.perf_ratio = ratio
         end
-        fee.fee = fee.bid_total * (fee.fee_rate.to_f/100)
-        fee.split_amount = fee.fee/2
         fee.save!
       end
     end
@@ -65,6 +70,7 @@ class RecomputeFees < ActiveRecord::Migration
     remove_column :companies, :trial_start
     remove_column :companies, :metering_date
     remove_column :fees, :fee_rate
+    remove_column :fees, :perf_ratio
     remove_column :fees, :bid_speed
     remove_column :fees, :order_paid
   end

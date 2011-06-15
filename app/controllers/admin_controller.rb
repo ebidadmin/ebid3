@@ -168,15 +168,15 @@ class AdminController < ApplicationController
     # bids.each do |bid|
     #   bid.update_attributes(:declined => nil, :expired => nil)
     # end
-    # orders = Order.paid_and_closed.payment_valid
-    # orders.each do |order|
-    #   order.bids.each do |bid|
-    #     bid.update_attributes(:status => order.status, :paid => order.paid)
-    #     if bid.fee.nil?
-    #       Fee.compute(bid, bid.status, bid.order_id)
-    #     end
-    #   end
-    # end
+    orders = Order.paid_and_closed.payment_valid
+    orders.each do |order|
+      order.bids.each do |bid|
+        bid.update_attributes(:status => order.status, :paid => order.paid)
+        if bid.fee.nil?
+          Fee.compute(bid, bid.status, bid.order_id)
+        end
+      end
+    end
     # bids = Bid.declined
     # bids.each do |bid|
     #   if bid.fee.nil?
@@ -210,4 +210,22 @@ class AdminController < ApplicationController
     redirect_to :back
   end
 
+  def update_perf_ratios
+    for company in Company.all
+      if company.primary_role == 2 # buyer
+        unless company.entries.blank?
+        line_items = LineItem.with_bids.where(:entry_id => company.entries).count
+        parts_ordered = company.orders.map{|order| order.order_items.count}.sum
+        company.perf_ratio = (BigDecimal("#{parts_ordered}")/BigDecimal("#{line_items}")).to_f * 100
+        end
+      elsif company.primary_role == 3 # seller
+        line_items = LineItem.metered.count
+        parts_bided = company.users.map{|user| user.bids.metered.collect(&:line_item_id).uniq.count}.sum
+        company.perf_ratio = (BigDecimal("#{parts_bided}")/BigDecimal("#{line_items}")).to_f * 100
+      end
+      company.save!
+    end
+    flash[:notice] = "Performance Ratios successfully updated!"
+    redirect_to request.env["HTTP_REFERER"]
+  end
 end
