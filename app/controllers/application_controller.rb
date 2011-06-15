@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
       end  
     end
     
-    # helpers for buyer and entries controllers
+    # for buyer and entries controllers
     def initiate_list
       if current_user.has_role?("powerbuyer")
         @company_users = current_user.company.users
@@ -179,4 +179,17 @@ class ApplicationController < ActionController::Base
         @seller_company = current_user.company_name
       end
     end
+
+    def buyer_company
+      if current_user.has_role?('admin') || current_user.has_role?('seller')
+        if params[:buyer]
+          @buyer_company = Company.find(params[:buyer]).name
+        else
+          @buyer_company = 'All Buyers'
+        end
+      else
+        @buyer_company = current_user.company_name
+      end
+    end
+
 end

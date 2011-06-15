@@ -11,8 +11,8 @@
 		<%= render 'bid_table' %>
 	</table>
 	<div class="page-links">
-		<%= submit_tag 'Place Bid/s', :class => 'button' if @entry.buyer_status == "Online" || @entry.buyer_status == "Relisted"  %>
-	  <%= link_to "[Done]", :back %>
+	  <%= link_to "<< Back", @back, :class => 'button' %>
+		<%= submit_tag 'Place Bid/s' if @entry.buyer_status == "Online" || @entry.buyer_status == "Relisted"  %>
 	</div>
 <% end %>
 <%= content_tag :h3, '', :id => 'bidding-message' %>

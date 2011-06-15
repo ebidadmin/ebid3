@@ -1,5 +1,5 @@
 class BuyerController < ApplicationController
-  before_filter :check_buyer_role
+  before_filter :check_buyer_role, :except => :fees_print
   respond_to :html, :xml, :js, :xls
   
   def main
@@ -43,7 +43,7 @@ class BuyerController < ApplicationController
   def results
     @title = 'Bidding Results'
     @tag_collection = ["For-Decision", "Ordered-IP", "Declined-IP"]
-    initiate_list
+    initiate_list # defined in AppController
     find_entries
     @search = @finder.current.asc.search(params[:search])
     @entries = @search.paginate(:page => params[:page], :per_page => 10)
@@ -106,18 +106,31 @@ class BuyerController < ApplicationController
 
   def fees
     @title = "Declined Winning Bids"
+    initiate_list # defined in AppController
     if params[:user_id] == 'all'
-      @search = Fee.declined.metered.where(:buyer_company_id => current_user.company)
-      # @total_bids = Bid.for_this_company(current_user.company)
+      @search = Fee.declined.date_range(params[:start], params[:end], 'i').where(:buyer_company_id => current_user.company).search(params[:search])
     else
-      @search = Fee.declined.metered.where(:buyer_id => User.find_by_username(params[:user_id]))
-      # @total_bids = Bid.for_this_buyer(current_user).count
+      @search = Fee.declined.date_range(params[:start], params[:end], 'i').where(:buyer_id => User.find_by_username(params[:user_id])).search(params[:search])
     end
-    @total_bids = Bid.count
-    @percentage_declined = (@search.count.to_f/@total_bids.to_f) * 100
+    start_date # defined in AppController
+    end_date
     @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
-    @group = @decline_fees.group_by(&:entry)
-    render 'admin/buyer_fees'
+  end
+
+  def fees_print
+    if current_user.has_role?('admin')
+      @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_buyer(params[:buyer], 'comp')
+    elsif current_user.has_role?('seller')
+      @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').by_this_buyer(params[:buyer], 'comp').declined.by_this_seller(current_user)
+    else
+      @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_buyer(current_user)
+    end
+    start_date
+    end_date
+    buyer_company
+    @search = @all_decline_fees.search(params[:search])
+    @decline_fees = @search.inclusions.with_orders
+    render :layout => 'print'
   end
 
 private 

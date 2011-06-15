@@ -63,4 +63,20 @@ module ApplicationHelper
     number_to_currency target, :unit => 'P '
   end
   
+  def percentage(computation)
+    if computation > 0
+      number_to_percentage computation, :precision => 2
+    else
+      '0.00%'
+    end
+  end
+  
+  def percentage3(computation)
+    if computation > 0
+      number_to_percentage computation, :precision => 3
+    else
+      'FREE'
+    end
+  end
+  
 end

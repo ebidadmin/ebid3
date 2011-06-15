@@ -9,7 +9,7 @@ class Fee < ActiveRecord::Base
   belongs_to :bid
   
   scope :ordered, where(:fee_type => 'Ordered').order('order_paid DESC')
-  scope :declined, where(:fee_type => ['Declined', 'Expired']).order('created_at DESC', 'entry_id DESC')
+  scope :declined, where(:fee_type => ['Declined', 'Expired']).order('created_at DESC')
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], [:line_item => :car_part], :seller )
   scope :with_orders, includes(:order)
   
@@ -24,13 +24,23 @@ class Fee < ActiveRecord::Base
     end  
   end  
   
-  def self.date_range(start_date = nil, end_date = nil)
-    if end_date.present?
-      where(:order_paid => start_date..end_date)
-    elsif start_date.present?
-      where(:order_paid => start_date..Date.today)
+  def self.date_range(start_date = nil, end_date = nil, indicator = nil)
+    unless indicator.present?
+      if end_date.present?
+        where(:order_paid => start_date..end_date)
+      elsif start_date.present?
+        where(:order_paid => start_date..Date.today)
+      else
+        where('fees.order_paid >= ?', '2011-04-16')
+      end
     else
-      where('fees.order_paid >= ?', '2011-04-16')
+      if end_date.present?
+        where(:created_at => start_date..end_date)
+      elsif start_date.present?
+        where(:created_at => start_date..Date.today)
+      else
+        where('fees.created_at >= ?', '2011-04-16')
+      end
     end
   end
 
@@ -40,6 +50,18 @@ class Fee < ActiveRecord::Base
         where(:seller_company_id => id)
       else
         where(:seller_id => id)
+      end
+    else
+      scoped
+    end
+  end
+
+  def self.by_this_buyer(id, indicator = nil)
+    if id.present?
+      if indicator == 'comp'
+        where(:buyer_company_id => id)
+      else     
+        where(:buyer_id => id)
       end
     else
       scoped
@@ -92,13 +114,11 @@ class Fee < ActiveRecord::Base
         0
       elsif bid.bid_speed <= 8.hours
         base_rate * 0.25
-      elsif bid.bid_speed <= 16.hours
+      elsif bid.bid_speed <= 2.days
         base_rate * 0.50
-      elsif bid.bid_speed > 16.hours
+      elsif bid.bid_speed > 2.days
         base_rate * 1.00
       end 
-    else
-      0
     end
   end
 end

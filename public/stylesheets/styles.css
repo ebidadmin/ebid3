@@ -164,28 +164,31 @@ table#monitor-bids td .amount { clear: both; margin-left: 0; }
 
 /* BUYER FEES
 ---------------------------------------------------------------------- */
-table .part, table .lowest-bid, table .fee, table .seller { display: inline; float: left; }
-table .lowest-bid/*, table .fee*/ { margin-left: 10px; width: 140px; text-align: right; }
-table td .fee { font-size: 1.2em; font-weight: bold; }
 
-table#buyer-fees td div { margin-bottom: 5px; height: 18px; line-height: 18px; }
-table#buyer-fees .vehicle a, table#admin-buyer-fees .vehicle a { font-size: 1em; margin-left: -4px; }
-table#buyer-fees .vehicle { width: 30%; }
-table#buyer-fees .decline-type { text-align: left; width: 15%; }
-table#buyer-fees .part { clear: both; width: 200px; margin-right: 10px; text-align: left; }
+#buyer-fees .fee, #supplier-fees .fee { font-size: 1.2em; font-weight: bold; }
+#buyer-fees .fee .instruction,#supplier-fees .fee .instruction { font-size: 11px;font-weight: normal; }
+table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
 
-table#admin-buyer-fees .vehicle { width: 25%; }
-table .fee-type { display: inline; float: left; clear: both; margin-right: 10px; text-align: left; width: 15%;}
-table#admin-buyer-fees .part { width: 200px; margin-right: 10px; text-align: left; }
-table .seller { display: inline; float: left; margin-left: 10px; text-align: right; width: 65px; }
+#buyer-fees th.vehicle, #buyer-fees th .part { text-align: left; }
+#buyer-fees .vehicle { width: 20%; }
+#buyer-fees .vehicle .strong { font-size: 1em; }
+#buyer-fees .vehicle .button { margin-top: 15px; }
+#buyer-fees .vehicle + td { width: 80%; }
+#buyer-fees .part, #buyer-fees .fee-type, #buyer-fees .lowest-bid, #buyer-fees .speed, #buyer-fees .rate, #buyer-fees .fee { display: inline; float: left; line-height: 18px; min-height: 18px; }
+#buyer-fees .part { clear: both; width: 25%;}
+#buyer-fees .fee-type, #buyer-fees .lowest-bid, #buyer-fees .speed, #buyer-fees .rate, #buyer-fees .fee { margin-left: 5px; text-align: right; }
+#buyer-fees .lowest-bid, #buyer-fees .fee-type, #buyer-fees .speed { width: 15%; }
+#buyer-fees .rate { width: 10%; }
+#buyer-fees .fee { width: 15%;  }
+#buyer-fees .fee-type { text-align: center; }
 
-table#seller-split .vehicle { width: 25%; }
-table#seller-split td div { margin-bottom: 5px; min-height: 18px; line-height: 18px; }
-table#seller-split .vehicle a { font-size: 1em; margin-left: -4px; }
-table#seller-split .part { margin-left: 15px; min-height: 18px; width: 200px;}
-table#seller-split .lowest-bid, table#seller-split .fee { width: 120px; }
-table#seller-split .fee-type { margin-right: 0; width: 14%; }
-table#seller-split .part { text-align: left; }
+#seller-split .vehicle { width: 25%; }
+#seller-split td div { margin-bottom: 5px; min-height: 18px; line-height: 18px; }
+#seller-split .vehicle a { font-size: 1em; margin-left: -4px; }
+#seller-split .part { margin-left: 15px; min-height: 18px; width: 200px;}
+#seller-split .lowest-bid, #seller-split .fee { width: 120px; }
+#seller-split .fee-type { margin-right: 0; width: 14%; }
+#seller-split .part { text-align: left; }
 
 /* SUPPLIER FEES
 ---------------------------------------------------------------------- */
@@ -202,8 +205,6 @@ table#seller-split .part { text-align: left; }
 #supplier-fees .amount-paid, #supplier-fees .fee { width: 15%;  }
 #supplier-fees .speed { width: 20%; }
 #supplier-fees .rate { width: 10%; }
-#supplier-fees .fee .instruction { font-size: 11px;font-weight: normal; }
-table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
  
  /* DIFF TABLE
 ----------------------------------------------------------------------*/ 

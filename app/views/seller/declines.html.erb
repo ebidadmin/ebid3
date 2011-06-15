@@ -1,49 +1,111 @@
 <% title @title %>
 
-<%= render 'admin/filter_by_buyer' if @buyers %>
-<%= render 'buyer/filter_by_search' %>
+<%= render 'admin/filter_by_buyer' unless @buyers.blank? %>
+
+<% content_for :subnav do %>
+	<%= form_tag @period_path, :class => 'groups', :method => :get do  %>
+		<%= hidden_field_tag :buyer, params[:buyer] unless params[:buyer].blank? %>
+		<ul class="links groups">
+			<li class="label">For the period</li>
+			<li><%= text_field_tag :start, @start_date, :id => 'start', :size => 10 %></li>
+			<li class="label">to</li>
+			<li><%= text_field_tag :end, @end_date, :id => 'end', :size => 10 %></li>
+			<li class="label">Plate No.</li>
+			<li><%= text_field_tag :search, params[:search], :size => 8 %></li>
+			<%= submit_tag "Search" %>
+		</ul>
+	<% end %>
+	<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer]), :id => 'print-preview' %>
+<% end %>
 
 <%= content_tag :p, (content_tag :strong, 'What is a Decline Fee? ') + 'Sometimes, the Buyer cannot order (for one reason or another).  
   We collect a Decline Fee, ' + (content_tag :strong, 'then you receive 50% of it for your effort in posting the “winning” bid.'), :class => 'instruction' %>
 
 <% unless @decline_fees.blank? %>
 	<h2 class="highlight">
-		Total Decline Fees Collected: <%= ph_currency(@search.collect(&:fee).sum) %> /
+		Total Decline Fees: <%= ph_currency(@search.collect(&:fee).sum) %> /
 		Your Share: <%= ph_currency(@search.collect(&:split_amount).sum) %>
 	</h2>
 <%= will_paginate @decline_fees  %>
 <%= page_info @decline_fees %>
 
-<table id="seller-split">
+<table id="buyer-fees">
 	<thead>
     <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
 		<th class="">
-	    <%= content_tag :div, 'Decline Type', :class => 'fee-type' %>
 	    <%= content_tag :div, 'Part Description', :class => 'part' %>
 	    <%= content_tag :div, 'Your Winning Bid', :class => 'lowest-bid' %>
+	    <%= content_tag :div, 'Decline Type', :class => 'fee-type' %>
+			<%= content_tag :div, 'Rate', :class => 'rate' -%>
 	    <%= content_tag :div, 'Decline Fee', :class => 'fee' %>
 			<%= content_tag :div, 'Your Share', :class => 'fee' -%>
 		</th>
 	</thead>
-	<% @group.each do |entry, fees|  %>
+	<% @decline_fees.group_by(&:entry).each do |entry, fees|  %>
   <tr>
 		<td class="vehicle">	
-      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), seller_show_path(:id => entry)) %>
-			<p><%= entry.plate_no %></p>
+			<%= content_tag :p, truncate(entry.vehicle, :length => 30), :class => 'strong' %>
+			<p>
+				<%= entry.plate_no %>
+				<%= content_tag :abbr, truncate(entry.user.company_name, :length => 12), :class => 'highlight' unless current_user == entry.user %>
+			</p>
 		  <%= content_tag :p, "#{fees.count} of #{pluralize entry.line_items.count, 'item'}" %> 	
+			<%= link_to "View Entry", seller_show_path(:id => entry), :class => 'button' %>
 		</td>
 	  <td>
   	<% for fee in fees %>
-    <%= content_tag :div, "#{fee.fee_type}: #{content_tag :span, fee.created_at.strftime('%b %d'), :class => 'instruction'}".html_safe, :class => 'fee-type' %>
-    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
+	    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
 	    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'lowest-bid'  %>
+	    <%= content_tag :div, "#{fee.fee_type}: #{content_tag :span, fee.created_at.strftime("%d %b '%y"), :class => 'instruction'}".html_safe, :class => 'fee-type' %>
+			<div class='rate'>
+				<%= content_tag :p, percentage3(fee.fee_rate), :class => 'strong' %>
+				<%= content_tag :p, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'instruction' %>
+			</div>
+			<%#= content_tag :div, percentage3(fee.fee_rate), :class => 'rate' -%>
 	    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
 			<%= content_tag :div, (number_to_currency fee.split_amount, :unit => ""), :class => 'fee' -%>
 		<% end %>
 		</td>                          
 	</tr>
 	<% end %>
+	<tr class="totals">
+    <%= content_tag :td, 'Sub-Total', :class => 'vehicle' %>
+	  <td>
+	    <%= content_tag :div, '', :class => 'part' %>
+	    <%= content_tag :div, '', :class => 'lowest-bid' %>
+	    <%= content_tag :div, '', :class => 'speed' %>
+	    <%= content_tag :div, '', :class => 'rate' %>
+	    <%= content_tag :div, (ph_currency @decline_fees.collect(&:fee).sum), :class => 'fee' %>
+	    <%= content_tag :div, (ph_currency @decline_fees.collect(&:split_amount).sum), :class => 'fee' %>
+	  </td>
+	</tr>
 </table>
+<% else %>
+	<%= content_tag :h2, 'Sorry, no records found.' %> 
 <% end %>
 
 <%= will_paginate @decline_fees  %>
+
+<% content_for :javascripts do %>
+	<% stylesheet 'blitzer/jquery-ui-1.8.6.custom' %>
+	<script type="text/javascript" charset="utf-8">
+	$(function() {
+		var dates = $( "#start, #end" ).datepicker({
+			dateFormat: "yy-mm-dd",
+			maxDate: 0,
+			changeMonth: true,
+			changeYear: true,
+			onSelect: function( selectedDate ) {
+				var option = this.id == "start" ? "minDate" : "maxDate",
+					instance = $( this ).data( "datepicker" ),
+					date = $.datepicker.parseDate(
+						instance.settings.dateFormat ||
+						$.datepicker._defaults.dateFormat,
+						selectedDate, instance.settings );
+				dates.not( this ).datepicker( "option", option, date );
+			}
+		});
+				
+	});
+	</script>
+<% end %>

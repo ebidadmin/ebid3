@@ -81,6 +81,7 @@ Ebid::Application.routes.draw do
   match 'buyer/:user_id/paid(/:seller(/:page))' => 'buyer#paid', :as => :buyer_paid, :via => :get
   match 'buyer/:user_id/closed(/:page)' => 'buyer#closed', :as => :buyer_closed, :via => :get
   match 'buyer/:user_id/fees(/:page)' => 'buyer#fees', :as => :buyer_fees, :via => :get
+  match 'buyer/fees_print(/:page)' => 'buyer#fees_print', :as => :buyer_fees_print, :via => :get
 
   match 'seller/:user_id/main' => 'seller#main', :as => :seller_main, :via => :get
   match 'seller/:user_id/hub/:brand(/page-(:page))' => 'seller#hub', :as => :seller_hub, :via => :get
@@ -93,7 +94,7 @@ Ebid::Application.routes.draw do
   match 'seller/:user_id/closed(/:page)' => 'seller#closed', :as => :seller_closed, :via => :get
   match 'seller/:user_id/fees(/:page)' => 'seller#fees', :as => :seller_fees, :via => :get
   match 'seller/:user_id/fees_print(/:page)' => 'seller#fees_print', :as => :seller_fees_print, :via => :get
-  get 'seller/declines'
+  match 'seller/:user_id/declines(/:buyer)' => 'seller#declines', :as => :seller_declines, :via => :get
   get 'seller/index'
   
   resources :bids do

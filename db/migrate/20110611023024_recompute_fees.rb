@@ -43,16 +43,16 @@ class RecomputeFees < ActiveRecord::Migration
         else # Decline Fees
           ratio = fee.buyer_company.perf_ratio
           if ratio < 10
-            fee.fee_rate = 0.5 - fee.buyer_discount(0.5)
+            fee.fee_rate = 0.5 - fee.buyer_discount(0.5).to_f
           elsif ratio < 30
-            fee.fee_rate = 0.375 - fee.buyer_discount(0.375)
+            fee.fee_rate = 0.375 - fee.buyer_discount(0.375).to_f
           elsif ratio < 50
-            fee.fee_rate = 0.25 - fee.buyer_discount(0.25)
+            fee.fee_rate = 0.25 - fee.buyer_discount(0.25).to_f
           elsif ratio >= 50
             fee.fee_rate = 0
           end
         end
-        fee.fee = fee.bid_total * (fee.fee_rate/100)
+        fee.fee = fee.bid_total * (fee.fee_rate.to_f/100)
         fee.split_amount = fee.fee/2
         fee.save!
       end

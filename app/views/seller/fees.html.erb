@@ -3,17 +3,18 @@
 <%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 
 <% content_for :subnav do %>
-<%= form_tag @period_path, :class => 'groups', :method => :get do  %>
-	<%= hidden_field_tag :seller, params[:seller] unless params[:seller].blank? %>
-	<ul class="links groups">
-		<li class="label">For the period</li>
-		<li><%= text_field_tag :start, @start_date, :id => 'start', :size => 12 %></li>
-		<li class="label">to</li>
-		<li><%= text_field_tag :end, @end_date, :id => 'end', :size => 12 %></li>
-		<%= submit_tag "Search" %>
-	</ul>
-<% end %>
-
+	<%= form_tag @period_path, :class => 'groups', :method => :get do  %>
+		<%= hidden_field_tag :seller, params[:seller] unless params[:seller].blank? %>
+		<ul class="links groups">
+			<li class="label">For the period</li>
+			<li><%= text_field_tag :start, @start_date, :id => 'start', :size => 10 %></li>
+			<li class="label">to</li>
+			<li><%= text_field_tag :end, @end_date, :id => 'end', :size => 10 %></li>
+			<li class="label">Plate No.</li>
+			<li><%= text_field_tag :search, params[:search], :size => 8 %></li>
+			<%= submit_tag "Search" %>
+		</ul>
+	<% end %>
 	<%= link_to 'Print Preview', seller_fees_print_path(:start => @start_date, :end => @end_date, :seller => params[:seller], :user_id => current_user), :id => 'print-preview' %>
 <% end %>
 
@@ -83,7 +84,6 @@
 </table>
 <% else %>
 	<%= content_tag :h2, 'Sorry, no records found.' %> 
-	<%= link_to 'Back', :back %>
 <% end %>
 
 <%= will_paginate @market_fees %>

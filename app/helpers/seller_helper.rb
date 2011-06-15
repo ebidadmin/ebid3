@@ -1,14 +1,5 @@
 module SellerHelper
-  
-  # helper for seller#main
-  def percentage(computation)
-    if computation > 0
-      number_to_percentage computation, :precision => 2
-    else
-      nil
-    end
-  end
-  
+    
   def bid_ref(bid_type, item)
     last_bid = item.bids.where(:user_id => current_user, :bid_type => bid_type).last
     ("<div class='bid-field' id='regular'>

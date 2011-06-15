@@ -100,36 +100,36 @@ class AdminController < ApplicationController
   
   def buyer_fees
     @title = "Decline Fees"
-    @all_decline_fees = Fee.declined.metered
-    @total_bids = Bid.count
-    @percentage_declined = (@all_decline_fees.count.to_f/@total_bids.to_f) * 100
-    if params[:buyer]
-      @search = @all_decline_fees.where(:buyer_company_id => params[:buyer]).search(params[:search])
-    else
-      @search = @all_decline_fees.search(params[:search])
-    end
+    @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined
+    start_date # defined in AppController
+    end_date
+    # @total_bids = Bid.count
+    # @percentage_declined = (@all_decline_fees.count.to_f/@total_bids.to_f) * 100
+
+    @search = @all_decline_fees.by_this_buyer(params[:buyer], 'comp').by_this_seller(params[:seller], 'comp').search(params[:search])
     @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
-    @group = @decline_fees.group_by(&:entry)
 
     @buyers = @all_decline_fees.collect(&:buyer_company_id).uniq.collect { |buyer| [Company.find(buyer).name, admin_buyer_fees_path(:buyer => buyer)] }
     @buyers.push(['All', admin_buyer_fees_path(:buyer => nil)]) unless @buyers.blank?
-    @buyers_path = admin_buyer_fees_path(:buyer => params[:buyer])
+    @buyers_path = admin_buyer_fees_path(:buyer => params[:buyer]) 
 
     @sellers = @all_decline_fees.collect(&:seller_company_id).uniq.collect { |seller| [Company.find(seller).name, admin_buyer_fees_path(:seller => seller)] }
     @sellers.push(['All', admin_buyer_fees_path(:seller => nil)]) unless @sellers.blank?
     @sellers_path = admin_buyer_fees_path(:seller => params[:seller])
+    @period_path = admin_buyer_fees_path
+    render 'buyer/fees'
   end
 
   def seller_fees
     @title = "Market Fees for Paid Orders"
     @sort_order =" date PO was paid - descending order"
-    @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(params[:seller], 'comp')
+    @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered
     start_date # defined in AppController
     end_date
-    @search = @all_market_fees.search(params[:search])
+    @search = @all_market_fees.by_this_seller(params[:seller], 'comp').search(params[:search])
     @market_fees = @search.inclusions.with_orders.paginate :page => params[:page], :per_page => 30
 
-    @sellers = Fee.ordered.collect(&:seller_company_id).uniq.collect { |seller| [Company.find(seller).name, admin_seller_fees_path(:seller => seller)] }
+    @sellers = @all_market_fees.collect(&:seller_company_id).uniq.collect { |seller| [Company.find(seller).name, admin_seller_fees_path(:seller => seller)] }
     @sellers.push(['All', admin_seller_fees_path(:seller => nil)]) unless @sellers.blank?
     @sellers_path = admin_seller_fees_path(:seller => params[:seller])
     @period_path = admin_seller_fees_path

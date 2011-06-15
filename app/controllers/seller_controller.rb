@@ -109,6 +109,7 @@ class SellerController < ApplicationController
   end
   
   def show
+    @back = request.referrer
     @entry = Entry.find(params[:id])
     if @entry.buyer_status == 'Relisted'
       @line_items = @entry.line_items.online.includes(:car_part, :bids)
@@ -205,16 +206,17 @@ class SellerController < ApplicationController
   
   def declines
     @title = "Decline Fees"
-    @all_decline_fees = Fee.by_this_seller(current_user).declined.metered
-    # @total_bids = Bid.count
-    # @percentage_declined = (@all_decline_fees.count.to_f/@total_bids.to_f) * 100
-    @search = @all_decline_fees.search(params[:search])
-    @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
-    @group = @decline_fees.group_by(&:entry)
+    @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_seller(current_user)
+    start_date
+    end_date
 
-    # @buyers = @all_decline_fees.collect(&:buyer_company_id).uniq.collect { |buyer| [Company.find(buyer).name, seller_declines_path(:buyer => buyer)] }
-    # @buyers.push(['All', seller_declines_path(:buyer => nil)]) unless @buyers.blank?
-    # @buyers_path = seller_declines_path(:buyer => params[:buyer])
+    @search = @all_decline_fees.by_this_buyer(params[:buyer], 'comp').search(params[:search])
+    @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
+
+    @buyers = @all_decline_fees.collect(&:buyer_company_id).uniq.collect { |buyer| [Company.find(buyer).name, seller_declines_path(:buyer => buyer)] }
+    @buyers.push(['All', seller_declines_path(:buyer => nil)]) unless @buyers.blank?
+    @buyers_path = seller_declines_path(:buyer => params[:buyer])
+    @period_path = seller_declines_path(current_user)
   end
 
   def index
