@@ -76,7 +76,7 @@ class EntriesController < ApplicationController
       @entry = current_user.entries.find(params[:id])
     end
     # @entry.buyer_status = 'Edited' unless current_user.has_role?('admin')
-    @entry.add_line_items_from_cart(@cart) 
+    @entry.add_or_edit_line_items_from_cart(@cart) 
 
     if @entry.update_attributes(params[:entry])
       # EntryMailer.delay.new_entry_alert(@entry)
@@ -126,9 +126,8 @@ class EntriesController < ApplicationController
     # EntryMailer.delay.online_entry_alert(@friends, @entry)
   end
 
-  def decide
+  def reveal_bids 
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
-    @line_items = @entry.line_items
     unless @entry.bids.blank?
       if @entry.update_attribute(:buyer_status, "For-Decision")
         @entry.update_associated_status("For-Decision")
@@ -137,7 +136,7 @@ class EntriesController < ApplicationController
     else
       flash[:warning] = "You have no quotes to decide on."
     end 
-    redirect_to :back
+    redirect_to @entry #:back
   end
 
   def relist
@@ -171,7 +170,7 @@ class EntriesController < ApplicationController
         end
       end
     end
-    flash[:notice] = "Entry was reactivated. Please check your 'Results' tab."
+    flash[:info] = "Entry was reactivated. Please check your 'Results' tab."
     redirect_to :back
   end
 

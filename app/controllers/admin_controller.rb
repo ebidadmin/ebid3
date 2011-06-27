@@ -13,7 +13,7 @@ class AdminController < ApplicationController
     @orders = Order.scoped.collect(&:total_order_amounts).sum
     @paid = Order.paid_and_closed.payment_valid.collect(&:total_order_amounts).sum
 
-    @online_entries =  @entries.online.current.desc.five 
+    @online_entries =  @entries.online.active 
     @users = User.active
     # @order = Order.all
   end
@@ -43,25 +43,28 @@ class AdminController < ApplicationController
 
   def online
     @title = "What's Online?"
-    @search = Entry.online.current.order('bid_until DESC').search(params[:search])
+    @search = Entry.online.active.order('bid_until DESC').search(params[:search])
     @entries = @search.paginate(:page => params[:page], :per_page => 10)
     render 'entries/index'  
   end
 
   def bids
-    bids = Bid.desc
-    @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq)
-    if params[:brand] == 'all'
-      @search = bids.search(params[:search])
-    elsif params[:brand]
-      brand = CarBrand.find_by_name(params[:brand])
-      @search = bids.where(:car_brand_id => brand).search(params[:search])
-    else
-      @search = bids.search(params[:search])
-    end
-    @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
+    # bids = Bid.desc
+    # @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq).collect { |brand| [brand.name, admin_bids_path(:brand => brand.name)] }  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
+    # @brand_links.push(['All', admin_bids_path(:brand => nil)])
+    # @current_path =  admin_bids_path(:brand => params[:brand])
+    # if params[:brand] == 'all'
+    #   @search = bids.search(params[:search])
+    # elsif params[:brand]
+    #   brand = CarBrand.find_by_name(params[:brand])
+    #   @search = bids.where(:car_brand_id => brand).search(params[:search])
+    # else
+    #   @search = bids.search(params[:search])
+    # end
+    # @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
+    
+    @line_items = LineItem.with_bids.desc.inclusions.paginate :page => params[:page], :per_page => 20 
     render 'bids/index' 
-    # render 'seller/monitor' 
   end
   
   def orders
@@ -84,7 +87,7 @@ class AdminController < ApplicationController
     @title = "Delivered Orders - For Payment"
     @sort_order =" due date (per vehicle) - ascending order"
  
-    @all_orders = Order.delivered.asc
+    @all_orders = Order.delivered.asc 
     if params[:seller]
       @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) 
     else
@@ -141,7 +144,7 @@ class AdminController < ApplicationController
   end
 
   def expire_entries
-    @entries = Entry.online.current.includes(:line_items) + Entry.results.current.includes(:line_items)
+    @entries = Entry.online.unexpired.includes(:line_items) + Entry.results.unexpired.includes(:line_items)
     @entries.each do |entry|
       entry.expire
     end
@@ -168,28 +171,25 @@ class AdminController < ApplicationController
     # bids.each do |bid|
     #   bid.update_attributes(:declined => nil, :expired => nil)
     # end
-    orders = Order.paid_and_closed.payment_valid
-    orders.each do |order|
-      order.bids.each do |bid|
-        bid.update_attributes(:status => order.status, :paid => order.paid)
-        if bid.fee.nil?
-          Fee.compute(bid, bid.status, bid.order_id)
-        end
-      end
-    end
+    # orders = Order.paid_and_closed.payment_valid
+    # orders.each do |order|
+    #   order.bids.each do |bid|
+    #     bid.update_attributes(:status => order.status, :paid => order.paid)
+    #     if bid.fee.nil?
+    #       Fee.compute(bid, bid.status, bid.order_id)
+    #     end
+    #   end
+    # end
     # bids = Bid.declined
     # bids.each do |bid|
     #   if bid.fee.nil?
     #     Fee.compute(bid, bid.status)
     #   end
     # end
-    # all_orders = Order.find(:all, :include => :bids)
-    # all_orders.each do |order|
-    #   order.update_attribute(:order_total, order.bids.collect(&:total).sum)
-    # end
 
-    all_orders = Order.scoped.includes(:order_items)
+    all_orders = Order.scoped.includes(:order_items, :bids)
     all_orders.each do |order|
+      order.order_total = order.bids.collect(&:total).sum
       order.order_items_count = order.order_items.count
       order.save!
     end
@@ -214,9 +214,13 @@ class AdminController < ApplicationController
     for company in Company.all
       if company.primary_role == 2 # buyer
         unless company.entries.blank?
-        line_items = LineItem.with_bids.where(:entry_id => company.entries).count
-        parts_ordered = company.orders.map{|order| order.order_items.count}.sum
-        company.perf_ratio = (BigDecimal("#{parts_ordered}")/BigDecimal("#{line_items}")).to_f * 100
+        line_items = LineItem.with_bids.metered.where(:entry_id => company.entries).count
+        if line_items > 0
+          parts_ordered = company.orders.metered.map{|order| order.order_items.count}.sum
+          company.perf_ratio = (BigDecimal("#{parts_ordered}")/BigDecimal("#{line_items}")).to_f * 100
+        else
+          company.perf_ratio = 0
+        end
         end
       elsif company.primary_role == 3 # seller
         line_items = LineItem.metered.count

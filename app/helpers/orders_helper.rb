@@ -1,21 +1,21 @@
 module OrdersHelper
   def payment_due_status(order)
     if order.pay_until < Date.today
-      content_tag :p, ("Due Date: #{order.pay_until.strftime('%b %d')} | Overdue: #{pluralize order.days_overdue, 'day'} "), :class => alert_class(order) 
+      content_tag :p, ("Due Date: #{order.pay_until.strftime("%d %b '%y")} | Overdue: #{pluralize order.days_overdue, 'day'} "), :class => alert_class(order) 
     elsif order.pay_until == Date.today
       content_tag :p, 'Due today!', :class => 'mild-alert'
     else
-      content_tag :p, "Payment due: #{order.pay_until.strftime('%b %d')} (#{distance_of_time_in_words(Date.today, order.pay_until)} from now)", :class => notifier_class(order) 
+      content_tag :p, "Payment due: #{order.pay_until.strftime("%d %b '%y")} (#{distance_of_time_in_words(Date.today, order.pay_until)} from now)", :class => notifier_class(order) 
     end
   end
   
   def payment_due_status_for_print(order)
     if order.pay_until < Date.today
-      content_tag :h5, ("Due Date: #{order.pay_until.strftime('%b %d')} | Overdue: #{pluralize order.days_overdue, 'day'} ")
+      content_tag :p, ("Due Date: #{order.pay_until.strftime("%d %b '%y")} | Overdue: #{pluralize order.days_overdue, 'day'}"), :class => 'due-date'
     elsif order.pay_until == Date.today
-      content_tag :h5, 'Due today!'
+      content_tag :p, 'Due today!', :class => 'due-date'
     else
-      content_tag :h5, "Payment due: #{order.pay_until.strftime('%b %d')} (#{distance_of_time_in_words(Date.today, order.pay_until)} from now)"
+      content_tag :p, "Due Date: #{order.pay_until.strftime("%d %b '%y")} (#{distance_of_time_in_words(Date.today, order.pay_until)} from now)", :class => 'due-date'
     end
   end
 

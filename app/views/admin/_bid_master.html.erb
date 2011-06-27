@@ -2,9 +2,9 @@
 <tr class="entry-item">
 	<%= content_tag :td, item.quantity, :class => 'qty' %>
 	<td class="partname">    	
-		<%= item.part_name %> 
+		<%= content_tag :p, item.part_name %> 
 		<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
-		<%= content_tag :h5, "Bidding Speed: " + distance_of_time_in_words(item.bids.first.bid_speed) unless item.bids.first.blank? %>
+		<%= content_tag :p, "Bidding Speed: " + distance_of_time_in_words(item.bids.first.bid_speed), :class => 'instruction' unless item.bids.first.blank? %>
 		<%= content_tag :p, "ID: #{item.id}" %>
 	</td>
 	<td class="bid-box">

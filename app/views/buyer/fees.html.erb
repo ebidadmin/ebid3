@@ -17,7 +17,7 @@
 			<%= submit_tag "Search" %>
 		</ul>
 	<% end %>
-	<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer]), :id => 'print-preview' %>
+	<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer], :user_id => params[:user_id]), :id => 'print-preview' %>
 <% end %>
 
 <% unless @decline_fees.blank? %>
@@ -26,65 +26,72 @@
 		Supplier Share: <%= ph_currency(@search.collect(&:split_amount).sum) %>
 	  <%#= content_tag :span, "| you have declined #{@search.count} of  #{@total_bids} (#{percentage(@percentage_declined)})".html_safe unless @total_bids.nil? %>
 	</h2>
-<%= will_paginate @decline_fees  %>
-<%= page_info @decline_fees %>
+	
+	<%= content_tag :h3, "Ordering Ratio: #{percentage current_user.company.perf_ratio}" %>
+	
+	<%= will_paginate @decline_fees  %>
+	<%= page_info @decline_fees %>
 
-<table id="buyer-fees">
-	<thead>
-    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
-		<th class="">
-	    <%= content_tag :div, 'Part Description', :class => 'part' %>
-	    <%#= content_tag :div, 'Decline Type', :class => 'fee-type' %>
-	    <%= content_tag :div, 'Lowest Bid', :class => 'lowest-bid' %>
-			<%= content_tag :div, 'Bidding Speed', :class => 'speed' -%>
-			<%= content_tag :div, 'Rate', :class => 'rate' -%>
-	    <%= content_tag :div, 'Decline Fee', :class => 'fee' %>
-			<%= content_tag :div, 'Supplier Share', :class => 'fee' -%>
-		</th>
-	</thead>
-	<% @decline_fees.group_by(&:entry).each do |entry, fees|  %>
-  <tr>
-		<td class="vehicle">	
-			<%= content_tag :p, truncate(entry.vehicle, :length => 30), :class => 'strong' %>
-			<p>
-				<%= entry.plate_no %>
-				<%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' unless current_user == entry.user %>
-			</p>
-		  <%= content_tag :p, "#{fees.count} of #{pluralize entry.line_items_count, 'item'}" %> 	
-			<%= link_to "View Entry", entry, :class => 'button' %>
-		</td>
-	  <td>
-  	<% for fee in fees %>
-	    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
-	    <%#= content_tag :div, "#{fee.fee_type}: #{content_tag :span, fee.created_at.strftime("%d %b '%y"), :class => 'instruction'}".html_safe, :class => 'fee-type' %>
-			<div class='lowest-bid'>
-		    <%= content_tag :p, (number_to_currency fee.bid_total, :unit => "") %>
-				<%= content_tag :p, fee.bid_type, :class => 'instruction' %>
-			</div>
-			<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' %>
-			<%= content_tag :div, percentage3(fee.fee_rate), :class => 'rate' -%>
-			<%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' -%>
-			<div class='fee'>
-				<%= content_tag :p, (number_to_currency fee.split_amount, :unit => "") -%>
-				<%= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>
-			</div>
+	<table id="buyer-fees">
+		<thead>
+	    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
+			<th class="">
+		    <%= content_tag :div, 'Part Description', :class => 'part' %>
+		    <%#= content_tag :div, 'Decline Type', :class => 'fee-type' %>
+		    <%= content_tag :div, 'Lowest Bid', :class => 'lowest-bid' %>
+				<%= content_tag :div, 'Bidding Speed', :class => 'speed' -%>
+				<%= content_tag :div, 'Rate', :class => 'rate' -%>
+		    <%= content_tag :div, 'Decline Fee', :class => 'fee' %>
+				<%= content_tag :div, 'Supplier Share', :class => 'fee' -%>
+			</th>
+		</thead>
+		<% @decline_fees.group_by(&:entry).each do |entry, fees|  %>
+	  <tr>
+			<td class="vehicle">	
+				<%= content_tag :p, truncate(entry.vehicle, :length => 30), :class => 'strong' %>
+				<p>
+					<%= entry.plate_no %>
+					<%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' unless current_user == entry.user %>
+				</p>
+			  <%= content_tag :p, "#{fees.count} of #{pluralize entry.line_items_count, 'item'}" %> 	
+				<%= link_to "View Entry", entry, :class => 'button' %>
+			</td>
+		  <td>
+	  	<% for fee in fees %>
+		    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
+		    <%#= content_tag :div, "#{fee.fee_type}: #{content_tag :span, fee.created_at.strftime("%d %b '%y"), :class => 'instruction'}".html_safe, :class => 'fee-type' %>
+				<div class='lowest-bid'>
+			    <%= content_tag :p, (number_to_currency fee.bid_total, :unit => "") %>
+					<%= content_tag :p, fee.bid_type, :class => 'instruction' %>
+				</div>
+				<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' %>
+				<%= content_tag :div, percentage3(fee.fee_rate), :class => 'rate' -%>
+				<%#= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' -%>
+				<div class='fee'>
+					<%= content_tag :p, (number_to_currency fee.fee, :unit => "") -%>
+					<%= content_tag :p, fee.created_at.strftime("%d %b '%y"), :class => 'instruction' %>
+				</div>
+				<div class='fee'>
+					<%= content_tag :p, (number_to_currency fee.split_amount, :unit => "") -%>
+					<%= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>
+				</div>
+			<% end %>
+			</td>                          
+		</tr>
 		<% end %>
-		</td>                          
-	</tr>
-	<% end %>
-	<tr class="totals">
-    <%= content_tag :td, 'Sub-Totals', :class => 'vehicle' %>
-	  <td>
-	    <%= content_tag :div, '', :class => 'part' %>
-	    <%#= content_tag :div, '', :class => 'fee-type' %>
-	    <%= content_tag :div, (ph_currency @decline_fees.collect(&:bid_total).sum), :class => 'lowest-bid' %>
-	    <%= content_tag :div, '', :class => 'speed' %>
-	    <%= content_tag :div, '', :class => 'rate' %>
-	    <%= content_tag :div, (ph_currency @decline_fees.collect(&:fee).sum), :class => 'fee' %>
-	    <%= content_tag :div, (ph_currency @decline_fees.collect(&:split_amount).sum), :class => 'fee' %>
-	  </td>
-	</tr>
-</table>
+		<tr class="totals">
+	    <%= content_tag :td, 'Sub-Totals', :class => 'vehicle' %>
+		  <td>
+		    <%= content_tag :div, '', :class => 'part' %>
+		    <%#= content_tag :div, '', :class => 'fee-type' %>
+		    <%= content_tag :div, (ph_currency @decline_fees.collect(&:bid_total).sum), :class => 'lowest-bid' %>
+		    <%= content_tag :div, '', :class => 'speed' %>
+		    <%= content_tag :div, '', :class => 'rate' %>
+		    <%= content_tag :div, (ph_currency @decline_fees.collect(&:fee).sum), :class => 'fee' %>
+		    <%= content_tag :div, (ph_currency @decline_fees.collect(&:split_amount).sum), :class => 'fee' %>
+		  </td>
+		</tr>
+	</table>
 <% else %>
 	<%= content_tag :h2, 'Sorry, no records found.' %> 
 <% end %>

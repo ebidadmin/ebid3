@@ -16,6 +16,8 @@ class Entry < ActiveRecord::Base
 
   has_many :photos, :dependent => :destroy
   accepts_nested_attributes_for :photos, :reject_if => lambda { |a| a.values.all?(&:blank?) }, :allow_destroy => true
+  has_many :bids, :dependent => :destroy
+  accepts_nested_attributes_for :bids
 
   has_many :line_items, :dependent => :destroy
   has_many :car_parts, :through => :line_items
@@ -35,25 +37,29 @@ class Entry < ActiveRecord::Base
   scope :asc, order('bid_until')
   scope :five, limit(5)
 
-  scope :current, where(:expired => nil)
+  scope :active, where('entries.bid_until >= ?', Date.today).desc2
+  scope :unexpired, where(:expired => nil)
   scope :expired, where('expired IS NOT NULL')
   scope :metered, where('entries.created_at >= ?', '2011-04-16')
+  scope :ftm, where('entries.created_at >= ?', Time.now.beginning_of_month)
 
   scope :pending, where(:buyer_status => ['New', 'Edited'])
-  # scope :online, where("buyer_status IN ('Online', 'Relisted')")
-  scope :online, where(:buyer_status => ['Online', 'Relisted']).where('entries.bid_until >= ?', Date.today)
-  scope :results, where("buyer_status IN ('For-Decision', 'Ordered-IP', 'Declined-IP')")
-  scope :declined, where('buyer_status LIKE ?', "%Declined%").desc
-  scope :closed, where("buyer_status = ?", 'Closed')
+  scope :online, where(:buyer_status => ['Online', 'Relisted'])
+  scope :results, where(:buyer_status =>  ['For Decision', 'For-Decision', 'Ordered-IP', 'Declined-IP'])
+  scope :ordered, where(:buyer_status =>  ['Ordered-All', 'Ordered-Declined', 'Closed'])
+  scope :declined, where(:buyer_status =>  'Declined-All')
+  scope :closed, where(:buyer_status => 'Closed')
+  scope :discarded, where(:buyer_status =>  ['Removed', 'Expired'])
   scope :alive, where("buyer_status != ?", 'Removed')
   
-  scope :with_bids, where("bids_count > ?", 0)
-  scope :without_bids, where('bids_count < ?', 1)
+  scope :with_bids, where("entries.bids_count > ?", 0)
+  scope :without_bids, where('entries.bids_count < ?', 1)
   
   scope :latest, where('created_at >= ?', 5.days.ago)
 
   scope :inclusions, includes([:line_items => [:car_part]], :user, :car_brand, :car_model, :car_variant)
-  
+  scope :seller_inclusions, includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos)
+
 	def add_line_items_from_cart(cart)
 		cart.cart_items.each do |item|
 			li = LineItem.from_cart_item(item)
@@ -63,9 +69,11 @@ class Entry < ActiveRecord::Base
 
 	def add_or_edit_line_items_from_cart(cart)
 		cart.cart_items.each do |item|
-		  existing_item = LineItem.where(:entry_id => self.id, :car_part_id => item.car_part_id)
+      # existing_item = LineItem.where(:entry_id => self.id, :car_part_id => item.car_part_id)
+		  existing_item = LineItem.find_by_entry_id_and_car_part_id(self.id, item.car_part_id)
 		  unless existing_item.nil?
-		    existing_item.update_all(:quantity => item.quantity, :part_no => item.part_no)
+		    existing_item.update_attributes(:quantity => item.quantity + 1, :part_no => item.part_no)
+        existing_item.check_and_update_associated_relationships
 		  else
   			li = LineItem.from_cart_item(item)
   			line_items << li 
@@ -101,7 +109,7 @@ class Entry < ActiveRecord::Base
 
 	def update_associated_status(status)
     if status == "For-Decision"
-      line_items.each do |item|
+      line_items.online.each do |item|
         unless item.order_item || item.status == 'Declined' || item.status == 'Lose' || item.status == 'Dropped'
           item.update_attribute(:status, status) if item.bids 
           item.update_attribute(:status, "No Bids") if item.bids.blank?
@@ -151,7 +159,7 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def expire
-    if buyer_status == "Online" && Date.today > bid_until #&& expired.nil?
+    if (buyer_status == "Online" || buyer_status == "Relisted") && Date.today > bid_until #&& expired.nil?
       update_attribute(:expired, Date.today)
       line_items.each do |line_item|
         if line_item.bids.exists?

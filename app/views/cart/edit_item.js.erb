@@ -1,4 +1,5 @@
 $("#part_qty_<%= @cart_item.car_part_id %>").text("<%= @cart_item.quantity %>");
 $("#part_no_<%= @cart_item.car_part_id %>").html("<%= escape_javascript(render 'cart/part_with_edit', :item => @cart_item) %>");
-$("#cart_notice_box").html("<%= escape_javascript(render 'cart/cart_notice') %>");
-$("#cart_notice").effect("highlight", {}, 3000)
+$("#cart_notice_box, #selection #cart_notice_box").html("<%= escape_javascript(render 'cart/cart_notice') %>");
+$("#cart_notice, #selection #cart_notice").effect("highlight", {}, 4000);
+$("#cart_notice, #selection #cart_notice").fadeOut(400)

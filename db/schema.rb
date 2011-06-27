@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110611023024) do
+ActiveRecord::Schema.define(:version => 20110625063938) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -105,12 +105,16 @@ ActiveRecord::Schema.define(:version => 20110611023024) do
   end
 
   create_table "comments", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "sender_id"
     t.string   "user_type"
     t.integer  "entry_id"
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sender_company_id"
+    t.integer  "receiver_id"
+    t.integer  "receiver_company_id"
+    t.integer  "order_id"
   end
 
   create_table "companies", :force => true do |t|
@@ -226,9 +230,9 @@ ActiveRecord::Schema.define(:version => 20110611023024) do
     t.decimal "split_amount",      :precision => 10, :scale => 2
     t.date    "split_date"
     t.integer "bid_speed"
+    t.decimal "perf_ratio",        :precision => 5,  :scale => 2
     t.decimal "fee_rate",          :precision => 5,  :scale => 3
     t.date    "order_paid"
-    t.decimal "perf_ratio",        :precision => 5,  :scale => 2
   end
 
   add_index "fees", ["bid_id"], :name => "index_fees_on_bid_id"

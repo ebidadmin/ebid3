@@ -18,7 +18,12 @@ class Bid < ActiveRecord::Base
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user, :city, :term]], [:line_item => :car_part], :user)
   scope :desc, order('id DESC')
   scope :bt, order('bid_type')
+  scope :online, where(:status => ['Submitted', 'Updated'])
   scope :declined, where(:status => 'Declined')#.order('declined DESC', 'entry_id DESC')
+  
+  scope :orig, where(:bid_type => 'original')
+  scope :rep, where(:bid_type => 'replacement')
+  scope :surp, where(:bid_type => 'surplus')
   
   scope :metered, where('bids.created_at >= ?', '2011-04-16')
   scope :ftm, where('bids.created_at >= ?', Time.now.beginning_of_month)

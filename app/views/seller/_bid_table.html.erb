@@ -1,13 +1,13 @@
 <thead>
-	<th class="qty">Qty</th>
-	<th class="partname">Part Description</th>
-	<th class="bid-box"><strong>Your Bids (unit price)</strong></th>
+	<%= content_tag :th, 'Qty', :class => 'qty' %>
+	<%= content_tag :th, 'Part Description', :class => 'partname' %>
+	<%= content_tag :th, (content_tag :strong, 'Your Bids (unit price)').html_safe, :class => 'bid-box' %>
 </thead>
 <% for item in  @line_items %>
 <tr>
-	<td class="qty"><%= item.quantity %></td>
+	<%= content_tag :td, item.quantity, :class => "qty" %>
 	<td class="partname">
-		<%=h item.car_part.name %> 
+		<%= content_tag :p, item.car_part.name %> 
 		<%= content_tag :p, ("(Details: <strong>#{item.part_no}</strong>)").html_safe, :class => 'partnum' unless item.part_no.blank?  %>
     <%#= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
 	</td>

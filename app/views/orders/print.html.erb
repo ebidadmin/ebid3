@@ -11,13 +11,10 @@
 	<h4 id="del-status">Status: <%= @order.status %></h4>
 </div>
 
-<%#= render 'shared/comments' %>
 
 <div id="order">
 	<h2>Particulars</h2>
-	<%#= image_tag @order.entry.photos.first.photo.url(:tiny), :class => "photo", :alt => "Photo of #{ @order.entry.plate_no}" %>
 	<%= render 'shared/info_vehicle', :entry => @entry %>
-	<%= render 'shared/info_parts' if current_user.has_role?('admin')  -%>
 
 	<table class="parts-set">
 		<%= render 'shared/part_titles' %>
@@ -27,7 +24,7 @@
 				<td class="partname">
 					<%= order_item.line_item.part_name.html_safe %>
 					<%= content_tag :span, " (Details: #{content_tag :strong, order_item.line_item.part_no})".html_safe, :class => 'partnum' unless order_item.line_item.part_no.blank?  %>
-          <%= content_tag :span, " (#{order_item.bid_type})".html_safe, :class => 'strong' %>
+          <%= content_tag :span, " #{order_item.bid_type.upcase}".html_safe, :class => 'strong bid-type' %>
 				</td> 
 				<td class="price">
 					<%= number_to_currency(order_item.amount, :unit => "P ") -%>
@@ -46,26 +43,4 @@
 				</td>
 		</tr>
 	</table>
-</div>
-
-<div id="confirmation" class="page-links">
-	<% if current_user.has_role?('powerbuyer') || current_user.has_role?('buyer') -%>
-	
-		<% if @order.status == "PO Released" && @order.seller_confirmation == false %>
-		<%= link_to "OK, Done!", @entry, :class => 'button' -%>
-		<% else %>
-		<%= link_to "OK, Done!", :back, :class => 'button' -%>
-		<% end %>
-		
-	<% elsif current_user.has_role?('seller') -%>
-
-		<% if @order.seller_confirmation == true -%>
-			<%= link_to "OK, Done!", :back, :class => 'button' -%>
-		<% else -%>
-			<%= form_tag confirm_order_path, :method => :put  do -%>
-				<%= submit_tag "Accept Order" -%> or <%= link_to "[ Cancel ]", seller_orders_path(current_user) -%>
-			<% end -%>
-		<% end -%>
-
-	<% end -%>
 </div>

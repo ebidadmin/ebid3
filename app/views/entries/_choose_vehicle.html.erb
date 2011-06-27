@@ -1,4 +1,4 @@
-<%#= f.error_messages %>
+<%= f.error_messages %>
 <div class="full-column">
   <%= f.label :vehicle %><br>  
 	<%= f.select :year_model, (Date.today.year-30..Date.today.year).to_a.reverse, :selected => Date.today.year %>			
@@ -53,8 +53,9 @@
 		$('#datepicker').datepicker({ 
 				dateFormat: "yy-mm-dd",
 				maxDate: 0,
+				numberOfMonths: 2,
 				showButtonPanel: true, 
-				showOn: "button",
+				showOn: "both",
 				buttonImage: "/images/calendar.gif",
 				buttonImageOnly: true
 		});

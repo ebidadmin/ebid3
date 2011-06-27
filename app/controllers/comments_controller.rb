@@ -24,7 +24,7 @@ class CommentsController < ApplicationController
       if @comment.user_type == 'seller'
         EntryMailer.delay.comment_alert(@entry, @comment) 
       else
-        commenters = @entry.comments.where('user_id != ?', current_user).collect(&:user_id).uniq
+        commenters = @entry.comments.where('sender_id != ?', current_user).collect(&:user_id).uniq
         recipients = User.find(commenters)
         for recipient in recipients
           EntryMailer.delay.comment_alert(@entry, @comment, recipient) 

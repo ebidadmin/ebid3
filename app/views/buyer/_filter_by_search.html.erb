@@ -1,7 +1,7 @@
 <% content_for :subnav do %>
   <%= form_tag request.parameters, :id => 'search', :method => :get do |f| %>
-      <p class="label">Search</p>
-    	<p><span>Plate No.</span> <%= text_field_tag :search, params[:search], :id => 'search-box' %></p>
-    	<p><%= submit_tag "Go!" %></p>
+      <p class="label">Plate No.</p>
+    	<p><%= text_field_tag :search, params[:search], :id => 'search-box' %></p>
+    	<p><%= submit_tag "Search" %></p>
   <% end %>
 <% end %>

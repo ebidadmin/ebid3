@@ -1,4 +1,4 @@
-<p class="instruction">Please attach <strong>at least 2 photos</strong> (in jpg, jpeg, or png format).  Just click <strong><em>'Browse'</em></strong> to select the attachment</p>
+<p class="instruction">Please attach <strong>at least 2 photos</strong> (in jpg, jpeg, or png format).  Just click <strong><em>'Browse'</em></strong> to select the attachment.</p>
 
 <% unless @entry.photos.first.new_record? -%>
 	<p class="instruction">
@@ -22,5 +22,5 @@
 	<%= render 'photo', :f => photo %>
 <% end %>
 
-<%= f.link_to_add "[ Attach another photo ]", :photos %>
+<%= f.link_to_add "+ Attach another photo", :photos %>
 

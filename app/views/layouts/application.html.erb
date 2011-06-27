@@ -11,18 +11,16 @@
   </head>
 
   <body>
-    
 		<div id="top">		
 		<div class="container">
   		<%= render 'layouts/header' %>
 
-     <%- flash.each do |name, msg| -%>
+      <% flash.each do |name, msg| %>
         <%= content_tag :div, msg, :id => "flash_#{name}", :class => "flash" %>
-      <%- end -%>
-
-      <%= content_tag :h1, yield(:title), :class => 'main-title' if show_title? %>
+      <% end %>
 
  			<div id="content-main">
+	      <%= content_tag :h1, yield(:title), :class => 'main-title' if show_title? %>
 	      <%= yield %>
 			</div>
     </div>
@@ -36,6 +34,9 @@
 		<div id="javascripts">
 	    <%= javascript_include_tag :defaults %>
 			<%= yield(:javascripts) %>
+			<!--[if lte IE 6]>
+				<%= javascript_include_tag 'supersleight-min' %>
+			<![endif]-->
 		</div>
   </body>
 </html>

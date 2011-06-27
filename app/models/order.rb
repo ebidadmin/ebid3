@@ -11,6 +11,7 @@ class Order < ActiveRecord::Base
   has_many :ratings
   has_many :bids
   has_many :fees
+  has_many :comments
  
   validates_presence_of :deliver_to, :address1, :phone
 
@@ -32,8 +33,8 @@ class Order < ActiveRecord::Base
   scope :paid, where(:status => 'Paid').asc2
   scope :closed, where(:status => 'Closed')
   scope :paid_and_closed, where(:status => ['Paid', 'Closed']).order('paid DESC')
-  scope :payment_valid, where('paid IS NOT NULL')
-  scope :payment_pending, where('paid IS NULL')
+  scope :payment_valid, where('orders.paid IS NOT NULL')
+  scope :payment_pending, where('orders.paid IS NULL')
 
   scope :within_term, delivered.where('pay_until >= ?', Date.today)
   scope :due_soon, delivered.where(:pay_until => Date.today .. Date.today + 1.week).unpaid
@@ -77,11 +78,7 @@ class Order < ActiveRecord::Base
   def total_order_amounts
     bids.collect(&:total).sum
   end
-  
-  # def total_success_fees
-  #   bids.collect(&:fee).sum
-  # end
-  
+
   def self.search(search)  
     if search  
       finder = Entry.where('plate_no LIKE ? ', "%#{search}%") 
@@ -166,6 +163,11 @@ class Order < ActiveRecord::Base
   def revert
     update_attribute(:status, "Paid")
     update_associated_status("Paid")
+  end
+
+  def weekdays_range(range)
+    # You could modify the select block to also check for holidays
+    range.select { |d| (1..5).include?(d.wday) }.size
   end
 
 end

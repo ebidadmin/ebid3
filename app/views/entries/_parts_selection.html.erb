@@ -1,14 +1,13 @@
+<div id="cart_notice_box">
+	<% if flash[:cart_notice] %> 
+		<%= render "cart/cart_notice" %>
+	<% end %>
+</div>
+
 <div id="parts" >
-	<ol id="instructions">
-		<p class="instruction strong">Instructions</p>
-		<li>Type some keyword/s to search for the part you want.</li>
-		<li>Try different combinations of keywords.</li>
-		<li>Click on that part to add it to your selection.</li>
-		<li>If you cannot find the part you want, you may Add New Part (use carefully to avoid duplicates).</li>
-	</ol>
 	<%= form_tag search_car_parts_path, :method => :get, :remote => true, :id => 'search-form' do %>
 		<%= text_field_tag :name, nil, :id => 'search-box' %>
-		<%= submit_tag "Search" %>
+		<%= submit_tag "Search Parts" %>
 	<% end %>
 
 	<% if @car_parts_count > 0 %>

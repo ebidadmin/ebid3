@@ -31,10 +31,10 @@ class CartController < ApplicationController
   def clear
     @cart.cart_items.destroy_all
     if request.xhr?
-      flash.now[:cart_notice] = "Cleared the cart."
+      flash.now[:cart_notice] = "Cleared the current selection."
       render :action => "add"
     elsif request.post?
-      flash.now[:cart_notice] = "Cleared the cart."
+      flash.now[:cart_notice] = "Cleared the current selection."
       redirect_to new_user_entry_path(current_user)
     else
       render

@@ -1,21 +1,21 @@
 /* HOME PAGE
 ---------------------------------------------------------------------- */
-#branding-menu { background-color: #911D00; color: white; font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; height: 90px; overflow: hidden; border-bottom: 5px solid #CCC; }
+#branding-menu { background-color: #911D00; color: white; font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; height: 90px; overflow: hidden; border-bottom: 5px solid #CCC; padding: 10px 0;}
 #branding-menu p { float: right; font-size: 14px; line-height: 18px; margin: 30px 0; }
 #branding-menu p a { margin-left: 10px; }
 #branding-top { font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; padding: 10% 0 20px; position: relative; }
-#branding-top #logo { background: transparent url(../images/base/ebidlogo.jpg) no-repeat; clear: both; height: 95px; opacity: 1; text-indent: -9999px; width: 100px; }
-#branding-top img { height: 291px; width: 500px; position: absolute; right: 0; top: 10%; }
+#branding-top #logo { background: transparent url(../images/base/ebidlogo.png) no-repeat; clear: both; height: 95px; opacity: 1; text-indent: -9999px; width: 100px; }
+#branding-top img { border: 2px solid #a9a9a9; height: 275px; width: 484px; position: absolute; padding: 8px; right: 0; top: 15%; }
 #branding-top h2 { clear: both; float: left; display: inline; font-size: 3em; font-weight: normal; line-height: 1.2em; width: 450px; margin-bottom: 12%; }
 #branding-top p, #call-to-action p, #reg-instruction { border-top: 1px dotted #cacaca; border-bottom: 1px dotted #cacaca; clear: both; color: #919191; font: italic 2em/1.6em Georgia, "Times New Roman", Times, serif; padding: 8px 0 15px; text-align: center; }
 #reg-instruction { text-align: left; }
 #branding-top em, #branding-bottom .small em { padding-bottom: 4px; border-bottom: 2px solid #919191; }
 #branding-bottom { font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; margin: 10px 0 10%; overflow: hidden; }
-#branding-bottom h2 { opacity: 0.9; background-color: white; }
+#branding-bottom h2 { opacity: 0.9; background-color: white; padding: 8px; text-align: center; }
 #branding-bottom .buyer h2 { color: #BE9B4D; }
 #branding-bottom .supplier h2 { color: #911D00; }
 #branding-bottom h3 { color: #cacaca; }
-#branding-bottom .box { width: 410px; padding-left: 25px; padding-right: 25px; color: white; }
+#branding-bottom .box { width: 410px; padding: 25px; color: white; }
 #branding-bottom .buyer { float: left; background-color: #BE9B4D; }
 #branding-bottom .supplier { float: right; background-color: #911D00; }
 #branding-bottom p, #branding-bottom li { font-size: 14px; margin-bottom: 0.8em; }
@@ -65,59 +65,139 @@
 #content-main .dash.supplier .dash-entry .link { right: 150px; }
 .dash.rating p { text-align: center; }
 .dash.admin strong { width: 45%;  margin-right: 10px; }
-.dash.admin strong a { font-size: .9em; margin-left: -4px; }
 .dash.full { width: 100%; }
 .dash.full .dash-entry strong { width: 20%; }
 
+
+#dash-stats { float: left; margin-bottom: 35px; width: 73%; text-align: right; }
+#dash-stats th { background-color: #E5E5E5; border: 1px solid white; font-size: 1.2em; font-weight: normal; }
+#dash-stats td { font-size: 16px; border: 0; }
+#dash-stats .big { font-size: 2em; }
+#dash-stats .label { color: #C00; font-size: 1.1em; font-weight: bold; text-align: left; }
+#dash-stats .val { width: 20%; }
+#dash-stats .indent { padding-left: 50px; }
+#dash-stats .divide { border-bottom: 2px solid #999; }
+#dash-stats .instruction { font-size: 12px; margin-right: 15px;}
+#dash-stats .divide .instruction { margin-right: 0;  }
+#dash-stats .highlight { margin-right: 0; padding: 0 2px; text-align: center;}
+#perf-ind p { clear: both; height: 20px; line-height: 20px; text-align: left; }
+#perf-ind span { color: #C00; float: left; width: 50%; }
+
 /* TABLES OF ENTRIES
 ---------------------------------------------------------------------- */
-table#lot-bids th, 
-table th.bid-box, 
-table th.status, #th-two { background: #797979; color: #FFF; }
-table th strong, table th .strong { color: #fff6bf; font-size: 1.5em; }
-table td.bid-box, 
-table td.status, 
-table td.fees, #td-two { background-color: #eaeaea; }
-/*#fff6bf*/
-table .vehicle, th.vehicle, td.vehicle { width: 40%; }
-table .vehicle #details { float: left; margin-left: 10px; width: 260px; }
-table .terms,
-table .delivery { text-align: left; width: 20%; }
-table .delivery p, table .requirements p { margin-left: 60px; }
-table .vehicle a, table .requirements a, table .terms a { font-size: 1.5em; }
-table .vehicle #details a { font-size: 1.2em; margin-left: -4px; }
-table .status { width: 40%; text-align: center; }
-table .status p, table .status form { margin-bottom: 5px; }
-table .status #admin-stuff { font-size: .9em; }
-table p span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 30%; }
-table tr#accept-decline { text-align: center; }
+ 
+th.bid-box, th.status { background-color: #797979; color: #FFF; }
+th strong, th .strong { color: #fff6bf; font-size: 1.5em; }
+td.bid-box, td.status { background-color: #eaeaea; }
+.vehicle { width: 40%; }
+.vehicle #details { float: left; margin-left: 10px; width: 260px; }
+.terms, .delivery, .requirements { text-align: left; width: 20%; }
+.delivery p, .requirements p { margin-left: 60px; }
+.vehicle a, .requirements a, .terms a { font-size: 1.5em; }
+.vehicle #details a { font-size: 1.2em; }
+.status { width: 40%; text-align: center; }
+.status p, .status form { margin-bottom: 5px; }
 
-table.buyer.monitor-bids { clear: both; }
-table.buyer .type { width: 6%; }
-table.buyer .price { width: 18%; }
-table.buyer td.price { text-align: right; padding-right: 20px; }
-table .amount { text-align: center; }
+.qty { width: 10%; text-align: center; }
+.partname { text-align: left; }
+.price { width: 20%; text-align: right; padding: 10px 8px 10px 0; }
 
-table.buyer .bid-box h4 { margin-bottom: 0.5em; }
-table.buyer .bid-box .bid-labels { display: inline;
-float: left; width: 25%; margin-right: 2%; min-height: 1.5em;}
-table.buyer .bid-box .bid-selection { border-left: 1px solid white; display: inline; float: left; min-height: 1.5em; width: 72%;}
-table.buyer .bid-box .bid-selection span { font-size: 18px; min-height: 2.5em; line-height: 2.5em; }
-table.buyer .bid-box .bidder-count { background-color: white; float: left; min-height: 3em; padding: 2px 0; width: 50%; }
-table.buyer .bid-box .bidder-count .number { font-size: 1.2em; }
-table.buyer .bid-box .bid-type { float: left; min-height: 1.5em; padding: 2px 0; width: 50%; }
+#admin-stuff { font-size: .9em; }
+#admin-stuff a { margin: 0px 5px; }
 
-table.buyer .bid-box .bid-field { min-height: 1.5em; }
-table.buyer th.bid-box .bid-field { text-align: center; }
-table.buyer .bid-box .bid-field span { font-size: 0.8em; line-height: 1em; }
-table.buyer .bid-box .orig { clear: both; }
+#main-bids p span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 30%; }
 
+#entries-show { clear: both; }
+#entries-show h4 { margin-bottom: 0.5em; }
+#entries-show .bid-labels { display: inline; float: left; width: 25%; margin-right: 2%; min-height: 1.5em;}
+#entries-show .bid-selection { border-left: 1px solid white; display: inline; float: left; min-height: 1.5em; width: 72%;}
+#entries-show .bid-selection span { font-size: 18px; min-height: 2.5em; line-height: 2.5em; }
+#entries-show .bidder-count { background-color: white; float: left; min-height: 3em; padding: 2px 0; width: 50%; }
+#entries-show .number { font-size: 1.2em; }
+#entries-show .bid-type { float: left; min-height: 1.5em; padding: 2px 0; width: 50%; }
+
+#entries-show .bid-field { min-height: 1.5em; }
+#entries-show th .bid-field { text-align: center; }
+#entries-show .bid-field span { font-size: 0.8em; line-height: 1em; }
+#entries-show .orig { clear: both; }
+#accept-decline { text-align: center; }
+#accept-decline .instruction { margin-bottom: 10px; }
+
+#content-main #relist-button, #content-main #reveal-bids-button { background-color: #D02200; font-size: 16px; }
+
+/* VEHICLES SETS
+---------------------------------------------------------------------- */
+.vehicle-set { position: relative; overflow: hidden; float: left; width: 40%; }
+.vehicle-set li { clear: both; margin-left: 60px; }
+.vehicle-set li span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 40%; }
+#deliver-to, #term {
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-top: 8px;
+}
+
+/* PHOTO SETS
+---------------------------------------------------------------------- */
+.photo { float: left; padding: 5px; background-color: rgba(255,255,255,0.9); border: 1px solid #CCC; height: 60px; width: 80px; }
+.photo-set { float: right; width: 55%; }
+.photo-set ul li { float: left; margin: 0 5px 10px 0; }
+.photo-set .photo:hover { border: 1px solid #5f6252; opacity: 1; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
+
+/* CREATE ENTRY - PARTS DB
+---------------------------------------------------------------------- */
+
+#cart_notice_box { width: 100%; line-height: 2.5em; margin-bottom: 15px; min-height: 2.5em; color: #C00; font-weight: bold; text-align: center;}
+#cart_notice_box p { font-size: 16px; margin: 0; }
+
+#parts { float: left; width: 38%; min-height: 400px; overflow: hidden; padding: 10px; border: 1px solid #CCCCCC; background-color: #FFF6BF; box-shadow: 0 0 4px #999999; }
+#parts #instructions { margin: 0.5em; padding: 0.5em; background-color: white; }
+#parts #instructions li { list-style-position: outside; list-style-type: decimal; }
+#parts #search-form { display: block; text-align: center; height: 50px; line-height: 50px; }
+#parts #search-form > input { margin-top: 0; margin-right: 5px; }
+#parts #search-box { width: 50%; }
+#parts p { text-align: center; margin: 0.5em 0; }
+#parts li {font-size: 14px; margin: 0.5em 0 0.7em 2em; list-style-type: none; }
+#parts .pagination { clear: both; color: #666666; padding: 10px 0; position: relative; text-align: center; float: none; font-weight: normal; font-size: .8em; }
+
+/* CREATE ENTRY - CART SELECTION
+---------------------------------------------------------------------- */
+
+#selection { float: right; width: 55%; min-height: 400px; padding: 0; /*overflow: hidden;*/ }
+#prev-cart, #cart, #add-part-box { clear: both; float: left; margin-bottom: 25px; width: 100%; }
+#selection ul, #selection ul form { float: left; margin: 0; width: 100%; }
+#selection ul { margin-bottom: 15px; }
+#selection h3 { clear: both; padding: 10px 0; text-align: center; width: 100%; }
+#selection #cart h3, #selection #prev-cart h3 { background: #797979; color: #FFF; }
+.selection-title, .selection-list/*, .vehicle-set h4*/ { overflow: hidden; margin: 0 0 5px; }
+.selection-title { border-bottom: 2px solid #999; font-size: 16px; }
+.selection-list { border-bottom: 1px solid #ccc; clear: both; display: block; float: left; width: 100%; }
+#selection span { float: left; padding: 10px 0 10px 8px; }
+#selection input { margin-top: -4px; text-align: center; }
+#selection .qty/*, #show-parts .qty*/ { width: 10%; text-align: center; }
+#selection .partname { width: 40%; }
+#selection .partnum { width: 45%;  }
+#selection #cart_notice_box { float: left; width: 70%; }
+.button_to { float: right; }
+.button_to input { margin: 0; }
+#selection .empty-prompt { clear: both; text-align: center; }
+#add-part-box { padding: 20px 5px; text-align: center; width: 500px; }
+#add-part-box h3 { margin-bottom: 0.5em; padding: 0; }
+
+/* CREATE ENTRY - VEHICLE FIELDS
+---------------------------------------------------------------------- */
+.full-column { margin-bottom: 20px; width: 100%; }
+.column { float: left; width: 32%; margin-right: 10px; margin-bottom: 20px; }
+.column:last-child { margin-right: 0; }
+.column-2 { float: left; width: 16%; }
+#attachments input { margin: 0; }
+#attachments .fields { float: left; width: 32%; margin: 4px; padding: 10px 0; text-align: center; background: #ddd; }
+#attachments .fields :last-child { margin-right: 0; }
+#attachments input[type="file"] { width: 75%; }
+#attachments .add_nested_fields { margin: 10px 4px 0; }
 
 /* SUPPLIER - MAIN HUB
 ---------------------------------------------------------------------- */
-table#item-bids { clear: both; margin: 4em 0 1em; }
-table .qty { width: 10%; text-align: center; }
-table .partname { text-align: left; }
+#item-bids { clear: both; margin: 4em 0 1em; }
 table .bid-box { width: 60%; overflow: hidden; text-align: center; }
 table .bid-box span { color: #C00; }
 table .bid-box .fields, table .bid-box #amounts { clear: both; overflow: hidden; }
@@ -138,7 +218,7 @@ table#lot-bids tr { border-top: 2px solid #999; }
 
 /* SUPPLIER - MONITOR BIDS
 ---------------------------------------------------------------------- */
-table#monitor-bids .part-desc,
+/*table#monitor-bids .part-desc,
 table#monitor-bids .amount,
 table#monitor-bids .bid-type,
 table#monitor-bids .status { display: inline; float: left; margin-left: 10px; width: 110px; }
@@ -146,26 +226,88 @@ table#monitor-bids .part-desc { clear: both; text-align: left; width: 180px; }
 table#monitor-bids .bid-group { float: left; margin-left: 15px; }
 table#monitor-bids .amount { text-align: right; }
 table#monitor-bids th .amount { margin-left: 15px; }
-table#monitor-bids td .amount { clear: both; margin-left: 0; }
+table#monitor-bids td .amount { clear: both; margin-left: 0; }*/
 
-#supplier-bids .vehicle { width: 25%; }
-#supplier-bids .vehicle a { font-size: 1em; margin-left: -4px; }
-#supplier-bids .part { clear: both; float: left; margin-bottom: 5px; width: 40%; }
-#supplier-bids .bid-group { float: left; margin-left: 2%; margin-bottom: 5px; position: relative; width: 58%; }
+#supplier-bids th.vehicle, #supplier-bids th .part { text-align: left; }
+#supplier-bids .vehicle { width: 20%; }
+#supplier-bids .vehicle a { font-size: 1em; }
+#supplier-bids .vehicle + td { width: 80%; }
+#supplier-bids .vehicle .strong { font-size: 1em; }
+#supplier-bids .vehicle .button { margin-top: 15px; }
+#supplier-bids .part { clear: both; float: left; margin-bottom: 5px; width: 25%; }
+#supplier-bids .bid-group { float: left; margin-left: 2%; margin-bottom: 10px; position: relative; width: 73%; }
 #supplier-bids td .bid-group { min-height: 4.5em; }
-#supplier-bids .amount { width: 130px; }
-#supplier-bids .original { clear: both; position: absolute; left: 4px;  }
-#supplier-bids .replacement { left: 142px; position: absolute;  }
-#supplier-bids .surplus { left: 278px; position: absolute;  }
-#supplier-bids .stat { text-align: center; }
-/* SUPPLIER - ORDERS
+#supplier-bids .amount { width: 32%; }
+#supplier-bids .original { clear: both; position: absolute; left: 0;  }
+#supplier-bids .replacement { left: 188px; position: absolute;  }
+#supplier-bids .surplus { left: 373px; position: absolute;  }
+#supplier-bids .vals { float: left; font-size: 14px; text-align: center; position: relative; width: 55%; }
+#supplier-bids .stat { float: right; text-align: center; width: 42%;}
+#supplier-bids .amount .instruction { clear: both; margin-bottom: 5px; text-align: center; }
+
+#supplier-bids .info { margin:10px 0; padding: 5px 0; text-align: center; width: 100%; }
+#supplier-bids .orig, #supplier-bids .rep, #supplier-bids .surp { float: left; min-height: 4em;}
+#supplier-bids .rep, #supplier-bids .surp { margin-left: 2%; }
+
+/* COMMENTS IN ENTRIES#SHOW
+---------------------------------------------------------------------- */
+#show-comments { border: 1px solid #CCC; clear: both; float: left; margin-bottom: 2em; padding: 10px; width: 938px; overflow: hidden;}
+#show-comments h3 { float: left; }
+#show-comments #comments-list { clear: both; float: left; margin: 0; width: 460px; }
+#show-comments li { clear: both; float: left; margin-bottom: 5px; width: 100%; }
+#show-comments #creator, #show-comments #comment, #show-comments #datetime { float: left; }
+#show-comments #creator { color: #999; font-weight: bold; width: 15%;  }
+#show-comments #comment { width: 63%; margin-right: 2%; }
+#show-comments #datetime { color: #999; font-weight: bold; width: 20%; }
+#show-comments form { float: left; width: 460px; text-align: center;}
+#show-comments form input { margin-top: 0; }
+#show-comments form input[type='text'] { margin-right: 10px; }
+
+/* PURCHASE ORDER
+---------------------------------------------------------------------- */
+#transaction { float: left; overflow: hidden; width: 458px; min-height: 200px;  margin: 0 10px 20px 0;  }
+#delivery { float: right; width: 450px; border-left: 1px solid #999; padding-left: 30px; margin-bottom: 1.5em;}
+#transaction.create { border-right: 1px solid #999; margin-right: 0; padding-right: 30px; }
+#delivery.create { border: 0; padding-left: 0;  }
+
+#transaction h2, #delivery h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999; }
+#transaction .who { color: #C00; font-weight: bold; }
+#transaction .vehicle-set { width: 100%; margin-bottom: 2em; }
+#transaction .full-name { margin-top: 1.2em; font-weight: bold; }
+#buyer-company, #supplier-company { float: left; overflow: hidden; width: 50%; }
+#supplier-company.multiple { clear: both; background-color: #FFF6BF; }
+#buyer-company h3, #supplier-company h3 { font-size: 1em; color: #999; text-transform: uppercase; }
+#buyer-company h4, #supplier-company h4 { margin-bottom: 0.8em; }
+#del-instructions { width: 450px; }
+#del-instructions li { clear: both; padding-left: 140px; }
+#del-instructions span { font-weight: bold; color: #999; display: block; float: left; margin-left: -140px; width: 30%; }
+#del-instructions #address, #del-instructions #date-released, #del-instructions #date-delivered { padding-top: 20px; }
+#del-instructions #overdue, #del-instructions #date-paid { color: #C00; font-size: 1.2em; font-weight: bold; padding-top: 20px; }
+#del-instructions #instr { border-top: 1px dotted black; border-bottom: 1px dotted black; font-weight: bold; margin-top: 20px; padding-top: 5px; padding-bottom: 5px; overflow: hidden;}
+#del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
+#order { clear: both; overflow: hidden; margin: 1.5em 0; }
+#order .vehicle-set { float: left; margin: 0 0 1em; width: 100%; }
+#order .vehicle-set li { clear: both; float: left; width: 280px; }
+#order td { padding-top: 15px; padding-bottom: 15px; }
+#order .bid-type { color: #C00; display: inline; float: right; font-size: 11px;}
+.parts-set { float: left; width: 100%; margin: 2em 0; }
+.selection-total td { font-size: 1.5em; font-weight: bold; color: #C00; text-align: right; padding: 10px 8px 10px 0; border-bottom: none; }
+
+/* ORDERS & PAYMENTS LISTS
+---------------------------------------------------------------------- */
+#orders-list th.items { text-align: left; }
+#orders-list .vehicle { width: 30%; }
+#orders-list .vehicle a { font-size: 1em; }
+#orders-list .amount { text-align: center; }
+#orders-list .stat { text-align: center; width: 30%; }
+#orders-list .stat .highlight { margin-bottom: 5px; }
+#orders-list .total { font-size: 14px; margin-bottom: 5px; }
+#order-total, #supplier-total { float: left; margin-right: 25px; }
+
+/* FEES
 ---------------------------------------------------------------------- */
 
-
-/* BUYER FEES
----------------------------------------------------------------------- */
-
-form.groups.highlight { padding: 5px 0; }
+form.groups.highlight { padding: 2px 0; }
 #buyer-fees .fee, #supplier-fees .fee { font-size: 1.2em; font-weight: bold; }
 #buyer-fees .fee .instruction,#supplier-fees .fee .instruction { font-size: 11px;font-weight: normal; }
 table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
@@ -175,7 +317,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #buyer-fees .vehicle .strong { font-size: 1em; }
 #buyer-fees .vehicle .button { margin-top: 15px; }
 #buyer-fees .vehicle + td { width: 80%; }
-#buyer-fees .part, #buyer-fees .fee-type, #buyer-fees .lowest-bid, #buyer-fees .speed, #buyer-fees .rate, #buyer-fees .fee { display: inline; float: left; line-height: 18px; min-height: 18px; }
+#buyer-fees .part, #buyer-fees .fee-type, #buyer-fees .lowest-bid, #buyer-fees .speed, #buyer-fees .rate, #buyer-fees .fee { display: inline; float: left; line-height: 20px; min-height: 18px; }
 #buyer-fees .part { clear: both; width: 25%;}
 #buyer-fees .fee-type, #buyer-fees .lowest-bid, #buyer-fees .speed, #buyer-fees .rate, #buyer-fees .fee { margin-left: 5px; text-align: right; }
 #buyer-fees .lowest-bid, #buyer-fees .fee-type, #buyer-fees .speed { width: 15%; }
@@ -183,24 +325,21 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #buyer-fees .fee { width: 15%;  }
 #buyer-fees .fee-type { text-align: center; }
 
-#seller-split .vehicle { width: 25%; }
+/*#seller-split .vehicle { width: 25%; }
 #seller-split td div { margin-bottom: 5px; min-height: 18px; line-height: 18px; }
 #seller-split .vehicle a { font-size: 1em; margin-left: -4px; }
 #seller-split .part { margin-left: 15px; min-height: 18px; width: 200px;}
 #seller-split .lowest-bid, #seller-split .fee { width: 120px; }
 #seller-split .fee-type { margin-right: 0; width: 14%; }
-#seller-split .part { text-align: left; }
-
-/* SUPPLIER FEES
----------------------------------------------------------------------- */
+#seller-split .part { text-align: left; }*/
 
 #supplier-fees th.vehicle, #supplier-fees th .part { text-align: left; }
 #supplier-fees .vehicle { width: 20%; }
-#supplier-fees .vehicle a { font-size: 1em; margin-left: -4px; }
+#supplier-fees .vehicle a { font-size: 1em;  }
 #supplier-fees .vehicle + td { width: 80%; }
 #supplier-fees .po-group a {  display: inline; float: right; margin-right: 0; }
 #supplier-fees .po-group { clear: both; margin-top: 10px; margin-bottom: 10px; overflow: hidden; }
-#supplier-fees .part, #supplier-fees .amount-paid, #supplier-fees .speed, #supplier-fees .rate, #supplier-fees .fee { display: inline; float: left; line-height: 18px; min-height: 18px; }
+#supplier-fees .part, #supplier-fees .amount-paid, #supplier-fees .speed, #supplier-fees .rate, #supplier-fees .fee { display: inline; float: left; line-height: 18px; min-height: 20px; }
 #supplier-fees .part { clear: both; width: 25%;}
 #supplier-fees .amount-paid, #supplier-fees .fee, #supplier-fees .speed, #supplier-fees .rate { margin-left: 5px; text-align: right; }
 #supplier-fees .amount-paid, #supplier-fees .fee { width: 15%;  }
@@ -228,126 +367,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #diff #w-ebid, #diff #manual-only, #diff #no-price { padding-left: 15px; }
 #diff #ebid-manual, #diff #ebid-only { padding-left: 30px; }
 #diff #ebid-lower, #diff #ebid-higher, #diff #same { padding-left: 60px; }
-#diff li span.instruction { font-style: normal; opacity: 1;}
-
-/* PHOTO SETS
----------------------------------------------------------------------- */
-.photo { float: left; padding: 5px; background-color: rgba(255,255,255,0.9); border: 1px solid #CCC; height: 60px; width: 80px; }
-.photo-set { float: right; width: 55%; }
-.photo-set ul li { float: left; margin: 0 5px 10px 0; }
-.photo-set .photo:hover { border: 1px solid #5f6252; opacity: 1; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
-
-/* CREATE ENTRY - PARTS DB
----------------------------------------------------------------------- */
-#parts { float: left; width: 38%; min-height: 400px; overflow: hidden; padding: 10px; border: 1px solid #CCCCCC; background-color: #FFF6BF; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
-#parts #instructions { margin: 0.5em; padding: 0.5em; background-color: white;}
-#parts #instructions li { list-style-position: outside; list-style-type: decimal; }
-#parts #search-form { display: block; text-align: center; height: 50px; line-height: 50px; }
-#parts #search-form > input { margin-top: 0; margin-right: 5px; }
-#parts #search-box { width: 50%; }
-#parts p { text-align: center; margin: 0.5em 0; }
-#parts li { margin: 0.5em 0 0.7em 2em; list-style-type: none; }
-#parts .pagination { clear: both; color: #666666; padding: 10px 0; position: relative; text-align: center; float: none; font-weight: normal; font-size: .8em; }
-.ajax-loader { float: right; }
-
-/* PARTS LISTS
----------------------------------------------------------------------- */
-
-/*----- 1. Cart Selection -----*/
-#selection { float: right; width: 55%; min-height: 400px; overflow: hidden; }
-#selection h3 { clear: both; padding: 10px 0; text-align: center; }
-#selection #cart h3, #selection #prev-cart h3 { background: #797979; color: #FFF; }
-#selection h4, li.selection-title, li.selection-list, .vehicle-set h4 { overflow: hidden; margin: 0; }
-#selection .qty, #show-parts .qty { float: left; width: 10%; text-align: center; }
-#selection .partname, #show-parts .partname { float: left; width: 40%; }
-#selection .partnum { float: left; width: 40%; text-align: right; }
-#selection ul, ul#show-parts { margin-bottom: 2em; overflow: hidden; }
-#selection ul li input { margin-top: -4px; text-align: center; }
-#selection ul li input[type="submit"] { margin-top: -8px; margin-left: 0.5em; }
-#selection #cart_notice_box { float: left; margin: 0 15px 3em 0; width: 70%; line-height: 1.5em; min-height: 1.5em; color: #C00; font-weight: bold; text-align: center;}
-#selection #cart_notice { padding: 10px 0; }
-#selection #cart input[type="submit"] { margin-top: -8px; float: right; }
-#selection #add-part-box { clear: both; }
-#selection .box h3 { margin-bottom: 0.5em; padding: 0; }
-
-/*----- 2. PO Parts Lists -----*/
-.first table.parts-set { float: left; width: 100%; margin: 2em 0; }
-/*#order table.parts-set { float: right; width: 540px; margin-bottom: 1.5em; }*/
-#order span.partname { width: 25%; }
-#order span.partnum { width: 25%; text-align: center; }
-.price { width: 20%; text-align: right; padding: 10px 8px 10px 0; }
-.selection-total td { font-size: 1.5em; font-weight: bold; color: #C00; text-align: right; padding: 10px 8px 10px 0; border-bottom: none; }
-
-/* CREATE ENTRY - VEHICLE & FILE FIELDS */
-.full-column { margin-bottom: 20px; width: 100%; }
-.column { float: left; width: 32%; margin-right: 10px; margin-bottom: 20px; }
-.column:last-child { margin-right: 0; }
-.column-2 { float: left; width: 16%; }
-#attachments input { margin: 0; }
-#attachments .fields { float: left; width: 32%; margin: 4px; padding: 10px 0; text-align: center; background: #ddd; }
-#attachments .fields :last-child { margin-right: 0; }
-#attachments input[type="file"] { width: 75%; }
-#attachments .add_nested_fields { background-color: #FFF6BF; clear: both; float: left; font-size: 1.2em; margin: 10px 4px 0; text-align: center; }
-
-/* VEHICLES SETS
----------------------------------------------------------------------- */
-.vehicle-set { position: relative; overflow: hidden; float: left; width: 40%; }
-.vehicle-set li { clear: both; margin-left: 60px; }
-.vehicle-set li span { font-weight: bold; color: #999; display: block; float: left; margin-left: -60px; width: 40%; }
-#deliver-to, #term {
-	font-size: 1.2em;
-	font-weight: bold;
-	margin-top: 8px;
-}
-
-/* COMMENTS IN ENTRIES#SHOW
----------------------------------------------------------------------- */
-#show-comments { border: 1px solid #CCC; clear: both; float: left; margin-bottom: 2em; padding: 10px; width: 938px; overflow: hidden;}
-#show-comments h3 { float: left; }
-#show-comments #comments-list { clear: both; float: left; margin: 0; width: 460px; }
-#show-comments li { clear: both; float: left; margin-bottom: 5px; width: 100%; }
-#show-comments #creator, #show-comments #comment, #show-comments #datetime { float: left; }
-#show-comments #creator { color: #999; font-weight: bold; width: 15%;  }
-#show-comments #comment { width: 63%; margin-right: 2%; }
-#show-comments #datetime { color: #999; font-weight: bold; width: 20%; }
-#show-comments form { float: left; width: 460px; text-align: center;}
-#show-comments form input { margin-top: 0; }
-#show-comments form input[type='text'] { margin-right: 10px; }
-
-/* PURCHASE ORDER
----------------------------------------------------------------------- */
-.first { float: left; overflow: hidden; width: 458px; min-height: 200px;  margin: 0 10px 20px 0;  }
-.second { float: right; width: 450px; border-left: 1px solid #999; padding-left: 20px; margin-bottom: 1.5em;}
-.first h2, .second h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999; }
-.first .who { color: #C00; }
-.first .vehicle-set { width: 100%; margin-bottom: 2em; }
-.first .full-name { margin-top: 1.2em; font-weight: bold; }
-.first .highlight, .highlight { background-color: #FFF6BF; padding: 0 10px; }
-#buyer-company, #supplier-company { float: left; overflow: hidden; width: 50%; }
-#supplier-company.multiple { clear: both; background-color: #FFF6BF; }
-#buyer-company h3, #supplier-company h3 { font-size: 1em; color: #999; text-transform: uppercase; }
-#buyer-company h4, #supplier-company h4 { margin-bottom: 0.8em; }
-#del-instructions { width: 450px; }
-#del-instructions li { clear: both; padding-left: 140px; }
-#del-instructions span { font-weight: bold; color: #999; display: block; float: left; margin-left: -140px; width: 30%; }
-#del-instructions #address, #del-instructions #date-released, #del-instructions #date-delivered { padding-top: 20px; }
-#del-instructions #overdue, #del-instructions #date-paid { color: #C00; font-size: 1.2em; font-weight: bold; padding-top: 20px; }
-#del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
-#order { clear: both; overflow: hidden; margin: 1.5em 0; border-bottom: 1px solid #999; }
-#order .vehicle-set { float: left; margin: 0 0 1em; width: 100%; }
-#order .vehicle-set li { clear: both; float: left; width: 280px; }
-#order li span { width: 40%; }
-
-/* ORDERS & PAYMENTS LISTS
----------------------------------------------------------------------- */
-table#orders-list th.items, table#orders-list th.amount { text-align: left; }
-table#orders-list .vehicle { width: 30%; }
-table#orders-list .vehicle a { font-size: 1em; margin-left: -4px; }
-table#orders-list .stat { text-align: center; width: 30%; }
-#order-total, #supplier-total { float: left; margin-right: 25px; }
-table#print-payments-list th { text-align: left; }
-table#print-payments-list .stat { width: 25%; }
-
+#diff li span.instruction { font-style: normal; opacity: 1; }
 
 /* USERS#INDEX 
 ---------------------------------------------------------------------- */
@@ -377,11 +397,13 @@ table#print-payments-list .stat { width: 25%; }
 
 /* RATINGS#NEW & #SHOW
 ---------------------------------------------------------------------- */
+.second { float: right; }
 .rating p { margin-bottom: 1.1em; }
 .rating .label, .rating label, #show-rating .label { color: #999; font-weight: bold; text-transform: uppercase; }
 .rating .name { color: #C00; font-size: 1.5em; }
 .rating textarea { clear: both; }
-#content-main .stars div a { background: transparent url(../images/stars/sprite_rate.png) 0 0 no-repeat; display: inline-block; height: 23px; margin-bottom: 1.5em; padding: 0; width: 12px; text-indent: -999em; overflow: hidden; }
+#content-main .stars div a { background: transparent url(../images/stars/sprite_rate.png) 0 0 no-repeat; display: inline-block; height: 23px; margin-bottom: 1.5em; padding: 0;  width: 12px; text-indent: -999em; overflow: hidden; }
+#content-main .stars a  { border-bottom: 0; }
 #content-main .stars a.rating-right { background-position: 0 -23px; padding-right: 6px; }
 #content-main .stars a.rating-over { background-position: 0 -46px; }
 #content-main .stars a.rating-over.rating-right { background-position: 0 -69px; }
@@ -405,13 +427,10 @@ table#print-payments-list .stat { width: 25%; }
 #chnwyr { float: left; margin: 0 50px 20px 0; text-align: center; }
 #chnwyr img { border: 1px solid #CCC; padding: 5px; }
 
-#supplier-stats { float: left; width: 73%; text-align: right; }
-#supplier-stats .label { color: #C00; font-size: 1.1em; font-weight: bold; text-align: left; }
-#supplier-stats th { background-color: #E5E5E5; border: 0; font-size: 1.2em;}
-#supplier-stats td { font-size: 18px; border: 0; }
-#supplier-stats .indent { padding-left: 50px; }
-#supplier-stats .divide { border-bottom: 2px solid #999; }
-
 .supplier.right { float: left; width: 73% }
-.aside { float: right; width: 23%; }
-.aside .button { width: 80%; text-align: center;}
+.aside { float: right; width: 24%; text-align: center; }
+.aside div { margin: 0 0 12px; padding: 15px; text-align: center;}
+.aside p { margin-bottom: 0; }
+#content-main .aside .button { margin-right: 0; margin-bottom: 12px; text-align: center; width: 50%; }
+#content-main .aside #feature-button { background-color: #6B9D28; font-size: 16px; width: 60%; }
+#content-main .aside #feature-button:hover { background-color: #D02200; }

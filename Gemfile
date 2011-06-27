@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.7'
+gem 'rails', '3.0.9'
 gem 'mysql2', '< 0.3'
 gem 'nifty-generators'
 gem 'devise', '1.1.5'
@@ -15,6 +15,7 @@ gem 'to_xls'
 # gem 'newrelic_rpm'
 gem "paperclip", "~> 2.3"
 gem 'rake', '0.8.7'
+# gem 'client_side_validations', '3.0.5'
 
 # Deploy with Capistrano
 gem 'capistrano'

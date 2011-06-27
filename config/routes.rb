@@ -29,7 +29,7 @@ Ebid::Application.routes.draw do
       member do
         get :print
         get :put_online
-        get :decide
+        get :reveal_bids
         get :relist
         get :reactivate
       end

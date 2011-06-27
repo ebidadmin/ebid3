@@ -16,7 +16,8 @@ class OrderItem < ActiveRecord::Base
         :quantity => bid.quantity,
         :price => bid.amount,
         :total => bid.total,
-        :source => bid.bid_type
+        :source => bid.bid_type,
+        :bid_id => bid.id
       )
       order.order_items << order_item
     end

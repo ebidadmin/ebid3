@@ -17,7 +17,8 @@
         <%= content_tag :p, entry.ref_no unless entry.ref_no.nil? %>
         <%= content_tag :p, entry.vehicle, :class => 'strong' %>
         <%= content_tag :span, entry.plate_no %>
-        <%= content_tag :span, "(created by #{entry.user.username})", :class => 'highlight' %>
+        <%= content_tag :span, "(by #{entry.user.username})", :class => 'highlight' %>
+	      <%= content_tag :p, "Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')}", :class => 'instruction' %>
 			</div>
 		</td>
     <td class="terms">  
@@ -25,13 +26,13 @@
       <%= content_tag :p, (link_to (pluralize entry.line_items_count, "item"), entry), :class => 'parts-total' %>
     </td>
 		<td class="status">
-      <%= content_tag :p, display_status(entry) %>
+      <%= display_status(entry) %>
 			<p class="instruction">
 			  <%= display_number_of_bidders(entry) unless (entry.buyer_status == "New" || entry.buyer_status == "Edited") %>
         <%= render 'entries/online_links', :entry => entry %>
 			  <%= "| #{content_tag :abbr, (pluralize entry.orders.count, 'order'), :class => 'highlight'}".html_safe unless entry.orders.blank? %>
       </p>
-			<%= content_tag :h5, "Bidding Speed: " + distance_of_time_in_words(entry.bids.first.bid_speed) unless entry.bids.first.blank? %>
+			<%= content_tag :p, "Bidding Speed: " + distance_of_time_in_words(entry.bids.first.bid_speed), :class => 'comfy-alert' unless entry.bids.first.blank? %>
 		</td>
 	</tr>
 	<%- end -%>

@@ -9,7 +9,6 @@
 	<% end %>
 </ul>
 
-
 <div id="cart_notice_box">
 	<% if flash[:cart_notice] %> 
 		<%= render "cart/cart_notice" %>
@@ -18,5 +17,7 @@
 
 <% unless @cart.cart_items.empty? %> 
 	<%= clear_cart_link %>
+<% else %>
+	<%= content_tag :h2, '<< Choose parts. Current selection is empty.', :class => 'empty-prompt highlight' %>
 <% end %>
 

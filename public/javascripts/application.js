@@ -13,12 +13,9 @@ $(function() {
 		return false;
 	});
 	
-	$('select#username').bind('change', function() { window.location.pathname = $(this).val() });
-	$('select#status').bind('change', function() { window.location.pathname = ($(this).val()) });
-	$('select#seller').bind('change', function() { window.location.pathname = $(this).val() });
-	$('select#buyer').bind('change', function() { window.location.pathname = $(this).val() });
+	$('select#username, select#brand, select#status, select#seller, select#buyer').bind('change', function() { window.location.pathname = $(this).val() });
 	
-	$("#entry_submit, .pagination a").bind("click", function() {
+	$("#entry_submit").bind("click", function() {
     $(".spinner").toggle() ;
 	});
 	

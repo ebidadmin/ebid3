@@ -19,10 +19,15 @@ class User < ActiveRecord::Base
   has_many :ratings
   has_many :ratees, :through => :ratings, :dependent => :destroy
   has_many :comments, :dependent => :destroy
+  has_many :fees
   has_many :buyers, :through => :fees
   has_many :sellers, :through => :fees
+  has_many :diffs
   has_many :buyers, :through => :diffs
   has_many :sellers, :through => :diffs
+  has_many :comments, :as => :sender
+  has_many :senders, :through => :comments
+  has_many :recievers, :through => :comments
   
 
   scope :active, where('current_sign_in_at > ?', 24.hours.ago).order('current_sign_in_at DESC')

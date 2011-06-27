@@ -3,7 +3,7 @@
 		<%= item.quantity %>
 	</span>
 	<span class="partname">
-		<%= item.car_part.name %> <%= link_to "(delete)", item, :confirm => 'Are you sure?', :method => :delete %>
+		<%= item.car_part.name %> <%= link_to "-", item, :confirm => 'Are you sure?', :method => :delete, :class => 'button' %>
 	</span>		
 	<span id="part_no_<%= item.id %>" class="partnum">
 		<%= render '/line_items/part_with_edit', :item => item %>

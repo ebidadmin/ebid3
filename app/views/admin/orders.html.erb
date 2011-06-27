@@ -32,12 +32,12 @@
 		<tr>
 	  	<td >	
 	 			<% for order_item in  order.order_items %>
-					<%= content_tag :p, "[ #{order_item.quantity} ] " + order_item.line_item.part_name + " - #{ph_currency(order_item.total)}" %>
+					<%= content_tag :p, "[ #{order_item.quantity} ] " + order_item.line_item.part_name  %>
 				<% end %>
 		 	</td>
 			<td>
 	      <%= content_tag :h5, 'Total: ' + ph_currency(order.order_total) %>
-			  <%= link_to "View PO", order %>
+			  <%= link_to "View PO", order, :class => 'button' %>
 			</td>
 	  	<td class='stat'>
   			<%= content_tag :p, 'Buyer: ' + order.company.name, :class => 'instruction'  %>

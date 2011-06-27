@@ -8,11 +8,14 @@ class LineItem < ActiveRecord::Base
   has_one :fee
   has_many :diffs
   
+  scope :desc, order('id DESC')
   scope :online, where(:status => ['Online', 'Relisted'])
-  scope :with_bids, where('bids_count > 0')
-  scope :two_and_up, where('bids_count > 2')
-  scope :without_bids, where('bids_count < 1')
+  scope :with_bids, where('line_items.bids_count > 0')
+  scope :two_and_up, where('line_items.bids_count > 2')
+  scope :without_bids, where('line_items.bids_count < 1')
 
+  scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user, :city, :term]], :car_part, [:bids => :user])
+  
   scope :metered, where('line_items.created_at >= ?', '2011-04-16')
   scope :ftm, where('line_items.created_at >= ?', Time.now.beginning_of_month)
 
@@ -58,6 +61,10 @@ class LineItem < ActiveRecord::Base
 	  (two_and_up.count.to_f/self.count.to_f) * 100
 	end
 	
+	def self.fastest
+    # collecbids.order(:bid_speed).last.map { |bid| bid.speed }
+	end
+	
 	def compute_lowest_bids
 	  unless bids.nil?
   	  bids.order('amount').first.total 
@@ -65,5 +72,5 @@ class LineItem < ActiveRecord::Base
 	    0
     end
 	end
-  
+
 end

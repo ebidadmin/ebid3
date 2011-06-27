@@ -1,7 +1,7 @@
 <table id="orders-list">
 	<thead>
     <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
-    <%= content_tag :th, 'Order Items', :class => 'items' %>
+    <%= content_tag :th, 'Parts Ordered', :class => 'items' %>
     <%= content_tag :th, 'PO Amount', :class => 'amount' %>
     <%= content_tag :th, 'Status', :class => 'stat' %>
 	</thead>
@@ -9,7 +9,7 @@
 	<tr>
 		<td rowspan=<%= orders.count + 1 %> class='vehicle'>	
 			<%= content_tag :p, (entry.ref_no unless entry.ref_no.nil?)  %>
-      <%= content_tag :p, (link_to entry.vehicle, entry)  %>
+      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), entry)  %>
 			<%= content_tag :span, entry.plate_no %>
 			<%= content_tag :span, "(created by #{entry.user.username})", :class => 'highlight' %>
 		</td>
@@ -21,16 +21,15 @@
 				<%= content_tag :p, "[ #{order_item.quantity} ] " + order_item.line_item.part_name %>
 			<% end %>
 	 	</td>
-		<td>
-      <%= content_tag :h5, 'Total: ' + ph_currency(order.order_total) %>
+		<td class='amount'>
+      <%= content_tag :p, ph_currency(order.order_total), :class => 'total' %>
 		  <%= link_to "View PO", order, :class => 'button' %>
+		  <%#= link_to "Print PO", print_order_path(order), :class => 'buttons' %>
 		</td>
   	<td class='stat'>
   		<%= content_tag :p, 'Seller: ' + order.seller.profile.company.name, :class => 'instruction'  %>
 		  <%= render 'orders/order_status_buyer', :order => order %>
-			<% if order.pay_until && order.paid.nil? %>
-				<%= content_tag :p , ('Overdue: ' + (pluralize order.days_overdue, 'day')), :id => 'overdue' if order.days_overdue > 0 %>
-			<% elsif order.paid && order.paid_but_overdue %>
+			<% if order.paid && order.paid_but_overdue %>
 				<%= content_tag :p , ('Overdue: ' + (pluralize order.paid_but_overdue, 'day')), :id => 'overdue' if order.paid_but_overdue > 0 %>
 				<%= content_tag :p , 'Paid before due date!', :id => 'overdue' if order.paid_but_overdue <= 0 %>
 			<% end %>
@@ -39,9 +38,9 @@
 	<% end %>
 	<% end %>
 	<tr class="totals">
-	  <td>Sub-Total</td>
-	  <td></td>
-	  <td><%= ph_currency(@orders.collect(&:order_total).sum) %></td>
-	  <td></td>
+    <%= content_tag :td, 'Sub-Total' %>
+    <%= content_tag :td, '' %>
+    <%= content_tag :td, ph_currency(@orders.collect(&:order_total).sum) %>
+    <%= content_tag :td, '' %>
 	</tr>
 </table>

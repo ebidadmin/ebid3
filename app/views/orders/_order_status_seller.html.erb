@@ -1,13 +1,14 @@
 <% if order.status == "PO Released" %>
 
 	<%= content_tag :p, ('Status: ' + order.status + " (#{time_ago_in_words order.created_at} ago) "), :class => 'highlight' %>
-	<%= content_tag :p, ('Please ' + link_to("Confirm the PO", order) + ' now.').html_safe, :class => 'instruction' %>
+	<%= content_tag :p, (link_to "Confirm PO Now!", order, :class => 'button') %>
 
 <% elsif order.status == "For Delivery" || order.status == "For-Delivery" %>
 
 	<%= form_tag seller_status_order_path(order), :method => :put do %>
 		Status: <%= select_tag :seller_status, options_for_select(["For Delivery", "Delivered"], [order.status]), {:onchange => 'this.form.submit()'} %>
 		<%= content_tag :span, " #{time_ago_in_words order.confirmed} ago", :class => 'highlight'  %> 
+		<%#= content_tag :span, order.weekdays_range( (order.confirmed.to_date)...(Time.now.to_date) ), :class => 'highlight'  %> 
 	<% end %>
 	<%= content_tag :p, ('(Please update this status ' + (content_tag :strong, 'if Delivered') + ') ').html_safe  %>
 

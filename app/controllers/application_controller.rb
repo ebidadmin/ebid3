@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
       elsif current_user.has_role?('seller')
         seller_main_path(current_user) 
       else
-        flash[:notice] = "User-privileges not established. Please contact the administrator." 
+        flash[:info] = "User-privileges not established. Please contact the administrator at 892-5935." 
         root_path
       end
     end
@@ -156,7 +156,7 @@ class ApplicationController < ActionController::Base
       if params[:start]
         @start_date = params[:start].to_date
       else
-        @start_date = '2011-04-16'.to_date
+        @start_date = Date.today.beginning_of_month #'2011-04-16'.to_date
       end
     end
     
@@ -188,7 +188,7 @@ class ApplicationController < ActionController::Base
           @buyer_company = 'All Buyers'
         end
       else
-        @buyer_company = current_user.company_name
+        @buyer_company = current_user.company.name
       end
     end
 

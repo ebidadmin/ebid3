@@ -1,6 +1,6 @@
 <p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
 <%= semantic_form_for @user, :html => {:class => 'col-3'} do |f| %>
-	<% f.inputs :name => "Login" do %>
+	<%= f.inputs :name => "Login" do %>
 		<%= f.input :username, :hint => 'This is going to be your login name.' %>
 		<%= f.input :password, :hint => 'Use at least 4 characters.' %>
 		<%= f.input :password_confirmation, :label => 'Type Password again' %>
@@ -8,7 +8,7 @@
 	<% end %>
 
   <%= f.semantic_fields_for :profile do |profile| %>
-  	<% profile.inputs :name => "Profile" do %>
+  	<%= profile.inputs :name => "Profile" do %>
   		<%= profile.input :company, :collection => Company.ascend_by_name if current_user && current_user.has_role?('admin') %>
   		<%= profile.input :company, :collection => Company.id_not(1).ascend_by_name, :hint => 'Call us at 892-5835 if your company is not in this list.' unless current_user && current_user.has_role?('admin') %>
   		<!-- <li><p class="inline-hints">New company? Add your company here -%></p></li> -->
@@ -22,7 +22,7 @@
   		<%= profile.input :birthdate, :as => :string, :input_html => {:id => 'datepicker'}, :hint => 'We want to remember you on your birthday. (Format: YYYY-MM-DD)' %>
   	<% end %>
   <% end %>
-	<% f.buttons do %>
+	<%= f.buttons do %>
 		<%= f.commit_button 'Submit' %> or
 		<%= link_to "Cancel", :back -%>
 		<% if current_user && current_user.has_role?('admin') %>
@@ -42,8 +42,11 @@
 	$(function() {
 		$('#datepicker').datepicker({ 
 				dateFormat: "mm-dd-yy",
-				maxDate: 0,
 				showButtonPanel: true, 
+				showButtonPanel: true, 
+				showOn: "both",
+				buttonImage: "/images/calendar.gif",
+				buttonImageOnly: true,
 				changeMonth: true,
 				changeYear: true,
 				yearRange: '1945:2011'

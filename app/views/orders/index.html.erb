@@ -1,23 +1,27 @@
 <% title @title %>
 
-<%= render 'buyer/filter_by_user' unless current_user.has_role?('seller') || @user_group.nil? %>
-<%#= render 'buyer/filter_by_status' unless @status_tags.nil? %>
-<%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
-<%= render 'buyer/filter_by_search' %>
-<%= render 'buyer/print' unless request.parameters['controller'] == ('admin' || 'seller') %>
+<% unless @orders.blank? %>
 
-<%= content_tag :h3, "Total: #{ph_currency(@all_orders.collect(&:order_total).sum)}", :id => 'order-total' %>
-<%= content_tag :p, "#{User.find(params[:seller]).company_name} only: #{ph_currency(@search.collect(&:order_total).sum)}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>
+	<%= render 'buyer/filter_by_user' unless current_user.has_role?('seller') || @user_group.nil? %>
+	<%#= render 'buyer/filter_by_status' unless @status_tags.nil? %>
+	<%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
+	<%= render 'buyer/filter_by_search' %>
+	<%= render 'buyer/print' unless request.parameters['controller'] == ('admin' || 'seller') %>
 
-<%= will_paginate @orders %>
-<%= page_info @orders, @sort_order %>
+	<%= content_tag :h3, "Total: #{ph_currency(@all_orders.collect(&:order_total).sum)}", :id => 'order-total' %>
+	<%= content_tag :p, "#{User.find(params[:seller]).company_name} only: #{ph_currency(@search.collect(&:order_total).sum)}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>
 
-<%- unless @orders.blank? -%>
-	<% if current_user.has_role?('buyer')  %>
-		<%= render 'buyer/orders_table' %>
-	<% else %>
-		<%= render 'seller/orders_table' %>
-	<% end %>
-<%- end -%>
+	<%= will_paginate @orders %>
+	<%= page_info @orders, @sort_order %>
 
-<%= will_paginate @orders %>
+		<% if current_user.has_role?('buyer')  %>
+			<%= render 'buyer/orders_table' %>
+		<% else %>
+			<%= render 'seller/orders_table' %>
+		<% end %>
+
+	<%= will_paginate @orders %>
+
+<% else %>
+	<%= content_tag :h2, 'Sorry, no records found.' %> 
+<% end %>

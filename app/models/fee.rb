@@ -31,7 +31,7 @@ class Fee < ActiveRecord::Base
       elsif start_date.present?
         where(:order_paid => start_date..Date.today)
       else
-        where('fees.order_paid >= ?', '2011-04-16')
+        where('fees.order_paid >= ?', Date.today.beginning_of_month)
       end
     else
       if end_date.present?
@@ -39,7 +39,7 @@ class Fee < ActiveRecord::Base
       elsif start_date.present?
         where(:created_at => start_date..Date.today)
       else
-        where('fees.created_at >= ?', '2011-04-16')
+        where('fees.created_at >= ?', Date.today.beginning_of_month)
       end
     end
   end
@@ -122,7 +122,6 @@ class Fee < ActiveRecord::Base
     f.save
   end
   
-    
   def seller_discount
     if bid.bid_speed < 4.hours
       0.5

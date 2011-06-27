@@ -58,16 +58,36 @@ module ApplicationHelper
       link(current_user)
     end 
   end
-  
+    
+  def delimited(target)
+    if target > 0
+      number_with_delimiter target
+    else
+      '-'
+    end
+  end
+
   def ph_currency(target)
-    number_to_currency target, :unit => 'P '
+    if target > 0
+      number_to_currency target, :unit => 'P '
+    else
+      '-'
+    end
+  end
+
+  def currency(target)
+    if target > 0
+      number_to_currency target, :unit => ''
+    else
+      '-'
+    end
   end
   
   def percentage(computation)
     if computation > 0
       number_to_percentage computation, :precision => 2
     else
-      '0.00%'
+      nil
     end
   end
   

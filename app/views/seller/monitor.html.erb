@@ -1,3 +1,6 @@
+<% title 'Monitor Bids' %>
+
+<%= render 'buyer/filter_by_search' %>
 <%= render 'seller/filter_by_brand' if @brand_links.count > 1 %>
 
 
@@ -7,34 +10,34 @@
 <table id="supplier-bids">
 	<thead>
     <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
-		<th id='th-two'>
+		<th>
 	    <%= content_tag :div, 'Part Description', :class => 'part' %>
 			<div class="bid-group">
-		    <%= content_tag :div, 'Orig', :class => 'amount original' %>
-		    <%= content_tag :div, 'Rep', :class => 'amount replacement' %>
-		    <%= content_tag :div, 'Surp', :class => 'amount surplus' %>
+		    <%= content_tag :div, 'Original', :class => 'amount original' %>
+		    <%= content_tag :div, 'Replacement', :class => 'amount replacement' %>
+		    <%= content_tag :div, 'Surplus', :class => 'amount surplus' %>
 			</div>
 		</th>
 	</thead>
 	<% @bids.group_by(&:entry).each do |entry, bids| -%>
   <tr>
 		<td class="vehicle">	
-      <%= content_tag :p, (content_tag :strong, truncate(entry.vehicle, :length => 30)).html_safe %>
+			<%= content_tag :p, truncate(entry.vehicle, :length => 30), :class => 'strong' %>
 			<%= content_tag :p, entry.plate_no  %>
 			<%= content_tag :p, display_status(entry), :class => 'instruction'  %>
-			<%= content_tag :p, (link_to '[view details]', seller_show_path(:id => entry.id)) %>
+			<%= link_to 'View Entry', seller_show_path(:id => entry.id), :class => 'button' %>
 		</td>
-	  <td id='td-two'>
+	  <td>
    		<% bids.group_by(&:line_item).each do |line_item, bids| %>
 				<div class="part">
-			    <%= content_tag :b, "[ #{line_item.quantity} ] " + line_item.part_name %>
+			    <%= content_tag :p, line_item.part_name %>
 				</div>
 				<div class="bid-group">
 				<% for bid in bids  %>
 					<div class="amount <%= bid.bid_type %>">
-						<%= content_tag :p, ph_currency(bid.amount) %>
+						<%= content_tag :p, ph_currency(bid.amount), :class => 'vals' %>
+						<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
 						<%= content_tag :p, "speed: " + distance_of_time_in_words(bid.bid_speed), :class => 'instruction'   %>
-						<%= content_tag :p, bid.bid_type, :class => "#{quote_class(bid.status)}"  %>
 					</div>
    			<% end %>
 				</div>

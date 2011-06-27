@@ -30,7 +30,7 @@ form.formtastic input, form.formtastic textarea, form.formtastic select {
 }
 form.formtastic fieldset.buttons { margin-left: 30%; padding-left: 0; } 
 form.formtastic fieldset.buttons li { padding-right: 0; }
-form.formtastic fieldset.buttons ol { height: 3em; line-height: 3em; overflow: hidden;}
+form.formtastic fieldset.buttons ol { height: 3.5em; line-height: 3.5em; overflow: hidden;}
 form.formtastic fieldset.buttons ol li.commit { margin: 0 10px 0 0;}
 form.formtastic fieldset.buttons ol li { overflow: hidden;}
 

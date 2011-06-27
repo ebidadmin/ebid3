@@ -1,17 +1,11 @@
 class SellerController < ApplicationController
+  include ActionView::Helpers::TextHelper
   before_filter :check_seller_role
   
   def main
     @last_activity = current_user.last_sign_in_at unless current_user.last_sign_in_at.nil?
     @ratings = Rating.where(:ratee_id => current_user).metered
     @last_bid = current_user.bids.last.created_at unless current_user.bids.last.nil?
-    # @line_items_count = LineItem.metered.size
-    # @bids_count = current_user.bids.metered.collect(&:line_item_id).uniq.count
-    # @bid_percentage = (@bids_count.to_f / @line_items_count.to_f) * 100
-    # @missed_count = @line_items_count - @bids_count
-    # @missed_percentage = 100 - @bid_percentage
-    # @order_items = OrderItem.order_seller_id_eq(current_user).metered.count
-    # @order_items_percentage = (@order_items.to_f / @bids_count.to_f) * 100
     @line_items = LineItem.scoped
       @li_all = @line_items.count
       @li_m = @line_items.metered.count
@@ -79,32 +73,78 @@ class SellerController < ApplicationController
     @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
     @average_f = (@tb_f/@days_f).round(2)
     
-    orders = Order.by_this_seller(current_user)
-    @new_orders = orders.recent.collect(&:order_total).sum
-    @total_delivered = orders.total_delivered.collect(&:order_total).sum
-    @within_term = orders.within_term.collect(&:order_total).sum
-    @within_term_percent = (@within_term.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @overdue = orders.overdue.collect(&:order_total).sum
-    @overdue_percent = (@overdue.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @paid_pending = orders.paid.payment_pending.collect(&:order_total).sum
-    @paid_pending_percent = (@paid_pending.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @paid = orders.paid.payment_valid.collect(&:order_total).sum
-    @paid_percent = (@paid.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
-    @closed = orders.closed.collect(&:order_total).sum
-    @closed_percent = (@closed.to_f / @total_delivered.to_f) * 100 unless @total_delivered.nil?
+    @ebid_orders = Order.scoped
+      @eb_all = @ebid_orders.collect(&:order_total).sum
+      @eb_m = @ebid_orders.metered.collect(&:order_total).sum
+      @eb_f = @ebid_orders.ftm.collect(&:order_total).sum
+    @own_orders = @ebid_orders.seller_id_eq(current_user)
+      @own_all = @own_orders.collect(&:order_total).sum
+      @own_all_pct = (@own_all.to_f / @eb_all.to_f) * 100
+      @own_m = @own_orders.metered.collect(&:order_total).sum
+      @own_m_pct = (@own_m.to_f / @eb_m.to_f) * 100
+      @own_f = @own_orders.ftm.collect(&:order_total).sum
+      @own_f_pct = (@own_f.to_f / @eb_f.to_f) * 100
+    @new_orders = @own_orders.recent
+      @new_all = @new_orders.collect(&:order_total).sum
+      @new_m = @new_orders.metered.collect(&:order_total).sum
+      @new_f = @new_orders.ftm.collect(&:order_total).sum
+    @cancelled_orders = @own_orders.where("status LIKE ?", "%Cancelled%")
+      @co_all = @cancelled_orders.collect(&:order_total).sum
+      @co_m = @cancelled_orders.metered.collect(&:order_total).sum
+      @co_f = @cancelled_orders.ftm.collect(&:order_total).sum
+    @total_delivered = @own_orders.total_delivered
+      @td_all = @total_delivered.collect(&:order_total).sum
+      @td_m = @total_delivered.metered.collect(&:order_total).sum
+      @td_f = @total_delivered.ftm.collect(&:order_total).sum
+    @within_term = @own_orders.within_term
+      @wt_all = @within_term.collect(&:order_total).sum
+      @wt_all_pct = (@wt_all.to_f / @td_all.to_f) * 100 
+      @wt_m = @within_term.metered.collect(&:order_total).sum
+      @wt_m_pct = (@wt_m.to_f / @td_m.to_f) * 100 
+      @wt_f = @within_term.ftm.collect(&:order_total).sum
+      @wt_f_pct = (@wt_f.to_f / @td_f.to_f) * 100 
+    @overdue = @own_orders.overdue
+      @ovr_all = @overdue.collect(&:order_total).sum
+      @ovr_all_pct = (@ovr_all.to_f / @td_all.to_f) * 100 
+      @ovr_m = @overdue.metered.collect(&:order_total).sum
+      @ovr_m_pct = (@ovr_m.to_f / @td_m.to_f) * 100 
+      @ovr_f = @overdue.ftm.collect(&:order_total).sum
+      @ovr_f_pct = (@ovr_f.to_f / @td_f.to_f) * 100 
+    @paid_pending = @own_orders.paid.payment_pending
+      @pend_all = @paid_pending.collect(&:order_total).sum
+      @pend_all_pct = (@pend_all.to_f / @td_all.to_f) * 100 
+      @pend_m = @paid_pending.metered.collect(&:order_total).sum
+      @pend_m_pct = (@pend_m.to_f / @td_m.to_f) * 100 
+      @pend_f = @paid_pending.ftm.collect(&:order_total).sum
+      @pend_f_pct = (@pend_f.to_f / @td_f.to_f) * 100 
+    @paid = @own_orders.paid.payment_valid
+      @paid_all = @paid.collect(&:order_total).sum
+      @paid_all_pct = (@paid_all.to_f / @td_all.to_f) * 100 
+      @paid_m = @paid.metered.collect(&:order_total).sum
+      @paid_m_pct = (@paid_m.to_f / @td_m.to_f) * 100 
+      @paid_f = @paid.ftm.collect(&:order_total).sum
+      @paid_f_pct = (@paid_f.to_f / @td_f.to_f) * 100 
+    @closed = @own_orders.closed
+      @closed_all = @closed.collect(&:order_total).sum
+      @closed_all_pct = (@closed_all.to_f / @td_all.to_f) * 100 
+      @closed_m = @closed.metered.collect(&:order_total).sum
+      @closed_m_pct = (@closed_m.to_f / @td_m.to_f) * 100 
+      @closed_f = @closed.ftm.collect(&:order_total).sum
+      @closed_f_pct = (@closed_f.to_f / @td_f.to_f) * 100 
   end
   
   def hub
-    all_entries = Entry.online.current.desc2
+    all_entries = Entry.online.active
     @friend_entries = all_entries.user_company_friendships_friend_id_eq(current_user.company)
-    @brand_links = @friend_entries.collect(&:car_brand).uniq  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
-    # @brand_links = entries.collect(&:car_brand).uniq 
-
+    @brand_links = @friend_entries.collect(&:car_brand).uniq.collect { |brand| [brand.name, seller_hub_path(current_user, :brand => brand.name)] }  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
+    @brand_links.push(['All', seller_hub_path(current_user, :brand => 'all')])
+    @current_path =  seller_hub_path(current_user, :brand => params[:brand])
+    
     if params[:brand] == 'all'
-      @entries = @friend_entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).paginate(:page => params[:page], :per_page => 10)
+      @entries = @friend_entries.seller_inclusions.paginate(:page => params[:page], :per_page => 10)
     else
       brand = CarBrand.find_by_name(params[:brand])
-      @entries = @friend_entries.includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos).where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
+      @entries = @friend_entries.seller_inclusions.where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
     end
   end
   
@@ -126,7 +166,8 @@ class SellerController < ApplicationController
   
   def monitor
     bids = current_user.bids.metered.desc
-    @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq)
+    @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq).collect { |brand| [brand.name, seller_monitor_path(current_user, :brand => brand.name)] }
+    @brand_links.push(['All', seller_monitor_path(current_user, :brand => nil)])
     if params[:brand] == 'all'
       @search = bids.search(params[:search])
     elsif params[:brand]
@@ -136,6 +177,7 @@ class SellerController < ApplicationController
       @search = bids.search(params[:search])
     end
     @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
+    @current_path =  seller_monitor_path(current_user, :brand => params[:brand])
     # render 'bids/index' 
   end
 
@@ -213,13 +255,20 @@ class SellerController < ApplicationController
     @search = @all_decline_fees.by_this_buyer(params[:buyer], 'comp').search(params[:search])
     @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
 
-    @buyers = @all_decline_fees.collect(&:buyer_company_id).uniq.collect { |buyer| [Company.find(buyer).name, seller_declines_path(:buyer => buyer)] }
+    @buyers = @all_decline_fees.collect(&:buyer_company_id).uniq.collect { |buyer| [truncate(Company.find(buyer).name, :length => 20), seller_declines_path(:buyer => buyer)] }
     @buyers.push(['All', seller_declines_path(:buyer => nil)]) unless @buyers.blank?
     @buyers_path = seller_declines_path(:buyer => params[:buyer])
     @period_path = seller_declines_path(current_user)
   end
 
   def index
+    # @line_items_count = LineItem.metered.size
+    # @bids_count = current_user.bids.metered.collect(&:line_item_id).uniq.count
+    # @bid_percentage = (@bids_count.to_f / @line_items_count.to_f) * 100
+    # @missed_count = @line_items_count - @bids_count
+    # @missed_percentage = 100 - @bid_percentage
+    # @order_items = OrderItem.order_seller_id_eq(current_user).metered.count
+    # @order_items_percentage = (@order_items.to_f / @bids_count.to_f) * 100
     @own_bids = current_user.bids.metered
     @days = (Time.now.to_date - '2011-04-16'.to_date).to_f
     @average = @own_bids.count/@days

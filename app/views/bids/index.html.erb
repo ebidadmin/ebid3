@@ -3,33 +3,65 @@
 <%= render 'buyer/filter_by_search' %>
 <%= render 'seller/filter_by_brand' unless @brand_links.nil? %>
 
-<%= will_paginate @bids  %>
-<%= page_info @bids %>
+<%= will_paginate @line_items  %>
+<%= page_info @line_items %>
 
-<%- unless @bids.blank? -%>
-<table id="monitor-bids">
+<% unless @line_items.blank? %>
+<table id="supplier-bids">
 	<thead>
-		<th class="vehicle">Vehicle</th>
-		<th class="bid-box">
-		  <%= content_tag :p, 'Item Bids (unit price)', :class => 'strong' %>
-		  <%= content_tag :div, 'Part Description', :class => 'part-desc' %>
-		  <%= content_tag :div, 'Amount', :class => 'amount' %>
-		  <%= content_tag :div, 'Bid Type', :class => 'bid-type' %>
-		  <%= content_tag :div, 'Bid Status', :class => 'status' %>
+    <%= content_tag :th, 'Vehicle', :class => 'vehicle' %>
+		<th>
+	    <%= content_tag :div, 'Part Description', :class => 'part' %>
+			<div class="bid-group">
+		    <%= content_tag :div, 'Original', :class => 'amount original' %>
+		    <%= content_tag :div, 'Replacement', :class => 'amount replacement' %>
+		    <%= content_tag :div, 'Surplus', :class => 'amount surplus' %>
+			</div>
 		</th>
 	</thead>
-	<tbody>
-	<% if current_user.has_role?('admin') %>
-	  <%= render 'admin/monitor_bids' %>
-	<% else %>
-	  <%= render 'seller/monitor_bids' %>
+	<% @line_items.group_by(&:entry).each do |entry, line_items| -%>
+  <tr>
+		<td class="vehicle">	
+			<%= content_tag :p, (link_to truncate(entry.vehicle, :length => 30), entry) %>
+      <%= content_tag :span, entry.plate_no %>
+      <%= content_tag :span, "(by #{entry.user.username})", :class => 'highlight' %>
+      <%= content_tag :p, "Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')}", :class => 'instruction' %>
+			<%= content_tag :p, "ID: #{entry.id}" %>
+		</td>
+	  <td>
+			<%= content_tag :div, "#{display_status(entry)} *** #{display_number_of_bidders(entry)} ***".html_safe, :class => 'instruction highlight info' %>
+   		<% line_items.each do |line_item| %>
+				<div class="part">
+			    <%= line_item.part_name %>
+				</div>
+				<div class="bid-group">
+					<div class="amount orig">
+					<% for bid in line_item.bids.orig  %>
+						<%= content_tag :p, ph_currency(bid.amount), :class => 'vals' %>
+						<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
+						<%= content_tag :p, "#{bid.user.username} | #{distance_of_time_in_words(bid.bid_speed)}", :class => 'instruction'   %>
+	   			<% end %>
+					</div>
+					<div class="amount rep">
+					<% for bid in line_item.bids.rep  %>
+						<%= content_tag :p, ph_currency(bid.amount), :class => 'vals' %>
+						<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
+						<%= content_tag :p, "#{bid.user.username} | #{distance_of_time_in_words(bid.bid_speed)}", :class => 'instruction'   %>
+	   			<% end %>
+					</div>
+					<div class="amount surp">
+					<% for bid in line_item.bids.surp  %>
+						<%= content_tag :p, ph_currency(bid.amount), :class => 'vals' %>
+						<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
+						<%= content_tag :p, "#{bid.user.username} | #{distance_of_time_in_words(bid.bid_speed)}", :class => 'instruction'   %>
+	   			<% end %>
+					</div>
+				</div>
+		  <% end %>
+		</td>                          
+	</tr>
 	<% end %>
-	</tbody>
 </table>
 <% end %>
 
-<%= will_paginate @bids  %>
-
-<p class="page-links">
-<%= link_to "Place More Bids", seller_hub_path(current_user, :brand => 'all'), :class => 'button' %>
-</p>
+<%= will_paginate @line_items  %>

@@ -1,0 +1,17 @@
+<thead>
+	<th class="vehicle">Vehicle</th>
+	<th class="bid-box">
+	  <%= content_tag :p, 'Item Bids (unit price)', :class => 'strong' %>
+	  <%= content_tag :div, 'Part Description', :class => 'part-desc' %>
+	  <%= content_tag :div, 'Amount', :class => 'amount' %>
+	  <%= content_tag :div, 'Bid Type', :class => 'bid-type' %>
+	  <%= content_tag :div, 'Bid Status', :class => 'status' %>
+	</th>
+</thead>
+<tbody>
+<% if current_user.has_role?('admin') %>
+  <%= render 'admin/monitor_bids' %>
+<% else %>
+  <%= render 'seller/monitor_bids' %>
+<% end %>
+</tbody>

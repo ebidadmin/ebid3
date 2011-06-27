@@ -6,12 +6,12 @@
 
 <% @bids.group_by(&:entry).each do |entry, bids| -%>
 
-  <div class="first">
+  <div id="transaction" class="create">
     
 		<%= content_tag :h2, 'Vehicle' %>
   	<%= render 'shared/info_vehicle', :entry => entry %>
   	
-		<%= content_tag :h2, ('Transaction' + (content_tag :span, "(#{ pluralize @bid_users.count, 'supplier' })", :class => 'highlight' )).html_safe %>
+		<%= content_tag :h2, ('Transaction ' + (content_tag :span, "(#{ pluralize @bid_users.count, 'supplier' })", :class => 'highlight' )).html_safe %>
  
     <!-- create an order for each supplier -->
     <% bids.group_by(&:user_id).each do |seller, seller_bids| -%>
@@ -47,7 +47,7 @@
   	
   </div>
 
-  <div class="second">
+  <div id="delivery" class="create">
   	<h2>Delivery</h2>
     <%= semantic_form_for @order, :url => orders_path(:entry_id => entry.id), :method => :post do |f|  %>
     	<%= yield :bids_array %>
