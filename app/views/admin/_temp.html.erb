@@ -1,0 +1,29 @@
+<% stylesheet 'admin' %>
+<% title @title %>
+
+<ul class="dash admin">
+	<h3>Quick Stats</h3>
+	<%= dash_entry_format("entries", "Total Entries", nil,  @entries.count.to_s ) %>
+	<%= dash_entry_format("total-parts", "Total Parts", nil,  @line_items.count.to_s ) %>
+	<%= dash_entry_format("with-bids", "With Bids", percentage(@with_bids_pct),  @with_bids.count.to_s ) %>
+	<%= dash_entry_format("two-up", "More than 2 Bids", percentage(@two_and_up_pct),  @two_and_up.count.to_s ) %>
+	<%= dash_entry_format("no-bids", "Without Bids", nil,  @without_bids.count.to_s ) %>
+	<%= dash_entry_format("with-order", "With PO", percentage(@with_order_pct) + ' of With Bids',  @with_order.to_s ) unless @with_order.blank? %>
+	<%= dash_entry_format("orders", "Total Ordered", nil,  ph_currency(@orders) ) %>
+	<%= dash_entry_format("paid-order", "Paid", nil,  ph_currency(@paid) ) %>
+</ul>
+
+<ul class="dash admin last">
+	<h3>Online Entries</h3>
+	<% for entry in @online_entries %>
+	<%= dash_entry_format("online-ent", (link_to entry.vehicle, entry) + " #{entry.plate_no}", "(#{time_ago_in_words entry.created_at} ago)", entry.user.username ) %>
+	<% end %>
+</ul>
+
+<ul class="dash admin">
+	<h3>Active Users</h3>
+	<% for user in @users %>
+	<%= dash_entry_format("active-user", (link_to user.username, user), (time_ago_in_words user.current_sign_in_at if user.current_sign_in_at) + ' ago',  active_mark(user) ) %>
+	<% end %>
+</ul>
+

@@ -61,7 +61,7 @@ module ApplicationHelper
     
   def delimited(target)
     if target > 0
-      number_with_delimiter target
+      number_with_delimiter target.to_i
     else
       '-'
     end

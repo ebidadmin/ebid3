@@ -397,7 +397,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 /* RATINGS#NEW & #SHOW
 ---------------------------------------------------------------------- */
-.second { float: right; }
+.second.rating { float: right; }
 .rating p { margin-bottom: 1.1em; }
 .rating .label, .rating label, #show-rating .label { color: #999; font-weight: bold; text-transform: uppercase; }
 .rating .name { color: #C00; font-size: 1.5em; }
