@@ -4,7 +4,9 @@
     <title>
       <%= content_for?(:title) ? "E-Bid Inc. | " + yield(:title) : "E-Bid Inc. - The Philippines' Vehicle Parts Auction Hub" %>
     </title>
-		<%= stylesheet_link_tag 'base', 'styles', :media => "all" %>
+		<!--[if !IE 6]><!-->  <%= stylesheet_link_tag 'base', 'styles', :media => "all" %>      <!-- <![endif]-->
+		
+		<!--[if IE 6]><%= stylesheet_link_tag 'ie', :media => "screen" %><![endif]-->
     <%= csrf_meta_tag %>
 		<link rel="shortcut icon" href="/images/base/favicon.ico" />
 		<%= yield(:head) %>
@@ -34,9 +36,6 @@
 		<div id="javascripts">
 	    <%= javascript_include_tag :defaults %>
 			<%= yield(:javascripts) %>
-			<!--[if lte IE 6]>
-				<%= javascript_include_tag 'supersleight-min' %>
-			<![endif]-->
 		</div>
   </body>
 </html>

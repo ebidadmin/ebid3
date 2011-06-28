@@ -25,18 +25,18 @@
 </div>
 <hr>
 <div class="column">
-  <%= f.label :ref_no, "Reference or Claim No." %><br />
+  <%= f.label :ref_no, "Reference or Claim No." %>
 	<p class='instruction'>What will you use to track your entry?</p>
 	<%= f.text_field :ref_no %>
 </div>
 <div class="column">
-  <%= f.label :date_of_loss %><br />
+  <%= f.label :date_of_loss %>
 	<p class='instruction'>Click on the calendar icon to select a date.</p>
  <%= f.text_field :date_of_loss, :id => 'datepicker' %>
 	<p class='instruction'>Format: YYYY-MM-DD</p>
 </div>
 <div class="column-2">
-  <%= f.label :city_id, 'Deliver To' %><br />
+  <%= f.label :city_id, 'Deliver To' %>
   <p><%= f.collection_select :city_id, City.all, :id, :name, {:include_blank => true}  %></p>
 	<span class='instruction'>or type a new location ...</span>
   <%= f.text_field :new_city, :value => @city, :size => 15 %> 

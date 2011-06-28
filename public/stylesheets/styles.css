@@ -188,7 +188,7 @@ td.bid-box, td.status { background-color: #eaeaea; }
 .full-column { margin-bottom: 20px; width: 100%; }
 .column { float: left; width: 32%; margin-right: 10px; margin-bottom: 20px; }
 .column:last-child { margin-right: 0; }
-.column-2 { float: left; width: 16%; }
+.column-2 { float: left; width: 16%; margin-right: 4px; }
 #attachments input { margin: 0; }
 #attachments .fields { float: left; width: 32%; margin: 4px; padding: 10px 0; text-align: center; background: #ddd; }
 #attachments .fields :last-child { margin-right: 0; }

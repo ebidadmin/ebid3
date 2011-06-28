@@ -248,11 +248,11 @@ private
       @ob_m_pct = (@ob_m.to_f / @li_m.to_f) * 100
       @ob_f = @own_bids.ftm.collect(&:line_item_id).uniq.count
       @ob_f_pct = (@ob_f.to_f / @li_f.to_f) * 100
-      @ob2_all = @own_bids.collect(&:line_item_id).uniq.collect(&:user_id).uniq.count
+      @ob2_all = @own_bids.collect(&:line_item_id).uniq.count
       @ob2_all_pct = (@ob2_all.to_f / @li_all.to_f) * 100
-      @ob2_m = @own_bids.metered.collect(&:line_item_id).uniq.collect(&:user_id).uniq.count
+      @ob2_m = @own_bids.metered.collect(&:line_item_id).uniq.count
       @ob2_m_pct = (@ob2_m.to_f / @li_m.to_f) * 100
-      @ob2_f = @own_bids.ftm.collect(&:line_item_id).uniq.collect(&:user_id).uniq.count
+      @ob2_f = @own_bids.ftm.collect(&:line_item_id).uniq.count
       @ob2_f_pct = (@ob2_f.to_f / @li_f.to_f) * 100
     @missed = @li_all -  @ob_all
       @msd_all_pct = (@missed.to_f / @li_all.to_f) * 100

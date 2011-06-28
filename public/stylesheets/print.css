@@ -1,5 +1,5 @@
 body { font-family: Verdana, Arial, Tahoma; font-size: 12px; color: #000000; padding: 0; margin: 0;}
-ul { padding: 0; }
+ul { margin: 0; padding: 0; }
 li { list-style-type: none;  }
 #print-header { border-bottom: 1px solid black; margin: 0px auto; overflow: hidden; position: relative; width: 800px;  }
 #print-header h1 { height: 95px; background: transparent url(../images/base/ebidlogo.jpg) no-repeat; margin: 0; text-indent: -9999px; overflow: hidden;  }
@@ -52,7 +52,7 @@ table p { margin: 0 0 5px; }
 #buyer-company, #supplier-company { float: left; overflow: hidden; width: 48%; }
 #buyer-company { margin-right: 10px; }
 #del-instructions li { clear: both; padding-left: 140px; }
-#del-instructions span { fdisplay: block; float: left; margin-left: -140px; width: 50%; }
+#del-instructions span { display: block; float: left; margin-left: -140px; width: 50%; }
 #del-instructions #deliver-to, #del-instructions #date-released { font-weight: bold; }
 #del-instructions #instr { border-top: 1px dotted black; border-bottom: 1px dotted black; font-weight: bold; margin-top: 20px; padding-top: 5px; padding-bottom: 5px; overflow: hidden;}
 #del-instructions #address, #del-instructions #date-released, #del-instructions #date-delivered, #del-instructions #date-paid { padding-top: 20px; }
