@@ -10,7 +10,7 @@ class SellerController < ApplicationController
       @li_all = @line_items.count
       @li_m = @line_items.metered.count
       @li_f = @line_items.ftm.count
-    @own_bids = current_user.bids
+    @own_bids = current_user.bids.ascend_by_bid_speed
       @ob_all = @own_bids.collect(&:line_item_id).uniq.count
       @ob_all_pct = (@ob_all.to_f / @li_all.to_f) * 100
       @ob_m = @own_bids.metered.collect(&:line_item_id).uniq.count
