@@ -3,7 +3,7 @@
 <%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 
 <% content_for :subnav do %>
-	<%= form_tag @period_path, :class => 'groups', :method => :get do  %>
+	<%= form_tag @period_path, :class => 'groups highlight', :method => :get do  %>
 		<%= hidden_field_tag :seller, params[:seller] unless params[:seller].blank? %>
 		<ul class="links groups">
 			<li class="label">For the period</li>

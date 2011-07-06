@@ -19,5 +19,31 @@ $(function() {
     $(".spinner").toggle() ;
 	});
 	
-	// $("#jMenu").jMenu();
+	$("label.inlined + input.input-text").each(function (type) {
+
+		$(this).focus(function () {
+			$(this).prev("label.inlined").addClass("focus");
+		});
+
+		$(this).keypress(function () {
+			$(this).prev("label.inlined").addClass("has-text").removeClass("focus");
+		});
+
+		$(this).blur(function () {
+			if($(this).val() == "") {
+				$(this).prev("label.inlined").removeClass("has-text").removeClass("focus");
+			}
+		});
+	});	// $("#jMenu").jMenu();
 });
+
+// function remove_fields(link) {
+//   $(link).prev("input[type=hidden]").val("1");
+//   $(link).closest(".fields").hide();
+// }
+// 
+// function add_fields(link, association, content) {
+//   var new_id = new Date().getTime();
+//   var regexp = new RegExp("new_" + association, "g")
+//   $(link).parent().before(content.replace(regexp, new_id));
+// }

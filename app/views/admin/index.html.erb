@@ -28,9 +28,9 @@
 		<%= content_tag :td, "#{content_tag :span, percentage( @ob_f_pct), :class => 'instruction'} #{delimited  @ob_f}".html_safe  %>
 	</tr>
 	<tr>
-		<%= content_tag :td, 'Parts with 2 or more bids', :class => 'label' %>
+		<%= content_tag :td, 'Parts with 2 or more bids', :class => 'label indent' %>
 		<%= content_tag :td, "#{content_tag :span, percentage( @ob2_all_pct), :class => 'instruction'} #{delimited  @ob2_all}".html_safe  %>
-		<%= content_tag :td, "#{content_tag :span, percentage( @ob2_m_pct), :class => 'highlight' if @ob2_m_pct > 0 } #{delimited  @ob2_m}".html_safe  %>
+		<%= content_tag :td, "#{content_tag :span, percentage( @ob2_m_pct), :class => 'instruction'} #{delimited  @ob2_m}".html_safe  %>
 		<%= content_tag :td, "#{content_tag :span, percentage( @ob2_f_pct), :class => 'instruction'} #{delimited  @ob2_f}".html_safe  %>
 	</tr>
 	<tr class='divide'>

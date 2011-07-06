@@ -1,0 +1,4 @@
+<div id="msg-snippet">
+	<%= content_tag :span,"	Reply to message from #{message.user.username}", :id => 'creator' %>
+	<%= content_tag :span, message.message, :id => 'comment' %>
+</div>

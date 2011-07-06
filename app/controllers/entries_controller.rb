@@ -1,5 +1,5 @@
 class EntriesController < ApplicationController
-  before_filter :initialize_cart, :except => [:index, :show, :put_online, :relist, :decide, :reactivate]
+  before_filter :initialize_cart, :except => [:index, :show, :put_online, :relist, :reveal_bids, :reactivate]
   before_filter :check_buyer_role
 
   def index
@@ -17,6 +17,12 @@ class EntriesController < ApplicationController
   
   def show
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    if current_user.has_role?('admin')
+      @priv_messages = @entry.messages.closed
+    else
+      @priv_messages = @entry.messages.closed.restricted(current_user.company)
+    end
+    @pub_messages = @entry.messages.open
   end
 
   def print
@@ -33,6 +39,7 @@ class EntriesController < ApplicationController
   end
   
   def create
+    # raise params.to_yaml
     @entry = Entry.new(params[:entry])
     start_entry
     if @cart.cart_items.blank?

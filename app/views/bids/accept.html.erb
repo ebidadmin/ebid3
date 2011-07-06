@@ -1,5 +1,5 @@
 <% content_for(:head) do %>
-	<%= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
+	<%#= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
 <% end %>
 
 <% title "Place Order" %>
@@ -49,13 +49,14 @@
 
   <div id="delivery" class="create">
   	<h2>Delivery</h2>
-    <%= semantic_form_for @order, :url => orders_path(:entry_id => entry.id), :method => :post do |f|  %>
+    <%= simple_form_for @order, :url => orders_path(:entry_id => entry.id), :method => :post do |f|  %>
     	<%= yield :bids_array %>
   		<%= render 'orders/deliver_form', :f => f %>
-  		<% f.buttons do %>
-  			<%= f.commit_button 'Place Order' %> 
+  		<%# f.buttons do %>
+  			<%#= f.commit_button 'Place Order' %> 
+  			<%= f.button :submit %> 
   			<%= link_to "Cancel", entry -%>
-  		<% end %>
+  		<%# end %>
     <% end %>
   </div>
 

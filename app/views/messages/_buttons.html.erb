@@ -1,0 +1,12 @@
+<%# if @entry.present? %>
+<%#= link_to "Send Message to Buyer", show_fields_messages_path(:msg_type => 'buyer', :id => @entry), :class => 'button', :remote => true %>
+<%#= render 'messages/admin_button' %>
+<%# else %>
+<%#= render 'messages/admin_button' %>
+<%# end %>
+<% unless @entry.user == current_user %>
+	<%= link_to "Send Message to Buyer", show_fields_messages_path(:msg_type => 'buyer', :entry => @entry), :class => 'button', :remote => true %>
+<% end %>
+<%= link_to "Send Public Message", show_fields_messages_path(:msg_type => 'public', :entry => @entry), :class => 'button', :remote => true %>
+<%= render 'messages/admin_button' %>
+<%= content_tag :p, '', :id => 'confirmation' if flash[:notice] %>

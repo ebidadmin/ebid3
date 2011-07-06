@@ -3,5 +3,5 @@
 	<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'replacement')), :class => 'bid-amount' %>
 	<%= content_tag :div, (render 'seller/bid_reflection', :last_bid => item.last_bid(current_user.id, 'surplus')), :class => 'bid-amount' %>
 <% else %>
-	<%= content_tag :strong, 'You did not bid on this item.' unless @entry.buyer_status == 'Online' || @entry.buyer_status == "Relisted" %>
+	<%= content_tag :p, "#{content_tag :strong, 'You did not bid'} on this item when it was Online.".html_safe, :class => 'instruction' unless item.status == 'Online' || item.status == "Relisted" %>
 <% end %>

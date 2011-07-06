@@ -1,12 +1,33 @@
 <%= f.error_messages %>
-<%= f.input :year_model %>
-<%= f.input :car_brand, :group_by => :car_origin %>
-<span id='car_model_field'><%= render 'car_model_select' %></span>
-<%= f.input :car_variant %>
+<%= f.input :year_model, :collection => (Date.today.year-30..Date.today.year).to_a.reverse, :selected => Date.today.year %>
+<%= f.association :car_brand, :group_by => :car_origin %>
+<%= f.association :car_model %>
+<%= f.association :car_variant, :hint => "#{link_to 'Click here', new_car_variant_path} to add new variant.".html_safe %>
 <%= f.input :plate_no %>
 <%= f.input :serial_no, :label => 'Serial Number or VIN' %>
 <%= f.input :motor_no, :label => 'Motor Number' %>
-<%= f.input :ref_no, :label => 'Reference or Claim No.' %>
-<%= f.input :date_of_loss, :as => :string %>
-<%= f.input :city, :label => 'Deliver To' %>
-<%= f.input :term, :label => 'Credit Term Request' %>
+<%= f.input :ref_no, :label => 'Reference or Claim No.', :hint => 'What will you use to track your entry?' %>
+<div class="input">
+  <%= f.label :date_of_loss %>
+  <%= f.text_field :date_of_loss, :id => 'datepicker', :size => 25 %>
+	<span class='hint instruction'>Format: YYYY-MM-DD</span>
+</div>
+<%= f.association :city, :label => 'Deliver To' %>
+<%= f.association :term, :label => 'Credit Term Request', :collection => Term.all.map{ |t| [t.term_name, t.id]}  %>
+
+<% content_for :javascripts do %>
+	<% stylesheet 'blitzer/jquery-ui-1.8.6.custom' %>
+	<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('#datepicker').datepicker({ 
+				dateFormat: "yy-mm-dd",
+				maxDate: 0,
+				numberOfMonths: 2,
+				showButtonPanel: true, 
+				showOn: "both",
+				buttonImage: "/images/calendar.gif",
+				buttonImageOnly: true
+		});
+	});
+	</script>
+<% end %>

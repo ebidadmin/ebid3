@@ -24,10 +24,10 @@
 		<td class="vehicle">	
 			<%= content_tag :p, truncate(entry.vehicle, :length => 30), :class => 'strong' %>
 			<%= content_tag :p, entry.plate_no  %>
-			<%= content_tag :p, display_status(entry), :class => 'instruction'  %>
 			<%= link_to 'View Entry', seller_show_path(:id => entry.id), :class => 'button' %>
 		</td>
 	  <td>
+			<%= content_tag :div, "#{display_status(entry)} *** Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')} ***".html_safe, :class => 'instruction highlight info' %>
    		<% bids.group_by(&:line_item).each do |line_item, bids| %>
 				<div class="part">
 			    <%= content_tag :p, line_item.part_name %>

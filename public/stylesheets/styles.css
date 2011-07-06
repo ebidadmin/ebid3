@@ -251,17 +251,17 @@ table#monitor-bids td .amount { clear: both; margin-left: 0; }*/
 
 /* COMMENTS IN ENTRIES#SHOW
 ---------------------------------------------------------------------- */
-#show-comments { border: 1px solid #CCC; clear: both; float: left; margin-bottom: 2em; padding: 10px; width: 938px; overflow: hidden;}
-#show-comments h3 { float: left; }
-#show-comments #comments-list { clear: both; float: left; margin: 0; width: 460px; }
-#show-comments li { clear: both; float: left; margin-bottom: 5px; width: 100%; }
-#show-comments #creator, #show-comments #comment, #show-comments #datetime { float: left; }
+#show-comments, #show-messages { clear: both; margin-bottom: 2em; overflow: hidden; width: 100%;}
+#comments-list { float: left; width: 100%;}
+#comments-list li { float: left; margin: 0 0 10px 0; width: 100%;}
+/*#show-comments #creator, #show-comments #comment, #show-comments #datetime { float: left; }
 #show-comments #creator { color: #999; font-weight: bold; width: 15%;  }
 #show-comments #comment { width: 63%; margin-right: 2%; }
-#show-comments #datetime { color: #999; font-weight: bold; width: 20%; }
-#show-comments form { float: left; width: 460px; text-align: center;}
+#show-comments #datetime { color: #999; font-weight: bold; width: 20%; }*/
+/*#show-comments form { float: left; width: 460px; text-align: center;}
 #show-comments form input { margin-top: 0; }
-#show-comments form input[type='text'] { margin-right: 10px; }
+#show-comments form input[type='text'] { margin-right: 10px; }*/
+
 
 /* PURCHASE ORDER
 ---------------------------------------------------------------------- */
@@ -434,3 +434,33 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #content-main .aside .button { margin-right: 0; margin-bottom: 12px; text-align: center; width: 50%; }
 #content-main .aside #feature-button { background-color: #6B9D28; font-size: 16px; width: 60%; }
 #content-main .aside #feature-button:hover { background-color: #D02200; }
+
+
+.aside div#message-box, .aside div.input { margin: 0; padding: 0; }
+/*#message-box label { color: #C00; padding: 15px 0; text-transform: uppercase; width: 100%; }
+.aside textarea { height: 75px; margin-bottom: 15px; width: 92%; }
+#message-box #confirmation { font-size: 1.2em; margin: 10px 0; padding: 10px 0; }
+.buyer textarea { height: 30px; width: 98%; }
+#message-box { margin: 0 0 15px; }*/
+
+#message-box { clear: both; border-top: 1px solid #CCC; border-bottom: 1px solid #CCC; margin-bottom: 20px; padding: 10px 0 15px; width: 100%; }
+#msg-list { float: left; margin-bottom: 10px; overflow: hidden; width: 100%; }
+#msg-list #private { float: left; width: 48%; }
+#msg-list #public { float: right; width: 48%; }
+#msg-list h3, #msg-list .instruction { text-align: center; }
+#msg-list .msg-link { margin-right: 5px; padding: 0 4px;}
+#msg-list ul { margin: 0; padding: 0; }
+#msg-list li { clear: both; float: left; margin-bottom: 10px; width: 100%; }
+#creator, #comment { float: left; }
+#creator { font-weight: bold; margin-right: 3%; width: 20%;  }
+#comment { width: 77%; }
+#datetime { color: #999; font-weight: bold; margin-right: 10px; }
+#msg-fields { clear: both; position: relative; text-align: center;}
+#msg-fields label { color: #C00; padding: 15px 0; text-transform: uppercase; width: 100%; }
+#msg-fields textarea { font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;float: none; height: 40px; width: 50%;}
+#confirmation { font-size: 1.2em; margin: 10px 0; padding: 10px 0; }
+
+#msg-snippet { border: 1px dotted #CCC; margin: 0 auto; padding: 5px; text-align: left; overflow: hidden; width: 50%; }
+#msg-snippet .msg-label { color: #C00; text-transform: uppercase; }
+#msg-snippet .msg-user { font-weight: bold; }
+#msg-snippet .msg { font-size: 1.2em; margin-left: 15px; }

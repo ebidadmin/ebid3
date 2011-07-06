@@ -1,4 +1,11 @@
 module SellerHelper
+  def online_or_relisted?(entry) # used in seller#hub
+    if entry.buyer_status == 'Relisted'
+      content_tag :strong, entry.buyer_status
+    else
+      entry.buyer_status
+    end
+  end
     
   def bid_ref(bid_type, item)
     last_bid = item.bids.where(:user_id => current_user, :bid_type => bid_type).last
@@ -19,6 +26,8 @@ module SellerHelper
       "orange"
     elsif status == "Lose" 
       "offwhite"
+    elsif status == "Updated" 
+      "white"
     else
       "just-border"
     end

@@ -21,6 +21,9 @@ class Company < ActiveRecord::Base
   has_many :sender_companies, :through => :comments
   has_many :reciever_companies, :through => :comments
   
+  has_many :messages, :dependent => :destroy
+  has_many :receiver_companies, :through => :messages
+  
   # validates_presence_of :name, :address1, :city, :approver
   validates_uniqueness_of :name, :message => "This company is already in our database."
   

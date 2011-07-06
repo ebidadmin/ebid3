@@ -27,10 +27,12 @@ class Entry < ActiveRecord::Base
   has_many :comments, :dependent => :destroy
   has_many :fees
   has_many :diffs
+  has_many :messages, :dependent => :destroy
 
   validates_presence_of :year_model, :car_brand, :car_model, :plate_no, :serial_no, :motor_no, :term
   validates_presence_of :city, :if => :new_city_blank
   validates_associated :city
+  # validates_associated :photos
 
   scope :desc, order('id DESC')
   scope :desc2, order('bid_until DESC', 'id DESC')

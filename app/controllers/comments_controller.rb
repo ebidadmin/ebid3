@@ -12,7 +12,6 @@ class CommentsController < ApplicationController
   end
   
   def create
-    # raise params.to_yaml
     session['referer'] = request.env["HTTP_REFERER"]
     @entry = Entry.find(params[:entry_id])
     @comment = @entry.comments.build(params[:comment])
@@ -24,7 +23,7 @@ class CommentsController < ApplicationController
       if @comment.user_type == 'seller'
         EntryMailer.delay.comment_alert(@entry, @comment) 
       else
-        commenters = @entry.comments.where('sender_id != ?', current_user).collect(&:user_id).uniq
+        commenters = @entry.comments.where('user_id != ?', current_user).collect(&:user_id).uniq
         recipients = User.find(commenters)
         for recipient in recipients
           EntryMailer.delay.comment_alert(@entry, @comment, recipient) 

@@ -70,8 +70,13 @@ class SellerController < ApplicationController
       @new_f = @new.ftm.count
     @days_m = (Time.now.to_date - '2011-04-16'.to_date).to_f
     @average_m = (@tb_m/@days_m).round(2)
-    @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
-    @average_f = (@tb_f/@days_f).round(2)
+    unless Date.today  == Time.now.beginning_of_month.to_date  # this condition prevents zero divisor
+      @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
+      @average_f = (@tb_f/@days_f).round(2)
+    else
+      @days_f = 1
+      @average_f = @tb_f.round(2)
+    end
     
     @ebid_orders = Order.scoped
       @eb_all = @ebid_orders.collect(&:order_total).sum
@@ -151,8 +156,11 @@ class SellerController < ApplicationController
   def show
     @back = request.referrer
     @entry = Entry.find(params[:id])
+    @priv_messages = @entry.messages.closed.restricted(current_user.company)
+    @pub_messages = @entry.messages.open
     if @entry.buyer_status == 'Relisted'
-      @line_items = @entry.line_items.online.includes(:car_part, :bids)
+      # @line_items = @entry.line_items.online.includes(:car_part, :bids)
+      @line_items = @entry.line_items.order('status DESC').includes(:car_part, :bids)
     else
       @line_items = @entry.line_items.includes(:car_part, :bids)
     end
@@ -165,7 +173,7 @@ class SellerController < ApplicationController
   end
   
   def monitor
-    bids = current_user.bids.metered.desc
+    bids = current_user.bids.desc
     @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq).collect { |brand| [brand.name, seller_monitor_path(current_user, :brand => brand.name)] }
     @brand_links.push(['All', seller_monitor_path(current_user, :brand => nil)])
     if params[:brand] == 'all'

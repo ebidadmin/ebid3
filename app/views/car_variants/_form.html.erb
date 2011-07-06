@@ -1,21 +1,22 @@
-<% semantic_form_for @car_variant, :html => {:class => 'col-3'} do |f| %>
-	<% f.inputs do %>
-		<%= f.input :car_brand, :label => 'Brand', :group_by => :car_origin, :prompt => 'Select Brand' %>
-		<%= f.input :car_model, :label => 'Model', :prompt => 'Select Model' %>
+<% simple_form_for @car_variant do |f| %>
+	<%# f.inputs do %>
+		<%= f.association :car_brand, :label => 'Brand', :group => :car_origin, :prompt => 'Select Brand' %>
+		<%= f.association :car_model, :label => 'Model', :prompt => 'Select Model' %>
 		<%= f.input :new_model, :label => 'New Model', :hint => 'Note: use this field only to create a new Car Model' %>
 		<%= f.input :name, :label => 'New Variant' %>
 		<% if current_user.has_role?('admin') %>
 			<%= f.input :start_year %>
 			<%= f.input :end_year %>
 		<% end %>
-	<% end %>
-	<% f.buttons do %>
-		<%= f.commit_button 'Submit' %>
+	<%# end %>
+	<%# f.buttons do %>
+		<%#= f.commit_button 'Submit' %> 
+		<%= f.button :submit %>
 		<%= link_to "Cancel", :back, :class => 'italic' if current_user.has_role?('admin') %> 
 		<%= link_to "Cancel", new_user_entry_path(current_user), :class => 'italic' unless current_user.has_role?('admin')%> 
 		<% if current_user.has_role?('admin') %>
 		  | <%= link_to "Show", @car_variant %> 
 		  | <%= link_to "View All", car_variants_path %>
 		<% end %>
-	<% end %>
+	<%# end %>
 <% end %>

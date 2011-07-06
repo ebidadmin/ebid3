@@ -12,7 +12,7 @@
     <%#= content_tag :p, "ID: #{item.id}" if current_user.has_role?('admin') %>
 	</td>
 	<td class="bid-box">
-		<% if @entry.buyer_status == "Online" || @entry.buyer_status == "Relisted" %>
+		<% if item.status == "Online" || item.status == "Relisted" %>
 		<div class="fields">
 		<%= content_tag :div, (content_tag :span, 'Orig ') + (text_field_tag "bids[#{item.id}][original]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>
 		<%= content_tag :div, (content_tag :span, 'Rep ') + (text_field_tag "bids[#{item.id}][replacement]", nil , :size => 10, :class => 'quote').html_safe, :class => 'bid-field' %>

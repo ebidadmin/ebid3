@@ -1,5 +1,5 @@
 <p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
-<%= f.inputs do %>
+<%#= f.inputs do %>
 	<%= f.input :deliver_to, :hint => 'put the name of repair shop or receiving establishment' %>
 	<%= f.input :contact_person %>
 	<%= f.input :address1, :label => 'Address (line 1)', 
@@ -8,4 +8,4 @@
 	<%= f.input :phone %>
 	<%= f.input :fax %>
 	<%= f.input :instructions, :label => 'Special Instructions', :input_html => { :rows => 2 } %>
-<% end %>
+<%# end %>

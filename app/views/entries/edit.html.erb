@@ -2,14 +2,15 @@
 
 <fieldset>
 	<legend>STEP 1 - Choose Parts</legend>
-  <%= render 'parts_selection' %>
-	<%= render 'parts_in_cart' %>
+  <%#= render 'parts_selection' %>
+	<%#= render 'parts_in_cart' %>
 </fieldset>	
 
 <%= nested_form_for @entry, :html => { :multipart => true } do |f| %>
 	<fieldset id="vehicle">
 		<legend>STEP 2 - Describe the vehicle</legend>
 		<%= render 'choose_vehicle', :f => f %>
+		<%#= render 'semantic_vehicle', :f => f %>
 	</fieldset>
 	<fieldset id="attachments">
 		<legend>STEP 3 - Attach Photos</legend>

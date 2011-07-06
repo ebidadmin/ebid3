@@ -1,6 +1,6 @@
 class CarVariantsController < ApplicationController
   def index
-    @car_variants = CarVariant.all
+    @car_variants = CarVariant.all.paginate(:page => params[:page], :per_page => 20)
   end
   
   def show

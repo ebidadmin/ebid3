@@ -1,0 +1,15 @@
+<%= render 'messages/snippet', :message => @message.parent if @message.parent  %>
+
+<%= simple_form_for @message, :remote => true do |f| %>
+	<%= hidden_field_tag 'msg_type', @msg_type %>
+	<%= hidden_field_tag 'entry', @entry %>
+	<%= hidden_field_tag 'open', params[:open]  %>
+	<% if @msg_type == 'seller' %>
+		<%= hidden_field_tag 'receiver', @message.parent.user.id %>
+		<%= hidden_field_tag 'receiver_company', @message.parent.user.company.id %>
+	<% end %>
+	<%= f.hidden_field :parent_id if @message.parent %>
+	<%= f.input :message, :label => "Send Message to #{@msg_type}" %>
+	<%= f.submit %>
+	<%= link_to "Cancel", cancel_messages_path(:entry => @entry), :remote => true %>
+<% end %>

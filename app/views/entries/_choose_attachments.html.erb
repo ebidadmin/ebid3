@@ -1,20 +1,20 @@
 <p class="instruction">Please attach <strong>at least 2 photos</strong> (in jpg, jpeg, or png format).  Just click <strong><em>'Browse'</em></strong> to select the attachment.</p>
 
-<% unless @entry.photos.first.new_record? -%>
+<% unless @entry.photos.first.new_record? %>
 	<p class="instruction">
 		To <strong>replace</strong> an existing photo, click <strong>'Browse'</strong> and choose another file.<br>
 		To <strong>delete</strong> an existing photo, click <strong>'remove'</strong>.<br>
 		To <strong>add more</strong> photos, click <strong>'Add Photo'</strong>, then <strong>'Browse'</strong> for a new photo.
 	</p>
 	<hr>
-		<% @entry.photos.each do | photo | -%>
-			<%- if photo.processing? -%>
+		<% @entry.photos.each do | photo | %>
+			<%- if photo.processing? %>
 				<p class="column"><%= image_tag '/images/processing_photo.png', :class => "photo" %></p>
-			<%- else -%>
+			<%- else %>
 		    <p class="column"><%= image_tag(photo.photo.url(:tiny), :class => "photo") %></p>
-			<% end -%>
-		<% end -%>
-<% end -%>
+			<% end %>
+		<% end %>
+<% end %>
 
 <hr>
 
@@ -23,4 +23,3 @@
 <% end %>
 
 <%= f.link_to_add "+ Attach another photo", :photos %>
-

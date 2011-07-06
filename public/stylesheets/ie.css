@@ -1,59 +1,36 @@
-/* =Basic HTML
+/* BAIS HTML
 --------------------------------------------------------------------------------*/
 html, body { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
-body { font: 13px/1.5 Arial, 'Liberation Sans', FreeSans, sans-serif; padding: 0px; background-color: #911D00;  }
+body { font: 13px/1.5 Arial, 'Liberation Sans', FreeSans, sans-serif; padding: 0px; background-color: #911D00; }
 p { margin: 0 0 4px; }
 hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; margin: 20px 0; border: none; }
-.container { width: 92%; margin-left: 4%; margin-right: 4%; overflow: hidden; padding: 0 1%;}
+.container { width: 92%; margin-left: 4%; margin-right: 4%; overflow: hidden; padding: 0 1%; }
 #top { background-color: #f1f2ed; padding-bottom: 20px; }
 #content-main { clear: both; padding: 10px 0; height: 200px; position: relative; }
-#content-main a, #call-to-action #learn { color: #C00; font-weight: bold;  text-decoration: none; background-color: white; border-bottom: 1px dotted #C00; }
+#content-main a, #subnav #flash_info a, #call-to-action a { color: #C00; font-weight: bold; text-decoration: none; background-color: white; border-bottom: 1px dotted #C00; }
 #content-main a[rel^=shadowbox] { padding: 0; opacity: 1; }
-#content-main a:hover, #call-to-action #learn:hover { color: black; border-bottom: 1px solid black; }
+#content-main a:hover, #subnav #flash_info a:hover, #call-to-action a:hover { color: black; border-bottom: 1px solid black; }
 table { border-collapse: collapse; border-spacing: 0; }
 ol, ul { list-style-type: none; margin: 0; }
-ul.links li { display: inline; float: left; font-weight: bold;  margin: 5px 5px 0 0; height: 30px; line-height: 30px !important; }
+ul.links li { display: inline; float: left; font-weight: bold; margin: 5px 5px 0 0; height: 30px; line-height: 30px !important; }
 ul li.label { padding: 0 0 0 1em; text-transform: uppercase; color: #C00; font-weight: bold; }
-ul.links li a { color: #8c8e93; display: inline;  padding: 20px; }
+ul.links li a { color: #8c8e93; display: inline; padding: 20px; text-decoration: none; }
 ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-color: #e5e5e5; text-decoration: none; }
 .page-links { clear: both; padding: 10px 0; width: 100%; text-align: center; }
-
+/* FORMS & BUTTONS
+---------------------------------------------------------------------- */
 fieldset { padding: 1.4em; border: 1px solid #ccc; margin: 10px 0; position: relative; }
-legend { font-weight: bold; font-size: 1.2em; padding: 0.4em 0.8em; background: #cc0000; color: #fffeff; margin-bottom: 15px;}
+legend { font-weight: bold; font-size: 1.2em; padding: 0.4em 0.8em; background: #cc0000; color: #fffeff; margin-bottom: 15px; }
 label { font-weight: bold; }
 input, textarea, select { border: 2px solid #ccc; margin-top: 0.5em; padding: 5px; }
 input#datepicker { margin-right: 10px; }
-#content-main a.button, #attachments .add_nested_fields {
-    background-color: #5C5C5C;
-    border: 0;
-    color: #FFFFFF !important;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: bold;
-    padding: 8px 15px;
-    text-decoration: none !important;
-}
-
-#content-main a.button:hover, #attachments .add_nested_fields:hover {
-    background-color: #6B9D28 /*#D02200*/;
-    text-decoration: none;
-    border-bottom: 0;
-}
-#print-preview {
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	color:#333;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	float: right; 
-	background: #CCC url(../images/base/print.gif) no-repeat center center; 
-	text-indent: -9999px;  
-	width: 100px; }
-#print-preview:hover {
-	background-color:#f6f6f6; }
-
-
+#content-main a.button, #attachments .add_nested_fields { background-color: #5C5C5C; border: 0; color: #FFFFFF !important; cursor: pointer; display: inline-block; font-weight: bold; padding: 8px 15px; text-decoration: none !important; }
+#content-main a.button:hover, #attachments .add_nested_fields:hover { background-color: #6B9D28 /*#D
+02200*/; text-decoration: none; border-bottom: 0; }
+#print-preview { border: 1px solid #dcdcdc; display: inline-block; color: #333; font-weight: bold; padding: 6px 24px; text-decoration: none; float: right; background: #CCC url(../images/base/print.gif) no-repeat center center; text-indent: -9999px; width: 100px; }
+#print-preview:hover { background-color: #f6f6f6; }
+/* TYPOGRAPHY & MISC FORMATS
+---------------------------------------------------------------------- */
 h1 { font-size: 3em; line-height: 1; margin-bottom: 1em; }
 h2 { font-size: 2em; margin-bottom: .75em; }
 h3 { font-size: 1.5em; line-height: 1; margin-bottom: 1em; }
@@ -76,30 +53,34 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .comfy-alert { background-color: white; border-color: #CCC; }
 .box { background-color: #ddd; padding: 5px; }
 #bidding-message, h3.highlight { clear: both; margin: 0 0 1em; padding: 5px 0 15px; text-align: center; }
-
-#header h1 { float: left; position: relative; /*left: -10px;*/ background: transparent url(../images/base/ebidlogo.png) no-repeat; width: 100px; height: 95px; text-indent: -9999px; margin-bottom: 10px;}
+/* HEADER
+---------------------------------------------------------------------- */
+#header h1, #branding-top h1 { float: left; position: relative; 
+/*left: -10px;*/ background: transparent url(../images/base/ebidlogo.png) no-repeat; width: 100px; height: 95px; text-indent: -9999px; margin-bottom: 10px; }
 #header h2 { float: right; display: block; margin: 0.5em 0 0; font-family: Geogia, serif; font-weight: normal; }
 #header h2 span { font-family: Baskerville,"Goudy Old Style","Palatino","Book Antiqua",serif; font-style: italic; }
 #header h3 { clear: both; padding: 5px 0 10px; text-align: center; }
-
 #global-links { clear: right; float: right; margin: 1em 0 0; }
 #global-links li#name { padding: 0 1em; }
 #global-links a { color: #C00; height: 100%; }
-
-#navigation { clear: both; background: #b60002; height: 35px; width: 100%; margin: 0; border-left: solid 1px #990000;  border-bottom: 4px solid #999; }
+/* MAIN NAV
+---------------------------------------------------------------------- */
+#navigation { clear: both; background: #b60002; height: 35px; width: 100%; margin: 0; border-left: solid 1px #990000; border-bottom: 4px solid #999; }
 #navigation li { float: left; border-right: solid 1px #ca0002; height: 35px; }
 #navigation #label { border-left: solid 1px #ca0002; display: block; line-height: 35px; padding: 0 1em; text-transform: uppercase; font-size: smaller; color: #fff; }
 #navigation li a, #navigation li a:link, #navigation li a:visited { text-decoration: none; display: block; float: left; height: 35px; color: #fff; line-height: 35px; padding: 0 1em; border-right: solid 1px #990000; font-size: 12px; font-weight: bold; outline: none; }
 #navigation li a:hover, #navigation li a:focus, #navigation li a:active, #navigation #current_page { background: #990000; color: #fff; }
-
+/* SUBNAV
+---------------------------------------------------------------------- */
 #header #subnav { float: left; overflow: hidden; padding: 5px 0; position: relative; width: 100%; }
 #subnav .groups, #subnav #search { font-size: 9px; }
 #subnav .groups { float: left; margin: 0; }
-#subnav #search { float: right; margin: 0;  }
+#subnav #search { float: right; margin: 0; }
 #subnav #search p { float: left; height: 30px; line-height: 30px; margin: 5px 15px 0 0; }
 #subnav #search .label { display: block; margin-left: 0; text-transform: uppercase; color: #C00; font-weight: bold; }
 #subnav #search-box { width: 100px; }
-
+/* FLASH & ERROR MSGS
+---------------------------------------------------------------------- */
 #flash_notice, #flash_error, #flash_alert, #flash_warning, #flash_info, #errorExplanation, .flash { border: 2px solid; clear: both; font-size: 1.2em; margin: 0 0 0.5em; padding: 15px 10px 15px 75px; background-repeat: no-repeat; background-position: 20px center; }
 #flash_notice { color: #264409; background-color: #E6EFC2; background-image: url('/images/messages/success.png'); border-color: #C6D880; }
 #flash_error, #flash_alert { color: #8a1f11; background-color: #FBE3E4; background-image: url('/images/messages/error.png'); border-color: #FBC2C4; }
@@ -117,39 +98,38 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .error_messages p { margin: 8px 10px; }
 .error_messages ul { margin: 0; }
 .error_messages ul li { list-style: square inside; margin-left: 10px; }
-
+/* PAGINATION
+---------------------------------------------------------------------- */
 #content-main .pagination { clear: both; position: relative; float: left; margin: 0 10px 0 0; }
 #content-main .pagination a:link, #content-main .pagination a:visited, #content-main .pagination a:hover, #content-main .pagination a:active, #content-main .pagination em { background-color: #FFFFFF; border: 0; margin-right: 1px; padding: 5px; text-decoration: none; color: #999; }
 #content-main .pagination a:hover { background-color: #999; color: #FFF; }
 #content-main .pagination span { color: #CCC; margin-right: 1px; padding: 5px; }
-#content-main .pagination span.current, #content-main .pagination em { background-color: #C00 ; color: #FFF; }
+#content-main .pagination span.current, #content-main .pagination em { background-color: #C00; color: #FFF; }
 #page-info { float: left; padding: 0; }
 .sorting { float: right; }
-
+/* VEHICLE
+---------------------------------------------------------------------- */
 .vehicle-set { float: left; width: 40%; }
-.vehicle-set li { clear: both;  }
-.vehicle-set li span { font-weight: bold; color: #999; display: block; float: left;  width: 40%; }
-#deliver-to, #term {
-	font-size: 1.2em;
-	font-weight: bold;
-	margin-top: 8px;
-}
-
+.vehicle-set li { clear: both; }
+.vehicle-set li span { font-weight: bold; color: #999; display: block; float: left; width: 40%; }
+#deliver-to, #term { font-size: 1.2em; font-weight: bold; margin-top: 8px; }
+/* PHOTOS
+---------------------------------------------------------------------- */
 .photo { float: left; padding: 5px; background-color: white; border: 1px solid #CCC; height: 60px; width: 80px; }
 .photo-set { float: right; width: 55%; }
 .photo-set ul li { float: left; margin: 0 5px 10px 0; }
 .photo-set .photo:hover { border: 1px solid #5f6252; opacity: 1; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
-
-#cart_notice_box { width: 100%; height: 30px; margin: 15px 0; color: #C00; font-weight: bold; text-align: center;}
-#cart_notice_box p { font-size: 16px; margin: 0; padding: 10px 0;}
-
-#parts { float: left; width: 38%; min-height: 400px; overflow: hidden; padding: 10px; border: 1px solid #CCCCCC; background-color: #FFF6BF;  }
+/* ENTRY#NEW
+---------------------------------------------------------------------- */
+#cart_notice_box { width: 100%; height: 30px; margin: 15px 0; color: #C00; font-weight: bold; text-align: center; }
+#cart_notice_box p { font-size: 16px; margin: 0; padding: 10px 0; }
+#parts { float: left; width: 38%; min-height: 400px; overflow: hidden; padding: 10px; border: 1px solid #CCCCCC; background-color: #FFF6BF; }
 #parts #search-form { display: block; text-align: center; height: 50px; line-height: 50px; }
 #parts #search-box { width: 50%; }
 #parts p { text-align: center; margin: 0.5em 0; }
 #parts ol { margin-right: 5px; }
 #parts li { display: block; font-size: 14px; margin: 10px; list-style-type: none; }
-#parts li a.button { margin-left: 25px; padding: 2px 10px;}
+#parts li a.button { margin-left: 25px; padding: 2px 10px; }
 #parts .pagination { clear: both; color: #666666; padding: 10px 0; position: relative; text-align: center; font-weight: normal; font-size: .8em; width: 100%; }
 #selection { float: right; width: 55%; height: 400px; padding: 0; }
 #prev-cart, #cart, #add-part-box { clear: both; float: left; margin-bottom: 25px; width: 100%; }
@@ -157,7 +137,7 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 #selection ul { margin-bottom: 15px; }
 #selection h3 { clear: both; padding: 10px 0; text-align: center; width: 100%; }
 #selection #cart h3, #selection #prev-cart h3 { background: #797979; color: #FFF; }
-.selection-title, .selection-list { margin: 0 0 5px; padding: 2px 0;}
+.selection-title, .selection-list { margin: 0 0 5px; padding: 2px 0; }
 .selection-title { border-bottom: 2px solid #999; font-size: 16px; font-weight: bold; padding: 0 0 20px; }
 .selection-list { border-bottom: 1px solid #ccc; clear: both; display: block; float: left; width: 100%; }
 #selection span { display: inline; float: left; padding: 10px 0 10px 8px; }
@@ -165,27 +145,25 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 #selection li a.button { margin-left: 15px; padding: 2px 10px; text-decoration: none; }
 #selection .qty { width: 10%; text-align: center; }
 #selection .partname { width: 40%; }
-#selection .partnum { width: 45%;  }
-#selection #cart_notice_box { float: left; margin-top: 0; width: 70%;  }
+#selection .partnum { width: 45%; }
+#selection #cart_notice_box { float: left; margin-top: 0; width: 70%; }
 #selection .empty-prompt { clear: both; text-align: center; }
 #add-part-box { padding: 20px 5px; text-align: center; width: 100%; }
 #add-part-box h3 { margin-bottom: 0.5em; padding: 0; }
-
 .full-column { margin-bottom: 20px; width: 100%; }
 .column { float: left; width: 32%; margin-right: 10px; margin-bottom: 20px; }
 .column:last-child { margin-right: 0; }
 .column-2 { float: left; width: 16%; }
-
-#attachments .fields { float: left; width: 32%; margin: 4px; padding: 0 0 5px ; text-align: center; background: #ddd; }
+#attachments .fields { float: left; width: 32%; margin: 4px; padding: 0 0 5px; text-align: center; background: #ddd; }
 #attachments .add_nested_fields { margin: 10px 4px 0; }
-
+/* TABLE FORMATS
+---------------------------------------------------------------------- */
 table { margin: 1.5em auto; width: 100%; text-align: left; overflow: hidden; }
 table th { font-size: 1.2em; font-weight: bold; padding: 10px 8px; border-bottom: 2px solid #999; text-align: center; vertical-align: middle; }
 table td { border-bottom: 1px solid #ccc; padding: 6px 8px; }
 table p { margin: 0; }
-table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
+table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; }
 tr.selection-total, tr.accept-decline { border-bottom: 0; }
-
 th.bid-box, th.status { background-color: #797979; color: #FFF; }
 th strong, th .strong { color: #fff6bf; font-size: 1.5em; }
 td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
@@ -198,11 +176,13 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 .status { width: 40%; text-align: center; }
 .status p, .status form { margin-bottom: 5px; }
 .bid-field, .bid-amount { float: left; display: inline; width: 32%; height: 2.5em; padding: 2px; text-align: right; }
-.bid-field input { margin-right: 10px; } /*radio buttons*/
+.bid-field input { margin-right: 10px; }
+/*radio buttons*/
 .qty { width: 10%; text-align: center; }
 .partname { text-align: left; }
 .price { width: 20%; text-align: right; padding: 10px 8px 10px 0; }
-
+/* ORDERS & PAYMENTS
+---------------------------------------------------------------------- */
 #orders-list th.items { text-align: left; }
 #orders-list .vehicle { width: 30%; }
 #orders-list .amount { text-align: center; }
@@ -210,7 +190,8 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #orders-list .stat .highlight { margin-bottom: 5px; }
 #orders-list .total { font-size: 14px; margin-bottom: 5px; }
 #order-total, #supplier-total { float: left; margin-right: 25px; }
-
+/* SELLER#SHOW
+---------------------------------------------------------------------- */
 #supplier-bids th.vehicle, #supplier-bids th .part { text-align: left; }
 #supplier-bids .vehicle { width: 20%; }
 #supplier-bids .vehicle a { font-size: 1em; }
@@ -221,21 +202,21 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #supplier-bids .bid-group { float: left; margin-left: 2%; margin-bottom: 10px; position: relative; width: 73%; }
 #supplier-bids td .bid-group { min-height: 4.5em; }
 #supplier-bids .amount { width: 32%; }
-#supplier-bids .original { clear: both; position: absolute; left: 0;  }
-#supplier-bids .replacement { left: 188px; position: absolute;  }
-#supplier-bids .surplus { left: 373px; position: absolute;  }
+#supplier-bids .original { clear: both; position: absolute; left: 0; }
+#supplier-bids .replacement { left: 188px; position: absolute; }
+#supplier-bids .surplus { left: 373px; position: absolute; }
 #supplier-bids .vals { float: left; font-size: 14px; text-align: center; position: relative; width: 55%; }
-#supplier-bids .stat { float: right; text-align: center; width: 42%;}
+#supplier-bids .stat { float: right; text-align: center; width: 42%; }
 #supplier-bids .amount .instruction { clear: both; margin-bottom: 5px; text-align: center; }
-
-#supplier-bids .info { margin:10px 0; padding: 5px 0; text-align: center; width: 100%; }
-#supplier-bids .orig, #supplier-bids .rep, #supplier-bids .surp { float: left; min-height: 4em;}
+#supplier-bids .info { margin: 10px 0; padding: 5px 0; text-align: center; width: 100%; }
+#supplier-bids .orig, #supplier-bids .rep, #supplier-bids .surp { float: left; min-height: 4em; }
 #supplier-bids .rep, #supplier-bids .surp { margin-left: 2%; }
-
+/* ENTRY#SHOW
+---------------------------------------------------------------------- */
 #entries-show { clear: both; }
 #entries-show h4 { margin-bottom: 0.5em; }
-#entries-show .bid-labels { display: inline; float: left; width: 25%; margin-right: 2%; height: 1.5em;}
-#entries-show .bid-selection { border-left: 1px solid white; display: inline; float: left; height: 1.5em; width: 72%;}
+#entries-show .bid-labels { display: inline; float: left; width: 25%; margin-right: 2%; height: 1.5em; }
+#entries-show .bid-selection { border-left: 1px solid white; display: inline; float: left; height: 1.5em; width: 72%; }
 #entries-show .bid-selection span { color: #C00; font-size: 18px; height: 2.5em; line-height: 2.5em; }
 #entries-show .bidder-count { background-color: white; float: left; height: 3em; padding: 2px 0; width: 50%; }
 #entries-show .number { font-size: 1.2em; }
@@ -246,14 +227,13 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #entries-show .orig { clear: both; }
 #accept-decline { text-align: center; }
 #accept-decline .instruction { margin-bottom: 10px; }
-
 #content-main #relist-button, #content-main #reveal-bids-button { background-color: #D02200; font-size: 16px; }
-
-#transaction { float: left; overflow: hidden; width: 47%; min-height: 200px;  margin: 0 10px 20px 0;  }
-#delivery { float: left; width: 47%; padding-left: 30px; margin-bottom: 1.5em;}
+/* PURCHASE ORDERS
+---------------------------------------------------------------------- */
+#transaction { float: left; overflow: hidden; width: 47%; min-height: 200px; margin: 0 10px 20px 0; }
+#delivery { float: left; width: 47%; padding-left: 30px; margin-bottom: 1.5em; }
 #transaction.create { border-right: 1px solid #999; margin-right: 0; padding-right: 30px; }
 /*#delivery.create { border: 0; padding-left: 0;  }*/
-
 #transaction h2, #delivery h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999; }
 #transaction .who { color: #C00; font-weight: bold; }
 #transaction .vehicle-set { width: 100%; margin-bottom: 2em; }
@@ -263,66 +243,84 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #buyer-company h3, #supplier-company h3 { font-size: 1em; color: #999; text-transform: uppercase; }
 #buyer-company h4, #supplier-company h4 { margin-bottom: 0.8em; }
 #delivery form li { margin-bottom: 15px; }
-#delivery label { display: block; float: left; width: 29%;}
+#delivery label { display: block; float: left; width: 29%; }
 #delivery abbr { color: #C00; float: right; margin-right: 4px; }
 #delivery input, #delivery textarea { width: 65%; }
 #delivery .inline-hints { font-size: 12px; }
 #delivery .inline-errors { color: #C00; font-weight: bold; }
 #del-instructions { width: 450px; }
-#del-instructions li { clear: both;  }
+#del-instructions li { clear: both; }
 #del-instructions span { font-weight: bold; color: #999; display: block; float: left; width: 30%; }
 #del-instructions #address, #del-instructions #date-released, #del-instructions #date-delivered { padding-top: 20px; }
 #del-instructions #overdue, #del-instructions #date-paid { color: #C00; font-size: 1.2em; font-weight: bold; padding-top: 20px; }
-#del-instructions #instr { border-top: 1px dotted black; border-bottom: 1px dotted black; font-weight: bold; margin-top: 20px; padding-top: 5px; padding-bottom: 5px; overflow: hidden;}
-#del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
+#del-instructions #instr { border-top: 1px dotted black; border-bottom: 1px dotted black; font-weight: bold; margin-top: 20px; padding-top: 5px; padding-bottom: 5px; overflow: hidden; }
+#del-status { background-color: #FFF6BF; clear: both; color: #C00; padding: 10px 0; text-align: center; }
 #order { clear: both; margin: 1.5em 0; width: 100%; }
 #order .vehicle-set { margin: 0 0 1em; width: 100%; }
 #order .vehicle-set li { clear: both; float: left; width: 100%; }
 #order .vehicle-set li span { width: 20%; }
-#order td { padding-top: 15px; padding-bottom: 15px; position: relative;}
-#order .bid-type { color: #C00; display: inline; font-size: 11px; position: absolute; right: 0;}
+#order td { padding-top: 15px; padding-bottom: 15px; position: relative; }
+#order .bid-type { color: #C00; display: inline; font-size: 11px; position: absolute; right: 0; }
 .parts-set { float: left; width: 100%; margin: 2em 0; }
 .selection-total td { font-size: 1.5em; font-weight: bold; color: #C00; text-align: right; padding: 10px 8px 10px 0; border-bottom: none; }
-
-
+/* COMMENTS
+---------------------------------------------------------------------- */
 #show-comments #comments-list { clear: both; float: left; margin: 0; width: 100%; }
 #show-comments li { clear: both; float: left; margin-bottom: 5px; width: 100%; }
 #show-comments #creator, #show-comments #comment, #show-comments #datetime { float: left; }
-#show-comments #creator { font-weight: bold; width: 5%;  }
+#show-comments #creator { font-weight: bold; width: 5%; }
 #show-comments #comment { width: 65%; margin-right: 2%; }
 #show-comments #datetime { color: #999; width: 20%; }
-
+/* FEES
+---------------------------------------------------------------------- */
 form.groups.highlight { padding: 2px 0; }
 #buyer-fees .fee, #supplier-fees .fee { font-size: 1.2em; font-weight: bold; }
-#buyer-fees .fee .instruction,#supplier-fees .fee .instruction { font-size: 11px;font-weight: normal; }
-table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
-
+#buyer-fees .fee .instruction,#supplier-fees .fee .instruction { font-size: 11px; font-weight: normal; }
+table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; }
 #buyer-fees th.vehicle, #buyer-fees th .part { text-align: left; }
 #buyer-fees .vehicle { width: 20%; }
 #buyer-fees .vehicle .strong { font-size: 1em; }
 #buyer-fees .vehicle .button { margin-top: 15px; }
 #buyer-fees .vehicle + td { width: 80%; }
 #buyer-fees .part, #buyer-fees .fee-type, #buyer-fees .lowest-bid, #buyer-fees .speed, #buyer-fees .rate, #buyer-fees .fee { display: inline; float: left; line-height: 20px; min-height: 18px; }
-#buyer-fees .part { clear: both; width: 25%;}
+#buyer-fees .part { clear: both; width: 25%; }
 #buyer-fees .fee-type, #buyer-fees .lowest-bid, #buyer-fees .speed, #buyer-fees .rate, #buyer-fees .fee { margin-left: 5px; text-align: right; }
 #buyer-fees .lowest-bid, #buyer-fees .fee-type, #buyer-fees .speed { width: 15%; }
 #buyer-fees .rate { width: 10%; }
-#buyer-fees .fee { width: 15%;  }
+#buyer-fees .fee { width: 15%; }
 #buyer-fees .fee-type { text-align: center; }
-
 #supplier-fees th.vehicle, #supplier-fees th .part { text-align: left; }
 #supplier-fees .vehicle { width: 20%; }
-#supplier-fees .vehicle a { font-size: 1em;  }
+#supplier-fees .vehicle a { font-size: 1em; }
 #supplier-fees .vehicle + td { width: 80%; }
-#supplier-fees .po-group a {  display: inline; float: right; margin-right: 0; }
+#supplier-fees .po-group a { display: inline; float: right; margin-right: 0; }
 #supplier-fees .po-group { clear: both; margin-top: 10px; margin-bottom: 10px; overflow: hidden; }
 #supplier-fees .part, #supplier-fees .amount-paid, #supplier-fees .speed, #supplier-fees .rate, #supplier-fees .fee { display: inline; float: left; line-height: 18px; min-height: 20px; }
-#supplier-fees .part { clear: both; width: 25%;}
+#supplier-fees .part { clear: both; width: 25%; }
 #supplier-fees .amount-paid, #supplier-fees .fee, #supplier-fees .speed, #supplier-fees .rate { margin-left: 5px; text-align: right; }
-#supplier-fees .amount-paid, #supplier-fees .fee { width: 15%;  }
+#supplier-fees .amount-paid, #supplier-fees .fee { width: 15%; }
 #supplier-fees .speed { width: 20%; }
 #supplier-fees .rate { width: 10%; }
-
+/* RATINGS
+---------------------------------------------------------------------- */
+.rating { width: 40%; }
+.rating h3 { background-color: #e5e5e5; padding: 8px 0; text-align: center; }
+.rating li { clear: both; float: left; margin-bottom: 10px; position: relative; width: 100%; }
+.rating p { margin-bottom: 14px; }
+.rating .strong { display: inline; float: left; width: 40%; }
+.rating .count { display: inline; font-size: 18px; text-align: right; position: absolute; right: 0; width: 25%; }
+.rating #delivered { border-bottom: 1px solid #e5e5e5; }
+.rating .red-alert { text-align: center; }
+.rating .name { color: #C00; font-size: 1.5em; }
+.rating textarea { clear: both; }
+.rating .stars { margin-bottom: 15px; }
+#content-main .stars a { display: inline-block; height: 23px; margin-right: 10px; text-align: center; width: 20px; }
+#content-main .stars a.rating { background-color: #FFF6BF; }
+#content-main .stars a.rating-over { background-color: #FFF6BF; }
+#show-rating p { float: left; margin-bottom: .5em; height: 1.4em; line-height: 1.4em; }
+#show-rating .label { clear: both; }
+/* DASHBOARD STATS
+---------------------------------------------------------------------- */
 #dash-stats { float: left; margin-bottom: 35px; width: 73%; text-align: right; }
 #dash-stats th { background-color: #E5E5E5; border: 1px solid white; font-size: 1.2em; font-weight: normal; }
 #dash-stats td { font-size: 16px; border: none; }
@@ -331,15 +329,70 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #dash-stats .val { width: 20%; }
 #dash-stats .indent { padding-left: 50px; }
 #dash-stats .divide td { border-bottom: 2px solid #999; }
-#dash-stats .instruction { font-size: 12px; margin-right: 15px;}
-#dash-stats .divide .instruction { margin-right: 0;  }
-#dash-stats .highlight { margin-right: 0; padding: 0 2px; text-align: center;}
+#dash-stats .instruction { font-size: 12px; margin-right: 15px; }
+#dash-stats .divide .instruction { margin-right: 0; }
+#dash-stats .highlight { margin-right: 0; padding: 0 2px; text-align: center; }
 #perf-ind p { clear: both; height: 20px; line-height: 20px; text-align: left; }
 #perf-ind span { color: #C00; float: left; width: 50%; }
-
+/* ASIDE
+---------------------------------------------------------------------- */
 .aside { float: right; width: 24%; text-align: center; }
-.aside div { margin: 0 0 12px; padding: 15px; text-align: center;}
+.aside div { margin: 0 0 12px; padding: 15px; text-align: center; }
 .aside p { margin-bottom: 0; }
 #content-main .aside .button { margin-right: 0; margin-bottom: 12px; text-align: center; width: 50%; }
 #content-main .aside #feature-button { background-color: #6B9D28; font-size: 16px; width: 60%; }
 #content-main .aside #feature-button:hover { background-color: #D02200; }
+/* HOME PAGE
+---------------------------------------------------------------------- */
+#branding-menu { background-color: #911D00; color: white; font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; height: 100px; overflow: hidden; border-bottom: 5px solid #CCC; padding: 10px 0; }
+#branding-menu a { color: #CCC; padding: 5px; margin-right: 15px; text-decoration: none; }
+#branding-menu a:hover { color: white; background: none; text-decoration: underline; }
+#branding-menu p { float: right; font-size: 14px; line-height: 18px; margin: 30px 0; }
+#branding-menu p a { margin-left: 10px; }
+#branding-menu .links { float: left; margin: 8px 0 0; width: 50%; }
+#browser .label { color: white; margin: 0; text-align: left; text-transform: none; padding: 0; width: 100%; }
+#browser a { background-repeat: no-repeat; background-position: 0 center; padding-left: 30px; }
+#browser #chrome { background: url(../images/browsers/Chrome.png) no-repeat 0 center; padding-left: 30px; }
+#browser #safari { background: url(../images/browsers/Safari.png) no-repeat 0 center; padding-left: 30px; }
+#browser #firefox { background: url(../images/browsers/Firefox.png) no-repeat 0 center; padding-left: 30px; }
+#home-nav { height: 30px; margin-top: 20px; width: 100%; }
+#branding-top { font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; padding: 5% 0 20px; position: relative; }
+#branding-top h1 { float: left; }
+#branding-top h2 { clear: left; float: left; display: inline; font-size: 3em; font-weight: normal; line-height: 1.2em; width: 45%; margin: -5% 0 10%; }
+#branding-top img { border: 2px solid #a9a9a9; height: 275px; width: 484px; float: right; padding: 8px; }
+#branding-top p, #call-to-action p, #reg-instruction { border-top: 1px dotted #cacaca; border-bottom: 1px dotted #cacaca; clear: both; color: #919191; font: italic 2em/1.6em Georgia, "Times New Roman", Times, serif; padding: 8px 0 15px; text-align: center; }
+#branding-bottom { font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; margin: 10px 0 4%; overflow: hidden; }
+#branding-bottom .box { width: 45%; padding: 25px; color: white; }
+#branding-bottom .buyer { float: left; background-color: #BE9B4D; }
+#branding-bottom .supplier { float: right; background-color: #911D00; }
+#branding-bottom h2 { background-color: white; padding: 8px; text-align: center; }
+#branding-bottom .buyer h2 { color: #BE9B4D; }
+#branding-bottom .supplier h2 { color: #911D00; }
+#branding-bottom h3 { color: #cacaca; }
+#branding-bottom p, #branding-bottom li { font-size: 14px; margin-bottom: 0.8em; }
+#branding-bottom ul { text-align: left; }
+#branding-bottom ul.benefits { height: 340px; }
+#branding-bottom ul.who-join { height: 250px; }
+#branding-bottom li { list-style-type: disc; list-style-position: outside; margin-left: 20px; padding-left: 10px; }
+#branding-top em, #branding-bottom em { padding-bottom: 4px; border-bottom: 2px solid #C00; }
+#call-to-action { clear: both; }
+/* ABOUT PAGE
+---------------------------------------------------------------------- */
+#about-company { clear: both; display: inline; float: left; font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; font-size: 14px; margin-right: 20px; margin-bottom: 5%; width: 60%; }
+#about-company .intro { font-size: 1.2em; }
+#about-company .highlight { font-weight: bold; }
+#about-company img#ebidcommunity, #about-company img#sweetspot { margin: 0 auto 2em; }
+#about-people { background-color: #FFF6BF; border: 1px solid #CCC; float: right; font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; width: 30%; padding: 20px; }
+#about-people h3 { color: #C00; margin-bottom: 5px; }
+#about-people .position { font-style: italic; }
+#about-people p { margin-bottom: 20px; }
+/* FOOTER
+---------------------------------------------------------------------- */
+#footer { color: white; font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; overflow: hidden; padding: 40px 0; }
+#footer .container { margin: 0 auto; }
+#footer p { clear: left; float: left; margin-bottom: 0.4em; }
+#footer .links { float: right; margin: 0; width: 45%; }
+#footer p a { margin-right: .2em; }
+#branding-menu strong, #footer strong { color: #fffca9; }
+#footer a { color: #CCC; padding: 5px; margin-right: 15px; text-decoration: none; }
+#footer a:hover { color: white; background: none; text-decoration: underline; }

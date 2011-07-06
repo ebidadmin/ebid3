@@ -248,11 +248,11 @@ private
       @ob_m_pct = (@ob_m.to_f / @li_m.to_f) * 100
       @ob_f = @own_bids.ftm.collect(&:line_item_id).uniq.count
       @ob_f_pct = (@ob_f.to_f / @li_f.to_f) * 100
-      @ob2_all = @own_bids.collect(&:line_item_id).uniq.count
+      @ob2_all = @line_items.two_and_up.count
       @ob2_all_pct = (@ob2_all.to_f / @li_all.to_f) * 100
-      @ob2_m = @own_bids.metered.collect(&:line_item_id).uniq.count
+      @ob2_m = @line_items.two_and_up.metered.count
       @ob2_m_pct = (@ob2_m.to_f / @li_m.to_f) * 100
-      @ob2_f = @own_bids.ftm.collect(&:line_item_id).uniq.count
+      @ob2_f = @line_items.two_and_up.ftm.count
       @ob2_f_pct = (@ob2_f.to_f / @li_f.to_f) * 100
     @missed = @li_all -  @ob_all
       @msd_all_pct = (@missed.to_f / @li_all.to_f) * 100
@@ -305,8 +305,13 @@ private
       @new_f = @new.ftm.count
     @days_m = (Time.now.to_date - '2011-04-16'.to_date).to_f
     @average_m = (@tb_m/@days_m).round(2)
-    @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
-    @average_f = (@tb_f/@days_f).round(2)
+    unless Date.today  == Time.now.beginning_of_month.to_date  # this condition prevents zero divisor
+      @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
+      @average_f = (@tb_f/@days_f).round(2)
+    else
+      @days_f = 1
+      @average_f = @tb_f.round(2)
+    end
     
     @ebid_orders = Order.scoped
       @eb_all = @ebid_orders.collect(&:order_total).sum

@@ -26,7 +26,7 @@
       <%= content_tag :p, (link_to (pluralize entry.line_items_count, "item"), entry), :class => 'parts-total' %>
     </td>
 		<td class="status">
-      <%= display_status(entry) %>
+      <%= display_status(entry) %> <%= content_tag :span, 'M', :class => 'message-mark' if entry.comments.present? %>
 			<p class="instruction">
 			  <%= display_number_of_bidders(entry) unless (entry.buyer_status == "New" || entry.buyer_status == "Edited") %>
 			  <%= "| #{content_tag :abbr, (pluralize entry.orders.count, 'order'), :class => 'highlight'}".html_safe unless entry.orders.blank? %>

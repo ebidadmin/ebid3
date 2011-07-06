@@ -1,0 +1,17 @@
+one:
+  user_id: 1
+  user_company_id: 1
+  receiver_id: 1
+  receiver_company_id: 1
+  entry_id: 1
+  order_id: 1
+  content: MyText
+
+two:
+  user_id: 1
+  user_company_id: 1
+  receiver_id: 1
+  receiver_company_id: 1
+  entry_id: 1
+  order_id: 1
+  content: MyText

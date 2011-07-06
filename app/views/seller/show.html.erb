@@ -4,7 +4,20 @@
 <%= render 'shared/photo_set' %>
 <%= render 'shared/info_vehicle', :entry => @entry %>
 <%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
-<%= render 'shared/comments' %>
+<%#= render 'shared/comments' %>
+<div id="message-box">
+	<div id="msg-list">
+		<div id="private">
+			<%= render 'messages/private_messages' %>
+		</div>
+		<div id="public">
+			<%= render 'messages/public_messages' %>
+		</div>
+	</div>
+	<div id="msg-fields">
+		<%= render 'messages/buttons' %>
+	</div>
+</div>
 
 <%= form_tag bids_path(:entry_id => @entry), :id => 'bid-form', :remote => true do %>
 	<table id="item-bids">
@@ -21,8 +34,12 @@
 <% unless (@entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted') && @entry.expired.nil? %>
   <% content_for :subnav do %>
 	<%= content_tag :div, ("Note: the status of this entry is " + (content_tag :strong, current_status_or_expired?(@entry)) + 
-	". It\'s no longer available for bidding.").html_safe, :id => 'flash_warning'  %>
+	". It\'s no longer available for bidding.").html_safe, :id => 'flash_info'  %>
   <% end  %>	
+<% end %>
+
+<% content_for :subnav do %>
+	<%= content_tag :div, "Hi #{current_user.profile.first_name}! Have you seen your new #{link_to 'Dashboard', seller_main_path(current_user)} lately?".html_safe, :id => 'flash_info'  %>
 <% end %>
 
 <% content_for :javascripts do %>

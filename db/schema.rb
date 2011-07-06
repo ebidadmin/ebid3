@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110625063938) do
+ActiveRecord::Schema.define(:version => 20110704032119) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -105,16 +105,12 @@ ActiveRecord::Schema.define(:version => 20110625063938) do
   end
 
   create_table "comments", :force => true do |t|
-    t.integer  "sender_id"
+    t.integer  "user_id"
     t.string   "user_type"
     t.integer  "entry_id"
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sender_company_id"
-    t.integer  "receiver_id"
-    t.integer  "receiver_company_id"
-    t.integer  "order_id"
   end
 
   create_table "companies", :force => true do |t|
@@ -230,9 +226,9 @@ ActiveRecord::Schema.define(:version => 20110625063938) do
     t.decimal "split_amount",      :precision => 10, :scale => 2
     t.date    "split_date"
     t.integer "bid_speed"
-    t.decimal "perf_ratio",        :precision => 5,  :scale => 2
     t.decimal "fee_rate",          :precision => 5,  :scale => 3
     t.date    "order_paid"
+    t.decimal "perf_ratio",        :precision => 5,  :scale => 2
   end
 
   add_index "fees", ["bid_id"], :name => "index_fees_on_bid_id"
@@ -267,6 +263,29 @@ ActiveRecord::Schema.define(:version => 20110625063938) do
 
   add_index "line_items", ["car_part_id"], :name => "index_line_items_on_car_part_id"
   add_index "line_items", ["entry_id"], :name => "index_line_items_on_entry_id"
+
+  create_table "messages", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.integer  "user_company_id"
+    t.integer  "receiver_id"
+    t.integer  "receiver_company_id"
+    t.integer  "entry_id"
+    t.integer  "order_id"
+    t.text     "message"
+    t.boolean  "open",                :default => false
+    t.string   "ancestry"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["ancestry"], :name => "index_messages_on_ancestry"
+  add_index "messages", ["entry_id"], :name => "index_messages_on_entry_id"
+  add_index "messages", ["order_id"], :name => "index_messages_on_order_id"
+  add_index "messages", ["receiver_company_id"], :name => "index_messages_on_receiver_company_id"
+  add_index "messages", ["receiver_id"], :name => "index_messages_on_receiver_id"
+  add_index "messages", ["user_company_id"], :name => "index_messages_on_user_company_id"
+  add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
 
   create_table "order_items", :force => true do |t|
     t.integer  "line_item_id"

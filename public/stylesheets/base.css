@@ -68,7 +68,7 @@ hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; marg
 
 /* MAIN TITLES
 ---------------------------------------------------------------------- */
-.main-title { color: #919191;  }
+.main-title { color: #919191;  width: 65%;}
 
 /* GLOBAL HEADER (adapted from 960gs and martineau.tv)
 ---------------------------------------------------------------------- */
@@ -150,7 +150,7 @@ input[type="submit"]:hover, input[type="button"]:hover, #content-main  a.button:
 
 /* TABLES & PSEUDO TABLES
 ---------------------------------------------------------------------- */
-table { background: transparent; margin: 0 auto 1.5em; width: 100%; text-align: left; overflow: hidden; }
+table { background: transparent; margin-bottom: 25px; width: 100%; text-align: left; overflow: hidden; }
 table th { font-size: 1.2em; font-weight: bold; padding: 10px 8px; border-bottom: 2px solid #999; text-align: center; vertical-align: middle; }
 table td { border-bottom: 1px solid #ccc; padding: 6px 8px; }
 table p { margin-bottom: 0; }
@@ -171,9 +171,9 @@ tr.selection-total, tr.accept-decline { border-bottom: 0; }
 
 /* GENERAL LINKS
 ---------------------------------------------------------------------- */
-#content-main a, #call-to-action #learn { color: #C00; font-weight: bold;  text-decoration: none; background-color: white; border-bottom: 1px dotted #C00; }
+#content-main a, #subnav #flash_info a, #call-to-action #learn { color: #C00; font-weight: bold;  text-decoration: none; background-color: white; border-bottom: 1px dotted #C00; }
 #content-main a[rel^=shadowbox] { padding: 0; opacity: 1; }
-#content-main a:hover, #call-to-action #learn:hover { color: black; border-bottom: 1px solid black; }
+#content-main a:hover, #subnav #flash_info a:hover, #call-to-action #learn:hover { color: black; border-bottom: 1px solid black; }
 .page-links { clear: both; font-size: 1.5em; padding: 10px 0; width: 100%; text-align: center; }
 .page-links input { font-size: 1em; margin: 0; }
 
@@ -261,6 +261,37 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 	top:1px; 
 }
 
+.simple_form { width: 100%; }
+.simple_form div { clear: both; float: left; margin-bottom: 10px; width: 100%;}
+.simple_form label.required { color: #C00; }
+.simple_form label {
+  float: left;
+  width: 30%;
+}
+.simple_form input.string, .simple_form input.password,.simple_form textarea, .simple_form select, .simple_form input.hasDatepicker {
+	float: left; margin: 0;
+}
+/*.simple_form input.hasDatepicker { width: 30%; }*/
+.simple_form .error {
+  clear: left;
+  margin-left: 30%;
+  font-size: 12px;
+  color: #D00;
+  display: block;
+}
+.simple_form .hint {
+  clear: left;
+  margin-left: 30%;
+  font-size: 12px;
+  color: #555;
+  display: block;
+  font-style: italic;
+}
+form.user, form.car_variant { width: 50%; }
+ #order_submit,  #user_submit, #car_variant_submit { margin-left: 30%; }
+ 
+#user_new #user_submit { margin: 0; }
+
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */
 @media print {
@@ -275,3 +306,23 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 	table#item-bids { font-size: 1.5em; }
 }
 
+/*form p { position: relative; }
+label.inlined {
+		padding-left: 6px;
+		position: relative; z-index: 1;
+		opacity: 0.75;
+		transition: opacity 0.15s linear;
+	}	label.focus {
+		opacity: 0.35;
+	}
+
+	label.has-text {
+		opacity: 0.0;
+		transition-duration: 0s;
+	}
+		label.inlined + input.input-text {
+		background-color: transparent;
+		position: absolute; left: 0; top: -8px; z-index: 2;
+	}*/
+
+.message-mark { color: #C00; float: right; right: 10px;   }

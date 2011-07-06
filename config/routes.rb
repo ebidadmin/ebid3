@@ -1,5 +1,10 @@
 Ebid::Application.routes.draw do
 
+  resources :messages do
+    get :show_fields, :on => :collection
+    get :cancel, :on => :collection
+  end
+
   resources :diffs, :only => [:index, :show, :create] do
     get :summary, :on => :collection
   end
