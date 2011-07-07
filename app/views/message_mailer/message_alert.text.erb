@@ -1,0 +1,27 @@
+A message has been created for:
+
+	<%= @entry.vehicle %>
+	(<%= @entry.plate_no %>)
+	
+	Chassis/Serial No. or VIN: 
+		<%= @entry.serial_no %> 
+	
+	Engine/Motor No.: 
+		<%= @entry.motor_no %>
+
+Comment/remark:
+
+	<%= @message.message%>
+	
+	
+******** ******** *******
+
+<% if @message.receiver && @message.receiver.has_role?('admin') %>
+View it here:	http://www.ebid.com.ph<%= entry_path(@entry) %>
+<% elsif @message.receiver && @message.receiver.has_role?('seller') %>
+View it here:	http://www.ebid.com.ph<%= seller_show_path(:id => @entry.id) %>
+<% else %>
+View it here:	http://www.ebid.com.ph<%= entry_path(@entry) %>
+<% end %>
+
+******** ******** *******

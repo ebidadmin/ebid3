@@ -9,14 +9,14 @@ class BidMailer < ActionMailer::Base
     @entry = entry
     if entry.user.company.id == 7
       mail(
-        :to => "Oliver Hambre <oohambre@bpims.com>",
-        :subject => "Bid/s submitted: #{entry.vehicle}", 
+        :to => ["Oliver Hambre <oohambre@bpims.com>", "#{entry.user.profile.full_name} <#{entry.user.email}>"],
+        :subject => "NEW Bids: #{entry.vehicle}", 
         :bcc => "Chris Marquez <cymarquez@ebid.com.ph>"
         )
     else
       mail(
         :to => "#{entry.user.profile.full_name} <#{entry.user.email}>", 
-        :subject => "Bid/s submitted: #{entry.vehicle}", 
+        :subject => "NEW Bids: #{entry.vehicle}", 
         :bcc => "Chris Marquez <cymarquez@ebid.com.ph>"
         )
     end
@@ -30,12 +30,12 @@ class BidMailer < ActionMailer::Base
     if update.nil?
       mail(
         :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
-        :subject => "#{seller.profile.full_name} just bidded on #{entry.vehicle}"
+        :subject => "NEW Bids: #{seller.profile.full_name} > #{entry.vehicle}"
         )
     else
       mail(
         :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
-        :subject => "#{seller.profile.full_name} UPDATED bid/s on #{entry.vehicle}"
+        :subject => "UPDATED Bids: #{seller.profile.full_name} > #{entry.vehicle}"
         )
     end  
   end

@@ -31,6 +31,9 @@ class CreateMessages < ActiveRecord::Migration
       elsif c.user_id.blank? && m.user_type == 'buyer'
         m.user_id = 40
         m.user_company_id = 2
+      elsif c.user_id.blank? && m.user_type == 'admin'
+        m.user_id = 1
+        m.user_company_id = 1
       else
         m.user_id = c.user_id
         m.user_company_id = c.user.company.id

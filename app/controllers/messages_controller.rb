@@ -62,6 +62,7 @@ class MessagesController < ApplicationController
       if current_user.messages << @message
         format.html { redirect_to session['referer'], :notice => "Successfully created message."; session['referer'] = nil }
         format.js { flash.now[:notice] = "Successfully created message." }
+        MessageMailer.delay.message_alert(@entry, @message)
       else
         format.html { render :action => 'new' }
         format.js { flash.now[:notice] = "Message was not sent. Try again!" }
@@ -96,7 +97,7 @@ class MessagesController < ApplicationController
         format.js { flash.now[:notice] = "Message was not updated. Try again!" }
       end
     end      
- end
+  end
 
   def destroy
     @message = Message.find(params[:id])

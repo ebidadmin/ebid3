@@ -6,14 +6,14 @@ class EntryMailer < ActionMailer::Base
     @entry = entry
     if entry.user.company.id == 7
       mail(
-        :to => "Oliver Hambre <oohambre@bpims.com>",
-        :subject => "New Entry Created",
+        :to => ["Oliver Hambre <oohambre@bpims.com>", "#{entry.user.profile.full_name} <#{entry.user.email}>"],
+        :subject => "New Entry: #{entry.vehicle}",
         :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"] 
         )
     else
       mail(
         :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"],
-        :subject => "New Entry Created" 
+        :subject => "New Entry: #{entry.vehicle}" 
         )
     end
   end
@@ -23,7 +23,7 @@ class EntryMailer < ActionMailer::Base
     @entry = entry
     mail(
       :to => "#{seller.profile.full_name} <#{seller.email}>", 
-      :subject => "New Entry is now online: #{entry.vehicle}", 
+      :subject => "Now ONLINE: #{entry.vehicle}", 
       :bcc => "cymarquez@ebid.com.ph"
       )
   end
