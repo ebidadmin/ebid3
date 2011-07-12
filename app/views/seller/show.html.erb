@@ -39,7 +39,7 @@
 <% end %>
 
 <% content_for :subnav do %>
-	<%= content_tag :div, "Hi #{current_user.profile.first_name}! Have you seen your new #{link_to 'Dashboard', seller_main_path(current_user)} lately?".html_safe, :id => 'flash_info'  %>
+	<%= content_tag :div, "Hi #{current_user.first_name}! Have you seen your new #{link_to 'Dashboard', seller_main_path(current_user)} lately?".html_safe, :id => 'flash_info'  %>
 <% end %>
 
 <% content_for :javascripts do %>

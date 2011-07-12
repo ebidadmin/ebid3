@@ -1,7 +1,9 @@
 <% simple_form_for @car_variant do |f| %>
 	<%# f.inputs do %>
-		<%= f.association :car_brand, :label => 'Brand', :group => :car_origin, :prompt => 'Select Brand' %>
-		<%= f.association :car_model, :label => 'Model', :prompt => 'Select Model' %>
+	<%= f.input :car_brand do %>
+	  <%= f.grouped_collection_select :car_brand_id,  CarOrigin.all, :car_brands, :name, :id, :name, {:include_blank => 'Choose Brand'} %>
+	<% end %>
+		<%= f.association :car_model, :label => 'Model', :prompt => 'Choose Model' %>
 		<%= f.input :new_model, :label => 'New Model', :hint => 'Note: use this field only to create a new Car Model' %>
 		<%= f.input :name, :label => 'New Variant' %>
 		<% if current_user.has_role?('admin') %>

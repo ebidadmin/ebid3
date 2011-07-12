@@ -71,4 +71,8 @@ class User < ActiveRecord::Base
   def power
     roles
   end
+  
+  def first_name
+    profile.first_name
+  end
 end

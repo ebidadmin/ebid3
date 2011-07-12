@@ -1,5 +1,6 @@
 class LineItemsController < ApplicationController
   before_filter :initialize_cart, :only => [:create]
+  
   def index
     @line_items = LineItem.all
   end

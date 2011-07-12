@@ -1,5 +1,6 @@
 class EntriesController < ApplicationController
-  before_filter :initialize_cart, :except => [:index, :show, :put_online, :relist, :reveal_bids, :reactivate]
+  # before_filter :initialize_cart, :except => [:index, :show, :put_online, :relist, :reveal_bids, :reactivate]
+  before_filter :initialize_cart, :only => [:select_parts]
   before_filter :check_buyer_role
 
   def index
@@ -44,6 +45,7 @@ class EntriesController < ApplicationController
     @entry = current_user.entries.build
     @entry.date_of_loss = Date.today
     @entry.term_id = 4
+    @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
   end
   
   def create
