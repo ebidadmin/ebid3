@@ -138,6 +138,7 @@ class EntriesController < ApplicationController
     if @entry.update_attributes(params[:entry])
       redirect_to select_parts_entry_path(@entry), :notice => "Updated #{@entry.vehicle}. Next step is to choose parts."
     else
+      @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
       render 'edit'
     end
   end

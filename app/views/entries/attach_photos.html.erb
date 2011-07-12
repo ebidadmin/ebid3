@@ -10,7 +10,7 @@
 		<hr>
 		<div class="page-links">
 		<%= link_to '<< Step 2', select_parts_entry_path(@entry), :class => 'button', :id => 'step-back' %>
-		<%= f.submit 'Save & Finish'%>
+		<%= f.submit 'Save & Finish', :id => 'entry_final_submit' %>
 		</div>
 	<% end %>
 </fieldset>
