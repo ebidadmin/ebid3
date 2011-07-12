@@ -32,6 +32,8 @@ Ebid::Application.routes.draw do
     end
     resources :entries, :shallow => true do
       member do
+        get :select_parts
+        get :attach_photos
         get :print
         get :put_online
         get :reveal_bids
@@ -50,8 +52,11 @@ Ebid::Application.routes.draw do
   get 'javascripts/dynamic_models2'
   get 'javascripts/formtastic_models'
 
-  get 'photos/add', :as => :add_photo
-  delete 'photos/remove', :as => :remove_photo
+  resources :photos do
+    put :attach, :on => :collection
+  end
+  # get 'photos/add', :as => :add_photo
+  # delete 'photos/remove', :as => :remove_photo
   
   resources :car_parts do
     get :search, :on => :collection

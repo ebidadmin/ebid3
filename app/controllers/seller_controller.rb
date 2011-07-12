@@ -159,7 +159,6 @@ class SellerController < ApplicationController
     @priv_messages = @entry.messages.closed.restricted(current_user.company)
     @pub_messages = @entry.messages.open
     if @entry.buyer_status == 'Relisted'
-      # @line_items = @entry.line_items.online.includes(:car_part, :bids)
       @line_items = @entry.line_items.order('status DESC').includes(:car_part, :bids)
     else
       @line_items = @entry.line_items.includes(:car_part, :bids)

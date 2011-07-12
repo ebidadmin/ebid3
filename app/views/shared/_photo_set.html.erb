@@ -1,13 +1,17 @@
 <div class="photo-set">
-	<!-- <h3>Photos</h3> -->
+	<% if @entry.photos.present? %>
 	<ul>
 		<li class="instruction photo">Click on photos to enlarge.</li>
 		<% @entry.photos.each do |photo| %>
-			<%- if photo.processing? -%>
+			<% if photo.processing? %>
 				<li><%= image_tag '/images/processing_photo.png', :class => "photo", :alt => "Photo of #{@entry.plate_no}" %></li>
-			<%- else -%>
+			<% else %>
 				<li><%= link_to (image_tag photo.photo.url(:tiny), :class => "photo", :alt => "Photo of #{@entry.plate_no}"), photo.photo.url(:large), :rel => "shadowbox[#{@entry.id}]" %></li>
-			<%- end -%>
-		<% end -%>
+			<% end %>
+		<% end %>
 	</ul>	
+	<% else %>
+		<%= content_tag :h3, 'No photos submitted.' %>
+		<%= link_to 'Attach Photos', attach_photos_entry_path(@entry), :class => 'button' %>
+	<% end %>
 </div>	

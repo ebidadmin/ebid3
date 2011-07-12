@@ -69,12 +69,15 @@ class ApplicationController < ActionController::Base
   	end 
 
     def initialize_cart 
-      if session[:cart_id]
+      # if session[:cart_id]
         @cart = Cart.find(session[:cart_id]) 
-      else
-        @cart = Cart.create
+      # else
+      #   @cart = Cart.create
+      #   session[:cart_id] = @cart.id 
+      # end  
+      rescue ActiveRecord::RecordNotFound 
+        @cart = Cart.create 
         session[:cart_id] = @cart.id 
-      end  
     end
     
     # for buyer and entries controllers

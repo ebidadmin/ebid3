@@ -23,6 +23,11 @@ class EntriesController < ApplicationController
       @priv_messages = @entry.messages.closed.restricted(current_user.company)
     end
     @pub_messages = @entry.messages.open
+    if @entry.buyer_status == 'Relisted'
+      @line_items = @entry.line_items.order('status DESC').includes(:car_part, :bids)
+    else
+      @line_items = @entry.line_items.includes(:car_part, :bids)
+    end
   end
 
   def print
@@ -31,35 +36,56 @@ class EntriesController < ApplicationController
   end
   
   def new
-    @entry = Entry.new
-    2.times {@entry.photos.build}
+    # @entry = Entry.new
+    # 2.times {@entry.photos.build}
+    # @entry.date_of_loss = Date.today
+    # @entry.term_id = 4
+    # start_entry
+    @entry = current_user.entries.build
     @entry.date_of_loss = Date.today
     @entry.term_id = 4
-    start_entry
   end
   
   def create
-    # raise params.to_yaml
-    @entry = Entry.new(params[:entry])
-    start_entry
-    if @cart.cart_items.blank?
-      flash[:error] = "Wait a minute ... your parts selection is still empty!"
-      redirect_to new_user_entry_path(current_user)
+    # @entry = Entry.new(params[:entry])
+    # start_entry
+    # if @cart.cart_items.blank?
+    #   flash[:error] = "Wait a minute ... your parts selection is still empty!"
+    #   redirect_to new_user_entry_path(current_user)
+    # else
+    #   @entry = Entry.new(params[:entry])
+    #   @entry.add_line_items_from_cart(@cart)
+    #   @entry.company_id = current_user.company.id
+    #   if current_user.entries << @entry
+    #     @cart.destroy
+    #     session[:cart_id] = nil 
+    #     # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
+    #     EntryMailer.delay.new_entry_alert(@entry)
+    #     flash[:notice] = "Successfully created Entry # #{@entry.id}."
+    #     redirect_to buyer_pending_path(current_user)
+    #   else
+    #     flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
+    #     render 'new'
+    #   end
+    # end
+    @entry = current_user.entries.build(params[:entry])
+    if current_user.company.entries << @entry
+      redirect_to select_parts_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."
     else
-      @entry = Entry.new(params[:entry])
-      @entry.add_line_items_from_cart(@cart)
-      @entry.company_id = current_user.company.id
-      if current_user.entries << @entry
-        @cart.destroy
-        session[:cart_id] = nil 
-        # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
-        EntryMailer.delay.new_entry_alert(@entry)
-        flash[:notice] = "Successfully created Entry # #{@entry.id}."
-        redirect_to buyer_pending_path(current_user)
-      else
-        flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
-        render 'new'
-      end
+      flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
+      render 'new'
+    end
+  end
+  
+  def select_parts
+    @entry = Entry.find(params[:id])
+    start_entry
+  end
+  
+  def attach_photos
+    @entry = Entry.find(params[:id])
+    if @entry.photos.first.blank?
+      2.times {@entry.photos.build}
     end
   end
   
@@ -70,32 +96,46 @@ class EntriesController < ApplicationController
     else
       @entry = current_user.entries.find(params[:id])
     end
-    if @entry.photos.first.nil?
-      @entry.photos.build
+    if @entry.photos.first.blank?
+      2.times {@entry.photos.build}
     end
     start_entry
   end
   
   def update
+    # raise params.to_yaml
+    # if current_user.has_role?('admin') || current_user.has_role?('powerbuyer')
+    #   @entry = Entry.find(params[:id])
+    # else
+    #   @entry = current_user.entries.find(params[:id])
+    # end
+    # @entry.add_or_edit_line_items_from_cart(@cart) 
+    # 
+    # if @entry.update_attributes(params[:entry])
+    #   # EntryMailer.delay.new_entry_alert(@entry)
+    #   @cart.destroy
+    #   session[:cart_id] = nil 
+    #   flash[:notice] = "Successfully updated entry."
+    #   redirect_to session['referer'] || @entry 
+    #   session['referer'] = nil
+    #   # redirect_to photos_attachment_entry_path(@entry), :notice => "Successfully created Entry # #{@entry.id}."
+    # else
+    #   if @entry.photos.first.nil?
+    #     @entry.photos.build
+    #   end
+    #   start_entry
+    #   render 'edit'
+    # end
+    
     if current_user.has_role?('admin') || current_user.has_role?('powerbuyer')
       @entry = Entry.find(params[:id])
     else
       @entry = current_user.entries.find(params[:id])
     end
-    # @entry.buyer_status = 'Edited' unless current_user.has_role?('admin')
-    @entry.add_or_edit_line_items_from_cart(@cart) 
-
+    
     if @entry.update_attributes(params[:entry])
-      # EntryMailer.delay.new_entry_alert(@entry)
-      @cart.destroy
-      session[:cart_id] = nil 
-      flash[:notice] = "Successfully updated entry."
-      redirect_to session['referer'] 
-      session['referer'] = nil
+      redirect_to select_parts_entry_path(@entry), :notice => "Updated #{@entry.vehicle}. Next step is to choose parts."
     else
-      if @entry.photos.first.nil?
-        @entry.photos.build
-      end
       render 'edit'
     end
   end
@@ -116,17 +156,23 @@ class EntriesController < ApplicationController
   def put_online
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
     @line_items = @entry.line_items
-    if @entry.update_attributes(:buyer_status => "Online", :bid_until => Date.today + 1.week)
-      @entry.update_associated_status("Online")
-      flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
-    end
-    redirect_to :back
-    for friend in @entry.user.company.friends
-      unless friend.users.nil?
-        for seller in friend.users
-          EntryMailer.delay.online_entry_alert(seller, @entry)
+    
+    if @line_items.present? && @entry.photos.present?
+      if @entry.update_attributes(:buyer_status => "Online", :bid_until => Date.today + 1.week)
+        @entry.update_associated_status("Online")
+        flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
+      end
+      redirect_to :back
+      for friend in @entry.user.company.friends
+        unless friend.users.nil?
+          for seller in friend.users
+            EntryMailer.delay.online_entry_alert(seller, @entry)
+          end
         end
       end
+    else
+      flash[:error] = "Oops ... your entry is not yet complete. Please check the photos and parts before you proceed"
+      redirect_to :back
     end
     # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
     # @friends = @entry.user.company.friends.map {|f| f.users.collect{ |u| "#{u.profile.full_name} <#{u.email}>" }}

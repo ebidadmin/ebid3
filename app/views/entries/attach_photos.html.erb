@@ -1,0 +1,20 @@
+<% title "Create New Entry - Step 3" %>
+
+<fieldset id="attachments">
+	<legend>STEP 3 - Attach Photos</legend>
+	<%= content_tag :h2, "#{@entry.vehicle} (#{@entry.plate_no})" %>
+	<%= render 'shared/info_vehicle', :entry => @entry %>
+	<%= nested_form_for @entry, :url => attach_photos_path(:id => @entry), :html => { :multipart => true, :method => :put } do |f| %>
+		<hr>
+		<%= render 'choose_attachments', :f => f %>
+		<hr>
+		<div class="page-links">
+		<%= link_to '<< Step 2', select_parts_entry_path(@entry), :class => 'button', :id => 'step-back' %>
+		<%= f.submit 'Save & Finish'%>
+		</div>
+	<% end %>
+</fieldset>
+
+<% content_for :javascripts do %>
+	<%= javascript_include_tag 'nested_form' %>
+<% end %>

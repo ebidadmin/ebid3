@@ -11,7 +11,7 @@ class Profile < ActiveRecord::Base
   validates_presence_of :last_name, :message => "Please type your last name."
   validates_presence_of :phone, :message => "What's your phone number?"
   validates_presence_of :birthdate, :message => "Don't worry, we won't reveal your true age!"
-
+  # validates_presence_of :rank
   def full_name
     [first_name, last_name].join(" ") 
   end  

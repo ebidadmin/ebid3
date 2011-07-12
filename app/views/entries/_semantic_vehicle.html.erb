@@ -1,6 +1,8 @@
-<%= f.error_messages %>
+<p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
+
+<%#= f.error_messages %>
 <%= f.input :year_model, :collection => (Date.today.year-30..Date.today.year).to_a.reverse, :selected => Date.today.year %>
-<%= f.association :car_brand, :group_by => :car_origin %>
+<%= f.association :car_brand %>
 <%= f.association :car_model %>
 <%= f.association :car_variant, :hint => "#{link_to 'Click here', new_car_variant_path} to add new variant.".html_safe %>
 <%= f.input :plate_no %>
@@ -13,7 +15,11 @@
 	<span class='hint instruction'>Format: YYYY-MM-DD</span>
 </div>
 <%= f.association :city, :label => 'Deliver To' %>
+<%= f.input :new_city, :value => @city, :label => 'Create a new delivery location here ...', :label_html => { :id => 'label_new_city'} %> 
 <%= f.association :term, :label => 'Credit Term Request', :collection => Term.all.map{ |t| [t.term_name, t.id]}  %>
+<div class='page-links'>
+<%= f.submit 'Save & Go to Step 2 >>', :class => 'feature-button' %>
+</div>
 
 <% content_for :javascripts do %>
 	<% stylesheet 'blitzer/jquery-ui-1.8.6.custom' %>

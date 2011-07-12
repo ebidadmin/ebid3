@@ -11,10 +11,10 @@ class Photo < ActiveRecord::Base
     :path => ":rails_root/public/system/:class/:id/:style/:basename.:extension"
     
  
-  validates_attachment_presence :photo, :message => "^ You must upload at least 2 photos."
+  validates_attachment_presence :photo, :message => "^You must upload at least 2 photos."
   validates_attachment_content_type :photo, 
   :content_type => ['image/jpeg', 'image/pjpeg', 
-                                   'image/jpg', 'image/png'], :message => "^ Acceptable photo formats are jpg, jpeg, or png."
+                                   'image/jpg', 'image/png'], :message => "^Acceptable photo formats are jpg, jpeg, or png."
   
   # cancel post-processing now, and set flag...
   before_photo_post_process do |photo|

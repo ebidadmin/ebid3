@@ -1,26 +1,27 @@
 <% content_for(:head) do %>
-	<%= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
+	<%#= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
 <% end %>
 
-<%= f.inputs do %>
+<%#= f.inputs do %>
 	<%= f.input :name, :label => 'Company Name' %>
-	<%= f.input :role, :label => 'Primary Role' if current_user.has_role?('admin') %>
-	<%= f.input :role, :collection => Role.id_not(1), :label => 'Primary Role' unless current_user.has_role?('admin') %>
+	<%= f.association :role, :label => 'Primary Role' if current_user.has_role?('admin') %>
+	<%= f.association :role, :collection => Role.id_not(1), :label => 'Primary Role' unless current_user.has_role?('admin') %>
 	<%= f.input :address1, :label => 'Address (Line 1)' %>
 	<%= f.input :address2, :label => 'Address (Line 2)' %>
 	<%= f.input :zip_code %>
-	<%= f.input :city %>
+	<%= f.association :city %>
 	<%= f.input :approver %>
 	<%= f.input :approver_position %>
-	<%= f.input :friends, :as => :check_boxes if current_user.has_role?('admin') %>
-	<%= f.input :friends, :as => :check_boxes, :collection => Company.where("id != 1 AND primary_role != #{current_user.company.role.id}") unless current_user.has_role?('admin') %>
-<% end %>
-<%= f.buttons  do %>
-	<%= f.commit_button 'Submit' %> 
+	<%= f.association :friends, :as => :check_boxes if current_user.has_role?('admin') %>
+	<%#= f.input :friends, :as => :check_boxes, :collection => Company.where("id != 1 AND primary_role != #{current_user.company.role.id}") unless current_user.has_role?('admin') %>
+	<%= f.association :friends, :as => :check_boxes, :collection => Company.where("id != 1 AND primary_role != #{current_user.company.role.id}") unless current_user.has_role?('admin') %>
+<%# end %>
+<%#= f.buttons  do %>
+	<%= f.submit 'Submit' %> 
 	<%= link_to "Cancel", :back -%>
 	<% if current_user.has_role?('admin')  %>
 		| <%= link_to "Show", @company %> 
 		| <%= link_to "View All", companies_path %>
 	<% end %>
-<% end %>
+<%# end %>
 

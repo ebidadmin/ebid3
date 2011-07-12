@@ -23,11 +23,13 @@ $(function() {
 		}
 		$("#entry_car_model_id").html(options);
 		$('#car_model_field').show();
-	  	$("#car_variant_field").hide();
+	  	// $("#car_variant_field").hide();
+	  	$("#entry_car_variant_id").hide();
 		return false
 	});
 	
-  $("#car_variant_field").hide();
+  // $("#car_variant_field").hide();
+	$("#entry_car_variant_id").hide();
   $('#entry_car_model_id').change(function() {  
 	  car_model_id = parseInt( $(this).val() );
 	  var options = '<option></option>';
@@ -36,7 +38,8 @@ $(function() {
 	    if (car_model_id == variants[i][0]) {
 	     options += '<option value="' + variants[i][2] + '">' + variants[i][1] + '</option>';
 			$("#entry_car_variant_id").html(options);
-			$("#car_variant_field").show();
+			// $("#car_variant_field").show();
+		  	$("#entry_car_variant_id").show();
 	    }
 	  }
 		return false

@@ -15,7 +15,8 @@ class Entry < ActiveRecord::Base
   belongs_to :company
 
   has_many :photos, :dependent => :destroy
-  accepts_nested_attributes_for :photos, :reject_if => lambda { |a| a.values.all?(&:blank?) }, :allow_destroy => true
+  # accepts_nested_attributes_for :photos, :reject_if => lambda { |a| a.values.all?(&:blank?) }, :allow_destroy => true
+  accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |a| a['photo'].blank? }
   has_many :bids, :dependent => :destroy
   accepts_nested_attributes_for :bids
 
@@ -31,8 +32,6 @@ class Entry < ActiveRecord::Base
 
   validates_presence_of :year_model, :car_brand, :car_model, :plate_no, :serial_no, :motor_no, :term
   validates_presence_of :city, :if => :new_city_blank
-  validates_associated :city
-  # validates_associated :photos
 
   scope :desc, order('id DESC')
   scope :desc2, order('bid_until DESC', 'id DESC')
@@ -74,7 +73,7 @@ class Entry < ActiveRecord::Base
       # existing_item = LineItem.where(:entry_id => self.id, :car_part_id => item.car_part_id)
 		  existing_item = LineItem.find_by_entry_id_and_car_part_id(self.id, item.car_part_id)
 		  unless existing_item.nil?
-		    existing_item.update_attributes(:quantity => item.quantity + 1, :part_no => item.part_no)
+		    existing_item.update_attributes(:quantity => existing_item.quantity + item.quantity, :part_no => item.part_no)
         existing_item.check_and_update_associated_relationships
 		  else
   			li = LineItem.from_cart_item(item)

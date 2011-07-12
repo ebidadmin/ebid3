@@ -49,7 +49,7 @@
 
   <div id="delivery" class="create">
   	<h2>Delivery</h2>
-    <%= simple_form_for @order, :url => orders_path(:entry_id => entry.id), :method => :post do |f|  %>
+    <%= simple_form_for @order, :url => orders_path(:entry_id => entry.id), :validate => true, :method => :post do |f|  %>
     	<%= yield :bids_array %>
   		<%= render 'orders/deliver_form', :f => f %>
   		<%# f.buttons do %>

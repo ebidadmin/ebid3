@@ -1,4 +1,5 @@
 class LineItemsController < ApplicationController
+  before_filter :initialize_cart, :only => [:create]
   def index
     @line_items = LineItem.all
   end
@@ -12,12 +13,15 @@ class LineItemsController < ApplicationController
   end
   
   def create
-    @line_item = LineItem.new(params[:line_item])
-    if @line_item.save
-      flash[:notice] = "Successfully created line item."
-      redirect_to @line_item
-    else
-      render :action => 'new'
+    @entry = Entry.find(params[:id])
+    if @entry.line_items.blank? && @cart.cart_items.blank? 
+      flash[:error] = "Wait a minute ... your parts selection is still empty! Choose parts before you proceed."
+      redirect_to :back
+    else #@entry.line_items.present?
+      @entry.add_or_edit_line_items_from_cart(@cart) 
+      @cart.destroy
+      session[:cart_id] = nil 
+      redirect_to attach_photos_entry_path(@entry), :notice => "Successfully added parts. Next step is to attach photos."
     end
   end
   

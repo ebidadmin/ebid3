@@ -149,7 +149,7 @@ td.bid-box, td.status { background-color: #eaeaea; }
 #cart_notice_box { width: 100%; line-height: 2.5em; margin-bottom: 15px; min-height: 2.5em; color: #C00; font-weight: bold; text-align: center;}
 #cart_notice_box p { font-size: 16px; margin: 0; }
 
-#parts { float: left; width: 38%; min-height: 400px; overflow: hidden; padding: 10px; border: 1px solid #CCCCCC; background-color: #FFF6BF; box-shadow: 0 0 4px #999999; }
+#parts { float: left; width: 38%; min-height: 400px; overflow: hidden; padding: 10px; border: 1px solid #CCCCCC; background-color: #FFF6BF; box-shadow: 0 0 4px #999999; margin-bottom: 20px;}
 #parts #instructions { margin: 0.5em; padding: 0.5em; background-color: white; }
 #parts #instructions li { list-style-position: outside; list-style-type: decimal; }
 #parts #search-form { display: block; text-align: center; height: 50px; line-height: 50px; }
@@ -382,7 +382,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 /* USERS#SHOW & COMPANIES#SHOW
 ---------------------------------------------------------------------- */
 .first.profile li, .second.usage li, #show-company-info li { clear: both; }
-.first.profile li span, .second.usage li span, #show-company-info li span { color: #999; float: left; font-weight: bold; width: 25%;}
+.first.profile li span, .second.usage li span, #show-company-info li span { color: #999; float: left; font-weight: bold; width: 15%;}
 #show-company-users li { list-style-position: outside; }
 .friend { font-size: 1.5em; }
 
@@ -432,9 +432,9 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 .aside div { margin: 0 0 12px; padding: 15px; text-align: center;}
 .aside p { margin-bottom: 0; }
 #content-main .aside .button { margin-right: 0; margin-bottom: 12px; text-align: center; width: 50%; }
-#content-main .aside #feature-button { background-color: #6B9D28; font-size: 16px; width: 60%; }
-#content-main .aside #feature-button:hover { background-color: #D02200; }
-
+#content-main .aside #feature-button .feature-button { background-color: #6B9D28; font-size: 16px; width: 60%; }
+#content-main .aside #feature-button:hover, #content-main .feature-button:hover { background-color: #D02200; }
+#content-main .feature-button { background-color: #6B9D28; }
 
 .aside div#message-box, .aside div.input { margin: 0; padding: 0; }
 /*#message-box label { color: #C00; padding: 15px 0; text-transform: uppercase; width: 100%; }

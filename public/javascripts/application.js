@@ -15,9 +15,9 @@ $(function() {
 	
 	$('select#username, select#brand, select#status, select#seller, select#buyer').bind('change', function() { window.location.pathname = $(this).val() });
 	
-	$("#entry_submit").bind("click", function() {
-    $(".spinner").toggle() ;
-	});
+	// $("#entry_submit").bind("click", function() {
+	//     $(".spinner").toggle() ;
+	// });
 	
 	$("label.inlined + input.input-text").each(function (type) {
 

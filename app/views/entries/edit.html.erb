@@ -1,27 +1,12 @@
 <% title "Edit Entry" %>
 
-<fieldset>
-	<legend>STEP 1 - Choose Parts</legend>
-  <%#= render 'parts_selection' %>
-	<%#= render 'parts_in_cart' %>
-</fieldset>	
-
-<%= nested_form_for @entry, :html => { :multipart => true } do |f| %>
-	<fieldset id="vehicle">
-		<legend>STEP 2 - Describe the vehicle</legend>
-		<%= render 'choose_vehicle', :f => f %>
-		<%#= render 'semantic_vehicle', :f => f %>
-	</fieldset>
-	<fieldset id="attachments">
-		<legend>STEP 3 - Attach Photos</legend>
-		<%= render 'choose_attachments', :f => f %>
-	</fieldset>
-	<p class="page-links">
-		<%= f.submit %>
-		or <%= link_to "Cancel", user_entries_path(current_user) %>
-	</p>
-<% end %>
+<fieldset id="vehicle">
+	<legend>STEP 1 - Describe the vehicle</legend>
+	<%= simple_form_for @entry, :validate => true, :html => { :multipart => true } do |f| %>
+		<%= render 'semantic_vehicle', :f => f %>
+	<% end %>
+</fieldset>
 
 <% content_for :javascripts do %>
-	<%= javascript_include_tag 'dynamic_models2', 'nested_form' %>
+	<%= javascript_include_tag 'dynamic_models2', 'rails.validations' %>
 <% end %>

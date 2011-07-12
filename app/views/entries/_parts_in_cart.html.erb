@@ -1,5 +1,5 @@
 <div id="selection">
-	<% unless @entry.new_record?  -%>
+	<% unless @entry.line_items_count < 1  -%>
 		<div id="prev-cart">			
 		<%= render 'line_items/prev_cart' %>
 		</div>

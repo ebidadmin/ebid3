@@ -98,7 +98,7 @@ hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; marg
 #flash_warning { color: #514721; background-color: #FFF6BF; background-image: url('/images/messages/warning.png'); border-color: #FFD324; }
 #flash_info { color: #00538f; background-color: #d3f9fe; background-image: url('/images/messages/info.png'); border-color: #43a7f6; }
 .field_with_errors { display: inline; }
-.field_with_errors input, .field_with_errors select { border: 1px solid #D8000C; background-color: #fefce1; }
+.field_with_errors input, .field_with_errors select { border: 2px solid #D8000C; background-color: #fefce1; }
 #errorExplanation { color: #D8000C; background-color: #fefce1; background-image: url('/images/messages/info.png'); margin: 10px 0 20px; padding: 15px 10px 15px 70px; text-align: left; }
 #errorExplanation h2 { color: #000; text-align: left; font-weight: bold; font-size: 14px; padding-bottom: .5em; }
 #errorExplanation p { font-size: 12px; margin: 0.5em 0; display: none; }
@@ -130,7 +130,7 @@ input[type="submit"], input[type="button"], #content-main a.button, form.formtas
     cursor: pointer;
     display: inline-block;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 12px;
+    /*font-size: 12px;*/
     font-weight: bold;
     margin: 0 5px 0 0;
     padding: 8px 15px;
@@ -268,6 +268,8 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
   float: left;
   width: 30%;
 }
+.simple_form label.check_boxes { font-size: 2em; font-weight: normal; margin-bottom: 20px; width: 100%; }
+
 .simple_form input.string, .simple_form input.password,.simple_form textarea, .simple_form select, .simple_form input.hasDatepicker {
 	float: left; margin: 0;
 }
@@ -287,10 +289,16 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
   display: block;
   font-style: italic;
 }
-form.user, form.car_variant { width: 50%; }
- #order_submit,  #user_submit, #car_variant_submit { margin-left: 30%; }
+form.user, form.car_variant { width: 60%; }
+#label_new_city { margin-left: 30%; }
+#entry_new_city { clear: both; margin-left: 30%;}
+/*#new_entry #entry_submit,*/ #order_submit,  #user_submit, #car_variant_submit { margin-left: 30%; }
+#entry_submit { float: right; }
+#company_submit { margin-top: 30px; }
  
 #user_new #user_submit { margin: 0; }
+
+#step-back { float: left; }
 
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */

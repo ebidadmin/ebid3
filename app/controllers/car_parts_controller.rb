@@ -30,7 +30,8 @@ class CarPartsController < ApplicationController
       if current_user.has_role?('admin')
         redirect_to car_parts_path(:name => @car_part.name)
       else
-        redirect_to new_user_entry_path(current_user)
+        # redirect_to new_user_entry_path(current_user)
+        redirect_to :back
       end 
     else
       render :action => 'new'

@@ -447,6 +447,13 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
   display: block;
   font-style: italic;
 }
-form.user, form.car_variant { width: 50%; }
-#order_submit, #user_submit, #car_variant_submit { margin-left: 30%; width: 50px;}
+form.user, form.car_variant { width: 60%; }
+#label_new_city { margin-left: 30%; }
+#entry_new_city { clear: both; margin-left: 30%;}
+/*#new_entry #entry_submit,*/ #order_submit,  #user_submit, #car_variant_submit { margin-left: 30%; }
+#entry_submit { float: right; }
+#company_submit { margin-top: 30px; }
+ 
 #user_new #user_submit { margin: 0; }
+
+#step-back { float: left; }

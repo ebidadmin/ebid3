@@ -14,7 +14,7 @@ class AdminController < ApplicationController
     # @paid = Order.paid_and_closed.payment_valid.collect(&:total_order_amounts).sum
     # 
     # @online_entries =  @entries.online.active 
-    # @users = User.active
+    @users = User.active
     # @order = Order.all
     get_stats
   end

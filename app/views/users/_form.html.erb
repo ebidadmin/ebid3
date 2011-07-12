@@ -1,5 +1,5 @@
 <p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
-<%= simple_form_for @user, :html => {:class => 'col-3'} do |f| %>
+<%= simple_form_for @user, :html => {:class => 'col-3'}, :validate => true do |f| %>
 	<%#= f.inputs :name => "Login" do %>
 		<%= f.input :username, :hint => 'This is going to be your login name.' %>
 		<%= f.input :password, :hint => 'Use at least 4 characters.' %>
@@ -9,12 +9,12 @@
 
   <%= f.simple_fields_for :profile do |profile| %>
   	<%#= profile.inputs :name => "Profile" do %>
-  		<%= profile.input :company, :collection => Company.ascend_by_name if current_user && current_user.has_role?('admin') %>
-  		<%= profile.input :company, :collection => Company.id_not(1).ascend_by_name, :hint => 'Call us at 892-5835 if your company is not in this list.' unless current_user && current_user.has_role?('admin') %>
+  		<%= profile.association :company, :collection => Company.ascend_by_name if current_user && current_user.has_role?('admin') %>
+  		<%#= profile.association :company, :collection => Company.id_not(1).ascend_by_name, :hint => 'Call us at 892-5835 if your company is not in this list.' unless current_user && current_user.has_role?('admin') %>
   		<!-- <li><p class="inline-hints">New company? Add your company here -%></p></li> -->
   		<%= profile.input :first_name  %>
   		<%= profile.input :last_name %>
-  		<%= profile.input :rank, :label => 'Position', :collection => Rank.ascend_by_name, :hint => "Create a new position? Click #{link_to 'here', new_rank_path}".html_safe %>
+  		<%= profile.association :rank, :label => 'Position', :collection => Rank.ascend_by_name, :hint => "Create a new position? Click #{link_to 'here', new_rank_path}".html_safe %>
   		<!-- <li><p id="rank" class="inline-hints">
   		</p></li> -->
   		<%= profile.input :phone %>
@@ -34,10 +34,11 @@
 <% end %>
 
 <% content_for :head do %>
-	<%= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
+	<%#= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
 <% end %>
 
 <% content_for :javascripts do %>
+	<%= javascript_include_tag 'rails.validations' %>
 	<%= stylesheet_link_tag 'blitzer/jquery-ui-1.8.6.custom' %>
 	<script type="text/javascript" charset="utf-8">
 	$(function() {

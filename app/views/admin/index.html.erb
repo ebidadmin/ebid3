@@ -8,6 +8,12 @@
 		<%= content_tag :p, (content_tag :span, 'Longest Bid: ') + (distance_of_time_in_words(@own_bids.metered.last.bid_speed)) if @own_bids.present? %>
 		<%= content_tag :p, (content_tag :span, 'Average Bid: ') + (distance_of_time_in_words(@own_bids.metered.average(:bid_speed))) if @own_bids.present? %>
 	</div>
+	<ul class="dash full">
+		<h3>Active Users</h3>
+		<% for user in @users %>
+		<%= dash_entry_format("active-user", (link_to user.username, user), (time_ago_in_words user.current_sign_in_at if user.current_sign_in_at) + ' ago',  active_mark(user) ) %>
+		<% end %>
+	</ul>
 </div>
 
 <table id="dash-stats">
@@ -219,3 +225,4 @@
 		</td>
 	</tr>
 </table>
+
