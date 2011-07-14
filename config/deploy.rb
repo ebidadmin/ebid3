@@ -18,7 +18,7 @@ set :branch, "master"
 set :git_shallow_clone, 1
 set :git_enable_submodules, 1
 # set :rails_env, "development"
-set :rails_env, "production"
+set :rails_env, :production
 
 role :web, "74.207.254.124"                          # Your HTTP server, Apache/etc
 role :app, "74.207.254.124"                          # This may be the same as your `Web` server

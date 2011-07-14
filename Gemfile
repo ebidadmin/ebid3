@@ -20,6 +20,7 @@ gem 'client_side_validations', '3.0.5'
 # gem 'meta_where'
 # gem 'meta_search'
 gem 'ancestry'
+gem 'exception_notification', :require => 'exception_notifier'
 
 # Deploy with Capistrano
 gem 'capistrano'
