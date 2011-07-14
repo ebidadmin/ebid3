@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110704032119) do
+ActiveRecord::Schema.define(:version => 20110714032856) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -193,11 +193,14 @@ ActiveRecord::Schema.define(:version => 20110704032119) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "buyer_status",      :default => "New"
-    t.date     "bid_until"
+    t.datetime "bid_until"
     t.integer  "bids_count"
     t.date     "expired"
     t.boolean  "chargeable_expiry", :default => false
     t.integer  "company_id"
+    t.datetime "online"
+    t.datetime "relisted"
+    t.integer  "relist_count",      :default => 0
   end
 
   add_index "entries", ["car_brand_id"], :name => "index_entries_on_car_brand_id"
@@ -259,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20110704032119) do
     t.datetime "updated_at"
     t.string   "status",      :default => "New"
     t.integer  "bids_count",  :default => 0,     :null => false
+    t.datetime "relisted"
   end
 
   add_index "line_items", ["car_part_id"], :name => "index_line_items_on_car_part_id"

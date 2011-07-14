@@ -4,8 +4,8 @@
 	<div id="perf-ind" class="comfy-alert" >
 		<%= content_tag :h4, 'Performance Indicators', :class => 'highlight' %>
 		<%= content_tag :p, (content_tag :span, 'Bidding Ratio: ') + (percentage @ob_m_pct) %>
-		<%= content_tag :p, (content_tag :span, 'Fastest Bid: ') + (distance_of_time_in_words(@own_bids.metered.first.bid_speed)) if @own_bids.present? %>
-		<%= content_tag :p, (content_tag :span, 'Longest Bid: ') + (distance_of_time_in_words(@own_bids.metered.last.bid_speed)) if @own_bids.present? %>
+		<%= content_tag :p, (content_tag :span, 'Fastest Bid: ') + (link_to distance_of_time_in_words(@own_bids.metered.first.bid_speed), seller_show_path(@own_bids.metered.first.entry)) if @own_bids.present? %>
+		<%= content_tag :p, (content_tag :span, 'Longest Bid: ') + (link_to distance_of_time_in_words(@own_bids.metered.last.bid_speed), seller_show_path(@own_bids.metered.last.entry)) if @own_bids.present? %>
 		<%= content_tag :p, (content_tag :span, 'Average Bid: ') + (distance_of_time_in_words(@own_bids.metered.average(:bid_speed))) if @own_bids.present? %>
 	</div>
 

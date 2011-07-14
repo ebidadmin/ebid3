@@ -74,6 +74,7 @@ class EntriesController < ApplicationController
     if current_user.company.entries << @entry
       redirect_to select_parts_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."
     else
+      @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
       flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
       render 'new'
     end
@@ -161,7 +162,7 @@ class EntriesController < ApplicationController
     @line_items = @entry.line_items
     
     if @line_items.present? && @entry.photos.present?
-      if @entry.update_attributes(:buyer_status => "Online", :bid_until => Date.today + 1.week)
+      if @entry.update_attributes(:buyer_status => "Online", :online => Time.now, :bid_until => Time.now + 1.week)
         @entry.update_associated_status("Online")
         flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
       end
@@ -174,7 +175,7 @@ class EntriesController < ApplicationController
         end
       end
     else
-      flash[:error] = "Oops ... your entry is not yet complete. Please check the photos and parts before you proceed"
+      flash[:error] = "Oops ... your entry is not yet complete. Please check the photos and parts before you proceed."
       redirect_to :back
     end
     # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
@@ -199,9 +200,9 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
     @line_items = @entry.line_items
     unless @line_items.without_bids.blank?
-      @line_items.without_bids.update_all(:status => 'Relisted')
-      @entry.update_attributes(:buyer_status => 'Relisted', :bid_until => Date.today + 1.week, :chargeable_expiry => nil, :expired => nil)
-      flash[:notice] = "Entry was re-listed. Please check your 'Online' tab."
+      @line_items.without_bids.update_all(:status => 'Relisted', :relisted => Time.now)
+      @entry.update_attributes(:buyer_status => 'Relisted', :bid_until => Time.now + 1.week, :relisted => Time.now, :relist_count => @entry.relist_count += 1, :chargeable_expiry => nil, :expired => nil)
+      flash[:notice] = "Entry was re-listed. Please check your <strong>Online</strong> tab.".html_safe
     else
       flash[:error] = "Sorry, there are no items to relist."
     end

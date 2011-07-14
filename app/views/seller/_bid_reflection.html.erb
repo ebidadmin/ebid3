@@ -8,4 +8,5 @@
 <%# if last_bid && (last_bid.status != 'Submitted' && last_bid.status != 'Updated')  %>
 <% if last_bid  %>
 <%= content_tag :p, last_bid.status, :class => "status #{quote_class(last_bid.status)}" -%>
+<%= content_tag :p, "speed: " + distance_of_time_in_words(last_bid.bid_speed), :class => 'instruction'   %>
 <% end %>

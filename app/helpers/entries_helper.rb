@@ -42,9 +42,9 @@ module EntriesHelper
       
     #online entries
     elsif entry.buyer_status == "Online" || entry.buyer_status == "Relisted"
-      if entry.bid_until > Date.today
+      if entry.bid_until > Time.now
         "(max #{entry.bid_until.strftime('%b %d')})"
-      elsif entry.bid_until == Date.today
+      elsif entry.bid_until == Time.now
         content_tag :strong, "(ending today)"
       elsif entry.expired.nil? 
         content_tag :strong, "(bidding ended - #{entry.bid_until.strftime('%b %d')})"
@@ -53,13 +53,13 @@ module EntriesHelper
     #for decision entries
     elsif (entry.buyer_status == "For-Decision" || entry.buyer_status == "Ordered-IP" || entry.buyer_status == "Declined-IP") && entry.expired.nil?
       deadline = entry.bid_until + 3.days
-      if Date.today <  entry.bid_until  
+      if Time.now <  entry.bid_until  
         "(display until: #{(deadline).strftime('%b %d')})"
-      elsif Date.today < deadline 
+      elsif Time.now < deadline 
         content_tag :strong, "(order now - expires #{(deadline).strftime('%b %d')})", :class => 'highlight'
-      elsif Date.today == deadline
+      elsif Time.now == deadline
         content_tag :strong, "(order now - expires today!)", :class => 'highlight'
-      elsif Date.today > deadline
+      elsif Time.now > deadline
         content_tag :strong, "(lapsed - #{deadline.strftime('%b %d')})"
       end
     end

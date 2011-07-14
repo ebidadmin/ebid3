@@ -33,7 +33,12 @@ class BidsController < ApplicationController
         		@new_bid.total = bid[1].to_f * @line_item.quantity.to_i
             @new_bid.bid_type = bid[0]
             @new_bid.car_brand_id = @entry.car_brand_id
-            @new_bid.bid_speed = (Time.now - @line_item.created_at).to_i
+            # @new_bid.bid_speed = (Time.now - @line_item.created_at).to_i
+            if @entry.buyer_status == 'Relisted'
+              @new_bid.bid_speed = (Time.now - @entry.relisted).to_i
+            else
+              @new_bid.bid_speed = (Time.now - @entry.online).to_i
+            end
             @new_bids << @new_bid unless @new_bid.amount < 1
           else
             @existing_bid.update_attributes!(:amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated', :bid_speed => (Time.now - @line_item.created_at).to_i)
