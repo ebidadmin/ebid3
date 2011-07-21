@@ -237,139 +237,141 @@ class AdminController < ApplicationController
 private
   
   def get_stats
-    @line_items = LineItem.scoped
-      @li_all = @line_items.count
-      @li_m = @line_items.metered.count
-      @li_f = @line_items.ftm.count
-    @own_bids = Bid.scoped.ascend_by_bid_speed
-      @ob_all = @own_bids.collect(&:line_item_id).uniq.count
-      @ob_all_pct = (@ob_all.to_f / @li_all.to_f) * 100
-      @ob_m = @own_bids.metered.collect(&:line_item_id).uniq.count
-      @ob_m_pct = (@ob_m.to_f / @li_m.to_f) * 100
-      @ob_f = @own_bids.ftm.collect(&:line_item_id).uniq.count
-      @ob_f_pct = (@ob_f.to_f / @li_f.to_f) * 100
-      @ob2_all = @line_items.two_and_up.count
-      @ob2_all_pct = (@ob2_all.to_f / @li_all.to_f) * 100
-      @ob2_m = @line_items.two_and_up.metered.count
-      @ob2_m_pct = (@ob2_m.to_f / @li_m.to_f) * 100
-      @ob2_f = @line_items.two_and_up.ftm.count
-      @ob2_f_pct = (@ob2_f.to_f / @li_f.to_f) * 100
-    @missed = @li_all -  @ob_all
-      @msd_all_pct = (@missed.to_f / @li_all.to_f) * 100
-      @msd_m = @li_m - @ob_m
-      @msd_m_pct = (@msd_m.to_f / @li_m.to_f) * 100
-      @msd_f = @li_f - @ob_f
-      @msd_f_pct = (@msd_f.to_f / @li_f.to_f) * 100
-    @total_bids =  @own_bids.count
-      @tb_m = @own_bids.metered.count
-      @tb_f = @own_bids.ftm.count
-    @orig = @own_bids.where(:bid_type => 'original')
-      @orig_all = @orig.count
-      @orig_m = @orig.metered.count
-      @orig_f = @orig.ftm.count
-    @rep = @own_bids.where(:bid_type => 'replacement')
-      @rep_all = @rep.count
-      @rep_m = @rep.metered.count
-      @rep_f = @rep.ftm.count
-    @surp = @own_bids.where(:bid_type => 'surplus')
-      @surp_all = @surp.count
-      @surp_m = @surp.metered.count
-      @surp_f = @surp.ftm.count
-    # @ordered = OrderItem.order_seller_id_eq(current_user)
-    @ordered = Order.scoped
-      @ordered_all = @ordered.count
-      @ordered_all_pct = (@ordered_all.to_f / @ob_all.to_f) * 100
-      @ordered_m = @ordered.metered.count
-      @ordered_m_pct = (@ordered_m.to_f / @ob_m.to_f) * 100
-      @ordered_f = @ordered.ftm.count
-      @ordered_f_pct = (@ordered_f.to_f / @ob_f.to_f) * 100
-    @cancelled = @ordered.where("status LIKE ?", "%Cancelled%")
-      @canc_all = @cancelled.count
-      @canc_m = @cancelled.metered.count
-      @canc_f = @cancelled.ftm.count
-    @pending = @own_bids.where(:status => 'For-Decision')
-      @pend_all = @pending.count
-      @pend_m = @pending.metered.count
-      @pend_f = @pending.ftm.count
-    @declined = @own_bids.where(:status => 'Declined')
-      @decl_all = @declined.count
-      @decl_m = @declined.metered.count
-      @decl_f = @declined.ftm.count
-    @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired'])
-      @lose_all = @lose.count
-      @lose_m = @lose.metered.count
-      @lose_f = @lose.ftm.count
-    @new = @own_bids.where(:status => ['Submitted', 'Updated'])
-      @new_all = @new.count
-      @new_m = @new.metered.count
-      @new_f = @new.ftm.count
-    @days_m = (Time.now.to_date - '2011-04-16'.to_date).to_f
-    @average_m = (@tb_m/@days_m).round(2)
-    unless Date.today  == Time.now.beginning_of_month.to_date  # this condition prevents zero divisor
-      @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
-      @average_f = (@tb_f/@days_f).round(2)
-    else
-      @days_f = 1
-      @average_f = @tb_f.round(2)
-    end
-    
-    @ebid_orders = Order.scoped
-      @eb_all = @ebid_orders.collect(&:order_total).sum
-      @eb_m = @ebid_orders.metered.collect(&:order_total).sum
-      @eb_f = @ebid_orders.ftm.collect(&:order_total).sum
-    @own_orders = @ebid_orders
-      @own_all = @own_orders.collect(&:order_total).sum
-      @own_all_pct = (@own_all.to_f / @eb_all.to_f) * 100
-      @own_m = @own_orders.metered.collect(&:order_total).sum
-      @own_m_pct = (@own_m.to_f / @eb_m.to_f) * 100
-      @own_f = @own_orders.ftm.collect(&:order_total).sum
-      @own_f_pct = (@own_f.to_f / @eb_f.to_f) * 100
-    @new_orders = @own_orders.recent
-      @new_all = @new_orders.collect(&:order_total).sum
-      @new_m = @new_orders.metered.collect(&:order_total).sum
-      @new_f = @new_orders.ftm.collect(&:order_total).sum
-    @cancelled_orders = @own_orders.where("status LIKE ?", "%Cancelled%")
-      @co_all = @cancelled_orders.collect(&:order_total).sum
-      @co_m = @cancelled_orders.metered.collect(&:order_total).sum
-      @co_f = @cancelled_orders.ftm.collect(&:order_total).sum
-    @total_delivered = @own_orders.total_delivered
-      @td_all = @total_delivered.collect(&:order_total).sum
-      @td_m = @total_delivered.metered.collect(&:order_total).sum
-      @td_f = @total_delivered.ftm.collect(&:order_total).sum
-    @within_term = @own_orders.within_term
-      @wt_all = @within_term.collect(&:order_total).sum
-      @wt_all_pct = (@wt_all.to_f / @td_all.to_f) * 100 
-      @wt_m = @within_term.metered.collect(&:order_total).sum
-      @wt_m_pct = (@wt_m.to_f / @td_m.to_f) * 100 
-      @wt_f = @within_term.ftm.collect(&:order_total).sum
-      @wt_f_pct = (@wt_f.to_f / @td_f.to_f) * 100 
-    @overdue = @own_orders.overdue
-      @ovr_all = @overdue.collect(&:order_total).sum
-      @ovr_all_pct = (@ovr_all.to_f / @td_all.to_f) * 100 
-      @ovr_m = @overdue.metered.collect(&:order_total).sum
-      @ovr_m_pct = (@ovr_m.to_f / @td_m.to_f) * 100 
-      @ovr_f = @overdue.ftm.collect(&:order_total).sum
-      @ovr_f_pct = (@ovr_f.to_f / @td_f.to_f) * 100 
-    @paid_pending = @own_orders.paid.payment_pending
-      @pend_all = @paid_pending.collect(&:order_total).sum
-      @pend_all_pct = (@pend_all.to_f / @td_all.to_f) * 100 
-      @pend_m = @paid_pending.metered.collect(&:order_total).sum
-      @pend_m_pct = (@pend_m.to_f / @td_m.to_f) * 100 
-      @pend_f = @paid_pending.ftm.collect(&:order_total).sum
-      @pend_f_pct = (@pend_f.to_f / @td_f.to_f) * 100 
-    @paid = @own_orders.paid.payment_valid
-      @paid_all = @paid.collect(&:order_total).sum
-      @paid_all_pct = (@paid_all.to_f / @td_all.to_f) * 100 
-      @paid_m = @paid.metered.collect(&:order_total).sum
-      @paid_m_pct = (@paid_m.to_f / @td_m.to_f) * 100 
-      @paid_f = @paid.ftm.collect(&:order_total).sum
-      @paid_f_pct = (@paid_f.to_f / @td_f.to_f) * 100 
-    @closed = @own_orders.closed
-      @closed_all = @closed.collect(&:order_total).sum
-      @closed_all_pct = (@closed_all.to_f / @td_all.to_f) * 100 
-      @closed_m = @closed.metered.collect(&:order_total).sum
-      @closed_m_pct = (@closed_m.to_f / @td_m.to_f) * 100 
-      @closed_f = @closed.ftm.collect(&:order_total).sum
-      @closed_f_pct = (@closed_f.to_f / @td_f.to_f) * 100 
+    # @line_items = LineItem.scoped
+    #   @li_all = @line_items.count
+    #   @li_m = @line_items.metered.count
+    #   @li_f = @line_items.ftm.count
+    # @own_bids = Bid.ascend_by_bid_speed
+    #   @ob_all = @own_bids.collect(&:line_item_id).uniq.count
+    #   @ob_all_pct = (@ob_all.to_f / @li_all.to_f) * 100
+    #   @ob_m = @own_bids.metered.collect(&:line_item_id).uniq.count
+    #   @ob_m_pct = (@ob_m.to_f / @li_m.to_f) * 100
+    #   @ob_f = @own_bids.ftm.collect(&:line_item_id).uniq.count
+    #   @ob_f_pct = (@ob_f.to_f / @li_f.to_f) * 100
+    #   @ob2_all = @line_items.two_and_up.count
+    #   @ob2_all_pct = (@ob2_all.to_f / @li_all.to_f) * 100
+    #   @ob2_m = @line_items.two_and_up.metered.count
+    #   @ob2_m_pct = (@ob2_m.to_f / @li_m.to_f) * 100
+    #   @ob2_f = @line_items.two_and_up.ftm.count
+    #   @ob2_f_pct = (@ob2_f.to_f / @li_f.to_f) * 100
+    # @missed = @li_all -  @ob_all
+    #   @msd_all_pct = (@missed.to_f / @li_all.to_f) * 100
+    #   @msd_m = @li_m - @ob_m
+    #   @msd_m_pct = (@msd_m.to_f / @li_m.to_f) * 100
+    #   @msd_f = @li_f - @ob_f
+    #   @msd_f_pct = (@msd_f.to_f / @li_f.to_f) * 100
+    # @total_bids =  @own_bids.count
+    #   @tb_m = @own_bids.metered.count
+    #   @tb_f = @own_bids.ftm.count
+    # @orig = @own_bids.where(:bid_type => 'original')
+    #   @orig_all = @orig.count
+    #   @orig_m = @orig.metered.count
+    #   @orig_f = @orig.ftm.count
+    # @rep = @own_bids.where(:bid_type => 'replacement')
+    #   @rep_all = @rep.count
+    #   @rep_m = @rep.metered.count
+    #   @rep_f = @rep.ftm.count
+    # @surp = @own_bids.where(:bid_type => 'surplus')
+    #   @surp_all = @surp.count
+    #   @surp_m = @surp.metered.count
+    #   @surp_f = @surp.ftm.count
+    # # @ordered = OrderItem.order_seller_id_eq(current_user)
+    # @ordered = Order.scoped
+    #   @ordered_all = @ordered.count
+    #   @ordered_all_pct = (@ordered_all.to_f / @ob_all.to_f) * 100
+    #   @ordered_m = @ordered.metered.count
+    #   @ordered_m_pct = (@ordered_m.to_f / @ob_m.to_f) * 100
+    #   @ordered_f = @ordered.ftm.count
+    #   @ordered_f_pct = (@ordered_f.to_f / @ob_f.to_f) * 100
+    # @cancelled = @ordered.where("status LIKE ?", "%Cancelled%")
+    #   @canc_all = @cancelled.count
+    #   @canc_m = @cancelled.metered.count
+    #   @canc_f = @cancelled.ftm.count
+    # @pending = @own_bids.where(:status => 'For-Decision')
+    #   @fdec_all = @pending.count
+    #   @fdec_m = @pending.metered.count
+    #   @fdec_f = @pending.ftm.count
+    # @declined = @own_bids.where(:status => 'Declined')
+    #   @decl_all = @declined.count
+    #   @decl_m = @declined.metered.count
+    #   @decl_f = @declined.ftm.count
+    # @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired'])
+    #   @lose_all = @lose.count
+    #   @lose_m = @lose.metered.count
+    #   @lose_f = @lose.ftm.count
+    # @new = @own_bids.where(:status => ['Submitted', 'Updated'])
+    #   @nb_all = @new.count
+    #   @nb_m = @new.metered.count
+    #   @nb_f = @new.ftm.count
+    # @days_m = (Time.now.to_date - '2011-04-16'.to_date).to_f
+    # @average_m = (@tb_m/@days_m).round(2)
+    # unless Date.today  == Time.now.beginning_of_month.to_date  # this condition prevents zero divisor
+    #   @days_f = (Time.now.to_date - Time.now.beginning_of_month.to_date).to_f
+    #   @average_f = (@tb_f/@days_f).round(2)
+    # else
+    #   @days_f = 1
+    #   @average_f = @tb_f.round(2)
+    # end
+    # 
+    # @ebid_orders = Order.scoped
+    #   @eb_all = @ebid_orders.collect(&:order_total).sum
+    #   @eb_m = @ebid_orders.metered.collect(&:order_total).sum
+    #   @eb_f = @ebid_orders.ftm.collect(&:order_total).sum
+    # @own_orders = @ebid_orders
+    #   @own_all = @own_orders.collect(&:order_total).sum
+    #   @own_all_pct = (@own_all.to_f / @eb_all.to_f) * 100
+    #   @own_m = @own_orders.metered.collect(&:order_total).sum
+    #   @own_m_pct = (@own_m.to_f / @eb_m.to_f) * 100
+    #   @own_f = @own_orders.ftm.collect(&:order_total).sum
+    #   @own_f_pct = (@own_f.to_f / @eb_f.to_f) * 100
+    # @new_orders = @own_orders.recent
+    #   @new_all = @new_orders.collect(&:order_total).sum
+    #   @new_m = @new_orders.metered.collect(&:order_total).sum
+    #   @new_f = @new_orders.ftm.collect(&:order_total).sum
+    # @cancelled_orders = @own_orders.where("status LIKE ?", "%Cancelled%")
+    #   @co_all = @cancelled_orders.collect(&:order_total).sum
+    #   @co_m = @cancelled_orders.metered.collect(&:order_total).sum
+    #   @co_f = @cancelled_orders.ftm.collect(&:order_total).sum
+    # @total_delivered = @own_orders.total_delivered
+    #   @td_all = @total_delivered.collect(&:order_total).sum
+    #   @td_m = @total_delivered.metered.collect(&:order_total).sum
+    #   @td_f = @total_delivered.ftm.collect(&:order_total).sum
+    # @within_term = @own_orders.within_term
+    #   @wt_all = @within_term.collect(&:order_total).sum
+    #   @wt_all_pct = (@wt_all.to_f / @td_all.to_f) * 100 
+    #   @wt_m = @within_term.metered.collect(&:order_total).sum
+    #   @wt_m_pct = (@wt_m.to_f / @td_m.to_f) * 100 
+    #   @wt_f = @within_term.ftm.collect(&:order_total).sum
+    #   @wt_f_pct = (@wt_f.to_f / @td_f.to_f) * 100 
+    # @overdue = @own_orders.overdue
+    #   @ovr_all = @overdue.collect(&:order_total).sum
+    #   @ovr_all_pct = (@ovr_all.to_f / @td_all.to_f) * 100 
+    #   @ovr_m = @overdue.metered.collect(&:order_total).sum
+    #   @ovr_m_pct = (@ovr_m.to_f / @td_m.to_f) * 100 
+    #   @ovr_f = @overdue.ftm.collect(&:order_total).sum
+    #   @ovr_f_pct = (@ovr_f.to_f / @td_f.to_f) * 100 
+    # @paid_pending = @own_orders.paid.payment_pending
+    #   @pend_all = @paid_pending.collect(&:order_total).sum
+    #   @pend_all_pct = (@pend_all.to_f / @td_all.to_f) * 100 
+    #   @pend_m = @paid_pending.metered.collect(&:order_total).sum
+    #   @pend_m_pct = (@pend_m.to_f / @td_m.to_f) * 100 
+    #   @pend_f = @paid_pending.ftm.collect(&:order_total).sum
+    #   @pend_f_pct = (@pend_f.to_f / @td_f.to_f) * 100 
+    # @paid = @own_orders.paid.payment_valid
+    #   @paid_all = @paid.collect(&:order_total).sum
+    #   @paid_all_pct = (@paid_all.to_f / @td_all.to_f) * 100 
+    #   @paid_m = @paid.metered.collect(&:order_total).sum
+    #   @paid_m_pct = (@paid_m.to_f / @td_m.to_f) * 100 
+    #   @paid_f = @paid.ftm.collect(&:order_total).sum
+    #   @paid_f_pct = (@paid_f.to_f / @td_f.to_f) * 100 
+    # @closed = @own_orders.closed
+    #   @closed_all = @closed.collect(&:order_total).sum
+    #   @closed_all_pct = (@closed_all.to_f / @td_all.to_f) * 100 
+    #   @closed_m = @closed.metered.collect(&:order_total).sum
+    #   @closed_m_pct = (@closed_m.to_f / @td_m.to_f) * 100 
+    #   @closed_f = @closed.ftm.collect(&:order_total).sum
+    #   @closed_f_pct = (@closed_f.to_f / @td_f.to_f) * 100 
+      
+      @speed = Bid.metered.ascend_by_bid_speed
   end
 end

@@ -53,9 +53,9 @@ class SellerController < ApplicationController
       @canc_m = @cancelled.metered.count
       @canc_f = @cancelled.ftm.count
     @pending = @own_bids.where(:status => 'For-Decision')
-      @pend_all = @pending.count
-      @pend_m = @pending.metered.count
-      @pend_f = @pending.ftm.count
+      @fdec_all = @pending.count
+      @fdec_m = @pending.metered.count
+      @fdec_f = @pending.ftm.count
     @declined = @own_bids.where(:status => 'Declined')
       @decl_all = @declined.count
       @decl_m = @declined.metered.count
@@ -65,9 +65,9 @@ class SellerController < ApplicationController
       @lose_m = @lose.metered.count
       @lose_f = @lose.ftm.count
     @new = @own_bids.where(:status => ['Submitted', 'Updated'])
-      @new_all = @new.count
-      @new_m = @new.metered.count
-      @new_f = @new.ftm.count
+      @nb_all = @new.count
+      @nb_m = @new.metered.count
+      @nb_f = @new.ftm.count
     @days_m = (Time.now.to_date - '2011-04-16'.to_date).to_f
     @average_m = (@tb_m/@days_m).round(2)
     unless Date.today  == Time.now.beginning_of_month.to_date  # this condition prevents zero divisor

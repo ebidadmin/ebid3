@@ -25,7 +25,7 @@ class Bid < ActiveRecord::Base
   scope :rep, where(:bid_type => 'replacement')
   scope :surp, where(:bid_type => 'surplus')
   
-  scope :metered, where('bids.created_at >= ?', '2011-04-16')
+  scope :metered, where('bids.created_at >= ?', '2011-04-16'.to_datetime)
   scope :ftm, where('bids.created_at >= ?', Time.now.beginning_of_month)
     
   def self.for_this_buyer(user)

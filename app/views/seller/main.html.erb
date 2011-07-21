@@ -77,9 +77,9 @@
 	</tr>
 	<tr>
 		<%= content_tag :td, 'For Decision', :class => 'label indent' %>
-		<%= content_tag :td, (delimited @pend_all) %>
-		<%= content_tag :td, (delimited @pend_m)  %>
-		<%= content_tag :td, (delimited @pend_f)  %>
+		<%= content_tag :td, (delimited @fdec_all) %>
+		<%= content_tag :td, (delimited @fdec_m)  %>
+		<%= content_tag :td, (delimited @fdec_f)  %>
 	</tr>
 	<tr>
 		<%= content_tag :td, 'Declined', :class => 'label indent' %>
@@ -95,9 +95,9 @@
 	</tr>
 	<tr class='divide'>
 		<%= content_tag :td, 'Newly Submitted', :class => 'label indent' %>
-		<%= content_tag :td, (delimited @new_all) %>
-		<%= content_tag :td, (delimited @new_m)  %>
-		<%= content_tag :td, (delimited @new_f)  %>
+		<%= content_tag :td, (delimited @nb_all) %>
+		<%= content_tag :td, (delimited @nb_m)  %>
+		<%= content_tag :td, (delimited @nb_f)  %>
 	</tr>
 	<tr>
 		<%= content_tag :td, 'Metered Days', :class => 'label' %>

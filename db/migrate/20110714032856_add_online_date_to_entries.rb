@@ -14,10 +14,10 @@ class AddOnlineDateToEntries < ActiveRecord::Migration
             bid.bid_speed = (bid.created_at - entry.online).to_i
             bid.save!
           end
-        elsif entry.created_at >= "2011-07-11".to_datetime
+        elsif entry.created_at >= "2011-07-11".to_datetime && entry.created_at <= "2011-07-14".to_datetime
           entry.online = entry.created_at + 5.minutes
           for bid in entry.bids
-            bid.bid_speed = (bid.created_at - entry.online).to_i
+            bid.bid_speed = (bid.created_at - bid.line_item.created_at).to_i
             bid.save!
           end
         else 
