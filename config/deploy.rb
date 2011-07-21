@@ -23,7 +23,7 @@ set :scm, :git
 # role :app, "74.207.254.124"                          # This may be the same as your `Web` server
 # role :db,  "74.207.254.124", :primary => true        # This is where Rails migrations will run
 
-set :domain, "173.255.244.96"
+set :domain, "ebidlabs.com"
 set :user, "root" 
 set :use_sudo, false
 set :deploy_to, "/srv/www/ebid.com.ph"
@@ -34,9 +34,9 @@ set :git_enable_submodules, 1
 # set :rails_env, "development"
 set :rails_env, "production"
                                                     
-role :web, "173.255.244.96"                         
-role :app, "173.255.244.96"                         
-role :db,  "173.255.244.96", :primary => true       
+role :web, "ebidlabs.com"                         
+role :app, "ebidlabs.com"                         
+role :db,  "ebidlabs.com", :primary => true       
                                                     
 
 namespace :deploy do
