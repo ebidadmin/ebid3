@@ -38,6 +38,7 @@
 						<%= content_tag :p, ph_currency(bid.amount), :class => 'vals' %>
 						<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
 						<%= content_tag :p, "speed: " + distance_of_time_in_words(bid.bid_speed), :class => 'instruction'   %>
+						<%= content_tag :p, "> #{bid.user.username} <", :class => 'instruction' if bid.user != current_user  %>
 					</div>
    			<% end %>
 				</div>

@@ -21,6 +21,7 @@
 			<% end %>
 	 	</td>
 		<td class='amount'>
+      <%= content_tag :p, order.seller.username, :class => 'instruction highlight' if order.seller != current_user  %>
       <%= content_tag :p, ph_currency(order.order_total), :class => 'total' %>
 		  <%= link_to "View PO", order, :class => 'button' unless order.seller_confirmation == false %>
 		</td>

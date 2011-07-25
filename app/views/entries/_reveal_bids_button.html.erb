@@ -1,3 +1,3 @@
-<% if entry.bids.online.present? && Time.now > entry.online + 150.minutes  %>
- 	<%= link_to("Reveal Bids", reveal_bids_entry_path(entry), :class => 'button', :confirm => 'Are you sure? This will take the entry offline. Bidding for this item will stop.') if entry.expired.blank?  %>
+<% if entry.bids.online.present? && entry.ready_for_reveal?  %>
+ 	<%= link_to("Reveal Bids", reveal_bids_entry_path(entry), :class => 'button', :id => 'feature-button', :confirm => 'Are you sure? This will take the entry offline. Bidding for this item will stop.') if entry.expired.blank?  %>
 <% end %>

@@ -31,7 +31,6 @@ ssh_options[:forward_agent] = true
 set :branch, "master"
 set :git_shallow_clone, 1
 set :git_enable_submodules, 1
-# set :rails_env, "development"
 set :rails_env, "production"
                                                     
 role :web, "ebidlabs.com"                         

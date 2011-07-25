@@ -1,4 +1,6 @@
 class AdminController < ApplicationController
+  before_filter :check_admin_role
+
   def index
     # @title = 'Admin Dashboard'
     # @entries = Entry.scoped

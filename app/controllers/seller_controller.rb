@@ -144,6 +144,7 @@ class SellerController < ApplicationController
     @brand_links = @friend_entries.collect(&:car_brand).uniq.collect { |brand| [brand.name, seller_hub_path(current_user, :brand => brand.name)] }  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
     @brand_links.push(['All', seller_hub_path(current_user, :brand => 'all')])
     @current_path =  seller_hub_path(current_user, :brand => params[:brand])
+    @company = current_user.company
     
     if params[:brand] == 'all'
       @entries = @friend_entries.seller_inclusions.paginate(:page => params[:page], :per_page => 10)
@@ -163,16 +164,16 @@ class SellerController < ApplicationController
     else
       @line_items = @entry.line_items.includes(:car_part, :bids)
     end
-    company = current_user.company
+    @company = current_user.company
     # unless @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
-    unless @entry.user.company.friends.include?(company) || current_user.has_role?('admin')
-      flash[:error] = "Sorry, <strong>#{company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this.".html_safe
+    unless @entry.user.company.friends.include?(@company) || current_user.has_role?('admin')
+      flash[:error] = "Sorry, <strong>#{@company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this.".html_safe
       redirect_to :back
     end 
   end
   
   def monitor
-    bids = current_user.bids.desc
+    bids = Bid.where(:user_id => current_user.company.users).desc
     @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq).collect { |brand| [brand.name, seller_monitor_path(current_user, :brand => brand.name)] }
     @brand_links.push(['All', seller_monitor_path(current_user, :brand => nil)])
     if params[:brand] == 'all'
@@ -191,10 +192,10 @@ class SellerController < ApplicationController
   def orders
     @title = "Purchase Orders"
     @sort_order =" PO date - descending order"
-    @all_orders = Order.by_this_seller(current_user).recent
+    @all_orders = Order.by_this_seller(current_user.company.users).recent
     @search = @all_orders.search(params[:search])
     if params[:status]
-      @orders = Order.by_this_seller(current_user).where(:status => params[:status]).desc.inclusions_for_seller.paginate :page => params[:page], :per_page => 10
+      @orders = Order.by_this_seller(current_user.company.users).where(:status => params[:status]).desc.inclusions_for_seller.paginate :page => params[:page], :per_page => 10
     else
       @orders = @search.inclusions_for_seller.paginate :page => params[:page], :per_page => 10    
     end
@@ -204,7 +205,7 @@ class SellerController < ApplicationController
   def payments
     @title = "Delivered Orders - For Payment"
     @sort_order =" due date (per vehicle) - ascending order"
-    @all_orders = Order.by_this_seller(current_user).delivered.unpaid.asc
+    @all_orders = Order.by_this_seller(current_user.company.users).delivered.unpaid.asc
     @search = @all_orders.search(params[:search])
     @orders = @search.inclusions_for_seller.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
@@ -213,7 +214,7 @@ class SellerController < ApplicationController
   def feedback
     @title = "Paid Orders - Rate Your Buyers"
     @sort_order =" date paid (per vehicle) - ascending order"
-    @all_orders = Order.by_this_seller(current_user).paid
+    @all_orders = Order.by_this_seller(current_user.company.users).paid
     @search = @all_orders.search(params[:search])
     @orders = @search.inclusions_for_seller.with_ratings.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
@@ -222,7 +223,7 @@ class SellerController < ApplicationController
   def closed
     @title = "Paid and Closed Orders"
     @sort_order =" date paid (per vehicle) - ascending order"
-    @all_orders = Order.by_this_seller(current_user).closed.order('paid DESC')
+    @all_orders = Order.by_this_seller(current_user.company.users).closed.order('paid DESC')
     @search = @all_orders.search(params[:search])
     @orders = @search.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
@@ -231,7 +232,7 @@ class SellerController < ApplicationController
   def fees
     @title = "Market Fees for Paid Orders"
     # @sort_order =" date PO was paid - descending order"
-    @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(current_user)
+    @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(current_user.company.users)
     start_date
     end_date
     @search = @all_market_fees.search(params[:search])
@@ -243,7 +244,7 @@ class SellerController < ApplicationController
     if current_user.has_role?('admin')
       @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(params[:seller], 'comp')
     else
-      @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(current_user)
+      @all_market_fees = Fee.date_range(params[:start], params[:end]).ordered.by_this_seller(current_user.company.users)
     end
     start_date
     end_date
@@ -255,7 +256,7 @@ class SellerController < ApplicationController
   
   def declines
     @title = "Decline Fees"
-    @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_seller(current_user)
+    @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_seller(current_user.company.users)
     start_date
     end_date
 
@@ -266,31 +267,6 @@ class SellerController < ApplicationController
     @buyers.push(['All', seller_declines_path(:buyer => nil)]) unless @buyers.blank?
     @buyers_path = seller_declines_path(:buyer => params[:buyer])
     @period_path = seller_declines_path(current_user)
-  end
-
-  def index
-    # @line_items_count = LineItem.metered.size
-    # @bids_count = current_user.bids.metered.collect(&:line_item_id).uniq.count
-    # @bid_percentage = (@bids_count.to_f / @line_items_count.to_f) * 100
-    # @missed_count = @line_items_count - @bids_count
-    # @missed_percentage = 100 - @bid_percentage
-    # @order_items = OrderItem.order_seller_id_eq(current_user).metered.count
-    # @order_items_percentage = (@order_items.to_f / @bids_count.to_f) * 100
-    @own_bids = current_user.bids.metered
-    @days = (Time.now.to_date - '2011-04-16'.to_date).to_f
-    @average = @own_bids.count/@days
-    @line_items = LineItem.metered.count
-    @bided = @own_bids.collect(&:line_item_id).uniq.count
-    @missed = @line_items - @bided
-    @orig = @own_bids.where(:bid_type => 'original').count
-    @rep = @own_bids.where(:bid_type => 'replacement').count
-    @surp = @own_bids.where(:bid_type => 'surplus').count
-    @ordered = OrderItem.order_seller_id_eq(current_user).metered.count
-    @cancelled = @own_bids.where("bids.status LIKE ?", "%Cancelled%").count
-    @pending = @own_bids.where(:status => 'For-Decision').count
-    @declined = @own_bids.where(:status => 'Declined').count
-    @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired']).count
-    @new = @own_bids.where(:status => ['Submitted', 'Updated']).count
   end
     
 end

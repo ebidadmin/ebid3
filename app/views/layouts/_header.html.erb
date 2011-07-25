@@ -15,7 +15,7 @@
 	</ul>
 	<!--[if IE]>
 		<%= content_tag :h3, 'Some features do not work in Internet Explorer.  Please install the recommended browsers.', :class => 'highlight' %>
-		<![endif]-->
+	<![endif]-->
 	<% unless current_user.nil? %>
   <ul id="navigation">
 		<% if current_user.has_role?('admin') %>

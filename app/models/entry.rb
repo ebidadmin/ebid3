@@ -83,7 +83,14 @@ class Entry < ActiveRecord::Base
 	end 
 
 	def create_new_city
-	  create_city(:name => new_city.strip.titlecase) unless new_city.blank?
+	  unless new_city.blank?
+	    existing_city = City.find_by_name(new_city)
+	    if existing_city 
+	      self.city_id = existing_city.id
+      else
+  	  create_city(:name => new_city.strip.titlecase) 
+  	  end
+  	end
 	end
 
 	def new_city_blank
@@ -160,20 +167,20 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def expire
-    if (buyer_status == "Online" || buyer_status == "Relisted") && Date.today > bid_until #&& expired.nil?
-      update_attribute(:expired, Date.today)
+    if (buyer_status == "Online" || buyer_status == "Relisted") && Time.now > bid_until #&& expired.nil?
+      update_attribute(:expired, Time.now)
       line_items.each do |line_item|
         if line_item.bids.exists?
           line_item.update_attribute(:status, "Expired")
-          bids.update_all(:status => 'Expired', :expired => Date.today)
+          bids.update_all(:status => 'Expired', :expired => Time.now)
         else
           line_item.update_attribute(:status, "No Bids")
         end
       end
     elsif (buyer_status == "For Decision" || buyer_status == "For-Decision" || buyer_status == "Ordered-IP" || buyer_status == "Declined-IP")
       deadline = bid_until + 3.days unless bid_until.nil?
-      if Date.today > deadline #&& expired_at.nil?
-        update_attributes(:chargeable_expiry => true, :expired => Date.today)
+      if Time.now > deadline #&& expired_at.nil?
+        update_attributes(:chargeable_expiry => true, :expired => Time.now)
         line_items.each do |line_item|
           unless (line_item.order_item || line_item.status == "Declined")
             itembids = line_item.bids #.where(:lot => nil)
@@ -181,8 +188,8 @@ class Entry < ActiveRecord::Base
               lowest = itembids.order('amount').first
               others = itembids.where('id != ?', lowest)
               line_item.update_attribute(:status, "Expired")
-              lowest.update_attributes(:status => "Declined", :declined => Date.today, :expired => Date.today) # lowest bid gets decline fee, others are dropped
-              others.update_all(:status => 'Dropped', :declined => nil, :expired => Date.today)
+              lowest.update_attributes(:status => "Declined", :declined => Time.now, :expired => Time.now) # lowest bid gets decline fee, others are dropped
+              others.update_all(:status => 'Dropped', :declined => nil, :expired => Time.now)
               Fee.compute(lowest, "Declined")
             else #WITHOUT BIDS
               line_item.update_attribute(:status, "No Bids")
@@ -194,12 +201,11 @@ class Entry < ActiveRecord::Base
     end
 	end
 
-  # def decline_type
-  #   if expired.blank? 
-  #     "Declined (by user)"
-  #   else
-  #     "Expired"
-  #   end 
-  # end
-  
+  def ready_for_reveal?
+    if buyer_status == 'Relisted'
+      Time.now > relisted + 150.minutes
+    else         
+      Time.now > online + 150.minutes
+    end
+  end
 end

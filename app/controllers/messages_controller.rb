@@ -100,8 +100,9 @@ class MessagesController < ApplicationController
   end
 
   def destroy
+    # TODO: make js
     @message = Message.find(params[:id])
     @message.destroy
-    redirect_to messages_url, :notice => "Successfully destroyed message."
+    redirect_to :back, :notice => "Deleted message." # redirect_to messages_url, :notice => "Successfully destroyed message."
   end
 end

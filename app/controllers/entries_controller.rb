@@ -1,5 +1,4 @@
 class EntriesController < ApplicationController
-  # before_filter :initialize_cart, :except => [:index, :show, :put_online, :relist, :reveal_bids, :reactivate]
   before_filter :initialize_cart, :only => [:select_parts]
   before_filter :check_buyer_role
 

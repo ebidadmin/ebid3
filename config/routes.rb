@@ -74,7 +74,7 @@ Ebid::Application.routes.draw do
   match 'admin/bids(/:page(/:brand))' => 'admin#bids', :as => :admin_bids, :via => :get
   match 'admin/orders(/:page)' => 'admin#orders', :as => :admin_orders, :via => :get
   match 'admin/payments(/:seller(/:page))' => 'admin#payments', :as => :admin_payments, :via => :get
-  match 'admin/buyer_fees(/:page)' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
+  match 'admin/buyer_fees(/:buyer(/:page))' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
   match 'admin/seller_fees(/:page)' => 'admin#seller_fees', :as => :admin_seller_fees, :via => :get
   match 'admin/utilities' => 'admin#utilities', :as => :admin_utilities, :via => :get
   match 'admin/expire_entries' => 'admin#expire_entries', :as => :admin_expire_entries, :via => :get

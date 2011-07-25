@@ -6,24 +6,18 @@ class BidsController < ApplicationController
   end
 
   def create
-    # raise params.to_yaml
     @entry = Entry.find(params[:entry_id])
-    if @entry.buyer_status == 'Relisted'
-      @line_items = @entry.line_items.online.includes(:car_part, :bids)
-    else
-      @line_items = @entry.line_items.includes(:car_part, :bids)
-    end
-    
+    @line_items = Array.new
     @new_bids = Array.new
     @existing_bids = Array.new
     @submitted_bids = params[:bids]
     @submitted_bids.each do |line_item, bidtypes|
-      @line_item = LineItem.find(line_item)
-
       bidtypes.reject! { |k, v| v.blank? }
       bidtypes.each do |bid|
         unless bid[1].to_f < 1
-          @existing_bid = current_user.bids.find_by_line_item_id_and_bid_type(line_item, bid[0])
+          @company = current_user.company
+          @line_item = LineItem.find(line_item)
+          @existing_bid = Bid.find_by_user_id_and_line_item_id_and_bid_type(@company.users, line_item, bid[0])
           if @existing_bid.nil? 
             @new_bid = current_user.bids.build
         		@new_bid.entry_id = @entry.id
@@ -33,17 +27,17 @@ class BidsController < ApplicationController
         		@new_bid.total = bid[1].to_f * @line_item.quantity.to_i
             @new_bid.bid_type = bid[0]
             @new_bid.car_brand_id = @entry.car_brand_id
-            # @new_bid.bid_speed = (Time.now - @line_item.created_at).to_i
-            if @entry.buyer_status == 'Relisted'
-              @new_bid.bid_speed = (Time.now - @entry.relisted).to_i
-            else
-              @new_bid.bid_speed = (Time.now - @entry.online).to_i
-            end
+            @new_bid.bid_speed = @new_bid.compute_bid_speed
             @new_bids << @new_bid unless @new_bid.amount < 1
           else
-            @existing_bid.update_attributes!(:amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated', :bid_speed => (Time.now - @line_item.created_at).to_i)
+            if @existing_bid.user != current_user
+              @existing_bid.update_attributes!(:user_id => current_user.id, :amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated')
+            else
+              @existing_bid.update_attributes!(:amount => bid[1], :total => bid[1].to_f * @line_item.quantity.to_i, :status => 'Updated')
+            end
             @existing_bids << @existing_bid unless @existing_bid.amount < 1
           end
+          @line_items << @line_item 
         end
       end
     end

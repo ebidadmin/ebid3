@@ -60,4 +60,12 @@ class Bid < ActiveRecord::Base
       scoped  
     end  
   end  
+  
+  def compute_bid_speed
+    if entry.buyer_status == 'Relisted'
+      bid_speed = (Time.now - entry.relisted).to_i
+    else
+      bid_speed = (Time.now - entry.online).to_i
+    end
+  end
 end

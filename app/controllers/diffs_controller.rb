@@ -1,4 +1,6 @@
 class DiffsController < ApplicationController
+  before_filter :check_admin_role
+
   respond_to :html, :js
 
   def index

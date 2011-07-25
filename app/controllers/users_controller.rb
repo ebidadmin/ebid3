@@ -1,13 +1,18 @@
 class UsersController < ApplicationController
   before_filter :check_admin_role, :only => [:index, :destroy, :enable, :disable]
   before_filter :authenticate_user!, :except => [:new, :create]
+
   def index
     @search = User.order('current_sign_in_at DESC').search(params[:search])
     @users = @search.paginate(:page => params[:page], :per_page => 20)
   end
   
   def show
-    @user = User.find_by_username(params[:id])
+    if current_user.has_role?('admin')
+      @user = User.find_by_username(params[:id])
+    else
+      @user = current_user
+    end
     @profile = @user.profile
     @all_roles = Role.all
   end
@@ -15,10 +20,13 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @user.build_profile
+    @company_type = Role.find(2, 3)
   end
   
   def create
+    # raise params.to_yaml
     @user = User.new(params[:user])
+    @company_type = Role.find(2, 3)
     if @user.save
       flash[:notice] = "Successfully created account for #{@user.username}. Please call us at 892-5835 to activate your account."
       redirect_to @user
@@ -28,11 +36,23 @@ class UsersController < ApplicationController
   end
   
   def edit
-    @user = User.find_by_username(params[:id])
+    if current_user.has_role?('admin')
+      @user = User.find_by_username(params[:id])
+      @company_type = Role.find(1, 2, 3)
+    else
+      @user = current_user
+      @company_type = Role.find(2, 3)
+    end
   end
   
   def update
-    @user = User.find_by_username(params[:id])
+    if current_user.has_role?('admin')
+      @user = User.find_by_username(params[:id])
+      @company_type = Role.find(1, 2, 3)
+    else
+      @user = current_user
+      @company_type = Role.find(2, 3)
+    end
     if @user.update_attributes(params[:user])
       flash[:notice] = "Successfully updated user."
       redirect_to @user

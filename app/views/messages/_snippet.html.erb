@@ -1,4 +1,8 @@
 <div id="msg-snippet">
-	<%= content_tag :span,"	Reply to message from #{message.user.username}", :id => 'creator' %>
+	<% if current_user.has_role?('admin') %>
+		<%= content_tag :span,"	Reply to message from #{message.user.username}", :id => 'creator' %>
+	<% else %>
+		<%= content_tag :span,"	Reply to message from #{message.user_type}", :id => 'creator' %>
+	<% end %>
 	<%= content_tag :span, message.message, :id => 'comment' %>
 </div>

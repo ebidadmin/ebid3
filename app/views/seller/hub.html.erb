@@ -29,9 +29,9 @@
 		<td class="status">
       <%= content_tag :p,( 'Created: '+ entry.created_at.strftime('%b %d, %a')), :class => 'instruction' %>
       <%= content_tag :p, "#{online_or_relisted?(entry)} until: #{entry.bid_until.strftime('%b %d, %Y')} (maximum)".html_safe  %>
-			<% unless entry.bids.online.where(:user_id => current_user).blank? %>
+			<% unless entry.bids.online.where(:user_id => @company.users).blank? %>
 				<p class="instruction large">
-				(<%= image_tag '/images/base/yes.png' %> you posted Bids <%= link_to 'here', seller_show_path(:id => entry) %> )
+				(<%= image_tag '/images/base/yes.png' %> your company posted Bids <%= link_to 'here', seller_show_path(:id => entry) %> )
 				</p>
 			<% else %>
 				<%= link_to 'Bid Here', seller_show_path(:id => entry), :class => 'button' %> 

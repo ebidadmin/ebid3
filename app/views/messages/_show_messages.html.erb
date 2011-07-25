@@ -9,6 +9,7 @@
 				<% else %>
 				<%= content_tag :b, 'YOU said:' %><br>
 				<%= link_to 'edit', edit_message_path(message, :entry => @entry), :remote => true, :class => 'msg-link' %>
+				<%= link_to 'delete', message, :method => :delete %>
 				<% end %>
 			</span>
 			<span id="comment">

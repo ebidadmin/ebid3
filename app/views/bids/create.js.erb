@@ -1,9 +1,10 @@
-<% unless @new_bids.blank? && @existing_bid.blank? %>
+<% unless @new_bids.blank? && @new_bids.all?(&:valid?) && @existing_bid.blank? %>
 	<% @line_items.each do |line_item| %>
 		$("#amounts_<%= line_item.id %>").html("<%= escape_javascript(render 'seller/bid_set', :item => line_item) %>")
 	<% end %>
-	$("#bidding-message").addClass('green').text("Thanks for bidding!").effect("highlight", {}, 3000);
-	$("h3.highlight").addClass('green').text("Thanks for bidding!").effect("highlight", {}, 3000);
+	$("#bidding-message, h3.highlight").removeClass('orange').addClass('green').text("Thanks for bidding!").effect("highlight", {}, 3000);
 	$("#bid-form")[0].reset();    
+<% else %>
+	$("#bidding-message, h3.highlight").removeClass('green').addClass('orange').text("You may have entered a blank or invalid bid format. Please try again.").effect("highlight", {}, 3000);
 <% end %>
 

@@ -1,9 +1,9 @@
 <% if current_page? buyer_pending_path %>
 		
-		<%= link_to "select parts", select_parts_entry_path(entry) unless entry.line_items.present? %> 
-		<%= link_to "attach photos", attach_photos_entry_path(entry) unless entry.photos.present? %>
+		<%= link_to "select parts", select_parts_entry_path(entry), :class => 'button' unless entry.line_items.present? %> 
+		<%= link_to "attach photos", attach_photos_entry_path(entry), :class => 'button' unless entry.photos.present? %>
 		<p>
-			<%= link_to "put online", put_online_entry_path(entry) if entry.line_items.present? && entry.photos.present? && entry.bid_until.blank?  %>
+			<%= link_to "put online", put_online_entry_path(entry), :class => 'button' if entry.line_items.present? && entry.photos.present? && entry.bid_until.blank?  %>
 			<%= link_to "edit", edit_entry_path(entry) %>
 			<%= link_to "remove", entry, :confirm => 'Are you sure you want to delete this entry?', :method => :delete %>
 		</p>

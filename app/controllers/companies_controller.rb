@@ -6,7 +6,11 @@ class CompaniesController < ApplicationController
   end
   
   def show
-    @company = Company.find(params[:id])
+    if current_user.has_role?('admin')
+      @company = Company.find(params[:id], :include => [:city, :role])
+    else
+      @company = current_user.company
+    end
     @friends = @company.friends
   end
   
@@ -27,14 +31,22 @@ class CompaniesController < ApplicationController
   end
   
   def edit
-    @company = Company.find(params[:id], :include => [:city, :role])
+    if current_user.has_role?('admin')
+      @company = Company.find(params[:id], :include => [:city, :role])
+    else
+      @company = current_user.company
+    end
     if @company.friendships.first.nil?
       @company.friendships.build
     end
   end
  
   def update 
-    @company = Company.find(params[:id])
+    if current_user.has_role?('admin')
+      @company = Company.find(params[:id], :include => [:city, :role])
+    else
+      @company = current_user.company
+    end
     if @company.update_attributes(params[:company])
       flash[:notice] = "Successfully updated company."
       if current_user.has_role?('admin')
