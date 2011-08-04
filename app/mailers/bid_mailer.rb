@@ -30,12 +30,12 @@ class BidMailer < ActionMailer::Base
     if update.nil?
       mail(
         :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
-        :subject => "NEW Bids: #{seller.profile.full_name} > #{entry.vehicle}"
+        :subject => "NEW Bids: #{seller.company.name} > #{entry.vehicle}"
         )
     else
       mail(
         :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"], 
-        :subject => "UPDATED Bids: #{seller.profile.full_name} > #{entry.vehicle}"
+        :subject => "UPDATED Bids: #{seller.company.name} > #{entry.vehicle}"
         )
     end  
   end

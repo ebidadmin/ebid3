@@ -6,9 +6,6 @@
 
 <% unless @entries.count < 1 %>
 	<% unless current_user.has_role?('admin')  %>
-		<%= content_tag :div, "#{content_tag :strong, 'Hi ' + current_user.first_name + '!'} Just to inform you, <strong>Bidding Speeds</strong> will now be computed
-		based on <strong>the date the Entry was put online</strong> instead of the date it was created.".html_safe, :id => 'flash_info' if current_page? buyer_results_path %>
-	
 		<%= render 'buyer/entries_table'  %>
 	<% else %>
 		<%= render 'admin/entries_table' %>

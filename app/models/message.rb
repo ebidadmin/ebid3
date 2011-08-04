@@ -4,6 +4,7 @@ class Message < ActiveRecord::Base
   has_ancestry
   
   belongs_to :entry
+  belongs_to :order
   belongs_to :user
   belongs_to :receiver, :class_name => "User"
   belongs_to :company

@@ -31,9 +31,9 @@
 				<p><%=h user.company.name unless user.company.nil? %></p>
 			</td>
       <td class='rating'>
-				<%= star_images(Rating.where(:ratee_id => user).average('stars').to_f) %>
-				<% unless Rating.where(:ratee_id => user).blank? %>
-				<%= content_tag :p, ('based on ' + (link_to (pluralize Rating.where(:ratee_id => user).count, 'rating'), user_ratings_path(user))).html_safe %>
+				<%= star_images(Rating.where(:ratee_id => user).metered.average('stars').to_f) %>
+				<% unless Rating.where(:ratee_id => user).metered.blank? %>
+				<%= content_tag :p, ('based on ' + (link_to (pluralize Rating.where(:ratee_id => user).metered.count, 'rating'), user_ratings_path(user))).html_safe %>
 				<% end %>
 			</td>
       <td>
@@ -53,7 +53,9 @@
     </tr>
   <% end %>
 </table>
-<p class="page-links">
+<%= will_paginate @users %>
+
+<div class="page-links">
 	<%= link_to "Add User", new_user_path, :class => 'button' %>
 	<%= link_to 'View Companies', companies_path, :class => 'button' %>
-</p>
+</div>

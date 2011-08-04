@@ -76,7 +76,7 @@ class BuyerController < ApplicationController
     find_orders
     @search = @all_orders.asc.search(params[:search])    
     @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
-    @orders = @search.inclusions.with_ratings.paginate :page => params[:page], :per_page => 15    
+    @orders = @search.inclusions.paginate :page => params[:page], :per_page => 15    
     
     respond_to do |format|
       format.html { render 'orders/index'  }
@@ -154,9 +154,9 @@ private
     @tot_all = entries.count
     @tot_m = entries.metered.count
     @tot_f = entries.ftm.count
-    @pend_all = entries.pending.count
-    @pend_m = entries.pending.metered.count
-    @pend_f = entries.pending.ftm.count
+    @p_all = entries.pending.count
+    @p_m = entries.pending.metered.count
+    @p_f = entries.pending.ftm.count
     @online_all = entries.online.unexpired.count
     @online_m = entries.online.unexpired.metered.count
     @online_f = entries.online.unexpired.ftm.count
@@ -169,9 +169,9 @@ private
       @ord_m_pct = (@ord_m.to_f / @tot_m.to_f) * 100
     @ord_f = entries.ordered.ftm.count
       @ord_f_pct = (@ord_f.to_f / @tot_f.to_f) * 100
-    @etc_all = @tot_all - @pend_all - @online_all - @fd_all - @ord_all
-    @etc_m = @tot_m - @pend_m - @online_m - @fd_m - @ord_m
-    @etc_f = @tot_f - @pend_f - @online_f - @fd_f - @ord_f
+    @etc_all = @tot_all - @p_all - @online_all - @fd_all - @ord_all
+    @etc_m = @tot_m - @p_m - @online_m - @fd_m - @ord_m
+    @etc_f = @tot_f - @p_f - @online_f - @fd_f - @ord_f
 
     @line_items = LineItem.where(:entry_id => entries)
     @li_all = @line_items.count

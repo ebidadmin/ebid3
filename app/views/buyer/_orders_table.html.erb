@@ -27,7 +27,7 @@
 		  <%#= link_to "Print PO", print_order_path(order), :class => 'buttons' %>
 		</td>
   	<td class='stat'>
-  		<%= content_tag :p, 'Seller: ' + order.seller.profile.company.name, :class => 'instruction'  %>
+  		<%= content_tag :p, 'Seller: ' + order.seller.company.name, :class => 'instruction'  %>
 		  <%= render 'orders/order_status_buyer', :order => order %>
 			<% if order.paid && order.paid_but_overdue %>
 				<%= content_tag :p , ('Overdue: ' + (pluralize order.paid_but_overdue, 'day')), :id => 'overdue' if order.paid_but_overdue > 0 %>

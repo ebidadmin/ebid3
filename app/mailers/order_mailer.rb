@@ -22,4 +22,12 @@ class OrderMailer < ActionMailer::Base
       :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"]
       )
   end
+  
+  # def overdue_alert(orders)
+  #   @orders = orders
+  #   @orders.group_by(&:company).each do {|company, orders|}
+  #    # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
+  #     
+  #   end
+  # end
 end

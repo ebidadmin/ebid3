@@ -11,11 +11,12 @@ class Order < ActiveRecord::Base
   has_many :ratings
   has_many :bids
   has_many :fees
-  has_many :comments
+  has_many :messages
+  accepts_nested_attributes_for :messages
  
   validates_presence_of :deliver_to, :address1, :phone
 
-  scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :photos, :user]], [:seller => :company], [:order_items => [:line_item => :car_part]])
+  scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:seller => :company], [:order_items => [:line_item => :car_part]])
   scope :inclusions_for_seller, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:order_items => [:line_item => :car_part]])
   scope :inclusions_for_admin, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:seller => :company], [:order_items => [:line_item => :car_part]])
   scope :with_ratings, includes(:ratings)
@@ -154,6 +155,9 @@ class Order < ActiveRecord::Base
     end
   end
   
+  def can_be_cancelled?
+    status == 'PO Released' || status == 'For-Delivery'
+  end
   def close
     update_attribute(:status, "Closed")
     # entry.update_attribute(:buyer_status, "Closed")

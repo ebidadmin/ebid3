@@ -2,22 +2,7 @@ class AdminController < ApplicationController
   before_filter :check_admin_role
 
   def index
-    # @title = 'Admin Dashboard'
-    # @entries = Entry.scoped
-    # @line_items = LineItem.where('created_at > ?', 6.months.ago)
-    # @with_bids = @line_items.with_bids
-    # @with_bids_pct = @line_items.with_bids_pct
-    # @two_and_up = @line_items.two_and_up
-    # @two_and_up_pct = @line_items.two_and_up_pct
-    # @without_bids = @line_items.without_bids
-    # @with_order = OrderItem.all.collect(&:line_item_id).uniq.count
-    # @with_order_pct = (@with_order.to_f/@with_bids.count.to_f) * 100
-    # @orders = Order.scoped.collect(&:total_order_amounts).sum
-    # @paid = Order.paid_and_closed.payment_valid.collect(&:total_order_amounts).sum
-    # 
-    # @online_entries =  @entries.online.active 
     @users = User.active
-    # @order = Order.all
     get_stats
   end
 
@@ -40,32 +25,18 @@ class AdminController < ApplicationController
     else
       @search = entries.where(:user_id => User.find_by_username(params[:user_id]), :buyer_status => @status).search(params[:search])
     end
-    @entries = @search.desc.includes(:user, :car_brand, :car_model, :car_variant, :term, :city, :bids, :orders, :photos).paginate(:page => params[:page], :per_page => 10)
+    @entries = @search.desc.admin_inclusions.paginate(:page => params[:page], :per_page => 10)
     render 'entries/index'
   end
 
   def online
     @title = "What's Online?"
-    @search = Entry.online.active.order('bid_until DESC').search(params[:search])
+    @search = Entry.online.active.admin_inclusions.search(params[:search])
     @entries = @search.paginate(:page => params[:page], :per_page => 10)
     render 'entries/index'  
   end
 
   def bids
-    # bids = Bid.desc
-    # @brand_links = CarBrand.find(bids.collect(&:car_brand_id).uniq).collect { |brand| [brand.name, admin_bids_path(:brand => brand.name)] }  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
-    # @brand_links.push(['All', admin_bids_path(:brand => nil)])
-    # @current_path =  admin_bids_path(:brand => params[:brand])
-    # if params[:brand] == 'all'
-    #   @search = bids.search(params[:search])
-    # elsif params[:brand]
-    #   brand = CarBrand.find_by_name(params[:brand])
-    #   @search = bids.where(:car_brand_id => brand).search(params[:search])
-    # else
-    #   @search = bids.search(params[:search])
-    # end
-    # @bids = @search.inclusions.paginate :page => params[:page], :per_page => 20    
-    
     @line_items = LineItem.with_bids.desc.inclusions.paginate :page => params[:page], :per_page => 20 
     render 'bids/index' 
   end
@@ -90,7 +61,7 @@ class AdminController < ApplicationController
     @title = "Delivered Orders - For Payment"
     @sort_order =" due date (per vehicle) - ascending order"
  
-    @all_orders = Order.delivered.asc 
+    @all_orders = Order.total_delivered.payment_pending
     if params[:seller]
       @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) 
     else
@@ -98,10 +69,19 @@ class AdminController < ApplicationController
     end  
     @orders = @search.inclusions_for_admin.with_ratings.paginate :page => params[:page], :per_page => 10   
 
+    @buyers = @all_orders.collect(&:company_id).uniq.collect { |buyer| [Company.find(buyer).name, admin_payments_path(:buyer => buyer)] }
+    @buyers.push(['All', admin_payments_path(:buyer => nil)]) unless @buyers.blank?
+    @buyers_path = admin_payments_path(:buyer => params[:buyer]) 
+
     @sellers = @all_orders.collect(&:seller_id).uniq.collect { |seller| [User.find(seller).company_name, admin_payments_path(:seller => seller)] }
     @sellers.push(['All', admin_payments_path(:seller => nil)]) unless @sellers.blank?
     @sellers_path = admin_payments_path(:seller => params[:seller])
     render 'admin/orders'  
+    
+    # @overdue_orders = @all_orders.where('pay_until < ?', Date.today)
+    # if @overdue_orders
+    #   OrderMailer.delay.overdue_alert(@overdue_orders)
+    # end
   end
   
   def buyer_fees
@@ -243,12 +223,12 @@ private
       @li_all = @line_items.count
       @li_m = @line_items.metered.count
       @li_f = @line_items.ftm.count
-    @own_bids = Bid.ascend_by_bid_speed
-      @ob_all = @own_bids.collect(&:line_item_id).uniq.count
+    @bids = Bid.order('bid_speed asc')#ascend_by_bid_speed
+      @ob_all = @bids.collect(&:line_item_id).uniq.count
       @ob_all_pct = (@ob_all.to_f / @li_all.to_f) * 100
-      @ob_m = @own_bids.metered.collect(&:line_item_id).uniq.count
+      @ob_m = @bids.metered.collect(&:line_item_id).uniq.count
       @ob_m_pct = (@ob_m.to_f / @li_m.to_f) * 100
-      @ob_f = @own_bids.ftm.collect(&:line_item_id).uniq.count
+      @ob_f = @bids.ftm.collect(&:line_item_id).uniq.count
       @ob_f_pct = (@ob_f.to_f / @li_f.to_f) * 100
       @ob2_all = @line_items.two_and_up.count
       @ob2_all_pct = (@ob2_all.to_f / @li_all.to_f) * 100
@@ -262,18 +242,18 @@ private
       @msd_m_pct = (@msd_m.to_f / @li_m.to_f) * 100
       @msd_f = @li_f - @ob_f
       @msd_f_pct = (@msd_f.to_f / @li_f.to_f) * 100
-    @total_bids =  @own_bids.count
-      @tb_m = @own_bids.metered.count
-      @tb_f = @own_bids.ftm.count
-    @orig = @own_bids.where(:bid_type => 'original')
+    @total_bids =  @bids.count
+      @tb_m = @bids.metered.count
+      @tb_f = @bids.ftm.count
+    @orig = @bids.orig
       @orig_all = @orig.count
       @orig_m = @orig.metered.count
       @orig_f = @orig.ftm.count
-    @rep = @own_bids.where(:bid_type => 'replacement')
+    @rep = @bids.rep
       @rep_all = @rep.count
       @rep_m = @rep.metered.count
       @rep_f = @rep.ftm.count
-    @surp = @own_bids.where(:bid_type => 'surplus')
+    @surp = @bids.surp
       @surp_all = @surp.count
       @surp_m = @surp.metered.count
       @surp_f = @surp.ftm.count
@@ -289,19 +269,19 @@ private
       @canc_all = @cancelled.count
       @canc_m = @cancelled.metered.count
       @canc_f = @cancelled.ftm.count
-    @pending = @own_bids.where(:status => 'For-Decision')
+    @pending = @bids.where(:status => 'For-Decision')
       @fdec_all = @pending.count
       @fdec_m = @pending.metered.count
       @fdec_f = @pending.ftm.count
-    @declined = @own_bids.where(:status => 'Declined')
+    @declined = @bids.where(:status => 'Declined')
       @decl_all = @declined.count
       @decl_m = @declined.metered.count
       @decl_f = @declined.ftm.count
-    @lose = @own_bids.where(:status => ['Lose', 'Dropped', 'Expired'])
+    @lose = @bids.where(:status => ['Lose', 'Dropped', 'Expired'])
       @lose_all = @lose.count
       @lose_m = @lose.metered.count
       @lose_f = @lose.ftm.count
-    @new = @own_bids.where(:status => ['Submitted', 'Updated'])
+    @new = @bids.where(:status => ['Submitted', 'Updated'])
       @nb_all = @new.count
       @nb_m = @new.metered.count
       @nb_f = @new.ftm.count
@@ -374,6 +354,6 @@ private
       @closed_f = @closed.ftm.collect(&:order_total).sum
       @closed_f_pct = (@closed_f.to_f / @td_f.to_f) * 100 
       
-      @speed = Bid.metered.ascend_by_bid_speed
+      @speed = Bid.metered.where('bid_speed > ?', 90)
   end
 end

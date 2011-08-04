@@ -1,7 +1,3 @@
-<% content_for(:head) do %>
-	<%#= stylesheet_link_tag 'formtastic', 'formtastic_changes' %>
-<% end %>
-
 <% title "Place Order" %>
 
 <% @bids.group_by(&:entry).each do |entry, bids| -%>
@@ -52,11 +48,6 @@
     <%= simple_form_for @order, :url => orders_path(:entry_id => entry.id), :validate => true, :method => :post do |f|  %>
     	<%= yield :bids_array %>
   		<%= render 'orders/deliver_form', :f => f %>
-  		<%# f.buttons do %>
-  			<%#= f.commit_button 'Place Order' %> 
-  			<%= f.button :submit %> 
-  			<%= link_to "Cancel", entry -%>
-  		<%# end %>
     <% end %>
   </div>
 

@@ -7,11 +7,11 @@
 	<% end %>
 </fieldset>
 
-<% content_for :javascripts do %>
+<%= content_for :javascripts do %>
 	<%= javascript_include_tag 'dynamic_models', 'rails.validations' %>
 <% end %>
 
-<% content_for :subnav do %>
+<%= content_for :subnav do %>
 	<%= content_tag :div, "#{content_tag :strong, 'Hi ' + current_user.first_name + '!'} You are using the NEW LAYOUT for creating entries. 
 	You can now save your entry as DRAFT so you can go back to it later. Try it out and tell us if this is better for you.".html_safe, :id => 'flash_info'  %>
 <% end %>

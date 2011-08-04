@@ -101,6 +101,7 @@ td.bid-box, td.status { background-color: #eaeaea; }
 .qty { width: 10%; text-align: center; }
 .partname { text-align: left; }
 .price { width: 20%; text-align: right; padding: 10px 8px 10px 0; }
+.cancel { color: #CCC; text-align: center; width: 5%; }
 
 #admin-stuff { font-size: .9em; }
 #admin-stuff a { margin: 0px 5px; }
@@ -269,7 +270,7 @@ table#monitor-bids td .amount { clear: both; margin-left: 0; }*/
 #delivery { float: right; width: 450px; border-left: 1px solid #999; padding-left: 30px; margin-bottom: 1.5em;}
 #transaction.create { border-right: 1px solid #999; margin-right: 0; padding-right: 30px; }
 #delivery.create { border: 0; padding-left: 0;  }
-
+#delivery div input, #delivery div textarea { width: 300px; }
 #transaction h2, #delivery h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999; }
 #transaction .who { color: #C00; font-weight: bold; }
 #transaction .vehicle-set { width: 100%; margin-bottom: 2em; }
@@ -285,13 +286,18 @@ table#monitor-bids td .amount { clear: both; margin-left: 0; }*/
 #del-instructions #overdue, #del-instructions #date-paid { color: #C00; font-size: 1.2em; font-weight: bold; padding-top: 20px; }
 #del-instructions #instr { border-top: 1px dotted black; border-bottom: 1px dotted black; font-weight: bold; margin-top: 20px; padding-top: 5px; padding-bottom: 5px; overflow: hidden;}
 #del-status { background-color: #FFF6BF; clear: both; color: #C00;  padding: 10px 0; text-align: center; }
-#order { clear: both; overflow: hidden; margin: 1.5em 0; }
-#order .vehicle-set { float: left; margin: 0 0 1em; width: 100%; }
+#order { clear: both; overflow: hidden; margin: 1.5em 0 0; }
+#order .vehicle-set { float: left; margin: 0 0 1em; width: 50%; }
 #order .vehicle-set li { clear: both; float: left; width: 280px; }
 #order td { padding-top: 15px; padding-bottom: 15px; }
-#order .bid-type { color: #C00; display: inline; float: right; font-size: 11px;}
+#order .bid-type, .order .bid-type { color: #C00; display: inline; float: right; font-size: 11px;}
 .parts-set { float: left; width: 100%; margin: 2em 0; }
 .selection-total td { font-size: 1.5em; font-weight: bold; color: #C00; text-align: right; padding: 10px 8px 10px 0; border-bottom: none; }
+#view-vehicle-button { float: left; }
+
+#cancel-order div { text-align: center; }
+#cancel-order label { color: #C00; padding: 15px 0; text-transform: uppercase; width: 100%; }
+#cancel-order textarea { font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;float: none; height: 40px; width: 50%;}
 
 /* ORDERS & PAYMENTS LISTS
 ---------------------------------------------------------------------- */
@@ -433,8 +439,9 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 .aside p { margin-bottom: 0; }
 #content-main .aside .button { margin-right: 0; margin-bottom: 12px; text-align: center; width: 50%; }
 #content-main .aside #feature-button { background-color: #6B9D28; font-size: 16px; width: 60%; }
-#content-main .aside #feature-button:hover, #content-main #feature-button:hover { background-color: #D02200; }
+#content-main .aside #feature-button:hover, #content-main #feature-button:hover, #content-main #cancel-button:hover { background-color: #D02200; }
 #content-main #feature-button { background-color: #6B9D28; }
+#content-main #cancel-button { background-color: #CCC; float: right;}
 
 .aside div#message-box, .aside div.input { margin: 0; padding: 0; }
 /*#message-box label { color: #C00; padding: 15px 0; text-transform: uppercase; width: 100%; }
@@ -458,7 +465,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #msg-fields { clear: both; position: relative; text-align: center;}
 #msg-fields label { color: #C00; padding: 15px 0; text-transform: uppercase; width: 100%; }
 #msg-fields textarea { font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;float: none; height: 40px; width: 50%;}
-#confirmation { font-size: 1.2em; margin: 10px 0; padding: 10px 0; }
+/*#confirmation { font-size: 1.2em; margin: 10px 0; padding: 10px 0; }*/
 
 #msg-snippet { border: 1px dotted #CCC; margin: 0 auto; padding: 5px; text-align: left; overflow: hidden; width: 50%; }
 #msg-snippet .msg-label { color: #C00; text-transform: uppercase; }

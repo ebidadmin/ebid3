@@ -1,0 +1,39 @@
+<% title "Cancel Order" %>
+
+<%= render 'shared/info_vehicle', :entry => @entry %>
+
+<div id="cancel-order">
+	<%= simple_form_for @order, :url => confirm_cancel_order_path(@order), :method => :put do |f|  %>
+	<table class="parts-set">
+		<%= render 'shared/part_titles' %>
+		<% for bid in  @bids %>
+			<tr>	
+				<%= content_tag :td, bid.quantity, :class => "qty" %>
+				<td class="partname">
+					<%= bid.line_item.part_name.html_safe %>
+					<%= content_tag :span, " (Details: #{content_tag :strong, bid.line_item.part_no})".html_safe, :class => 'partnum' unless bid.line_item.part_no.blank?  %>
+	        <%= content_tag :span, " #{bid.bid_type.upcase}".html_safe, :class => 'bid-type' %>
+					<%= hidden_field_tag 'bid_ids[]', bid.id %>
+				</td> 
+				<%= content_tag :td, ph_currency(bid.amount), :class => 'price' %>
+				<%= content_tag :td, ph_currency(bid.total), :class => 'price' %>
+			</tr>	
+		<% end %>
+		<tr class="selection-total">	
+			<%= content_tag :td, 'For Cancellation', :class => 'label', :colspan => 2 %>
+			<%= content_tag :td, ph_currency(@bids.collect(&:total).sum), :class => 'price', :colspan => 2 %>
+		</tr>
+	</table>
+
+	<%= f.simple_fields_for :message do |m| %>
+		<%= hidden_field_tag 'msg_type', @msg_type %>
+		<%= m.input :message, :label => "Reason for cancellation", :as => :text, :input_html => { :rows => 2, :columns => 100 } %>
+	<% end %>
+
+
+	<div id="confirmation" class="page-links">
+		<%= link_to "<< Back", :back, :class => 'button' %>
+		<%= submit_tag "Confirm Cancellation", :confirm => 'Are you really sure you want CANCEL the order items?' %>
+	</div>
+	<% end %>
+</div>

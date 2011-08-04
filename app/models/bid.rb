@@ -20,6 +20,8 @@ class Bid < ActiveRecord::Base
   scope :bt, order('bid_type')
   scope :online, where(:status => ['Submitted', 'Updated'])
   scope :declined, where(:status => 'Declined')#.order('declined DESC', 'entry_id DESC')
+  scope :cancelled, where('status LIKE ?', "%Cancelled%") # used in Orders#Show
+  scope :not_cancelled, where('status NOT LIKE ?', "%Cancelled%") # used in Orders#Show
   
   scope :orig, where(:bid_type => 'original')
   scope :rep, where(:bid_type => 'replacement')
@@ -67,5 +69,9 @@ class Bid < ActiveRecord::Base
     else
       bid_speed = (Time.now - entry.online).to_i
     end
+  end
+  
+  def cancelled?
+    status.include?('Cancelled')
   end
 end

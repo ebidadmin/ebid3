@@ -69,12 +69,7 @@ class ApplicationController < ActionController::Base
   	end 
 
     def initialize_cart 
-      # if session[:cart_id]
-        @cart = Cart.find(session[:cart_id]) 
-      # else
-      #   @cart = Cart.create
-      #   session[:cart_id] = @cart.id 
-      # end  
+      @cart = Cart.find(session[:cart_id]) 
       rescue ActiveRecord::RecordNotFound 
         @cart = Cart.create 
         session[:cart_id] = @cart.id 
@@ -137,9 +132,9 @@ class ApplicationController < ActionController::Base
 
     def find_entries
       if params[:user_id] == 'all'
-        @finder = Entry.where(:user_id => @company_users, :buyer_status => @status).includes(:line_items, :term, :city, :car_brand, :car_model, :car_variant, :photos, :orders, :user, :bids)
+        @finder = Entry.where(:user_id => @company_users, :buyer_status => @status).includes(:term, :city, :car_brand, :car_model, :car_variant, :photos, :orders, :user, :bids)
       else
-        @finder = defined_user.entries.where(:buyer_status => @status).includes(:line_items, :term, :city, :car_brand, :car_model, :car_variant, :photos, :orders, :user, :bids)
+        @finder = defined_user.entries.where(:buyer_status => @status).includes(:term, :city, :car_brand, :car_model, :car_variant, :photos, :orders, :user, :bids)
       end
     end
 
@@ -149,7 +144,7 @@ class ApplicationController < ActionController::Base
       else
         @all_orders = defined_user.orders.where(:status => @status)
       end
-      @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).includes(:company).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
+      @sellers = User.where(:id => @all_orders.collect(&:seller_id).uniq).includes(:profile => :company).collect { |seller| [seller.company_name, request_path(:seller => seller.id)]}
       @sellers.push(['All', request_path(:seller => nil)]) unless @sellers.blank?
       @sellers_path = request_path(:seller => params[:seller])
     end

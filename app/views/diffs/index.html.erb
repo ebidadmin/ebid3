@@ -16,12 +16,12 @@
 		</th>
 	</thead>
 	<% @entries.each do |entry| %>
-  <tr>
+	<tr>
 		<td class="vehicle">	
 			<%= content_tag :p, entry.ref_no %>
 			<%= content_tag :p, truncate(entry.vehicle) %>
 			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight'  %></p>
-			<%= content_tag :h4, "First Bid: " + distance_of_time_in_words(entry.created_at, entry.bids.first.created_at) unless entry.bids.blank? %>
+			<%= content_tag :h4, "First Bid: " + distance_of_time_in_words(entry.created_at, entry.bids.order(:bid_speed).first.created_at) unless entry.bids.blank? %>
 			<%#= active_diff_mark(entry) %>
 			<%= link_to 'Compute Diff', diff_path(entry) %>
 		</td>

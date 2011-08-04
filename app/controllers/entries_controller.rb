@@ -36,11 +36,6 @@ class EntriesController < ApplicationController
   end
   
   def new
-    # @entry = Entry.new
-    # 2.times {@entry.photos.build}
-    # @entry.date_of_loss = Date.today
-    # @entry.term_id = 4
-    # start_entry
     @entry = current_user.entries.build
     @entry.date_of_loss = Date.today
     @entry.term_id = 4
@@ -48,27 +43,6 @@ class EntriesController < ApplicationController
   end
   
   def create
-    # @entry = Entry.new(params[:entry])
-    # start_entry
-    # if @cart.cart_items.blank?
-    #   flash[:error] = "Wait a minute ... your parts selection is still empty!"
-    #   redirect_to new_user_entry_path(current_user)
-    # else
-    #   @entry = Entry.new(params[:entry])
-    #   @entry.add_line_items_from_cart(@cart)
-    #   @entry.company_id = current_user.company.id
-    #   if current_user.entries << @entry
-    #     @cart.destroy
-    #     session[:cart_id] = nil 
-    #     # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
-    #     EntryMailer.delay.new_entry_alert(@entry)
-    #     flash[:notice] = "Successfully created Entry # #{@entry.id}."
-    #     redirect_to buyer_pending_path(current_user)
-    #   else
-    #     flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
-    #     render 'new'
-    #   end
-    # end
     @entry = current_user.entries.build(params[:entry])
     if current_user.company.entries << @entry
       redirect_to select_parts_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."

@@ -4,7 +4,7 @@
 
 <% elsif order.status == "Delivered" %>
 
-	<% if order.ratings.where(:user_id => @company_users).exists? %>
+	<% if order.ratings.where(:user_id => @company_users).present? %>
     <%= content_tag :p, "Waiting for the seller to rate you also ...  ", 
     :class => 'instruction highlight' unless order.ratings.where(:ratee_id => current_user).exists? %>
 	<% else %>

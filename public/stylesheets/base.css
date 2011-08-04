@@ -41,6 +41,7 @@ ol { list-style-type: decimal; list-style-position: inside; }
 abbr, acronym { border-bottom-width: 0; }
 strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .instruction { font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; }
+.cancelled { text-decoration: line-through; }
 .highlight { background-color: #FFF6BF; padding: 0 10px; }
 .green { background-color: #264409; color: #FFF; }
 .brown { color: white; background-color: #8a1f11; }
@@ -272,7 +273,7 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 .simple_form input.check_boxes { clear: both; float: left; margin-right: 10px; }
 .simple_form .check_boxes div { clear: none; float: left; width: 50%;}
 .simple_form input.string, .simple_form input.password,.simple_form textarea, .simple_form select, .simple_form input.hasDatepicker {
-	float: left; margin: 0;
+	float: left; margin: 0; 
 }
 /*.simple_form input.hasDatepicker { width: 30%; }*/
 .simple_form .error {

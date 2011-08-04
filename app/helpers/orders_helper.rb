@@ -30,11 +30,5 @@ module OrdersHelper
   end
   
   def notifier_class(order)
-    if order.pay_until < 7.days.from_now.to_date
-      'regular-alert strong'
-    else
-      'comfy-alert'
-    end
-  end
-  
+  end   
 end

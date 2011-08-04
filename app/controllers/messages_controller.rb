@@ -103,6 +103,9 @@ class MessagesController < ApplicationController
     # TODO: make js
     @message = Message.find(params[:id])
     @message.destroy
-    redirect_to :back, :notice => "Deleted message." # redirect_to messages_url, :notice => "Successfully destroyed message."
+    respond_to  do |format|
+      format.html { redirect_to :back, :notice => "Deleted message." }# redirect_to messages_url, :notice => "Successfully destroyed message."
+      format.js { flash.now[:notice] = "Message deleted." }
+    end
   end
 end

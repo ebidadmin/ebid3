@@ -35,7 +35,7 @@
 <% elsif order.status == "Paid" && order.paid == nil %>
 
 	<%= form_tag seller_status_order_path(order), :method => :put do %>
-		<%= content_tag :p, "The Buyer tagged this order as 'Paid'. ", :class => 'instruction mild-alert' %>
+		<%= content_tag :p, "The Buyer tagged this order as 'Paid' <br> on #{order.paid_temp.strftime('%b %d, %Y')}. Please confirm payment.".html_safe, :class => 'instruction mild-alert' %>
 		Pls confirm if Paid: <%= select_tag :seller_status, options_for_select(["Paid", "Confirm Payment"], [order.status]), {:onchange => 'this.form.submit()'} %>
 	<% end %>
 

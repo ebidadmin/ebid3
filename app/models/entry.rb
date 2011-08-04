@@ -59,7 +59,8 @@ class Entry < ActiveRecord::Base
   scope :latest, where('created_at >= ?', 5.days.ago)
 
   scope :inclusions, includes([:line_items => [:car_part]], :user, :car_brand, :car_model, :car_variant)
-  scope :seller_inclusions, includes(:car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos)
+  scope :seller_inclusions, includes(:user, :car_brand, :car_model, :car_variant, :city, :term, :line_items, :photos, :bids, :orders)
+  scope :admin_inclusions, includes(:user, :car_brand, :car_model, :car_variant, :city, :term, :photos, :bids, :orders, :messages)
 
 	def add_line_items_from_cart(cart)
 		cart.cart_items.each do |item|
@@ -207,5 +208,9 @@ class Entry < ActiveRecord::Base
     else         
       Time.now > online + 150.minutes
     end
+  end
+
+  def with_diffs
+    diffs.count > 0
   end
 end

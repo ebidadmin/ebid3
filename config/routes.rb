@@ -122,8 +122,13 @@ Ebid::Application.routes.draw do
       put :seller_status
       put :buyer_paid
       get :print
+      post :cancel
+      put :confirm_cancel
     end
-    get :auto_paid, :on => :collection
+    collection do
+      get :auto_paid
+    end
+    # , :on => :collection
     resources :ratings
   end
 

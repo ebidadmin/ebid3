@@ -1,5 +1,5 @@
 class CarPartsController < ApplicationController
-  before_filter :initialize_cart
+  before_filter :initialize_cart, :except => [:index, :show]
   before_filter :check_buyer_role
   before_filter :check_admin_role, :except => [:new, :create, :search]
   respond_to :html, :js
@@ -23,6 +23,7 @@ class CarPartsController < ApplicationController
   
   def create
     @car_part = CarPart.new(params[:car_part])
+    @car_part.strip_blanks(current_user)
     if @car_part.save
       new_car_part = CarPart.last
       @item = @cart.add(new_car_part.id)
@@ -30,7 +31,6 @@ class CarPartsController < ApplicationController
       if current_user.has_role?('admin')
         redirect_to car_parts_path(:name => @car_part.name)
       else
-        # redirect_to new_user_entry_path(current_user)
         redirect_to :back
       end 
     else

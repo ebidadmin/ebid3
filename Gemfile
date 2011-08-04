@@ -7,7 +7,6 @@ gem 'devise', '1.1.5'
 # gem 'cancan'
 gem 'rd_searchlogic', :require => 'searchlogic', :git => 'git://github.com/railsdog/searchlogic.git'
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
-# gem 'formtastic'
 gem 'simple_form'
 gem 'jquery-rails'
 gem 'nested_form', :git => 'git://github.com/madebydna/nested_form.git'
@@ -32,3 +31,4 @@ gem 'capistrano'
 # gem 'aws-s3', :require => 'aws/s3'
 
 gem 'mocha', :group => :test
+# gem 'bullet', :group => :development

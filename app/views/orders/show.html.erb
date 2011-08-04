@@ -21,35 +21,45 @@
 	<h2>Order Details</h2>
 	<%= render 'shared/info_vehicle', :entry => @entry %>
 	<%#= render 'shared/info_parts' if current_user.has_role?('admin')  %>
+	<%= link_to "View Photos", seller_show_path(@entry), :class => 'button', :id => 'view-vehicle-button' if current_user == @order.seller %>
 
+	<%= form_tag cancel_order_path(@order), :method => :post do  %>
 	<table class="parts-set">
 		<%= render 'shared/part_titles' %>
+		
 		<% for order_item in  @order_items1 %>
-			<tr>	
+			<tr <%= "class='cancelled'" if order_item.cancelled? %>>	
 				<%= content_tag :td, order_item.quantity, :class => "qty" %>
 				<td class="partname">
 					<%= order_item.line_item.part_name.html_safe %>
 					<%= content_tag :span, " (Details: #{content_tag :strong, order_item.line_item.part_no})".html_safe, :class => 'partnum' unless order_item.line_item.part_no.blank?  %>
-          <%= content_tag :span, " #{order_item.bid_type.upcase}".html_safe, :class => 'bid-type' %>
+          <%= content_tag :span, " #{order_item.bid_type.upcase}".html_safe, :class => "bid-type#{' cancelled' if order_item.cancelled?}" %>
 				</td> 
 				<%= content_tag :td, ph_currency(order_item.amount), :class => 'price' %>
-				<%= content_tag :td, ph_currency(order_item.total), :class => 'price' %>
+				<td class="price">
+					<%= ph_currency(order_item.total) %>
+					<%= check_box_tag 'bid_ids[]', order_item.id if @order.can_be_cancelled? %>
+				</td>
 			</tr>	
 		<% end %>
 		<tr class="selection-total">	
 			<%= content_tag :td, 'Order Total', :class => 'label', :colspan => 2 %>
-			<%= content_tag :td, ph_currency(@order_items1.collect(&:total).sum), :class => 'price', :colspan => 2 %>
+			<%= content_tag :td, ph_currency(@order.order_total), :class => 'price', :colspan => 2 %>
 		</tr>
+		<% if @order.can_be_cancelled?  %>
+			<%= content_tag :tr, (content_tag :td, (submit_tag 'Cancel Checked Items', :id => 'cancel-button'), :colspan => 4), :class => "selection-total" %>
+		<% end %>
 	</table>
+	<% end %>
 </div>
 
-<div id="confirmation" class="page-links">
+<div class="page-links">
 	<% if current_user.has_role?('powerbuyer') || current_user.has_role?('buyer') %>
 	
 		<% if @order.status == "PO Released" && @order.seller_confirmation == false %>
-		<%= link_to "OK, Done!", @entry, :class => 'button' %>
+		<%= link_to "<< Back", @entry, :class => 'button' %>
 		<% else %>
-		<%= link_to "OK, Done!", :back, :class => 'button' %>
+		<%= link_to "<< Back", :back, :class => 'button' %>
 		<% end %>
 		
 	<% elsif current_user.has_role?('seller') %>
@@ -58,7 +68,7 @@
 			<%= link_to "<< Back", :back, :class => 'button' %>
 		<% else %>
 			<%= form_tag confirm_order_path, :method => :put  do %>
-				<%= submit_tag "Accept Order" %> or <%= link_to "Cancel", seller_orders_path(current_user), :class => 'button' %>
+				<%= link_to "<< Back", seller_orders_path(current_user), :class => 'button' %> <%= submit_tag "Accept Order", :id => 'feature-button' %>
 			<% end %>
 		<% end %>
 

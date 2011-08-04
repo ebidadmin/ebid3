@@ -32,17 +32,13 @@
 
 
 <% unless (@entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted') && @entry.expired.nil? %>
-  <% content_for :subnav do %>
+  <%= content_for :subnav do %>
 	<%= content_tag :div, ("Note: the status of this entry is " + (content_tag :strong, current_status_or_expired?(@entry)) + 
 	". It\'s no longer available for bidding.").html_safe, :id => 'flash_info'  %>
   <% end  %>	
 <% end %>
 
-<% content_for :subnav do %>
-	<%= content_tag :div, "Hi #{current_user.first_name}! Have you seen your new #{link_to 'Dashboard', seller_main_path(current_user)} lately?".html_safe, :id => 'flash_info'  %>
-<% end %>
-
-<% content_for :javascripts do %>
+<%= content_for :javascripts do %>
 	<% stylesheet 'shadowbox' %>
 	<%= javascript_include_tag 'shadowbox' %>
 	<script type="text/javascript">

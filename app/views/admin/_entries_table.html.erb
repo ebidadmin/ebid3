@@ -34,7 +34,7 @@
       </p>
 
 			<%= form_tag admin_change_status_path(:id => entry), :method => :put do %>
-				Change Status? <%= select_tag :admin_status, options_for_select(["Online", "For-Decision"], [entry.buyer_status]), {:onchange => 'this.form.submit()'} %>
+				Change Status? <%= select_tag :admin_status, options_for_select(["New", "Online", "For-Decision"], [entry.buyer_status]), {:onchange => 'this.form.submit()'} %>
 			<% end %>
 
 			<div id='admin-stuff' class='comfy-alert'>
