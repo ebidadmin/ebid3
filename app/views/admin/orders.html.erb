@@ -2,6 +2,7 @@
 
 <%= render 'buyer/filter_by_user' unless current_user.has_role?('seller') || @user_group.nil? %>
 <%#= render 'buyer/filter_by_status' unless @status_tags.nil? %>
+<%= render 'admin/filter_by_buyer' unless @buyers.blank? %>
 <%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 <%= render 'buyer/filter_by_search' %>
 
@@ -32,7 +33,7 @@
 		<tr>
 	  	<td >	
 	 			<% for order_item in  order.order_items %>
-					<%= content_tag :p, "[ #{order_item.quantity} ] " + order_item.line_item.part_name  %>
+					<%= content_tag :p, "[ #{order_item.quantity} ] " + order_item.part_name  %>
 				<% end %>
 		 	</td>
 			<td>

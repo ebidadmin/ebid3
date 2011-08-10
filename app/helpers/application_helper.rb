@@ -99,4 +99,7 @@ module ApplicationHelper
     end
   end
   
+  def long_date(date)
+    date.strftime('%d-%b-%Y, %a %R')
+  end
 end

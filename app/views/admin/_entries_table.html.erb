@@ -9,7 +9,7 @@
     <%= content_tag :th, 'Status', :class => 'status' %>
 	</tr>
 	<tbody>
-	<%- for entry in @entries -%>
+	<% for entry in @entries %>
 	<tr>
 		<td class="vehicle">	
   		<%= render 'shared/photo_first', :entry => entry unless entry.photos.nil? %>
@@ -44,7 +44,7 @@
 			</div>
 		</td>
 	</tr>
-	<%- end -%>
+	<% end %>
 	</tbody>
 </table>
 

@@ -1,6 +1,6 @@
 <% title "Purchase Order" %>
 
-<% content_for :subnav do %>
+<%= content_for :subnav do %>
 	<%= link_to 'Print Preview', print_order_path(@order), :id => 'print-preview' %>
 <% end %>
 
@@ -12,7 +12,7 @@
 <div id="delivery">
 	<h2>Delivery</h2>
 	<%= render 'orders/info_instructions', :order => @order %>
-	<h4 id="del-status">Status: <%= @order.status %></h4>
+	<%= content_tag :h4, "Status: #{@order.status}", :id => "del-status" %>
 </div>
 
 <%#= render 'shared/comments' %>
@@ -23,7 +23,7 @@
 	<%#= render 'shared/info_parts' if current_user.has_role?('admin')  %>
 	<%= link_to "View Photos", seller_show_path(@entry), :class => 'button', :id => 'view-vehicle-button' if current_user == @order.seller %>
 
-	<%= form_tag cancel_order_path(@order), :method => :post do  %>
+	<%= form_tag cancel_order_path(@order), :method => :get do  %>
 	<table class="parts-set">
 		<%= render 'shared/part_titles' %>
 		
@@ -53,13 +53,12 @@
 	<% end %>
 </div>
 
+
 <div class="page-links">
 	<% if current_user.has_role?('powerbuyer') || current_user.has_role?('buyer') %>
 	
 		<% if @order.status == "PO Released" && @order.seller_confirmation == false %>
 		<%= link_to "<< Back", @entry, :class => 'button' %>
-		<% else %>
-		<%= link_to "<< Back", :back, :class => 'button' %>
 		<% end %>
 		
 	<% elsif current_user.has_role?('seller') %>

@@ -8,13 +8,14 @@ class LineItem < ActiveRecord::Base
   has_one :fee
   has_many :diffs
   
-  scope :desc, order('id DESC')
+  scope :desc, order('id desc')
   scope :online, where(:status => ['Online', 'Relisted'])
   scope :with_bids, where('line_items.bids_count > 0')
   scope :two_and_up, where('line_items.bids_count > 2')
   scope :without_bids, where('line_items.bids_count < 1')
 
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user, :city, :term]], :car_part, [:bids => :user])
+  scope :inclusions2, includes([:entry => [:car_brand, :car_model, :car_variant, :user, [:bids => :user]]], :car_part ) # Used in Admin#Bids
   
   scope :metered, where('line_items.created_at >= ?', '2011-04-16')
   scope :ftm, where('line_items.created_at >= ?', Time.now.beginning_of_month)

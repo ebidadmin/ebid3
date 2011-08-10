@@ -33,8 +33,8 @@ class Entry < ActiveRecord::Base
   validates_presence_of :year_model, :car_brand, :car_model, :plate_no, :serial_no, :motor_no, :term
   validates_presence_of :city, :if => :new_city_blank
 
-  scope :desc, order('id DESC')
-  scope :desc2, order('bid_until DESC', 'id DESC')
+  scope :desc, order('id desc')
+  scope :desc2, order('bid_until desc', 'id desc')
   scope :asc, order('bid_until')
   scope :five, limit(5)
 

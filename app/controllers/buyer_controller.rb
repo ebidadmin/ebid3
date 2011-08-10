@@ -59,11 +59,7 @@ class BuyerController < ApplicationController
     @tag_collection = ["PO Released", "For Delivery", "For-Delivery"]
     initiate_list
     find_orders
-    if params[:seller].nil?
-      @search = @all_orders.desc.search(params[:search])
-    else
-      @search = @all_orders.where(:seller_id => params[:seller]).desc.search(params[:search]) 
-    end
+    @search = @all_orders.search_orders(params[:search], params[:seller], 'created_at desc')
     @orders = @search.inclusions.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end
@@ -74,8 +70,7 @@ class BuyerController < ApplicationController
     initiate_list
     @status = "Delivered"
     find_orders
-    @search = @all_orders.asc.search(params[:search])    
-    @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
+    @search = @all_orders.search_orders(params[:search], params[:seller], 'pay_until')
     @orders = @search.inclusions.paginate :page => params[:page], :per_page => 15    
     
     respond_to do |format|
@@ -86,12 +81,10 @@ class BuyerController < ApplicationController
 
   def payments_print
     @title = 'Delivered Orders - For Payment'
-    @sort_order =" due date - ascending order"
     initiate_list
     @status = "Delivered"
     find_orders_for_print
-    @search = @all_orders.asc.search(params[:search])    
-    @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) unless params[:seller].nil?
+    @search = @all_orders.search_orders(params[:search], params[:seller], 'pay_until')
     @orders = @search.inclusions   
     render :layout => 'print'
   end
@@ -102,8 +95,7 @@ class BuyerController < ApplicationController
     initiate_list
     @status = ["Paid", "Closed"]
     find_orders
-    @search = @all_orders.asc2.search(params[:search])
-    @search = @all_orders.where(:seller_id => params[:seller]).asc2.search(params[:search]) unless params[:seller].nil?
+    @search = @all_orders.search_orders(params[:search], params[:seller], 'paid desc')
     @orders = @search.inclusions.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end

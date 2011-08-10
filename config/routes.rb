@@ -122,7 +122,7 @@ Ebid::Application.routes.draw do
       put :seller_status
       put :buyer_paid
       get :print
-      post :cancel
+      get :cancel
       put :confirm_cancel
     end
     collection do

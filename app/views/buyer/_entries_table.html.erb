@@ -9,7 +9,7 @@
     <%= content_tag :th, 'Status', :class => 'status' %>
 	</thead>
 	<tbody>
-	<%- for entry in @entries -%>
+	<% for entry in @entries %>
 	<tr>
 		<td class="vehicle">	
   		<%= render 'shared/photo_first', :entry => entry unless entry.photos.nil? %>
@@ -26,7 +26,7 @@
       <%= content_tag :p, (link_to (pluralize entry.line_items_count, "item"), entry), :class => 'parts-total' %>
     </td>
 		<td class="status">
-      <%= display_status(entry) %>
+      <%= display_status(entry) %> <%= content_tag :span, 'M', :class => 'message-mark' if entry.messages.present? %>
 			<p class="instruction">
 			  <%= display_number_of_bidders(entry) unless (entry.buyer_status == "New" || entry.buyer_status == "Edited") %>
         <%= render 'entries/online_links', :entry => entry %>
@@ -35,7 +35,7 @@
 			<%= content_tag :p, "Bidding Speed: " + distance_of_time_in_words(entry.bids.minimum(:bid_speed)), :class => 'comfy-alert' unless entry.bids.first.blank? %>
 		</td>
 	</tr>
-	<%- end -%>
+	<% end %>
 	</tbody>
 </table>
 

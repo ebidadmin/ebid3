@@ -6,6 +6,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :order, :counter_cache => true
   has_one :car_part, :through => :line_item
   
+  delegate :part_name, :to => :line_item
   scope :metered, where('order_items.created_at >= ?', '2011-04-16')
   scope :ftm, where('order_items.created_at >= ?', Time.now.beginning_of_month)
   

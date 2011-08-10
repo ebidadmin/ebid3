@@ -17,5 +17,6 @@
 		<%- end -%>
 
 		<%= content_tag :li, (content_tag :span, 'Credit Term: ') + (content_tag :strong, entry.term.term_name), :id => "term" if entry.term %>
+		<%= content_tag :li, (content_tag :span, 'Created by: ') + entry.user.username if entry.user != current_user %>
 	</ul>	
 </div>

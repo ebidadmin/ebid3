@@ -219,15 +219,6 @@ table#lot-bids tr { border-top: 2px solid #999; }
 
 /* SUPPLIER - MONITOR BIDS
 ---------------------------------------------------------------------- */
-/*table#monitor-bids .part-desc,
-table#monitor-bids .amount,
-table#monitor-bids .bid-type,
-table#monitor-bids .status { display: inline; float: left; margin-left: 10px; width: 110px; }
-table#monitor-bids .part-desc { clear: both; text-align: left; width: 180px; }
-table#monitor-bids .bid-group { float: left; margin-left: 15px; }
-table#monitor-bids .amount { text-align: right; }
-table#monitor-bids th .amount { margin-left: 15px; }
-table#monitor-bids td .amount { clear: both; margin-left: 0; }*/
 
 #supplier-bids th.vehicle, #supplier-bids th .part { text-align: left; }
 #supplier-bids .vehicle { width: 20%; }
@@ -255,14 +246,6 @@ table#monitor-bids td .amount { clear: both; margin-left: 0; }*/
 #show-comments, #show-messages { clear: both; margin-bottom: 2em; overflow: hidden; width: 100%;}
 #comments-list { float: left; width: 100%;}
 #comments-list li { float: left; margin: 0 0 10px 0; width: 100%;}
-/*#show-comments #creator, #show-comments #comment, #show-comments #datetime { float: left; }
-#show-comments #creator { color: #999; font-weight: bold; width: 15%;  }
-#show-comments #comment { width: 63%; margin-right: 2%; }
-#show-comments #datetime { color: #999; font-weight: bold; width: 20%; }*/
-/*#show-comments form { float: left; width: 460px; text-align: center;}
-#show-comments form input { margin-top: 0; }
-#show-comments form input[type='text'] { margin-right: 10px; }*/
-
 
 /* PURCHASE ORDER
 ---------------------------------------------------------------------- */
@@ -331,13 +314,6 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #buyer-fees .fee { width: 15%;  }
 #buyer-fees .fee-type { text-align: center; }
 
-/*#seller-split .vehicle { width: 25%; }
-#seller-split td div { margin-bottom: 5px; min-height: 18px; line-height: 18px; }
-#seller-split .vehicle a { font-size: 1em; margin-left: -4px; }
-#seller-split .part { margin-left: 15px; min-height: 18px; width: 200px;}
-#seller-split .lowest-bid, #seller-split .fee { width: 120px; }
-#seller-split .fee-type { margin-right: 0; width: 14%; }
-#seller-split .part { text-align: left; }*/
 
 #supplier-fees th.vehicle, #supplier-fees th .part { text-align: left; }
 #supplier-fees .vehicle { width: 20%; }
@@ -444,11 +420,6 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #content-main #cancel-button { background-color: #CCC; float: right;}
 
 .aside div#message-box, .aside div.input { margin: 0; padding: 0; }
-/*#message-box label { color: #C00; padding: 15px 0; text-transform: uppercase; width: 100%; }
-.aside textarea { height: 75px; margin-bottom: 15px; width: 92%; }
-#message-box #confirmation { font-size: 1.2em; margin: 10px 0; padding: 10px 0; }
-.buyer textarea { height: 30px; width: 98%; }
-#message-box { margin: 0 0 15px; }*/
 
 #message-box { clear: both; border-top: 1px solid #CCC; border-bottom: 1px solid #CCC; margin-bottom: 20px; padding: 10px 0 15px; width: 100%; }
 #msg-list { float: left; margin-bottom: 10px; overflow: hidden; width: 100%; }
@@ -465,7 +436,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #msg-fields { clear: both; position: relative; text-align: center;}
 #msg-fields label { color: #C00; padding: 15px 0; text-transform: uppercase; width: 100%; }
 #msg-fields textarea { font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;float: none; height: 40px; width: 50%;}
-/*#confirmation { font-size: 1.2em; margin: 10px 0; padding: 10px 0; }*/
+#confirmation { font-size: 1.2em; margin: 10px 0; padding: 10px 0; }
 
 #msg-snippet { border: 1px dotted #CCC; margin: 0 auto; padding: 5px; text-align: left; overflow: hidden; width: 50%; }
 #msg-snippet .msg-label { color: #C00; text-transform: uppercase; }

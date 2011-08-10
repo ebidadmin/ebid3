@@ -24,7 +24,7 @@
 		<td class='amount'>
       <%= content_tag :p, ph_currency(order.order_total), :class => 'total' %>
 		  <%= link_to "View PO", order, :class => 'button' %>
-		  <%#= link_to "Print PO", print_order_path(order), :class => 'buttons' %>
+		  <%#= link_to "Print PO", print_order_path(order), :class => 'button' %>
 		</td>
   	<td class='stat'>
   		<%= content_tag :p, 'Seller: ' + order.seller.company.name, :class => 'instruction'  %>

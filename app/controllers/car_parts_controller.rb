@@ -44,6 +44,7 @@ class CarPartsController < ApplicationController
   
   def update
     @car_part = CarPart.find(params[:id])
+    @car_part.strip_blanks(current_user)
     if @car_part.update_attributes(params[:car_part])
       flash[:notice] = "Successfully updated car part."
       redirect_to car_parts_path(:name => @car_part.name)

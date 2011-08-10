@@ -1,5 +1,8 @@
 <% title "Supplier's Dashboard" %>
 
+<%= content_tag :h3, 'Your last sign-in was: ' + long_date(@last_activity) unless @last_activity.nil? %>
+<%= render 'shared/rating_display' unless @ratings.blank? %>
+
 <div class="aside">
 	<div id="perf-ind" class="comfy-alert" >
 		<%= content_tag :h4, 'Performance Indicators', :class => 'highlight' %>

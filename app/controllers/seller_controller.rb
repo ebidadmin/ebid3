@@ -4,7 +4,7 @@ class SellerController < ApplicationController
   
   def main
     @last_activity = current_user.last_sign_in_at unless current_user.last_sign_in_at.nil?
-    @ratings = Rating.where(:ratee_id => current_user).metered
+    @ratings = Rating.metered.where(:ratee_id => current_user.company.users)
     @last_bid = current_user.bids.last.created_at unless current_user.bids.last.nil?
     @line_items = LineItem.scoped
       @li_all = @line_items.count

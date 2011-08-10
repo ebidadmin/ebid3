@@ -49,6 +49,7 @@ class OrdersController < ApplicationController
     find_order_and_entry
     # @order_items = @order.order_items
     @order_items1 = @order.bids#.not_cancelled
+    @priv_messages = @order.messages.closed.restricted(current_user.company)
   end
 
   def print
@@ -104,7 +105,6 @@ class OrdersController < ApplicationController
 
   def cancel
     if params[:bid_ids]
-      session['referer'] = request.env["HTTP_REFERER"]
       find_order_and_entry
       @bids = Bid.find(params[:bid_ids])
       @message = current_user.messages.build
@@ -117,11 +117,12 @@ class OrdersController < ApplicationController
   
   def confirm_cancel
     # raise params.to_yaml
-    # if params[:message]
+    if params[:order][:message][:message].present?
       find_order_and_entry
       @bids = Bid.find(params[:bid_ids])
       @bids.each do |bid|
         bid.update_attribute(:status, "Cancelled by #{params[:msg_type]}")
+        bid.line_item.update_attribute(:status, "Cancelled by #{params[:msg_type]}")
       end
       @message = current_user.messages.build
       @message.user_company_id = current_user.company.id
@@ -135,24 +136,23 @@ class OrdersController < ApplicationController
         @message.receiver_company_id = @order.seller.company.id
       end
       if @order.bids.cancelled.count == @order.order_items.count
-        @message.message = "ENTIRE ORDER cancelled (#{Time.now.strftime('%b %d, %Y %a %R')}): #{@bids.collect { |b| b.line_item.part_name}}."
-        @message.message << " Reason: #{params[:order][:message][:message]}"
+        @message.message = "ENTIRE ORDER cancelled (#{Time.now.strftime('%b %d, %Y %a %R')}): #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
+        @message.message << " REASON: #{params[:order][:message][:message]}"
         @order.messages << @message
         @order.update_attributes(:status => "Cancelled by #{params[:msg_type]}", :order_total => @order.bids.collect(&:total).sum)
         flash[:error] = "Cancelled the ENTIRE ORDER."
       else
-        @message.message = "PARTIAL ORDER cancelled (#{Time.now.strftime('%b %d, %Y %a %R')}): #{@bids.collect { |b| b.line_item.part_name}}."
-        @message.message << " Reason: #{params[:order][:message][:message]}"
+        @message.message = "PARTIAL ORDER cancelled (#{Time.now.strftime('%b %d, %Y %a %R')}): #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
+        @message.message << " REASON: #{params[:order][:message][:message]}"
         @order.messages << @message
         @order.update_attribute(:order_total, @order.order_total - @bids.collect(&:total).sum) unless  @order.order_total == 0
         flash[:error] = "Cancelled some order items."
       end
-      redirect_to session['referer']  
-      session['referer'] = nil
-    # else
-    #   flash[:warning] = "Please indicate your reason for cancelling the order."
-    #   redirect_to :back
-    # end
+      redirect_to @order
+    else
+      flash[:warning] = "Please indicate your reason for cancelling the order."
+      redirect_to :back
+    end
     #TODO award to next bidder?
   end
   

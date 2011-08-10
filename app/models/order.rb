@@ -18,12 +18,12 @@ class Order < ActiveRecord::Base
 
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:seller => :company], [:order_items => [:line_item => :car_part]])
   scope :inclusions_for_seller, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:order_items => [:line_item => :car_part]])
-  scope :inclusions_for_admin, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:seller => :company], [:order_items => [:line_item => :car_part]])
-  scope :with_ratings, includes(:ratings)
+  scope :inclusions_for_admin, includes([:entry => [:car_brand, :car_model, :car_variant]], :company, [:seller => :company], [:order_items => [:line_item => :car_part]])
+  scope :with_ratings, includes(:ratings => :user)
   
-  scope :desc, order('id DESC')
+  scope :desc, order('id desc')
   scope :asc, order('delivered')
-  scope :desc2, order('pay_until DESC')
+  scope :desc2, order('pay_until desc')
   scope :asc2, order('paid')
 
   scope :unpaid, where(:paid => nil)
@@ -33,7 +33,7 @@ class Order < ActiveRecord::Base
   scope :delivered, where(:status => 'Delivered')
   scope :paid, where(:status => 'Paid').asc2
   scope :closed, where(:status => 'Closed')
-  scope :paid_and_closed, where(:status => ['Paid', 'Closed']).order('paid DESC')
+  scope :paid_and_closed, where(:status => ['Paid', 'Closed']).order('paid desc')
   scope :payment_valid, where('orders.paid IS NOT NULL')
   scope :payment_pending, where('orders.paid IS NULL')
 
@@ -88,6 +88,18 @@ class Order < ActiveRecord::Base
       scoped  
     end  
   end  
+
+  def self.search_orders(params = nil, seller = nil, sort_order = nil)
+    if seller
+      self.where(:seller_id => seller).order(sort_order).search(params) 
+    else
+      self.order(sort_order).search(params) 
+    end
+  end
+  
+  def has_ratings?(users) # used in ORDERS#INDEX
+    ratings.where(:user_id => users).exists?
+  end
   
   def days_overdue # used in ORDERS#INDEX
     (Date.today - pay_until).to_i - 1
@@ -158,6 +170,7 @@ class Order < ActiveRecord::Base
   def can_be_cancelled?
     status == 'PO Released' || status == 'For-Delivery'
   end
+ 
   def close
     update_attribute(:status, "Closed")
     # entry.update_attribute(:buyer_status, "Closed")

@@ -4,14 +4,15 @@ class DiffsController < ApplicationController
   respond_to :html, :js
 
   def index
-    if current_user.has_role?('admin')
-      @search = Entry.bids_count_gt(0).desc.search(params[:search])
-      # @buyers = @search.collect(&:buyer_company).uniq.collect { |buyer| [Company.find(buyer).name, diffs_path(:buyer => buyer)] }
-      # @buyers.push(['All', diffs_path(:buyer => nil)]) unless @buyers.blank?
-      # @buyers_path = diffs_path(:buyer => params[:buyer])
-    else
-      @search = Entry.bids_count_gt(0).where(:company_id => current_user.company).desc.search(params[:search])
-    end
+    # if current_user.has_role?('admin')
+    #   @search = Entry.bids_count_gt(0).desc.search(params[:search])
+    #   @buyers = @search.collect(&:buyer_company).uniq.collect { |buyer| [Company.find(buyer).name, diffs_path(:buyer => buyer)] }
+    #   @buyers.push(['All', diffs_path(:buyer => nil)]) unless @buyers.blank?
+    #   @buyers_path = diffs_path(:buyer => params[:buyer])
+    # else
+    #   @search = Entry.bids_count_gt(0).where(:company_id => current_user.company).desc.search(params[:search])
+    # end
+    @search = Entry.bids_count_gt(0).where(:company_id => 7).desc.search(params[:search])
     @entries = @search.inclusions.paginate :page => params[:page], :per_page => 5
   end
 
