@@ -9,7 +9,7 @@ class Diff < ActiveRecord::Base
   belongs_to :entry
   belongs_to :line_item
   belongs_to :bid
-  belongs_to :canvass_company, :class_name => "Company"
+  belongs_to :canvass_company, :class_name => "Company", :foreign_key => :canvass_company_id
 
   validates :canvass_amount, :numericality => {:greater_than => 0}, :presence => true
   validates :canvass_company, :presence => true

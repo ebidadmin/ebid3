@@ -5,8 +5,7 @@
 		<%= content_tag :h4, 'Performance Indicators', :class => 'highlight' %>
 		<%= content_tag :p, (content_tag :span, 'Bidding Ratio: ') + (percentage @ob_m_pct) %>
 		<%= content_tag :p, (content_tag :span, 'Fastest Bid: ') + (link_to distance_of_time_in_words(@speed.minimum(:bid_speed)), entry_path(@speed.first.entry)) if @speed.present? %>
-		<%= content_tag :p, (content_tag :span, 'Longest Bid: ') + (link_to distance_of_time_in_words(@speed.maximum(:bid_speed)), entry_path(@speed.last.entry)) if @speed.present? %>
-		<%= content_tag :p, (content_tag :span, 'Average Bid: ') + (distance_of_time_in_words(@own_bids.metered.average(:bid_speed))) if @own_bids.present? %>
+		<%= content_tag :p, (content_tag :span, 'Average Bid: ') + (distance_of_time_in_words(@speed.average(:bid_speed))) if @speed.present? %>
 	</div>
 	<ul class="dash full">
     <h3>Active Users</h3>

@@ -2,7 +2,7 @@ class CarBrandsController < ApplicationController
   before_filter :check_admin_role
 
   def index
-    @car_brands = CarBrand.all
+    @car_brands = CarBrand.all.paginate(:page => params[:page], :per_page => 20)
   end
   
   def show

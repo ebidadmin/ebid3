@@ -6,7 +6,7 @@
   <%= f.grouped_collection_select :car_brand_id,  @car_origins, :car_brands, :name, :id, :name, {:include_blank => 'Choose Brand'} %>
 <% end %>
 <%= f.association :car_model, :include_blank => "Choose Model" %>
-<%= f.association :car_variant, :include_blank => "Choose Variant", :hint => "#{link_to 'Click here', new_car_variant_path} to add new variant.".html_safe %>
+<%= f.association :car_variant, :include_blank => "Choose Variant", :hint => "#{link_to 'Click here', new_car_variant_path} to add a new MODEL or VARIANT.".html_safe %>
 <%= f.input :plate_no %>
 <%= f.input :serial_no, :label => 'Serial Number or VIN' %>
 <%= f.input :motor_no, :label => 'Motor Number' %>

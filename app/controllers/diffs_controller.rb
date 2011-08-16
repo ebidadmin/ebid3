@@ -12,7 +12,7 @@ class DiffsController < ApplicationController
     # else
     #   @search = Entry.bids_count_gt(0).where(:company_id => current_user.company).desc.search(params[:search])
     # end
-    @search = Entry.bids_count_gt(0).where(:company_id => 7).desc.search(params[:search])
+    @search = Entry.bids_count_gt(0).where(:company_id => 23).desc.search(params[:search])
     @entries = @search.inclusions.paginate :page => params[:page], :per_page => 5
   end
 
@@ -36,16 +36,17 @@ class DiffsController < ApplicationController
           @existing_diff = Diff.find_by_line_item_id_and_bid_type(line_item, diff[0])
           if @existing_diff.nil? 
             @new_diff = Diff.new
-        		@new_diff.buyer_company_id = @entry.user.company.id
+        		@new_diff.buyer_company_id = @entry.company_id
         		@new_diff.buyer_id = @entry.user_id
         		@new_diff.entry_id = @entry.id
-        		@new_diff.line_item_id = line_item
+        		@new_diff.line_item_id = @line_item.id
             @new_diff.bid_type = diff[0]
-        		@new_diff.canvass_amount = diff[1]
+        		@new_diff.canvass_amount = diff[1].to_f
         		@new_diff.canvass_total = diff[1].to_f * @line_item.quantity.to_i
-            @new_diff.canvass_company_id = params[:canvass_company_id]
-            @existing_bid = Bid.find_by_line_item_id_and_bid_type_and_lot(line_item, diff[0], nil) #Bid.find_by_line_item_id_and_bid_type(line_item, diff[0])
-        		unless @existing_bid.nil? 
+            @new_diff.canvass_company_id = params[:canvass_company_id].to_i
+            # @existing_bid = Bid.find_by_line_item_id_and_bid_type_and_amount(@line_item.id, diff[0], diff[1]) #Bid.find_by_line_item_id_and_bid_type(line_item, diff[0])
+            @existing_bid = Bid.where(:line_item_id => line_item, :bid_type => diff[0]).order(:amount).first
+        		if @existing_bid.present? 
           		@new_diff.seller_company_id = @existing_bid.user.company.id
           		@new_diff.seller_id = @existing_bid.user_id
           		@new_diff.bid_id = @existing_bid.id 

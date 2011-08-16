@@ -1,7 +1,7 @@
 class CarVariant < ActiveRecord::Base
-  attr_accessible :car_brand_id, :car_model_id, :name, :start_year, :end_year
+  attr_accessible :car_brand_id, :car_model_id, :new_model, :name, :start_year, :end_year
+
   attr_accessor :new_model
-  
   before_save :create_new_model
   
   belongs_to :car_brand
@@ -13,7 +13,7 @@ class CarVariant < ActiveRecord::Base
   validates_presence_of :name, :message => "Please put the name of the new variant."
   
   def create_new_model
-    create_car_model(:name => new_model, :car_brand_id => car_brand_id) unless new_model.blank? 
+    create_car_model(:name => new_model.strip, :car_brand_id => car_brand_id) unless new_model_blank 
   end
   
   def new_model_blank

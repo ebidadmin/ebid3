@@ -143,7 +143,7 @@ class EntriesController < ApplicationController
       for friend in @entry.user.company.friends
         unless friend.users.nil?
           for seller in friend.users
-            EntryMailer.delay.online_entry_alert(seller, @entry)
+            EntryMailer.delay.online_entry_alert(seller, @entry) if seller.opt_in == true
           end
         end
       end

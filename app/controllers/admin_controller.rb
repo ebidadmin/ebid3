@@ -354,6 +354,6 @@ private
       @closed_f = @closed.ftm.collect(&:order_total).sum
       @closed_f_pct = (@closed_f.to_f / @td_f.to_f) * 100 
       
-      @speed = Bid.metered.where('bid_speed > ?', 90)
+      @speed = Bid.metered.where('bid_speed > ?', 120).order(:bid_speed)
   end
 end

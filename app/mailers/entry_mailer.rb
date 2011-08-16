@@ -4,18 +4,18 @@ class EntryMailer < ActionMailer::Base
   
   def new_entry_alert(entry)
     @entry = entry
-    if entry.user.company.id == 7
-      mail(
-        :to => ["Oliver Hambre <oohambre@bpims.com>", "#{entry.user.profile.full_name} <#{entry.user.email}>"],
-        :subject => "New Entry: #{entry.vehicle}",
-        :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"] 
-        )
-    else
+    # if entry.user.company.id == 7
+    #   mail(
+    #     :to => ["Oliver Hambre <oohambre@bpims.com>", "#{entry.user.profile.full_name} <#{entry.user.email}>"],
+    #     :subject => "New Entry: #{entry.vehicle}",
+    #     :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"] 
+    #     )
+    # else
       mail(
         :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"],
         :subject => "New Entry: #{entry.vehicle}" 
         )
-    end
+    # end
   end
   
   def online_entry_alert(seller, entry)

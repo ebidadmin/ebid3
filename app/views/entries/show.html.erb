@@ -47,7 +47,7 @@
 	<div class="page-links">
 	  <%= link_to "<< Back", :back, :class => 'button' %>
 	  <%= link_to "Edit", edit_entry_path(@entry), :class => 'button'  %>
-	  <%= link_to "Put Online", put_online_entry_path(@entry), :class => 'button' if @line_items.present? && @entry.photos.present? && @entry.bid_until.blank?  %>
+	  <%= link_to "Put Online", put_online_entry_path(@entry), :class => 'button', :id => 'feature-button' if @line_items.present? && @entry.photos.present? && @entry.bid_until.blank?  %>
 		<%= render 'reveal_bids_button', :entry => @entry %>
 		<% unless @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' || @entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted'  %>
 		  <%= link_to "Relist Un-bided Items", relist_entry_path(@entry), :class => 'button', :id => 'relist-button' if @line_items.collect(&:bids_count).include?(0) %>

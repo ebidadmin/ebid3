@@ -21,7 +21,7 @@
 			<%= content_tag :p, entry.ref_no %>
 			<%= content_tag :p, truncate(entry.vehicle) %>
 			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight'  %></p>
-			<%= content_tag :h4, "First Bid: " + distance_of_time_in_words(entry.created_at, entry.bids.order(:bid_speed).first.created_at) unless entry.bids.blank? %>
+			<%= content_tag :h4, "First Bid: " + distance_of_time_in_words(entry.bids.order(:bid_speed).first.bid_speed) unless entry.bids.blank? %>
 			<%#= active_diff_mark(entry) %>
 			<%= link_to 'Compute Diff', diff_path(entry) %>
 		</td>
@@ -29,7 +29,7 @@
   	<% for line_item in entry.line_items %>
 			<div class="part">
 		    <%= content_tag :p, "[ #{line_item.quantity} ] " + line_item.part_name %>
-				<%= content_tag :p, "TAT: " + distance_of_time_in_words(line_item.created_at, line_item.bids.first.created_at) unless line_item.bids.blank? %>
+				<%= content_tag :p, "TAT: " + distance_of_time_in_words(line_item.bids.order(:bid_speed).first.bid_speed) unless line_item.bids.blank? %>
 			</div>
 			<div class="amounts">
 	    <%= content_tag :div, 'E-Bid', :class => 'labels ebid' %>
