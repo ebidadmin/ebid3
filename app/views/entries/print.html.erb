@@ -1,7 +1,10 @@
-<% title "Bid Results: #{@entry.vehicle}" %>
+<% title @entry.vehicle %>
 
 <%= render 'shared/info_vehicle', :entry => @entry %>
-<%#= render 'shared/comments' unless @entry.comments.blank?  %>
+<div id="message-box">
+	<%= content_tag :div, (render 'messages/private_messages'), :id => 'private' if @priv_messages.present?  %>
+	<%= content_tag :div, (render 'messages/public_messages'), :id => 'public' if @pub_messages.present?  %>
+</div>
 
 <table class="buyer monitor-bids">
 	<thead>
@@ -23,7 +26,7 @@
 		<td class="partname">    	
 			<%= content_tag :p, item.part_name, :class => 'strong' %> 
 			<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
-			<%= content_tag :p, "Bidder/s: #{item.bids.collect(&:user_id).uniq.count}", :class => 'number' %>
+			<%= content_tag :p, "Bidder/s: #{item.bids.collect(&:user_id).uniq.count}", :class => 'number'  %>
 			<%= content_tag :p, "Bidding Speed: " + distance_of_time_in_words(@entry.created_at, item.bids.first.created_at) unless item.bids.first.blank? %>
 		</td>
 		<td class="bid-box">

@@ -102,4 +102,9 @@ module ApplicationHelper
   def long_date(date)
     date.strftime('%d-%b-%Y, %a %R')
   end
+  
+  def short_date(date)
+    date.strftime('%d-%b-%y, %R')
+  end
+  
 end

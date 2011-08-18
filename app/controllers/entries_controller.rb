@@ -32,6 +32,12 @@ class EntriesController < ApplicationController
 
   def print
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    if current_user.has_role?('admin')
+      @priv_messages = @entry.messages.closed
+    else
+      @priv_messages = @entry.messages.closed.restricted(current_user.company)
+    end
+    @pub_messages = @entry.messages.open
     render :layout => 'print'
   end
   

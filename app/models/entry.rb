@@ -204,9 +204,9 @@ class Entry < ActiveRecord::Base
 
   def ready_for_reveal?
     if buyer_status == 'Relisted'
-      Time.now > relisted + 150.minutes
+      Time.now > relisted + 180.minutes
     else         
-      Time.now > online + 150.minutes
+      Time.now > online + 180.minutes
     end
   end
 

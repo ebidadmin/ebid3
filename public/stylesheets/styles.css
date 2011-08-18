@@ -426,7 +426,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #msg-list #private { float: left; width: 48%; }
 #msg-list #public { float: right; width: 48%; }
 #msg-list h3, #msg-list .instruction { text-align: center; }
-#msg-list .msg-link { margin-right: 5px; padding: 0 4px;}
+#msg-list .msg-link { margin-right: 4px; padding: 0 4px;}
 #msg-list ul { margin: 0; padding: 0; }
 #msg-list li { clear: both; float: left; margin-bottom: 10px; width: 100%; }
 #creator, #comment { float: left; }

@@ -1,7 +1,7 @@
 <p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
 
 <%#= f.error_messages %>
-<%= f.input :year_model, :collection => (Date.today.year-30..Date.today.year).to_a.reverse, :selected => Date.today.year %>
+<%= f.input :year_model, :collection => (Date.today.year-30..Date.today.year).to_a.reverse, :prompt => 'Choose Model' %>
 <%= f.input :car_brand do %>
   <%= f.grouped_collection_select :car_brand_id,  @car_origins, :car_brands, :name, :id, :name, {:include_blank => 'Choose Brand'} %>
 <% end %>

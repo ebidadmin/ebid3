@@ -16,12 +16,15 @@ li { list-style-type: none;  }
 .vehicle-set li { clear: both;  }
 .vehicle-set li span { font-weight: bold; display: block; float: left; width: 40%; }
 
-#show-comments { clear: both; margin-bottom: 2em; overflow: hidden; }
-#comments-list li { float: left; margin: 0 0 10px 0; width: 100%;}
+#message-box { clear: both; margin-bottom: 2em; overflow: hidden; }
+#message-box h3 { clear: both; }
+#message-box ul { float: left; margin-bottom: 25px; width: 100%; }
+#message-box li { float: left; margin: 0 0 10px 0; width: 100%;}
 #creator, #comment { float: left; }
 #creator { clear: both; font-weight: bold; margin-right: 10px; width: 15%;  }
-#comment { width: 67%; margin-right: 10px; }
-#datetime { float: right; font-weight: bold; text-align: right; width: 15%; }
+#comment { width: 82%; margin-right: 10px; }
+#datetime { margin-right: 10px; width: 15%; }
+.msg-link { display: none; }
 form { display: none; }
 
 table { border-collapse: collapse; margin: 0 auto 1.5em; width: 100%; text-align: center; overflow: hidden; }

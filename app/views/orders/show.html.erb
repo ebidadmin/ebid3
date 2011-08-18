@@ -15,13 +15,13 @@
 	<%= content_tag :h4, "Status: #{@order.status}", :id => "del-status" %>
 </div>
 
-<%#= render 'shared/comments' %>
-
 <div id="order">
 	<h2>Order Details</h2>
 	<%= render 'shared/info_vehicle', :entry => @entry %>
 	<%#= render 'shared/info_parts' if current_user.has_role?('admin')  %>
 	<%= link_to "View Photos", seller_show_path(@entry), :class => 'button', :id => 'view-vehicle-button' if current_user == @order.seller %>
+	<%= content_tag :h3, 'Messages' %>
+	<%= render 'messages/show_messages', :messages => @priv_messages %>
 
 	<%= form_tag cancel_order_path(@order), :method => :get do  %>
 	<table class="parts-set">
