@@ -10,7 +10,7 @@ class SellerController < ApplicationController
       @li_all = @line_items.count
       @li_m = @line_items.metered.count
       @li_f = @line_items.ftm.count
-    @own_bids = current_user.bids.ascend_by_bid_speed
+    @own_bids = current_user.bids.order(:bid_speed) #ascend_by_bid_speed
       @ob_all = @own_bids.collect(&:line_item_id).uniq.count
       @ob_all_pct = (@ob_all.to_f / @li_all.to_f) * 100
       @ob_m = @own_bids.metered.collect(&:line_item_id).uniq.count
@@ -39,7 +39,7 @@ class SellerController < ApplicationController
       @surp_m = @surp.metered.count
       @surp_f = @surp.ftm.count
     @ordered = OrderItem.order_seller_id_eq(current_user)
-    # @ordered = Order.seller_id_eq(current_user)
+    # @ordered = Order.where(:seller_id => current_user)
     # @ordered = @own_bids.where(:status => ['Ordered', 'For-Delivery', 'Delivered', 'Closed'])
     # @ordered = @own_bids.where('bids.order_id IS NOT NULL')
       @ordered_all = @ordered.count
@@ -82,7 +82,7 @@ class SellerController < ApplicationController
       @eb_all = @ebid_orders.collect(&:order_total).sum
       @eb_m = @ebid_orders.metered.collect(&:order_total).sum
       @eb_f = @ebid_orders.ftm.collect(&:order_total).sum
-    @own_orders = @ebid_orders.seller_id_eq(current_user)
+    @own_orders = @ebid_orders.where(:seller_id => current_user)
       @own_all = @own_orders.collect(&:order_total).sum
       @own_all_pct = (@own_all.to_f / @eb_all.to_f) * 100
       @own_m = @own_orders.metered.collect(&:order_total).sum

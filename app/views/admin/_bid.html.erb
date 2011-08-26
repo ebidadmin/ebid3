@@ -1,2 +1,3 @@
 <%= ph_currency bid.amount unless bid.nil? %>
 <%= content_tag :span, " #{bid.user.username unless bid.nil?}", :class => 'instruction' %>
+<%#= content_tag :span, " #{truncate(bid.user.company.name, :length => 10) if bid.present? }", :class => 'instruction' %>

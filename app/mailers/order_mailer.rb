@@ -1,6 +1,7 @@
 class OrderMailer < ActionMailer::Base
   # default_url_options[:host] = "www.ebid.com.ph"
   default :from => "E-Bid Admin <admin@ebid.com.ph>"
+  helper :application
 
   def order_alert(orders)
     orders.each do |order|
@@ -23,11 +24,12 @@ class OrderMailer < ActionMailer::Base
       )
   end
   
-  # def overdue_alert(orders)
-  #   @orders = orders
-  #   @orders.group_by(&:company).each do {|company, orders|}
-  #    # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
-  #     
-  #   end
-  # end
+  def overdue_alert(powerbuyer, orders)
+    @orders = orders
+    mail(
+      :to => powerbuyer, 
+      :subject => "OVERDUE PAYMENT Reminder", 
+      :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"]
+      )
+  end
 end

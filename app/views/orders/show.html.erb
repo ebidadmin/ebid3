@@ -20,7 +20,7 @@
 	<%= render 'shared/info_vehicle', :entry => @entry %>
 	<%#= render 'shared/info_parts' if current_user.has_role?('admin')  %>
 	<%= link_to "View Photos", seller_show_path(@entry), :class => 'button', :id => 'view-vehicle-button' if current_user == @order.seller %>
-	<%= content_tag :h3, 'Messages' %>
+	<%= content_tag :h3, 'Notes & Messages' %>
 	<%= render 'messages/show_messages', :messages => @priv_messages %>
 
 	<%= form_tag cancel_order_path(@order), :method => :get do  %>
@@ -38,7 +38,7 @@
 				<%= content_tag :td, ph_currency(order_item.amount), :class => 'price' %>
 				<td class="price">
 					<%= ph_currency(order_item.total) %>
-					<%= check_box_tag 'bid_ids[]', order_item.id if @order.can_be_cancelled? %>
+					<%= check_box_tag 'bid_ids[]', order_item.id if @order.can_be_cancelled?(current_user) %>
 				</td>
 			</tr>	
 		<% end %>
@@ -46,7 +46,7 @@
 			<%= content_tag :td, 'Order Total', :class => 'label', :colspan => 2 %>
 			<%= content_tag :td, ph_currency(@order.order_total), :class => 'price', :colspan => 2 %>
 		</tr>
-		<% if @order.can_be_cancelled?  %>
+		<% if @order.can_be_cancelled?(current_user)  %>
 			<%= content_tag :tr, (content_tag :td, (submit_tag 'Cancel Checked Items', :id => 'cancel-button'), :colspan => 4), :class => "selection-total" %>
 		<% end %>
 	</table>

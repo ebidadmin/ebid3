@@ -41,6 +41,17 @@ class EntriesController < ApplicationController
     render :layout => 'print'
   end
   
+  def duplicates
+    @search = Entry.search(params[:search])
+    @entries = @search.paginate(:page => params[:page], :per_page => 10)
+      # render 'entries/index'
+    # @existing_entries = Entry.search(params[:entry][:plate_no].to_s) #Entry.where('plate_no LIKE ?', "%#{params[:entry][:plate_no].to_s}%")
+    # if @existing_entries
+    #   @entries = @existing_entries.paginate(:page => params[:page], :per_page => 10)
+    #   render 'entries/index'
+    # end
+  end
+  
   def new
     @entry = current_user.entries.build
     @entry.date_of_loss = Date.today

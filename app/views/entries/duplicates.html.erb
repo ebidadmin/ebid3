@@ -1,0 +1,7 @@
+<%= form_for :search, :html => {:method => :get} do |f| %>
+	<p>
+		<%= f.label :plate_no_contains %>
+		<%= f.text_field :plate_no_contains %>
+	</p>
+	<%= f.submit "Search" %>
+<% end %>

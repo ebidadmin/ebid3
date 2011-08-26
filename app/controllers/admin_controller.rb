@@ -77,11 +77,20 @@ class AdminController < ApplicationController
     @sellers.push(['All', admin_payments_path(:seller => nil)]) unless @sellers.blank?
     @sellers_path = admin_payments_path(:seller => params[:seller])
     render 'admin/orders'  
-    
-    # @overdue_orders = @all_orders.where('pay_until < ?', Date.today)
-    # if @overdue_orders
-    #   OrderMailer.delay.overdue_alert(@overdue_orders)
-    # end
+  end
+  
+  def overdue_reminder
+    @overdue_orders = Order.delivered.payment_pending.where('pay_until < ?', Date.today) #.paginate :page => params[:page], :per_page => 10
+    if @overdue_orders
+      @overdue_orders.group_by(&:company).each do |company, overdue_orders|
+        @powerbuyers = company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
+        @powerbuyers.each do |powerbuyer|
+          OrderMailer.delay.overdue_alert(powerbuyer, overdue_orders)
+        end
+      end
+    end
+    redirect_to admin_payments_path, :notice => 'Sent payment reminders to Buyers.'
+    # render 'admin/orders'  
   end
   
   def buyer_fees
@@ -354,6 +363,6 @@ private
       @closed_f = @closed.ftm.collect(&:order_total).sum
       @closed_f_pct = (@closed_f.to_f / @td_f.to_f) * 100 
       
-      @speed = Bid.metered.where('bid_speed > ?', 120).order(:bid_speed)
+      @speed = Bid.ftm.where('bid_speed > ?', 1).order(:bid_speed)
   end
 end

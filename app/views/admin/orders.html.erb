@@ -8,6 +8,7 @@
 
 <%#= content_tag :h3, "Total: #{number_to_currency(@all_orders.collect(&:total_order_amounts).sum, :unit => "P ")}", :id => 'order-total' %>
 <%#= content_tag :p, "#{User.find(params[:seller]).company_name} only: #{number_to_currency(@search.collect(&:total_order_amounts).sum, :unit => "P ")}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>
+<%= link_to 'Send Overdue Reminder', admin_overdue_reminder_path, :id => 'payment-reminder', :class => 'button' if current_page?(admin_payments_path) %>
 
 <%= will_paginate @orders %>
 <%= page_info @orders, @sort_order %>

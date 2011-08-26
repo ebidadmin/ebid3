@@ -40,6 +40,9 @@ Ebid::Application.routes.draw do
         get :relist
         get :reactivate
       end
+      collection do
+        get :duplicates
+      end
    end
   end
       
@@ -81,6 +84,7 @@ Ebid::Application.routes.draw do
   get 'admin/cleanup'
   put 'admin/change_status'
   get 'admin/update_perf_ratios'
+  get 'admin/overdue_reminder'
 
   match 'buyer/:user_id/main' => 'buyer#main', :as => :buyer_main, :via => :get
   match 'buyer/:user_id/pending(/:page)' => 'buyer#pending', :as => :buyer_pending, :via => :get

@@ -167,8 +167,13 @@ class Order < ActiveRecord::Base
     end
   end
   
-  def can_be_cancelled?
-    status == 'PO Released' || status == 'For-Delivery'
+  def can_be_cancelled?(user)
+    # status == 'PO Released' || status == 'For-Delivery'
+    if user.has_role?('seller')
+      status == 'PO Released' || status == 'For-Delivery'
+    else
+      status == 'PO Released'
+    end
   end
  
   def close
