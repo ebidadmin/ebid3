@@ -80,3 +80,11 @@
 <% content_for :javascripts do %>
 	<%= javascript_include_tag 'dynamic_models2', 'rails.validations' %>
 <% end %>
+
+
+<div id="cart_notice_box">
+	<% if flash[:cart_notice] %> 
+		<%= render "cart/cart_notice" %>
+	<% end %>
+</div>
+

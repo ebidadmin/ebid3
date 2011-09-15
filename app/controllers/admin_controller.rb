@@ -37,7 +37,8 @@ class AdminController < ApplicationController
   end
 
   def bids
-    @line_items = LineItem.with_bids.desc.inclusions2.paginate :page => params[:page], :per_page => 20 
+    @search = LineItem.with_bids.search(params[:search])
+    @line_items = @search.desc.inclusions2.paginate :page => params[:page], :per_page => 20 
     render 'bids/index' 
   end
   

@@ -68,7 +68,7 @@ module ApplicationHelper
   end
 
   def ph_currency(target)
-    if target > 0
+    if target > 0 || target < 0
       number_to_currency target, :unit => 'P '
     else
       '-'

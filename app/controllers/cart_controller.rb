@@ -2,19 +2,23 @@ class CartController < ApplicationController
   before_filter :initialize_cart
   
   def add
+    @entry = Entry.find(params[:id])
+    @line_items = @entry.line_items.includes(:car_part)
     @item = @cart.add(params[:part_id])
  
     if request.xhr?
       flash.now[:cart_notice] = "Added #{@item.car_part.name}"
     elsif request.post? 
       flash[:notice] = "Added #{@item.car_part.name}"
-      redirect_to new_user_entry_path(current_user)
+      # redirect_to new_user_entry_path(current_user)
     else
       render
     end
   end
   
   def remove
+    @entry = Entry.find(params[:id])
+    @line_items = @entry.line_items.includes(:car_part)
     @item = @cart.remove(params[:part_id])
     
     if request.xhr?
@@ -22,20 +26,22 @@ class CartController < ApplicationController
       render :action => "add"
     elsif request.post?
       flash[:cart_notice] = "Removed 1 #{@item.car_part.name}"
-      redirect_to new_user_entry_path(current_user)
+      # redirect_to new_user_entry_path(current_user)
     else
       render
     end
   end
   
   def clear
+    @entry = Entry.find(params[:id])
+    @line_items = @entry.line_items
     @cart.cart_items.destroy_all
     if request.xhr?
-      flash.now[:cart_notice] = "Cleared the current selection."
+      flash.now[:cart_notice] = "Removed all temporary parts."
       render :action => "add"
     elsif request.post?
-      flash.now[:cart_notice] = "Cleared the current selection."
-      redirect_to new_user_entry_path(current_user)
+      flash.now[:cart_notice] = "Removed all temporary parts."
+      # redirect_to new_user_entry_path(current_user)
     else
       render
     end

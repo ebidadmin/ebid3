@@ -5,5 +5,5 @@
 	<% else %>
 	  <%= ph_currency last_diff.canvass_amount %>
 	<% end %>
-	<%= content_tag :p, 'Diff: ' + (ph_currency last_diff.diff) if last_diff.diff %>
+	<%= content_tag :p, "Diff: #{ph_currency last_diff.diff.to_f}" if last_diff.diff %>
 <% end %>

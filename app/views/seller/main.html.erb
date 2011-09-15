@@ -1,6 +1,6 @@
 <% title "Supplier's Dashboard" %>
 
-<%= content_tag :h3, 'Your last sign-in was: ' + long_date(@last_activity) unless @last_activity.nil? %>
+<%= content_tag :h3, 'Your last sign-in was: ' + long_date(@last_activity), :class => 'clear-both' unless @last_activity.nil? %>
 <%= render 'shared/rating_display' unless @ratings.blank? %>
 
 <div class="aside">

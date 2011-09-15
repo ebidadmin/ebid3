@@ -1,22 +1,19 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
-
 $(function() {
-	$("#parts .pagination a").live("click", function() {
+	$("#parts-pagination a").live("click", function() {
     $(".pagination").html("Page is loading...");
 		$.getScript(this.href);
 		return false;
 	});
 
-	$("#search-form input").keyup(function() {
-		$.get($("#search-form").attr("action"), $("#search-form").serialize(), null, "script");
-		return false;
-	});
+	// $("#search-form input").keyup(function() {
+	// 	alert("Change observed! new value: " + this.value );
+	// 	return false;
+	// });
 	
-	$('select#username, select#brand, select#status, select#seller, select#buyer').bind('change', function() { window.location.pathname = $(this).val() });
+	$("select#username, select#brand, select#status, select#seller, select#buyer").bind("change", function() { window.location.pathname = $(this).val() });
 	
-	$("#entry_final_submit").bind("click", function() {
-	    $(".spinner").toggle() ;
+	$("#entry_submit, #entry_final_submit, #finalize-button").bind("click", function() {
+	    $(".spinner").show();
 	});
 	
 	$("label.inlined + input.input-text").each(function (type) {

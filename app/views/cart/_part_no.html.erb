@@ -1,2 +1,6 @@
-<%= text_field_tag "item[part_no]", item.part_no, :size => 15 %>
-<%= submit_tag 'Save' %>
+<% unless item.part_no.blank? %>
+	<%= item.part_no %>
+	<%= link_to "change", cart_show_fields_path(:item => item), :id => 'change-partnum-button', :class => 'button', :remote => true %>
+<% else %>
+	<%= link_to "click to specify details", cart_show_fields_path(:item => item), :class => 'button', :remote => true %>
+<% end %>

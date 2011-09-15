@@ -1,4 +1,5 @@
 <% title @title %>
+<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer]), :id => 'print-preview' %>
 
 <%= render 'admin/filter_by_buyer' unless @buyers.blank? %>
 
@@ -15,11 +16,10 @@
 			<%= submit_tag "Search" %>
 		</ul>
 	<% end %>
-	<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer]), :id => 'print-preview' %>
 <% end %>
 
 <%= content_tag :p, (content_tag :strong, 'What is a Decline Fee? ') + 'Sometimes, the Buyer cannot order (for one reason or another).  
-  We collect a Decline Fee, ' + (content_tag :strong, 'then you receive 50% of it for your effort in posting the “winning” bid.'), :class => 'instruction' %>
+  We collect a Decline Fee, ' + (content_tag :strong, 'then you receive 50% of it for your effort in posting the “winning” bid.'), :class => 'clear-both instruction' %>
 
 <% unless @decline_fees.blank? %>
 	<h2 class="highlight">

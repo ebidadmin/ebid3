@@ -1,67 +1,25 @@
 <% title "#{@entry.vehicle}" %>
+<%= link_to 'Print Preview', print_entry_path(@entry), :id => 'print-preview' unless @line_items.blank? %>
+<%= content_tag :h3, "Status: #{@entry.buyer_status}", :class => "#{quote_class( @entry.buyer_status)}", :id => 'status' %>
 
-<% content_for :subnav do %>
-	<%= link_to 'Print Preview', print_entry_path(@entry), :id => 'print-preview' %>
-<% end %>
 <%= render 'shared/info_vehicle', :entry => @entry %>
-<%= render 'shared/photo_set' %>
-<%= content_tag :h3, 'Status: ' + @entry.buyer_status, :class => 'highlight' %>
-<%#= render 'shared/comments' %>
-
-<% unless @line_items.blank? %>
-	<div id="message-box">
-		<div id="msg-list">
-			<div id="private">
-				<%= render 'messages/private_messages' %>
-			</div>
-			<div id="public">
-				<%= render 'messages/public_messages' %>
-			</div>
-		</div>
-		<div id="msg-fields">
-			<%= render 'messages/buttons' %>
-		</div>
+<% if current_page? edit_entry_path(@entry) %>
+	<div class='photo-set'>
+		<%= render 'entries/attach_photos' %>
 	</div>
-	<%= form_tag accept_bids_path(:entry_id => @entry), :method => :post do |f|  %>
-	<table id='entries-show'>
-		<thead>
-			<%= content_tag :th, 'Qty', :class => 'qty' %>
-			<%= content_tag :th, 'Part Description', :class => 'partname' %>
-			<th class="bid-box">
-				<%= content_tag :h4, 'Bids (unit price)', :class => 'strong' %>
-				<%= content_tag :div, '', :class => 'bid-labels' %>
-				<div class="bid-selection">
-					<%= content_tag :div, 'Original', :class => 'bid-field' %>
-					<%= content_tag :div, 'Replacement', :class => 'bid-field' %>
-					<%= content_tag :div, 'Surplus', :class => 'bid-field' %>
-				</div>
-			</th>
-		</thead>
-		<% if current_user.has_role?('admin')  %>
-			<%= render 'admin/bid_master' %>
-		<% else %>                     
-			<%= render 'buyer/bid_master' %>
-		<% end %>
-	</table>
-	<% end %>
-	<div class="page-links">
-	  <%= link_to "<< Back", :back, :class => 'button' %>
-	  <%= link_to "Edit", edit_entry_path(@entry), :class => 'button'  %>
-	  <%= link_to "Put Online", put_online_entry_path(@entry), :class => 'button', :id => 'feature-button' if @line_items.present? && @entry.photos.present? && @entry.bid_until.blank?  %>
-		<%= render 'reveal_bids_button', :entry => @entry %>
-		<% unless @entry.buyer_status == 'New' || @entry.buyer_status == 'Edited' || @entry.buyer_status == 'Online' || @entry.buyer_status == 'Relisted'  %>
-		  <%= link_to "Relist Un-bided Items", relist_entry_path(@entry), :class => 'button', :id => 'relist-button' if @line_items.collect(&:bids_count).include?(0) %>
-		<% end %>
+	<div id="select-parts-box">
+		<%= render 'cart/cart', :entry => @entry %>
 	</div>
 <% else %>
-<div class="page-links">
-	<%= content_tag :h3, 'No parts submitted.' %>
-	<%= link_to 'Select Parts', select_parts_entry_path(@entry), :class => 'button' %>
+	<%= render 'shared/photo_set' %>
+	<div id="select-parts-box">
+		<% unless @line_items.blank? %>
+			<%= render 'entries_show' %>
+		<% else %>
+			<%= render 'cart/cart', :entry => @entry %>
+		<% end %>
 	</div>
 <% end %>
-
-
-
 
 <% content_for :javascripts do %>
 	<% stylesheet 'shadowbox' %>

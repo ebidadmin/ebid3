@@ -11,6 +11,8 @@ A Purchase Order was released for
 		[ <%= li.quantity %> ]  <%= li.line_item.part_name.html_safe %>
 		<% end %>
 
+	Total Order: <%= ph_currency(@order.order_total) %>
+		
 Please login to your account to confirm the PO (http://www.ebid.com.ph<%= order_path(@order.id) %>) and 
 deliver the parts as soon as possible.
 

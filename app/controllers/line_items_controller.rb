@@ -1,5 +1,6 @@
 class LineItemsController < ApplicationController
   before_filter :initialize_cart, :only => [:create]
+  before_filter :check_buyer_role
   
   def index
     @line_items = LineItem.all
@@ -22,7 +23,12 @@ class LineItemsController < ApplicationController
       @entry.add_or_edit_line_items_from_cart(@cart) 
       @cart.destroy
       session[:cart_id] = nil 
-      redirect_to attach_photos_entry_path(@entry), :notice => "Successfully added parts. Next step is to attach photos."
+      @line_items = @entry.line_items.includes(:car_part, :bids)
+      respond_to do |format|
+        format.html { redirect_to edit_entry_path(@entry), :notice => "Successfully added parts. Next step is to attach photos." }
+        format.js { flash.now[:cart_notice] = "Successfully added parts to your entry. Next step is to attach photos." }
+      end      
+      EntryMailer.delay.new_entry_alert(@entry)
     end
   end
   
@@ -43,8 +49,7 @@ class LineItemsController < ApplicationController
   def destroy
     @line_item = LineItem.find(params[:id])
     @line_item.destroy
-    flash[:notice] = "Successfully deleted line item."
-    # redirect_to line_items_url
+    flash[:notice] = "Deleted #{@line_item.part_name}."
     redirect_to :back
   end
   
@@ -55,17 +60,19 @@ class LineItemsController < ApplicationController
   def change
     @line_item = LineItem.find(params[:id])
 
-    if @line_item.update_attributes(params[:item])
-      @line_item.check_and_update_associated_relationships
-      flash[:notice] = "Successfully updated cart item."
-          
-      respond_to do |format|
-        format.html { redirect_to edit_user_entry_path(current_user) }
-        format.js { flash.now[:cart_notice] = "Updated #{@line_item.car_part.name}" }
-      end      
+    if params[:item][:quantity].to_i < 1
+      destroy
     else
-      flash[:notice] = "Something went wrong with your cart update.  Please try again."
-      render
+      if @line_item.update_attributes(params[:item])
+        @line_item.check_and_update_associated_relationships
+        respond_to do |format|
+          format.html { redirect_to edit_user_entry_path(current_user), :notice => "Successfully updated line item." }
+          format.js { flash.now[:cart_notice] = "Updated #{@line_item.car_part.name}" }
+        end      
+      else
+        flash[:notice] = "Something went wrong with your cart update.  Please try again."
+        render
+      end
     end
   end
 

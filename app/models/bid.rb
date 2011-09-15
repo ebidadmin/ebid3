@@ -23,9 +23,9 @@ class Bid < ActiveRecord::Base
   scope :cancelled, where('status LIKE ?', "%Cancelled%") # used in Orders#Show
   scope :not_cancelled, where('status NOT LIKE ?', "%Cancelled%") # used in Orders#Show
   
-  scope :orig, where(:bid_type => 'original')
-  scope :rep, where(:bid_type => 'replacement')
-  scope :surp, where(:bid_type => 'surplus')
+  scope :orig, where(:bid_type => 'original').order('amount DESC')
+  scope :rep, where(:bid_type => 'replacement').order('amount DESC')
+  scope :surp, where(:bid_type => 'surplus').order('amount DESC')
   
   scope :metered, where('bids.created_at >= ?', '2011-04-16'.to_datetime)
   scope :ftm, where('bids.created_at >= ?', Time.now.beginning_of_month)

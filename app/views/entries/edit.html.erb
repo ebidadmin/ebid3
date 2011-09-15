@@ -1,12 +1,19 @@
-<% title "Edit Entry" %>
+<% title "#{@entry.vehicle}" %>
+<%= link_to 'Print Preview', print_entry_path(@entry), :id => 'print-preview' unless @line_items.blank? %>
+<%= content_tag :h3, "Status: #{@entry.buyer_status}", :class => "#{quote_class( @entry.buyer_status)}", :id => 'status' %>
 
-<fieldset id="vehicle">
-	<legend>STEP 1 - Describe the vehicle</legend>
-	<%= simple_form_for @entry, :validate => true, :html => { :multipart => true } do |f| %>
-		<%= render 'semantic_vehicle', :f => f %>
-	<% end %>
-</fieldset>
+<%= render 'shared/info_vehicle', :entry => @entry %>
+<div class='photo-set'>
+	<%= render 'entries/attach_photos' %>
+</div>
+<div id="select-parts-box">
+	<%= render 'cart/cart', :entry => @entry %>
+</div>
 
 <% content_for :javascripts do %>
-	<%= javascript_include_tag 'dynamic_models2', 'rails.validations' %>
+	<% stylesheet 'shadowbox' %>
+	<%= javascript_include_tag 'shadowbox' %>
+	<script type="text/javascript">
+			Shadowbox.init();		
+	</script>
 <% end %>

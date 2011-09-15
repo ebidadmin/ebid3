@@ -1,0 +1,6 @@
+<% unless item.part_no.blank? %>
+	<%= item.part_no %>
+	<%= link_to "change", show_fields_line_item_path(item), :id => 'change-partnum-button', :class => 'button', :remote => true %>
+<% else %>
+	<%= link_to "click to specify details", show_fields_line_item_path(item), :class => 'button', :remote => true %>
+<% end %>

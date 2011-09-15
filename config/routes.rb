@@ -32,7 +32,7 @@ Ebid::Application.routes.draw do
     end
     resources :entries, :shallow => true do
       member do
-        get :select_parts
+        get :edit_vehicle
         get :attach_photos
         get :print
         get :put_online
@@ -63,6 +63,7 @@ Ebid::Application.routes.draw do
   
   resources :car_parts do
     get :search, :on => :collection
+    get :add_more, :on => :collection
   end
 
   resources :car_variants

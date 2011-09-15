@@ -15,9 +15,7 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; }
-
 /* HTML5 display-role reset for older browsers */
-
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section { display: block; }
 body { line-height: 1; }
@@ -26,7 +24,6 @@ blockquote, q { quotes: none; }
 blockquote:before, blockquote:after,
 q:before, q:after { content: ''; content: none; }
 table { border-collapse: collapse; border-spacing: 0; }
-
 /* GENERAL TYPOGRAPHY
 ---------------------------------------------------------------------- */
 h1 { font-size: 3em; line-height: 1; margin-bottom: 1em; }
@@ -56,25 +53,23 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .regular-alert { background-color: white; border-color: #B60002; }
 .comfy-alert { background-color: white; border-color: #CCC; }
 #bidding-message, h3.highlight { clear: both; margin: 0 0 1em; padding: 15px 0; text-align: center; }
-
 /* GENERAL LAYOUT
 ---------------------------------------------------------------------- */
 body { border-top: 5px solid #CCC; font: normal 12px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif; padding: 0px; background-color: #911D00; }
 #top { background-color: #f1f2ed; }
 #top .container { padding-bottom: 20px; }
-.container { margin: 0 auto; width: 960px;  position: relative; overflow: hidden; }
+.container { margin: 0 auto; width: 960px; position: relative; overflow: hidden; }
 #content-main { clear: both; padding: 10px 0; min-height: 200px; position: relative; }
 .box { background-color: #ddd; padding: 5px; box-shadow: 0 0 4px #999; }
 hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; margin: 20px 0; border: none; }
-
 /* MAIN TITLES
 ---------------------------------------------------------------------- */
-.main-title { color: #919191;  width: 65%;}
-
+.main-title { color: #919191; width: 65%; }
 /* GLOBAL HEADER (adapted from 960gs and martineau.tv)
 ---------------------------------------------------------------------- */
 #header { overflow: hidden; }
-#header h1 { float: left; position: relative; /*left: -10px;*/ background: transparent url(../images/base/ebidlogo.png) no-repeat; opacity: 1; width: 100px; height: 95px; text-indent: -9999px; margin-bottom: 20px;}
+#header h1 { float: left; position: relative; 
+/*left: -10px;*/ background: transparent url(../images/base/ebidlogo.png) no-repeat; opacity: 1; width: 100px; height: 95px; text-indent: -9999px; margin-bottom: 20px; }
 #header h1:hover { opacity: .75; }
 #header h2 { float: right; display: block; margin: 0.5em 0 0; font-family: Geogia, serif; opacity: .75; font-weight: normal; }
 #header h2 span { font-family: Baskerville,"Goudy Old Style","Palatino","Book Antiqua",serif; font-style: italic; }
@@ -82,7 +77,6 @@ hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; marg
 #browser #chrome { background: url(../images/browsers/Chrome.png) no-repeat 0 center; padding-left: 30px; }
 #browser #safari { background: url(../images/browsers/Safari.png) no-repeat 0 center; padding-left: 30px; }
 #browser #firefox { background: url(../images/browsers/Firefox.png) no-repeat 0 center; padding-left: 30px; }
-
 /* GLOBAL FOOTER
 ---------------------------------------------------------------------- */
 #footer { border-top: #CCC solid 5px; color: white; font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; margin-bottom: 0; padding: 40px 0; }
@@ -90,7 +84,6 @@ hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; marg
 #footer .links { display: inline; float: right; margin: 0; width: 45%; }
 #footer p a { margin-right: .2em; }
 #branding-menu strong, #footer strong { color: #fffca9; }
-
 /* FLASH & ERROR MESSAGES
 ---------------------------------------------------------------------- */
 #flash_notice, #flash_error, #flash_alert, #flash_warning, #flash_info, #errorExplanation, .flash { border: 2px solid; clear: both; font-size: 1.2em; margin: 0 0 0.5em; padding: 15px 10px 15px 75px; background-repeat: no-repeat; background-position: 20px center; }
@@ -110,7 +103,6 @@ hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; marg
 .error_messages p { margin: 8px 10px; }
 .error_messages ul { margin: 0; }
 .error_messages ul li { list-style: square inside; margin-left: 10px; }
-
 /* FORMS
 ---------------------------------------------------------------------- */
 fieldset { padding: 1.4em; border: 1px solid #ccc; border-radius: 8px; margin: 10px 0; }
@@ -121,44 +113,23 @@ input:hover, textarea:hover, select:hover { border-color: #6B9D28; }
 input:focus, textarea:focus, select:focus { border-color: #6B9D28; }
 input[type=hidden] { display: none; }
 input#datepicker { margin-right: 10px; }
-
-input[type="submit"], input[type="button"], #content-main a.button, form.formtastic input[type="submit"], .button, #attachments .add_nested_fields {
-    background: #5C5C5C url(../images/btn_bkg.png) repeat-x scroll 0 0;
-    border: medium none;
-    border-radius: 7px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    color: #FFFFFF !important;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    /*font-size: 12px;*/
-    font-weight: bold;
-    margin: 0 5px 0 0;
-    padding: 8px 15px;
-    position: relative;
-    text-decoration: none !important;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.3);
-}
+input[type="submit"], input[type="button"], #content-main a.button, form.formtastic input[type="submit"], .button, #attachments .add_nested_fields { background: #5C5C5C url(../images/btn_bkg.png) repeat-x scroll 0 0; border: medium none; border-radius: 7px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); color: #FFFFFF !important; cursor: pointer; display: inline-block; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; /*font-size: 12px;*/
+    font-weight
+: bold; margin: 0 5px 0 0; padding: 8px 15px; position: relative; text-decoration: none !important; text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.3); }
 input[type="submit"], input[type="button"], form.formtastic input[type="submit"] { padding: 10px 15px; }
-input[type="submit"]:hover, input[type="button"]:hover, #content-main  a.button:hover, form.formtastic input[type="submit"]:hover, .button:hover, #attachments .add_nested_fields:hover {
-    background-color: #6B9D28 /*#D02200*/;
-    text-decoration: none;
-    border-bottom: 0;
-}
+input[type="submit"]:hover, input[type="button"]:hover, #content-main  a.button:hover, form.formtastic input[type="submit"]:hover, .button:hover, #attachments .add_nested_fields:hover { background-color: #6B9D28 /*#D
+02200*/; text-decoration: none; border-bottom: 0; }
 /*input[type="submit"]:active, input[type="button"]:active, #content-main a.button:active, form.formtastic input[type="submit"]:active, .button:active { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); color: #A9C08C; margin-top: 2px; }*/
-
 #parts_listing a.button, #selection a.button, .selection-list input[type="submit"] { margin-left: 15px; padding: 2px 12px; }
-
 /* TABLES & PSEUDO TABLES
 ---------------------------------------------------------------------- */
 table { background: transparent; margin-bottom: 25px; width: 100%; text-align: left; overflow: hidden; }
 table th { font-size: 1.2em; font-weight: bold; padding: 10px 8px; border-bottom: 2px solid #999; text-align: center; vertical-align: middle; }
 table td { border-bottom: 1px solid #ccc; padding: 6px 8px; }
 table p { margin-bottom: 0; }
-td.bid-box.price:hover { background: #eaeaea;  }
+td.bid-box.price:hover { background: #eaeaea; }
 tr:last-child, li.selection-list:last-child { border-bottom: 2px solid #999; }
 tr.selection-total, tr.accept-decline { border-bottom: 0; }
-
 /* PAGINATION
 ---------------------------------------------------------------------- */
 #content-main .pagination { clear: both; color: #666666; position: relative; float: left; margin: 0 10px 0 0; }
@@ -168,16 +139,13 @@ tr.selection-total, tr.accept-decline { border-bottom: 0; }
 #content-main .pagination span { background: transparent none repeat scroll 0 0; color: #CCC; margin-right: 1px; padding: 2px 5px; text-decoration: none; border: 1px solid white; }
 #page-info { float: left; padding: 0; }
 .sorting.instruction { float: right; }
-
-
 /* GENERAL LINKS
 ---------------------------------------------------------------------- */
-#content-main a, #subnav #flash_info a, #call-to-action #learn { color: #C00; font-weight: bold;  text-decoration: none; background-color: white; border-bottom: 1px dotted #C00; }
+#content-main a, #subnav #flash_info a, #call-to-action #learn { color: #C00; font-weight: bold; text-decoration: none; background-color: white; border-bottom: 1px dotted #C00; }
 #content-main a[rel^=shadowbox] { padding: 0; opacity: 1; }
 #content-main a:hover, #subnav #flash_info a:hover, #call-to-action #learn:hover { color: black; border-bottom: 1px solid black; }
 .page-links { clear: both; font-size: 1.5em; padding: 10px 0; width: 100%; text-align: center; }
 .page-links input { font-size: 1em; margin: 0; }
-
 /* LINKS & MENUS GALORE!
 ---------------------------------------------------------------------- */
 ul.links li { float: left; display: inline; font-weight: bold; height: 30px; line-height: 30px; margin: 5px 5px 0 0; }
@@ -203,7 +171,6 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 #navigation #label { border-left: solid 1px #ca0002; display: block; line-height: 35px; padding: 0 1em; text-transform: uppercase; font-size: smaller; color: #fff; }
 #navigation li a, #navigation li a:link, #navigation li a:visited { text-decoration: none; display: block; float: left; height: 35px; color: #fff; line-height: 35px; padding: 0 1em; border-right: solid 1px #990000; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; outline: none; }
 #navigation li a:hover, #navigation li a:focus, #navigation li a:active, #navigation #current_page { background: #990000; border-bottom: 4px solid #999; color: #fff; }
-
 /* SUBNAV
 ---------------------------------------------------------------------- */
 /*#header .instruction { color: black; text-transform: none; margin-left: 3em; }*/
@@ -222,100 +189,48 @@ ul.links li a:hover, ul.links li #current_page { color: #3e4044; background-colo
 #header #search input[type="submit"], #header #search select, #header a.button { margin-top: 0; padding: 5px; }
 #header #search.admin-search, #header #search.supplier-search { float: left; position: relative; }
 #header a.button { margin: 5px 5px 0 0; }
-
-
-.spinner {
-  height: 100%;
-  width: 100%;
-  /*background: #060606 center center;*/ 
-  position: fixed;
-  top: 0;
-  left: 0;
-  opacity: 0.75;
-}
-
-.spinner img { z-index: 100;
-  position: relative;
-  top: 40%;
-  left: 45%;
-  background-color: #333;
-  background-color: rgba(0, 0, 0, 0.70);
-  border-radius: 15px;
-  padding: 50px; }
-  
-#print-preview {
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	color:#333;
-	font-family:arial;
-	font-size:12px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:1px 1px 0px #ffffff;
-	float: right; background: #CCC url(../images/base/print.gif) no-repeat center center; text-indent: -9999px;  width: 100px; }#print-preview:hover {
-	background-color:#f6f6f6;
-}#print-preview:active {
-	position:relative;
-	top:1px; 
-}
+.spinner { height: 100%; width: 100%; /*back
+ground: #060606 center center;*/ 
+  position: fixed; top: 0; left: 0; opacity: 0.75; }
+.spinner img { z-index: 100; position: relative; top: 40%; left: 45%; background-color: #333; background-color: rgba(0, 0, 0, 0.70); border-radius: 15px; padding: 50px; }
+#print-preview { box-shadow: inset 0px 1px 0px 0px #ffffff; border-radius: 6px; border: 1px solid #dcdcdc; display: inline-block; color: #333; font-family: arial; font-size: 12px; font-weight: bold; padding: 6px 24px; text-decoration: none; text-shadow: 1px 1px 0px #ffffff; float: right; background: #CCC url(../images/base/print.gif) no-repeat center center; text-indent: -9999px; width: 100px; }
+#print-preview:hover { background-color: #f6f6f6; }
+#print-preview:active { position: relative; top: 1px; }
 
 .simple_form { width: 100%; }
-.simple_form div { clear: both; float: left; margin-bottom: 10px; width: 100%;}
+.simple_form div { clear: both; float: left; margin-bottom: 10px; width: 100%; }
 .simple_form label.required { color: #C00; }
-.simple_form label {
-  float: left;
-  width: 30%;
-}
-.simple_form label.check_boxes { font-size: 2em; font-weight: normal;  }
+.simple_form label { float: left; width: 30%; }
+.simple_form label.check_boxes { font-size: 2em; font-weight: normal; }
 .simple_form input.check_boxes { clear: both; float: left; margin-right: 10px; }
-.simple_form .check_boxes div { clear: none; float: left; width: 50%;}
-.simple_form input.string, .simple_form input.password,.simple_form textarea, .simple_form select, .simple_form input.hasDatepicker {
-	float: left; margin: 0; 
-}
+.simple_form .check_boxes div { clear: none; float: left; width: 50%; }
+.simple_form input.string, .simple_form input.password,.simple_form textarea, .simple_form select, .simple_form input.hasDatepicker { float: left; margin: 0; }
 /*.simple_form input.hasDatepicker { width: 30%; }*/
-.simple_form .error {
-  clear: left;
-  margin-left: 30%;
-  font-size: 12px;
-  color: #D00;
-  display: block;
-}
-.simple_form .hint {
-  clear: left;
-  margin-left: 30%;
-  font-size: 12px;
-  color: #555;
-  display: block;
-  font-style: italic;
-}
+.simple_form .error { clear: left; margin-left: 30%; font-size: 12px; color: #D00; display: block; }
+.simple_form .hint { clear: left; margin-left: 30%; font-size: 12px; color: #555; display: block; font-style: italic; }
 form.user, form.car_variant { width: 60%; }
 #label_new_city { margin-left: 30%; }
-#entry_new_city { clear: both; margin-left: 30%;}
-/*#new_entry #entry_submit,*/ #order_submit,  #user_submit, #car_variant_submit { margin-left: 30%; }
+#entry_new_city { clear: both; margin-left: 30%; }
+/*#new_entry #entry_submit,*/
+#order_submit,  #user_submit, #car_variant_submit { margin-left: 30%; }
 #entry_submit, #entry_final_submit { float: right; }
 #company_submit { margin-top: 30px; }
- 
 #user_new #user_submit { margin: 0; }
-
 #step-back { float: left; }
 
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */
 @media print {
-	body { border-top: 0; color: black; }
-	body, table td.bid-box, .bid-field { background-color: transparent; }
-	h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .page-links a, table a, .button, #navigation, #global-links, #subnav { display: none; }
-	.selection-list { font-size: 1.2em; font-weight: bold; }
-	#order .photo, #show-comments form, #del-status, .photo-set, .spinner span { display: none; }
-	#order .vehicle-set span { color: black; }
-	.container { padding: 30px; }
-	table .bid-box { background: 0; }
-	table#item-bids { font-size: 1.5em; }
+body { border-top: 0; color: black; }
+body, table td.bid-box, .bid-field { background-color: transparent; }
+h2#slogan, #secondary, .menu, #search-form, .pagination, #footer, .page-links, .page-links a, table a, .button, #navigation, #global-links, #subnav { display: none; }
+.selection-list { font-size: 1.2em; font-weight: bold; }
+#order .photo, #show-comments form, #del-status, .photo-set, .spinner span { display: none; }
+#order .vehicle-set span { color: black; }
+.container { padding: 30px; }
+table .bid-box { background: 0; }
+table#item-bids { font-size: 1.5em; }
 }
-
 /*form p { position: relative; }
 label.inlined {
 		padding-left: 6px;
@@ -334,5 +249,4 @@ label.inlined {
 		background-color: transparent;
 		position: absolute; left: 0; top: -8px; z-index: 2;
 	}*/
-
-.message-mark { color: #C00; float: right; right: 10px;   }
+.message-mark { color: #C00; float: right; right: 10px; }

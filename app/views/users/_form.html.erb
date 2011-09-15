@@ -1,17 +1,19 @@
-<p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
+<p class="clear-both instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
 <%= simple_form_for @user, :html => {:class => 'col-3'}, :validate => true do |f| %>
-	<%= f.input :username, :hint => 'This is going to be your login name.' %>
+	<%= f.input :username, :hint => 'This is going to be your login name.', :placeholder => 'Note: this should not be your full name' %>
 	<%= f.input :password, :hint => 'Use at least 4 characters.' %>
 	<%= f.input :password_confirmation, :label => 'Type Password again' %>
 	<%= f.input :email, :hint => 'We need this to send you important messages.' %>
 	<%= f.input :opt_in, :label => 'Receive Email Alerts?', :hint => "Uncheck this box if you don't want to receive automatic alerts." %>
 
   <%= f.simple_fields_for :profile do |profile| %>
-		<%=  profile.input :company, :hint => 'Call us at 892-5835 if your company is not in this list.' do %>
-			<% if @user.new_record? || current_user.has_role?('admin') %>
-		  <%= profile.grouped_collection_select :company_id,  @company_type, :companies, :name, :id, :name, {:include_blank => true} %>
-			<% else %>
-			<%= profile.grouped_collection_select :company_id,  @company_type, :companies, :name, :id, :name, {:include_blank => true}, :disabled => true %>
+		<% if @user.new_record? || current_user.has_role?('admin') %>
+			<%=  profile.input :company, :hint => 'Call us at 892-5835 if your company is not in this list.' do %>
+			  <%= profile.grouped_collection_select :company_id,  @company_type, :companies, :name, :id, :name, {:include_blank => true} %>
+			<% end %>
+		<% else %>
+			<%=  profile.input :company do %>
+				<%= profile.grouped_collection_select :company_id,  @company_type, :companies, :name, :id, :name, {:include_blank => true}, :disabled => true %>
 			<% end %>
 		<% end %>
  		<!-- <li><p class="inline-hints">New company? Add your company here -%></p></li> -->

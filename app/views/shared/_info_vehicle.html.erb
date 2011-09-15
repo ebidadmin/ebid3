@@ -19,4 +19,5 @@
 		<%= content_tag :li, (content_tag :span, 'Credit Term: ') + (content_tag :strong, entry.term.term_name), :id => "term" if entry.term %>
 		<%= content_tag :li, (content_tag :span, 'Created by: ') + entry.user.username if current_user.id == 1 %>
 	</ul>	
+	<%= link_to 'Edit Vehicle', edit_vehicle_entry_path(@entry), :class => 'button green-button', :remote => true if current_page? edit_entry_path(@entry) %>
 </div>

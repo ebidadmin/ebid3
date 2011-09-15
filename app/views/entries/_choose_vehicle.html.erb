@@ -1,49 +1,25 @@
-<%= f.error_messages %>
-<div class="full-column">
-  <%= f.label :vehicle %><br>  
-	<%= f.select :year_model, (Date.today.year-30..Date.today.year).to_a.reverse, :selected => Date.today.year %>			
-  <%= f.grouped_collection_select :car_brand_id,  @car_origins, :car_brands, :name, :id, :name, {:include_blank => 'Select Brand'} %>
-	<span id="car_model_field">
-	<%= f.collection_select :car_model_id, CarModel.all, :id, :name, {:include_blank => 'Select Model'} %>
-	</span>
-	<span id="car_variant_field">
-	<%= f.collection_select :car_variant_id, CarVariant.all, :id, :name, {:include_blank => 'Select Variant'} %> 
-	<em><%= link_to 'Click here', new_car_variant_path %> to add new variant.</em>
-	</span>
-</div>
-<div class="column">
-  <%= f.label :plate_no %><br />
-  <%= f.text_field :plate_no %>
-</div>
-<div class="column">
-  <%= f.label :serial_no, "Serial Number or VIN" %><br />
-  <%= f.text_field :serial_no %>
-</div>
-<div class="column">
-  <%= f.label :motor_no, "Motor Number" %><br />
-  <%= f.text_field :motor_no %>
-</div>
-<hr>
-<div class="column">
-  <%= f.label :ref_no, "Reference or Claim No." %>
-	<p class='instruction'>What will you use to track your entry?</p>
-	<%= f.text_field :ref_no %>
-</div>
-<div class="column">
-  <%= f.label :date_of_loss %>
-	<p class='instruction'>Click on the calendar icon to select a date.</p>
- <%= f.text_field :date_of_loss, :id => 'datepicker' %>
-	<p class='instruction'>Format: YYYY-MM-DD</p>
-</div>
-<div class="column-2">
-  <%= f.label :city_id, 'Deliver To' %>
-  <p><%= f.collection_select :city_id, City.all, :id, :name, {:include_blank => true}  %></p>
-	<span class='instruction'>or type a new location ...</span>
-  <%= f.text_field :new_city, :value => @city, :size => 15 %> 
-</div>
-<div class="column-2">
-  <%= f.label :credit_term, 'Credit Term Request' %><br />
-  <%= f.collection_select :term_id, Term.all, :id, :term_name %>
+<p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
+
+<%#= f.error_messages %>
+<%= f.input :year_model, :collection => (Date.today.year-30..Date.today.year).to_a.reverse, :prompt => 'Choose Year', :wrapper_html => { :id => 'veh-year' } %>
+<%= f.input :car_brand, :wrapper_html => { :id => 'veh-brand' } do %>
+  <%= f.grouped_collection_select :car_brand_id,  @car_origins, :car_brands, :name, :id, :name, {:include_blank => 'Choose Brand'} %>
+<% end %>
+<%= f.association :car_model, :include_blank => "Choose Model", :wrapper_html => { :id => 'veh-model' } %>
+<%= f.association :car_variant, :include_blank => "Choose Variant", :hint => "#{link_to 'Click here', new_car_variant_path} to add a new MODEL or VARIANT.".html_safe, :wrapper_html => { :id => 'veh-variant' } %>
+<%= f.input :plate_no, :hint => "#{content_tag :strong, 'Please follow proper format: XYZ-123'} (except diplomatic plates or conduction stickers)".html_safe %>
+<%= f.input :serial_no, :label => 'Serial Number or VIN', :hint => 'Make sure you put 17 digits here (international standard).' %>
+<%= f.input :motor_no, :label => 'Motor Number' %>
+<%= f.input :ref_no, :label => 'Reference or Claim No.', :hint => 'What will you use to track your entry?' %>
+<%= f.input :date_of_loss do %>
+  <%= f.text_field :date_of_loss, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	<%= f.hint 'Format: YYYY-MM-DD'  %>
+<% end %>
+<%= f.association :city, :label => 'Deliver To', :prompt => 'Choose Location' %>
+<%= f.input :new_city, :value => @city, :label => 'OR create a new delivery location here ...', :label_html => { :id => 'label_new_city'} %> 
+<%= f.association :term, :label => 'Credit Term Request', :collection => Term.all.map{ |t| [t.term_name, t.id]}  %>
+<div class='page-links'>
+<%= f.submit 'Save & Continue >>', :class => 'green-button' %>
 </div>
 
 <% content_for :javascripts do %>

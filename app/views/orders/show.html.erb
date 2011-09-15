@@ -1,8 +1,5 @@
 <% title "Purchase Order" %>
-
-<%= content_for :subnav do %>
-	<%= link_to 'Print Preview', print_order_path(@order), :id => 'print-preview' %>
-<% end %>
+<%= link_to 'Print Preview', print_order_path(@order), :id => 'print-preview' %>
 
 <div id="transaction">
 	<h2>Transaction</h2>

@@ -1,0 +1,10 @@
+<%= nested_form_for @entry, :url => attach_photos_path(:id => @entry), :html => { :multipart => true, :method => :put, :id => 'attachments' } do |f| %>
+	<%= render 'entries/choose_attachments', :f => f %>
+	<%= f.submit 'Upload Photos', :id => 'entry_final_submit', :class => 'green-button' %>
+<% end %>
+
+<%= javascript_include_tag 'jquery' %>
+<%= javascript_include_tag 'nested_form' %>
+<div class="spinner" style="display:none">
+	<%= image_tag "progress_large.gif"  %>
+</div>

@@ -1,0 +1,7 @@
+<%= simple_form_for @entry, :validate => true, :html => { :multipart => true } do |f| %>
+	<%= render 'choose_vehicle', :f => f %>
+<% end %>
+
+<% content_for :javascripts do %>
+	<%= javascript_include_tag 'dynamic_models2', 'rails.validations' %>
+<% end %>

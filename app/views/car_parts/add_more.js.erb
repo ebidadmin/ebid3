@@ -1,0 +1,4 @@
+$("#select-parts-box").html("<%= escape_javascript(render 'cart/cart') %>").show("slide");
+$("#cart_notice_box").html("<%= escape_javascript(render 'cart/cart_notice') %>");
+$("#cart_notice, #selection #cart_notice").effect("highlight", {}, 4000).fadeOut(1000);
+$(".spinner").show().fadeOut(1000);

@@ -12,7 +12,7 @@
 				<%= content_tag :p, 'Bidder/s' %>
 				<%= content_tag :p, item.bids.collect(&:user_id).uniq.count, :class => 'number strong' %>
 			</div>
-			<%= render 'bid_hi_lo_labels' if item.bids_count > 0 && item.status == "For-Decision" %>
+			<%= render 'entries/bid_hi_lo_labels' if item.bids_count > 0 && item.status == "For-Decision" %>
 		</div>
 		<div class="bid-selection">
 		<% if item.status == "For-Decision" %>

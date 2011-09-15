@@ -1,4 +1,5 @@
 <% title @title %>
+<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer], :user_id => params[:user_id]), :id => 'print-preview' %>
 
 <%= render 'buyer/filter_by_user' unless @user_group.nil? %>
 <%= render 'admin/filter_by_buyer' if @buyers %>
@@ -17,7 +18,6 @@
 			<%= submit_tag "Search" %>
 		</ul>
 	<% end %>
-	<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer], :user_id => params[:user_id]), :id => 'print-preview' %>
 <% end %>
 
 <% unless @decline_fees.blank? %>
@@ -27,7 +27,8 @@
 	  <%#= content_tag :span, "| you have declined #{@search.count} of  #{@total_bids} (#{percentage(@percentage_declined)})".html_safe unless @total_bids.nil? %>
 	</h2>
 	
-	<%= content_tag :h3, "Ordering Ratio: #{percentage current_user.company.perf_ratio}" %>
+	<%= content_tag :h3, "Ordering Ratio: #{percentage current_user.company.perf_ratio}" if params[:user].present? %>
+	<%= content_tag :h3, "Ordering Ratio: #{percentage Company.find(params[:buyer]).perf_ratio}" if params[:buyer].present? %>
 	
 	<%= will_paginate @decline_fees  %>
 	<%= page_info @decline_fees %>
@@ -65,7 +66,7 @@
 					<%= content_tag :p, fee.bid_type, :class => 'instruction' %>
 				</div>
 				<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' %>
-				<%= content_tag :div, percentage3(fee.fee_rate), :class => 'rate' -%>
+				<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate)} #{content_tag :p, fee.perf_ratio, :class => 'small'}".html_safe, :class => 'rate' -%>
 				<%#= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' -%>
 				<div class='fee'>
 					<%= content_tag :p, (number_to_currency fee.fee, :unit => "") -%>
@@ -73,7 +74,7 @@
 				</div>
 				<div class='fee'>
 					<%= content_tag :p, (number_to_currency fee.split_amount, :unit => "") -%>
-					<%= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>
+					<%= content_tag :p, truncate(fee.seller.company.name, :length => 10), :class => 'instruction' unless fee.seller == current_user %>
 				</div>
 			<% end %>
 			</td>                          

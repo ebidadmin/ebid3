@@ -1,4 +1,4 @@
-<% title @title %>
+<%# title @title %>
 
 <%= render 'admin/filter_by_buyer' if @buyers %>
 <%= render 'buyer/filter_by_search' %>
@@ -18,38 +18,59 @@
 	<% @entries.each do |entry| %>
 	<tr>
 		<td class="vehicle">	
-			<%= content_tag :p, entry.ref_no %>
-			<%= content_tag :p, truncate(entry.vehicle) %>
-			<p><%= entry.plate_no %> <%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight'  %></p>
-			<%= content_tag :h4, "First Bid: " + distance_of_time_in_words(entry.bids.order(:bid_speed).first.bid_speed) unless entry.bids.blank? %>
-			<%#= active_diff_mark(entry) %>
-			<%= link_to 'Compute Diff', diff_path(entry) %>
+      <%= content_tag :p, entry.ref_no unless entry.ref_no.nil? %>
+			<%= content_tag :span, 'M', :class => 'message-mark' if entry.messages.present? %>
+      <%= content_tag :p, (link_to truncate(entry.vehicle), entry), :class => 'strong' %>
+      <%= content_tag :span, entry.plate_no %>
+      <%= content_tag :span, "(by #{entry.user.username})", :class => 'highlight' %>
+      <%= content_tag :p, "Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')}", :class => 'instruction' %>
+			<%= content_tag :p, "Fastest Bid: #{distance_of_time_in_words(entry.bids.minimum(:bid_speed))}", :class => 'comfy-alert' unless entry.bids.blank? %>
+			<%= link_to 'Compute Diff', diff_path(entry), :class => 'button' %>
+			<%= active_diff_mark(entry) %>
 		</td>
 	  <td>
+		<%= content_tag :h3, "*** #{display_number_of_bidders(entry)} ***".html_safe, :class => 'instruction highlight info' %>
   	<% for line_item in entry.line_items %>
 			<div class="part">
-		    <%= content_tag :p, "[ #{line_item.quantity} ] " + line_item.part_name %>
-				<%= content_tag :p, "TAT: " + distance_of_time_in_words(line_item.bids.order(:bid_speed).first.bid_speed) unless line_item.bids.blank? %>
+		    <%= content_tag :span, line_item.quantity, :class => 'qty' %>
+				<%= content_tag :span, line_item.part_name, :class => 'name' %>
+				<%#= content_tag :p, "TAT: #{distance_of_time_in_words(line_item.bids.minimum(:bid_speed))}" unless line_item.bids.blank? %>
 			</div>
 			<div class="amounts">
-	    <%= content_tag :div, 'E-Bid', :class => 'labels ebid' %>
-			<% unless line_item.bids.blank? %>
-			  <%= content_tag :div, admin_high_bid("original", line_item), :class => 'amount' %>
-			  <%= content_tag :div, admin_high_bid("replacement", line_item), :class => 'amount' %>
-			  <%= content_tag :div, admin_high_bid("surplus", line_item), :class => 'amount' %>
-			  <%= content_tag :div, admin_low_bid("original", line_item), :class => 'amount' %>
-			  <%= content_tag :div, admin_low_bid("replacement", line_item), :class => 'amount' %>
-			  <%= content_tag :div, admin_low_bid("surplus", line_item), :class => 'amount' %>
-			<% else %>
-		    <%= content_tag :div, 'No Bids Submitted', :class => 'no-bid' %>
-			<% end %>
-	    <%= content_tag :div, 'Manual', :class => 'labels manual' %>
-			<% unless line_item.diffs.blank? %>
-			<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("original")), :class => 'amount' %>
-			<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("replacement")), :class => 'amount' %>
-			<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("surplus")), :class => 'amount' %>
-			<% end %>
+		    <%= content_tag :div, 'E-Bid', :class => 'labels ebid' %>
+				<% unless line_item.bids.blank? %>
+					<div class="amount orig">
+					<% for bid in line_item.bids.orig  %>
+						<%= content_tag :p, "#{ph_currency(bid.total)} ".html_safe, :class => 'vals' %>
+						<%#= content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction' %>
+	   			<% end %>
+					</div>
+					<div class="amount rep">
+					<% for bid in line_item.bids.rep  %>
+					<%= content_tag :p, "#{ph_currency(bid.total)} ".html_safe, :class => 'vals' %>
+					<%#= #{content_tag :span, (truncate(bid.user.company.name, :length => 10)), :class => 'instruction'} %>
+	   			<% end %>
+					</div>
+					<div class="amount surp">
+					<% for bid in line_item.bids.surp  %>
+					<%= content_tag :p, "#{ph_currency(bid.total)} ".html_safe, :class => 'vals' %>
+					<%#= #{content_tag :span, (truncate(bid.user.company.name, :length => 10)), :class => 'instruction'} %>
+	   			<% end %>
+					</div>
+				<% else %>
+			    <%= content_tag :div, 'No Bids Submitted', :class => 'no-bid' %>
+				<% end %>
+
+		    <%= content_tag :div, 'Manual', :class => 'labels manual' %>
+				<% unless line_item.diffs.blank? %>
+				<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("original")), :class => 'amount' %>
+				<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("replacement")), :class => 'amount' %>
+				<%= content_tag :div, (render 'diffs/diff', :diff => line_item.last_diff("surplus")), :class => 'amount' %>
+				<% else %>
+			    <%= content_tag :div, 'No Manual Canvass Submitted', :class => 'no-bid' %>
+				<% end %>
 			</div>
+			<hr>
 		<% end %>
 		</td>                          
 	</tr>

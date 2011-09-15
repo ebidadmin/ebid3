@@ -1,5 +1,4 @@
-$("#cart").html("<%= escape_javascript(render 'cart/cart') %>");
+// $("#cart").html("<%= escape_javascript(render 'cart/cart') %>");
+$("#select-parts-box").html("<%= escape_javascript(render 'cart/cart') %>");
 $("#cart_notice_box").html("<%= escape_javascript(render 'cart/cart_notice') %>");
-// $("#cart_total").html("<%= escape_javascript(render 'cart/parts_total') %>");
-$("#cart_notice, #selection #cart_notice").effect("highlight", {}, 4000);
-$("#cart_notice, #selection #cart_notice").fadeOut(400)
+$("#cart_notice, #selection #cart_notice").effect("highlight", {}, 3000).fadeOut(400);

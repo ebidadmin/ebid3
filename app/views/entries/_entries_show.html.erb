@@ -1,0 +1,39 @@
+<% unless current_page? edit_entry_path(@entry) %>
+	<%= render 'entries/message_view' if @line_items.present? && @entry.photos.present?  %>
+<% end %>
+
+<%= form_tag accept_bids_path(:entry_id => @entry), :method => :post do |f|  %>
+	<table id='entries-show'>
+		<thead>
+			<%= content_tag :th, 'Qty', :class => 'qty' %>
+			<%= content_tag :th, 'Part Description', :class => 'partname' %>
+			<th class="bid-box">
+				<%= content_tag :h4, 'Bids (unit price)', :class => 'strong' %>
+				<%= content_tag :div, '', :class => 'bid-labels' %>
+				<div class="bid-selection">
+					<%= content_tag :div, 'Original', :class => 'bid-field' %>
+					<%= content_tag :div, 'Replacement', :class => 'bid-field' %>
+					<%= content_tag :div, 'Surplus', :class => 'bid-field' %>
+				</div>
+			</th>
+		</thead>
+		<% if current_user.has_role?('admin')  %>
+			<%= render 'admin/bid_master' %>
+		<% else %>                     
+			<%= render 'buyer/bid_master' %>
+		<% end %>
+	</table>
+<% end %>
+<%= link_to 'Add or Edit Parts', add_more_car_parts_path(:id => @entry), :class => 'button green-button', :remote => true if current_page? edit_entry_path(@entry) %>
+
+<div class="page-links">
+  <%= link_to "<< Back", :back, :class => 'button' %>
+  <%= link_to "Edit", edit_entry_path(@entry), :class => 'button' unless current_page? edit_entry_path(@entry) %>
+	<% if @entry.never_online? && @entry.ready_for_online? %>
+	  <%= link_to "Put Online", put_online_entry_path(@entry), :class => 'button green-button' %>
+	<% else %>
+	  <%= link_to "Put New Parts Online", relist_entry_path(@entry), :class => 'button green-button' if @entry.ready_for_online? %>
+	<% end %>
+	<%= render 'entries/reveal_bids_button', :entry => @entry %>
+	<%= render 'entries/relist_button', :entry => @entry, :line_items => @line_items %>
+</div>

@@ -157,8 +157,24 @@ td.bid-box, td.status { background-color: #eaeaea; }
 #parts #search-form > input { margin-top: 0; margin-right: 5px; }
 #parts #search-box { width: 50%; }
 #parts p { text-align: center; margin: 0.5em 0; }
-#parts li {font-size: 14px; margin: 0.5em 0 0.7em 2em; list-style-type: none; }
+#parts li {font-size: 10px; margin: 0.5em 0 0.7em 2em; list-style-type: none; }
 #parts .pagination { clear: both; color: #666666; padding: 10px 0; position: relative; text-align: center; float: none; font-weight: normal; font-size: .8em; }
+
+#entry-create { clear: both; }
+#entry-create td { padding: 8px; }
+#entry-create p { float: left; font-size: 14px; }
+#entry-create a.button { font-size: 12px; padding: 2px 12px; }
+#entry-create .qty { font-weight: bold; position: relative; width: 15%; }
+#entry-create .partname { width: 40%; }
+#entry-create .partnum { text-align: left; width: 40%; }
+#select-parts-box form { text-align: center; }
+#select-parts-box label { font-size: 1.5em; margin-right: 15px; }
+#select-parts-box #search-box { font-size: 1.5em; margin-right: 5px; }
+#parts_list p { text-align: center; }
+#parts_list ul { float: left; width: 310px; margin: 0 10px 8px 0; }
+#parts_list li { background-color: white; float: left; font-size: 12px; margin: 0 0 5px; padding: 10px; position: relative; text-align: left; width: 95%; }
+#parts_list li a.button { padding: 2px 8px; position: absolute; right: 10px; top: 8px; }
+#parts-pagination-info { clear: both; }
 
 /* CREATE ENTRY - CART SELECTION
 ---------------------------------------------------------------------- */
@@ -179,7 +195,7 @@ td.bid-box, td.status { background-color: #eaeaea; }
 #selection .partnum { width: 45%;  }
 #selection #cart_notice_box { float: left; width: 70%; }
 .button_to { float: right; }
-.button_to input { margin: 0; }
+.button_to input { margin: 0 0 0 10px; }
 #selection .empty-prompt { clear: both; text-align: center; }
 #add-part-box { padding: 20px 5px; text-align: center; width: 500px; }
 #add-part-box h3 { margin-bottom: 0.5em; padding: 0; }
@@ -420,8 +436,8 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 .aside p { margin-bottom: 0; }
 #content-main .aside .button { margin-right: 0; margin-bottom: 12px; text-align: center; width: 50%; }
 #content-main .aside #feature-button { background-color: #6B9D28; font-size: 16px; width: 60%; }
-#content-main .aside #feature-button:hover, #content-main #feature-button:hover, #content-main #cancel-button:hover { background-color: #D02200; }
-#content-main #feature-button { background-color: #6B9D28; }
+#content-main .aside #feature-button:hover, #content-main #feature-button:hover, #content-main .button.green-button:hover, #content-main #cancel-button:hover { background-color: #D02200; }
+#content-main #feature-button, #content-main .button.green-button { background-color: #6B9D28; }
 #content-main #cancel-button { background-color: #CCC; float: right;}
 
 .aside div#message-box, .aside div.input { margin: 0; padding: 0; }

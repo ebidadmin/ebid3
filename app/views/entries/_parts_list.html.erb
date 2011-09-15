@@ -1,0 +1,31 @@
+<% if @car_parts_count > 0 %>
+	<% if params[:name] %>
+		<%= content_tag :h3, "#{content_tag :strong, (pluralize @car_parts_count, 'part')} were found using your search keyword/s #{content_tag :strong, params[:name]}".html_safe, :class => 'instruction' %>
+	<% else %>
+		<%= content_tag :p, "There are #{content_tag :strong, (pluralize @car_parts_count, 'part')} in our database.".html_safe, :class => 'instruction' %>
+	<% end %>
+
+ 	<% @car_parts.in_groups_of(8, false).each do |car_part_array| %> 
+  <ul>
+		<% car_part_array.each do |car_part| %>
+ 			<%= content_tag :li, select_link(car_part, @entry) %> 
+ 		<% end %>
+  </ul>
+ 	<% end %> 
+  <%= will_paginate @car_parts, :id => 'parts-pagination' %> 
+	<%= content_tag :p, (page_entries_info @car_parts), :class => 'instruction', :id => 'parts-pagination-info' %>
+
+	<div id="add-part-box" class="box">
+		<h3>The part you want is not in our list?</h3>
+		<p class="instruction">Go ahead, include a new part here!</p >
+		<%= form_for :car_part, :url => car_parts_path(:id => @entry), :remote => true do |f| %>
+		<%= f.error_messages %>
+		  <%= f.text_field :name %>
+			<%= f.submit "Add New Part", :class => "button" %>
+		<% end %>	
+	</div>
+	
+<% else %>
+	<%= content_tag :h3, "Sorry, #{content_tag :strong, params[:name]} could not be found.".html_safe, :class => 'instruction' %>
+	<%= content_tag :h3, "Please check your spelling OR try another keyword.", :class => 'instruction' %>
+<% end %>

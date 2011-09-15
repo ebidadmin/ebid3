@@ -1,17 +1,21 @@
 module EntriesHelper
   
   # helpers for cart
-  def add_link(car_part)
-    # link_to "#{car_part.name}  ( + )", cart_add_path(:part_id => car_part), :remote => true
-    (car_part.name + (link_to "+", cart_add_path(:part_id => car_part), :class => 'button', :remote => true)).html_safe
+  def select_link(car_part, entry = nil)
+    (car_part.name + (link_to "select", cart_add_path(:part_id => car_part, :id => entry), :class => 'button', :remote => true)).html_safe
   end
   
-  def remove_link(car_part)
-    link_to  "-", cart_remove_path(:part_id => car_part), :class => 'button', :remote => true
+  def add_link(car_part, entry = nil)
+    link_to "+", cart_add_path(:part_id => car_part, :id => entry), :class => 'add-link', :remote => true
+    # (car_part.name + (link_to "+", cart_add_path(:part_id => car_part), :class => 'button', :remote => true)).html_safe
+  end
+
+  def remove_link(car_part, entry = nil)
+    link_to  "-", cart_remove_path(:part_id => car_part, :id => entry), :class => 'remove-link', :remote => true
   end
   
-  def clear_cart_link
-    button_to "Clear Selection", cart_clear_path, :remote => true
+  def clear_cart_link(entry = nil)
+    button_to "Remove Temporary Parts", cart_clear_path(:id => entry), :class => 'red-button', :remote => true
   end 
 
   def display_status(entry)

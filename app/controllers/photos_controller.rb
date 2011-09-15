@@ -3,19 +3,17 @@ class PhotosController < ApplicationController
   end
   
   def attach
-    # raise params.to_yaml
     @entry = Entry.find(params[:id])
     
     if @entry.update_attributes(params[:entry])
       if @entry.line_items.present?
-        redirect_to @entry, :notice => "Congratulations! Your Entry is complete. You can still Edit it, or proceed to put it online."
-        EntryMailer.delay.new_entry_alert(@entry)
+        redirect_to @entry, :notice => "Successfully updated your photos. Your Entry is complete. You can still Edit it, or proceed to put it online."
       else
-        flash[:warning] = "Saved your photos. Please choose parts."
+        flash[:warning] = "Successfully uploaded your photos. Please select parts."
         redirect_to @entry
       end
     else
-      flash[:warning] = "There was an error in submitting your photos.  Please check if the file formats are correct."
+      flash[:warning] = "There was an error in submitting your photos.  Please check if you have the correct file formats (jpg, jpeg, or png)."
       redirect_to :back
     end
   end

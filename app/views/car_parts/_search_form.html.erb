@@ -1,0 +1,5 @@
+<%= form_tag search_car_parts_path(:id => params[:id]), :method => :get, :remote => true, :id => 'search-form' do %>
+	<%= label_tag 'Which part do you want to add?' %>
+	<%= text_field_tag :name, nil, :id => 'search-box' %>
+	<%= submit_tag "Search" %>
+<% end %>

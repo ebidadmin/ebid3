@@ -1,12 +1,15 @@
-<%= form_tag change_line_item_path(item), :remote => true, :method => :put do  %>
-	<span id="part_qty_<%= item.id %>" class="qty">
-		<%= item.quantity %>
-	</span>
-	<span class="partname">
-		<%= item.car_part.name %> <%= link_to "-", item, :confirm => 'Are you sure?', :method => :delete, :class => 'button' %>
-	</span>		
-	<span id="part_no_<%= item.id %>" class="partnum">
-		<%= render '/line_items/part_with_edit', :item => item %>
-	</span>
-<% end %>
-
+<td>
+	<%= form_tag change_line_item_path(item), :remote => true, :method => :put do  %>
+		<p id="part_qty_<%= item.id %>" class="qty">
+			<%= content_tag :span, item.quantity %>
+			<%= link_to "delete", item, :class => "delete-link", :confirm => "Are you sure you want to delete #{item.part_name}?", :method => :delete %>
+		</p>
+		<p class="partdesc">
+			<%= content_tag :span, item.car_part.name, :class => "partname" %> 
+			<span id="part_no_<%= item.id %>" class="partnum">
+				<%= render 'line_items/part_no', :item => item %>
+			</span>
+		</p>		
+	<% end %>
+</td>
+<%= content_tag :td, "Saved (#{item.status})", :class => "bid-box" %>

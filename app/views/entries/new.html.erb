@@ -3,7 +3,7 @@
 <fieldset id="vehicle">
 	<legend>STEP 1 - Describe the vehicle</legend>
 	<%= simple_form_for [current_user, @entry], :validate => true do |f| %>
-		<%= render 'semantic_vehicle', :f => f %>
+		<%= render 'choose_vehicle', :f => f %>
 	<% end %>
 </fieldset>
 

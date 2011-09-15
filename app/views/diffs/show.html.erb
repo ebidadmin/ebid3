@@ -1,10 +1,10 @@
-<% title "Diff for #{@entry.vehicle}" %>
+<% title "#{@entry.vehicle}" %>
 
 <%= render 'shared/info_vehicle', :entry => @entry %>
-<%= content_tag :h3, 'Status: ' + @entry.buyer_status + " (#{@entry.user.username})", :class => 'highlight' %>
+<%= content_tag :h3, "Status: #{@entry.buyer_status}", :class => "#{quote_class( @entry.buyer_status)}", :id => 'status' %>
 
 <%= form_tag diffs_path(:entry_id => @entry), :method => :post, :remote => true do  %>
-<table class="buyer">
+<table id='entries-show'>
 	<thead>
 		<%= content_tag :th, 'Qty', :class => 'qty' %>
 		<%= content_tag :th, 'Part Description', :class => 'partname' %>
@@ -26,6 +26,7 @@
 					<%= content_tag :p, 'Bidder/s' %>
 					<%= content_tag :p, item.bids.collect(&:user_id).uniq.count, :class => 'number strong' %>
 				</div>
+				<%= content_tag :div, 'Lowest »', :class => 'bid-type' %>
 			</div>
 			<div class="bid-selection">
 				<% if item.bids.size > 0 && item.status != "Online" && item.status != "Relisted" %>
@@ -43,14 +44,11 @@
 		</td>
 	</tr>
 	<% end %>
-	<div class='page-links'>
-		
-	<%= select_tag :canvass_company_id, options_for_select(Company.where("id != 1 AND primary_role = 3").order('name ASC').collect { |c| [c.name, c.id] }), :include_blank => true  %>
-	</div>
 </table>
 <div class="page-links">
-	<%= submit_tag 'Submit Diff/s', :class => 'button'  %>
-  <%= link_to "[Done]", :back %>
+	<%= select_tag :canvass_company_id, options_for_select(CanvassCompany.where(:role => 3).order(:name).collect { |c| [c.name, c.id] }), :include_blank => 'Choose Supplier'  %>
+	<%= submit_tag 'Submit Diffs', :class => 'green-button'  %>
+  <%= link_to "Done", :back %>
 </div>
 <% end %>
 <%= content_tag :h3, '', :id => 'bidding-message' %>

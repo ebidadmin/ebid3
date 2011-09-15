@@ -1,1 +1,3 @@
-$("#parts_listing").html("<%= escape_javascript(render 'entries/parts_listing') %>")
+$("#parts_list").html("<%= escape_javascript(render 'entries/parts_list') %>").show("slide");
+$(".spinner").show().fadeOut(1000);
+

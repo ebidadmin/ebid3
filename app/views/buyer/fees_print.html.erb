@@ -38,11 +38,11 @@
 				<%= content_tag :p, fee.bid_type, :class => 'instruction' %>
 			</div>
 			<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' %>
-			<%= content_tag :div, percentage3(fee.fee_rate), :class => 'rate' -%>
+			<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate)} #{content_tag :p, fee.perf_ratio, :class => 'small'}".html_safe, :class => 'rate' -%>
 	    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
 			<div class='fee'>
 		    <%= content_tag :p, (number_to_currency fee.split_amount, :unit => "") %>
-				<%= content_tag :p, fee.seller.username, :class => 'instruction' %>
+				<%= content_tag :p, truncate(fee.seller.company.name, :length => 10), :class => 'instruction'  %>
 			</div>
 		<% end %>
 		</td>                          

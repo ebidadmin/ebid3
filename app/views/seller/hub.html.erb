@@ -27,6 +27,7 @@
       <%= content_tag :p, (content_tag :span, 'Parts:') + (link_to (pluralize entry.line_items.online.collect(&:quantity).sum, "item"), seller_show_path(:id => entry)) %>
 		</td>
 		<td class="status">
+      <%= content_tag :span, 'M', :class => 'message-mark' if entry.messages.present? %>
       <%= content_tag :p,( 'Created: '+ entry.created_at.strftime('%b %d, %a')), :class => 'instruction' %>
       <%= content_tag :p, "#{online_or_relisted?(entry)} until: #{entry.bid_until.strftime('%b %d, %Y')} (maximum)".html_safe  %>
 			<% unless entry.bids.online.where(:user_id => @company.users).blank? %>

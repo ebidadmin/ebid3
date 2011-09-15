@@ -1,0 +1,5 @@
+<% unless entry.cannot_be_relisted? %>
+  <%#= link_to "Relist Un-bided Items", relist_entry_path(entry), :class => 'button', :id => 'relist-button' if @line_items.collect(&:bids_count).include?(0) %>
+  <%#= link_to "Relist Un-bided Items", relist_entry_path(entry), :class => 'button red-button' if line_items.collect(&:status).include?('No Bids') && line_items.fresh.blank? %>
+  <%= link_to "Relist Un-bided Items", relist_entry_path(entry), :class => 'button red-button' if line_items.collect(&:status).include?('No Bids') %>
+<% end %>

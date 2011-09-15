@@ -1,1 +1,1 @@
-<%= text_field_tag "item[quantity]", item.quantity, :size => 2 %>
+<%= content_tag :span, item.quantity %> <%= add_link(item.car_part, @entry) %> <%= remove_link(item.car_part, @entry) %> 

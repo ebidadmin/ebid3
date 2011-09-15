@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110815030452) do
+ActiveRecord::Schema.define(:version => 20110914083741) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -39,6 +39,11 @@ ActiveRecord::Schema.define(:version => 20110815030452) do
   add_index "bids", ["line_item_id"], :name => "index_bids_on_line_item_id"
   add_index "bids", ["order_id"], :name => "index_bids_on_order_id"
   add_index "bids", ["user_id"], :name => "index_bids_on_user_id"
+
+  create_table "canvass_companies", :force => true do |t|
+    t.string "name"
+    t.string "role"
+  end
 
   create_table "car_brands", :force => true do |t|
     t.integer  "car_origin_id"
@@ -177,7 +182,7 @@ ActiveRecord::Schema.define(:version => 20110815030452) do
   create_table "entries", :force => true do |t|
     t.integer  "user_id"
     t.string   "ref_no"
-    t.integer  "year_model",        :default => 2010
+    t.integer  "year_model"
     t.integer  "car_brand_id",      :default => 0
     t.integer  "car_model_id",      :default => 0
     t.integer  "car_variant_id",    :default => 0
@@ -263,6 +268,7 @@ ActiveRecord::Schema.define(:version => 20110815030452) do
     t.string   "status",      :default => "New"
     t.integer  "bids_count",  :default => 0,     :null => false
     t.datetime "relisted"
+    t.integer  "diffs_cnt"
   end
 
   add_index "line_items", ["car_part_id"], :name => "index_line_items_on_car_part_id"

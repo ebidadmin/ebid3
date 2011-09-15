@@ -1,7 +1,15 @@
-<% @line_items.each do |line_item| %>
-	$("#amounts_<%= line_item.id %>").html("<%= escape_javascript(render 'diffs/diff_set', :item => line_item) %>")
+	<% unless @new_diffs.blank? && @new_diffs.all?(&:valid?) && @existing_diff.blank? %>
+		<% @line_items.each do |line_item| %>
+			$("#amounts_<%= line_item.id %>").html("<%= escape_javascript(render 'diffs/diff_set', :item => line_item) %>")
+		<% end %>
+		$("#bidding-message, #status").text("Diffs submitted!");
+		$("#bidding-message, #status").addClass('green').effect("highlight", {}, 3000)
+		$("form")[0].reset();    
+<% else %>
+	$("#bidding-message").removeClass('green').addClass('orange').text("You may have entered a blank or invalid amount format. Please try again.").effect("highlight", {}, 3000);
 <% end %>
 
-$("#bidding-message").text("Diffs submitted!");
-$("#bidding-message").effect("highlight", {}, 3000)
-$("form")[0].reset();    
+var flashError = "<%=flash.now[:error]%>";
+if (flashError){
+  $("#bidding-message").html(flashError);
+}

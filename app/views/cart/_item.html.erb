@@ -1,13 +1,15 @@
-<%= form_tag cart_edit_item_path(:item_id => item), :remote => true, :method => :put do  %>
-	<span id="part_qty_<%= item.car_part.id %>" class="qty">
-		<%#= item.quantity %>
-		<%= render '/cart/part_qty', :item => item %>
-	</span>
-	<span class="partname">
-		<%= item.car_part.name %> <%= remove_link(item.car_part) %>
-	</span>		
-	<span id="part_no_<%= item.car_part.id %>" class="partnum">
-		<%#= render '/cart/part_with_edit', :item => item %>
-		<%= render '/cart/part_no', :item => item %>
-	</span>
-<% end %>
+<td>
+	<%= form_tag cart_edit_item_path(:item_id => item), :remote => true, :method => :put do  %>
+		<p id="part_qty_<%= item.car_part.id %>" class="qty">
+			<%= render 'cart/part_qty', :item => item %>
+		</p>
+		<p class="partdesc">
+			<%= content_tag :span, item.car_part.name, :class => "partname" %> 
+			<span id="part_no_<%= item.car_part.id %>" class="partnum">
+				<%= render '/cart/part_no', :item => item %>
+			</span>
+		</p>		
+	<% end %>
+</td>
+<%= content_tag :td, 'Temporary', :class => "temporary" %>
+

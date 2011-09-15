@@ -1,4 +1,5 @@
 <% title @title %>
+<%= link_to 'Print Preview', seller_fees_print_path(:start => @start_date, :end => @end_date, :seller => params[:seller], :user_id => current_user), :id => 'print-preview' %>
 
 <%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 
@@ -15,7 +16,6 @@
 			<%= submit_tag "Search" %>
 		</ul>
 	<% end %>
-	<%= link_to 'Print Preview', seller_fees_print_path(:start => @start_date, :end => @end_date, :seller => params[:seller], :user_id => current_user), :id => 'print-preview' %>
 <% end %>
 
 <% unless @market_fees.blank? %>

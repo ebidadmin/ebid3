@@ -45,7 +45,7 @@ class Entry < ActiveRecord::Base
   scope :ftm, where('entries.created_at >= ?', Time.now.beginning_of_month)
 
   scope :pending, where(:buyer_status => ['New', 'Edited'])
-  scope :online, where(:buyer_status => ['Online', 'Relisted'])
+  scope :online, where(:buyer_status => ['Online', 'Relisted', 'Additional'])
   scope :results, where(:buyer_status =>  ['For Decision', 'For-Decision', 'Ordered-IP', 'Declined-IP'])
   scope :ordered, where(:buyer_status =>  ['Ordered-All', 'Ordered-Declined', 'Closed'])
   scope :declined, where(:buyer_status =>  'Declined-All')
@@ -99,6 +99,7 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def convert_numbers
+	  self.ref_no.upcase!
 	  self.plate_no.upcase!
 	  self.motor_no.upcase!
 	  self.serial_no.upcase!
@@ -163,8 +164,19 @@ class Entry < ActiveRecord::Base
     end  
   end  
   
+  def self.by_this_company(buyer = nil)
+    if buyer.present?
+      where(:company_id => buyer)
+    else
+      scoped
+    end
+  end
   def bids_count
 	  bids.count
+	end
+	
+	def bid_amounts # used in diff summary
+	  bids.sum(:total)
 	end
 	
 	def expire
@@ -202,6 +214,18 @@ class Entry < ActiveRecord::Base
     end
 	end
 
+  def never_online?
+    bid_until.blank?
+  end
+
+  def ready_for_online?
+    line_items.fresh.present? && photos.present?
+  end
+  
+  def cannot_be_relisted?
+    buyer_status == 'New' || buyer_status == 'Edited' || buyer_status == 'Online' || buyer_status == 'Relisted' 
+  end
+  
   def ready_for_reveal?
     if buyer_status == 'Relisted'
       Time.now > relisted + 180.minutes

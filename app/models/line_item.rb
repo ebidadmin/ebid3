@@ -1,4 +1,6 @@
 class LineItem < ActiveRecord::Base
+  attr_accessor :diffs_cnt
+  
   belongs_to :entry, :counter_cache => true
   belongs_to :car_part
   
@@ -9,7 +11,9 @@ class LineItem < ActiveRecord::Base
   has_many :diffs
   
   scope :desc, order('id desc')
+  scope :fresh, where(:status => ['New', 'Edited'])
   scope :online, where(:status => ['Online', 'Relisted'])
+  scope :relistable, where(:status => 'No Bids')
   scope :with_bids, where('line_items.bids_count > 0')
   scope :two_and_up, where('line_items.bids_count > 2')
   scope :without_bids, where('line_items.bids_count < 1')
@@ -66,12 +70,21 @@ class LineItem < ActiveRecord::Base
     # collecbids.order(:bid_speed).last.map { |bid| bid.speed }
 	end
 	
-	def compute_lowest_bids
+	def compute_lowest_bids # used in diff summary
 	  unless bids.nil?
-  	  bids.order('amount').first.total 
+  	  bids.order(:amount).first.total 
 	  else
 	    0
     end
 	end
+	
+  def self.search(search)  
+    if search  
+      finder = Entry.where('plate_no LIKE ? ', "%#{search}%") 
+      where(:entry_id => finder)
+    else  
+      scoped  
+    end  
+  end  
 
 end

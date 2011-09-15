@@ -1,5 +1,5 @@
 class EntriesController < ApplicationController
-  before_filter :initialize_cart, :only => [:select_parts]
+  before_filter :initialize_cart, :only => [:select_parts, :show, :edit]
   before_filter :check_buyer_role
 
   def index
@@ -62,7 +62,8 @@ class EntriesController < ApplicationController
   def create
     @entry = current_user.entries.build(params[:entry])
     if current_user.company.entries << @entry
-      redirect_to select_parts_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."
+      # redirect_to select_parts_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."
+      redirect_to edit_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."
     else
       @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
       flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
@@ -70,11 +71,11 @@ class EntriesController < ApplicationController
     end
   end
   
-  def select_parts
-    @entry = Entry.find(params[:id])
-    start_entry
-  end
-  
+  # def select_parts
+  #   @entry = Entry.find(params[:id])
+  #   search_parts
+  # end
+  # 
   def attach_photos
     @entry = Entry.find(params[:id])
     if @entry.photos.first.blank?
@@ -89,10 +90,15 @@ class EntriesController < ApplicationController
     else
       @entry = current_user.entries.find(params[:id])
     end
+    @line_items = @entry.line_items.includes(:car_part, :bids)
     if @entry.photos.first.blank?
       2.times {@entry.photos.build}
     end
-    start_entry
+  end
+  
+  def edit_vehicle
+    @entry = Entry.find(params[:id])
+    @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
   end
   
   def update
@@ -127,7 +133,7 @@ class EntriesController < ApplicationController
     end
     
     if @entry.update_attributes(params[:entry])
-      redirect_to select_parts_entry_path(@entry), :notice => "Updated #{@entry.vehicle}. Next step is to choose parts."
+      redirect_to @entry, :notice => "Updated #{@entry.vehicle}."
     else
       @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
       render 'edit'
@@ -151,7 +157,7 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
     @line_items = @entry.line_items
     
-    if @line_items.present? && @entry.photos.present?
+    if @line_items.fresh.present? && @entry.photos.present?
       if @entry.update_attributes(:buyer_status => "Online", :online => Time.now, :bid_until => Time.now + 1.week)
         @entry.update_associated_status("Online")
         flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
@@ -190,20 +196,26 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
     @line_items = @entry.line_items
     unless @line_items.without_bids.blank?
-      @line_items.without_bids.update_all(:status => 'Relisted', :relisted => Time.now)
-      @entry.update_attributes(:buyer_status => 'Relisted', :bid_until => Time.now + 1.week, :relisted => Time.now, :relist_count => @entry.relist_count += 1, :chargeable_expiry => nil, :expired => nil)
-      flash[:notice] = "Entry was re-listed. Please check your <strong>Online</strong> tab.".html_safe
+      @line_items.fresh.update_all(:status => 'Online')
+      @line_items.relistable.update_all(:status => 'Relisted', :relisted => Time.now)
+      if @line_items.fresh.present?
+        @entry.update_attributes(:buyer_status => 'Additional', :bid_until => Time.now + 1.week, :relisted => Time.now, :relist_count => @entry.relist_count += 1, :chargeable_expiry => nil, :expired => nil)
+        flash[:notice] = "New parts are now online. Please check your <strong>Online</strong> tab.".html_safe
+      else
+        @entry.update_attributes(:buyer_status => 'Relisted', :bid_until => Time.now + 1.week, :relisted => Time.now, :relist_count => @entry.relist_count += 1, :chargeable_expiry => nil, :expired => nil)
+        flash[:notice] = "Entry was re-listed. Please check your <strong>Online</strong> tab.".html_safe
+      end
     else
       flash[:error] = "Sorry, there are no items to relist."
     end
     redirect_to :back
-    for friend in @entry.user.company.friends
-      unless friend.users.nil?
-        for seller in friend.users
-          EntryMailer.delay.online_entry_alert(seller, @entry)
-        end
-      end
-    end
+    # for friend in @entry.user.company.friends
+    #   unless friend.users.nil?
+    #     for seller in friend.users
+    #       EntryMailer.delay.online_entry_alert(seller, @entry)
+    #     end
+    #   end
+    # end
   end
 
   def reactivate
@@ -223,10 +235,9 @@ class EntriesController < ApplicationController
 
   private ##
 
-    def start_entry
-      @search = CarPart.name_like_all(params[:name].to_s.split).ascend_by_name
-      @car_parts, @car_parts_count = @search.paginate(:page => params[:page], :per_page => 12, :order => 'name ASC'), @search.count
-      @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
+    def search_parts
+      @search = CarPart.name_like_all(params[:name].to_s.split).order(:id)
+      @car_parts, @car_parts_count = @search.paginate(:page => params[:page], :per_page => 96), @search.count
     end
 
 end

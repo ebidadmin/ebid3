@@ -1,7 +1,7 @@
 class CarPartsController < ApplicationController
   before_filter :initialize_cart, :except => [:index, :show]
   before_filter :check_buyer_role
-  before_filter :check_admin_role, :except => [:new, :create, :search]
+  before_filter :check_admin_role, :except => [:new, :create, :search, :add_more]
   respond_to :html, :js
 
   def index
@@ -22,6 +22,8 @@ class CarPartsController < ApplicationController
   end
   
   def create
+    @entry = Entry.find(params[:id])
+    @line_items = @entry.line_items.includes(:car_part)
     @car_part = CarPart.new(params[:car_part])
     @car_part.strip_blanks(current_user)
     if @car_part.save
@@ -31,10 +33,16 @@ class CarPartsController < ApplicationController
       if current_user.has_role?('admin')
         redirect_to car_parts_path(:name => @car_part.name)
       else
-        redirect_to :back
+        respond_to do |format|
+          format.html { redirect_to edit_entry_path(@entry) }
+          format.js { flash.now[:cart_notice] = "Successfully created #{@car_part.name}" }
+        end
       end 
     else
-      render :action => 'new'
+      respond_to do |format|
+        format.html { render :action => 'new' }
+        format.js { flash.now[:cart_notice] = "A part named #{@car_part.name.upcase} is already in our database. Please try again." }
+      end
     end
   end
   
@@ -62,7 +70,23 @@ class CarPartsController < ApplicationController
   end
 
   def search
-    @search = CarPart.name_like_all(params[:name].to_s.split).ascend_by_name
-    @car_parts, @car_parts_count = @search.paginate(:page => params[:page], :per_page => 12, :order => 'name ASC'), @search.count
+    @entry = Entry.find(params[:id])
+    @search = CarPart.name_like_all(params[:name].to_s.split).order(:name)
+    @car_parts, @car_parts_count = @search.paginate(:page => params[:page], :per_page => 96), @search.count
+    # respond_with @car_parts
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js
+    end
+  end
+  
+  def add_more
+    @entry = Entry.find(params[:id])
+    @line_items = @entry.line_items.includes(:car_part)
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js { flash.now[:cart_notice] = "Ready to add more parts ..." }
+    end
+    
   end
 end

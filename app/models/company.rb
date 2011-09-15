@@ -16,7 +16,7 @@ class Company < ActiveRecord::Base
   has_many :diffs
   has_many :buyer_companies, :through => :diffs
   has_many :seller_companies, :through => :diffs
-  has_many :canvass_companies, :through => :diffs
+  # has_many :canvass_companies, :through => :diffs
   has_many :comments
   has_many :sender_companies, :through => :comments
   has_many :reciever_companies, :through => :comments
