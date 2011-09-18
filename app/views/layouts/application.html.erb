@@ -21,7 +21,7 @@
       <% end %>
 
  			<div id="content-main">
-	      <%= content_tag :h1, yield(:title), :class => 'main-title' if show_title? %>
+	      <%= content_tag :h1, yield(:title), :class => 'main-title' if show_title? %><!-- <br class='clear-both'> -->
 	      <%= yield %>
 			</div>
     </div>

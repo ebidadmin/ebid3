@@ -115,7 +115,7 @@ class BuyerController < ApplicationController
 
   def fees_print
     if current_user.has_role?('admin') 
-      @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_buyer(params[:buyer], 'comp')
+      @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_buyer(params[:buyer], 'comp').by_this_seller(params[:seller], 'comp')
     elsif current_user.has_role?('seller')
       @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').by_this_buyer(params[:buyer], 'comp').declined.by_this_seller(current_user)
     else
@@ -128,6 +128,7 @@ class BuyerController < ApplicationController
     start_date
     end_date
     buyer_company
+    seller_company
     @search = @all_decline_fees.search(params[:search])
     @decline_fees = @search.inclusions.with_orders
     render :layout => 'print'

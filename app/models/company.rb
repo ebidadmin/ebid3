@@ -16,15 +16,11 @@ class Company < ActiveRecord::Base
   has_many :diffs
   has_many :buyer_companies, :through => :diffs
   has_many :seller_companies, :through => :diffs
-  # has_many :canvass_companies, :through => :diffs
-  has_many :comments
-  has_many :sender_companies, :through => :comments
-  has_many :reciever_companies, :through => :comments
-  
   has_many :messages, :dependent => :destroy
+  has_many :user_companies, :through => :messages
   has_many :receiver_companies, :through => :messages
   
-  # validates_presence_of :name, :address1, :city, :approver
+  validates_presence_of :name, :address1, :city, :approver
   validates_uniqueness_of :name, :message => "This company is already in our database."
   
 end

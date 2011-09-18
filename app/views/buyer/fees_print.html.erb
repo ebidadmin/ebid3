@@ -3,10 +3,11 @@
 <%= content_tag :h1, "Decline Fees of #{@buyer_company} #{content_tag :span, ' (' + params[:user_id] + ')' unless params[:user_id].blank?}".html_safe %>
 <%= content_tag :p, "(For the period #{@start_date.to_s(:long)} to #{@end_date.to_s(:long)})" %>
 
-<h2>
+<h3>
 	Total Decline Fees: <%= ph_currency(@search.collect(&:fee).sum) %> /
 	Supplier Share: <%= ph_currency(@search.collect(&:split_amount).sum) %>
-</h2>
+	<%= "(#{@seller_company} - #{pluralize(@decline_fees.count, 'bid')})" if @seller_company %>
+</h3>
 
 <table id="buyer-fees">
 	<thead>
@@ -23,10 +24,10 @@
 	<% @decline_fees.group_by(&:entry).each do |entry, fees|  %>
   <tr>
 		<td class="vehicle">	
-			<%= content_tag :p, entry.vehicle %>
+			<%= content_tag :p, truncate(entry.vehicle, :length => 25) %>
 			<p>
 				<%= entry.plate_no %>
-				<%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' unless current_user.primary_role != 1 %>
+				<%= content_tag :span, "#{entry.user.username}", :class => 'highlight' unless current_user.primary_role != 1 %>
 			</p>
 		  <%= content_tag :p, "#{fees.count} of #{pluralize entry.line_items_count, 'item'}" %> 	
 		</td>
@@ -39,17 +40,20 @@
 			</div>
 			<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' %>
 			<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate)} #{content_tag :p, fee.perf_ratio, :class => 'small'}".html_safe, :class => 'rate' -%>
-	    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
+			<div class='fee'>
+				<%= content_tag :p, (number_to_currency fee.fee, :unit => "") -%>
+				<%= content_tag :p, fee.created_at.strftime("%d %b '%y"), :class => 'small' %>
+			</div>
 			<div class='fee'>
 		    <%= content_tag :p, (number_to_currency fee.split_amount, :unit => "") %>
-				<%= content_tag :p, truncate(fee.seller.company.name, :length => 10), :class => 'instruction'  %>
+				<%= content_tag :p, truncate(fee.seller.company.name, :length => 10), :class => 'instruction' if params[:seller].blank? %>
 			</div>
 		<% end %>
 		</td>                          
 	</tr>
 	<% end %>
 	<tr class="totals">
-    <%= content_tag :td, 'Sub-Totals', :class => 'vehicle' %>
+    <%= content_tag :td, 'Totals', :class => 'vehicle' %>
 	  <td>
 	    <%= content_tag :div, '', :class => 'part' %>
 	    <%= content_tag :div, '', :class => 'lowest-bid' %>

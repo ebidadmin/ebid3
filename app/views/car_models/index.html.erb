@@ -1,13 +1,17 @@
 <% title "Car Models" %>
 
+<%= will_paginate @car_variants %>
+<%= page_info @car_variants %>
+
 <table>
   <tr>
     <th>Car Brand</th>
-    <th>Name</th>
+    <th>Car Model</th>
+		<%= content_tag :th %>
   </tr>
   <% for car_model in @car_models %>
     <tr>
-      <td><%= car_model.car_brand_id %></td>
+      <td><%= car_model.car_brand.name %></td>
       <td><%= car_model.name %></td>
       <td><%= link_to "Show", car_model %></td>
       <td><%= link_to "Edit", edit_car_model_path(car_model) %></td>
@@ -16,4 +20,7 @@
   <% end %>
 </table>
 
-<p><%= link_to "New Car Model", new_car_model_path %></p>
+<%= will_paginate @car_variants %>
+<%= page_info @car_variants %>
+
+<%= content_tag :p, (link_to "New Car Model", new_car_model_path, :class => 'button'), :class => 'page-links' %>

@@ -18,7 +18,8 @@
         <%= content_tag :p, entry.vehicle, :class => 'strong' %>
         <%= content_tag :span, entry.plate_no %>
         <%= content_tag :span, "(by #{entry.user.username})", :class => 'highlight' %>
-	      <%= content_tag :p, "Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')}", :class => 'instruction' %>
+	      <%= content_tag :p, "Date Created: #{long_date(entry.created_at)}", :class => 'instruction' %>
+	      <%= content_tag :p, "Date Online: #{long_date(entry.online)}", :class => 'instruction' if entry.online  %>
 			</div>
 		</td>
     <td class="terms">  
@@ -28,7 +29,7 @@
 		<td class="status">
       <%= display_status(entry) %> <%= content_tag :span, 'M', :class => 'message-mark' if entry.messages.present? %>
 			<p class="instruction">
-			  <%= display_number_of_bidders(entry) unless (entry.buyer_status == "New" || entry.buyer_status == "Edited") %>
+			  <%= display_number_of_bidders(entry) unless entry.newly_created? %>
         <%= render 'entries/online_links', :entry => entry %>
 			  <%= "| #{content_tag :abbr, (pluralize entry.orders.count, 'order'), :class => 'highlight'}".html_safe unless entry.orders.blank? %>
       </p>

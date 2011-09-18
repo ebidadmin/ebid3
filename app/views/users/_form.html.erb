@@ -1,7 +1,7 @@
 <p class="clear-both instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
 <%= simple_form_for @user, :html => {:class => 'col-3'}, :validate => true do |f| %>
-	<%= f.input :username, :hint => 'This is going to be your login name.', :placeholder => 'Note: this should not be your full name' %>
-	<%= f.input :password, :hint => 'Use at least 4 characters.' %>
+	<%= f.input :username, :hint => 'Note: give a login name, NOT your full name' %>
+	<%= current_page?(new_user_path) ? (f.input :password, :hint => 'Use at least 4 characters.') : (f.input :password, :label => 'Change Password', :hint => 'Use at least 4 characters.') %>
 	<%= f.input :password_confirmation, :label => 'Type Password again' %>
 	<%= f.input :email, :hint => 'We need this to send you important messages.' %>
 	<%= f.input :opt_in, :label => 'Receive Email Alerts?', :hint => "Uncheck this box if you don't want to receive automatic alerts." %>

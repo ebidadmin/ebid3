@@ -1,6 +1,6 @@
 <% title "#{@entry.vehicle}" %>
 <%= link_to 'Print Preview', print_entry_path(@entry), :id => 'print-preview' unless @line_items.blank? %>
-<%= content_tag :h3, "Status: #{@entry.buyer_status}", :class => "#{quote_class( @entry.buyer_status)}", :id => 'status' %>
+<%= content_tag :h3, "Status: #{current_status_or_expired?(@entry)}", :class => "#{quote_class( @entry.buyer_status)}", :id => 'status' %>
 
 <%= render 'shared/info_vehicle', :entry => @entry %>
 <% if current_page? edit_entry_path(@entry) %>

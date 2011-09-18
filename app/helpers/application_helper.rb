@@ -58,6 +58,26 @@ module ApplicationHelper
       link(current_user)
     end 
   end
+
+  def quote_class(status)
+    if status == "Paid" || status == "Ordered" || status == "PO Released" || status == "Ordered-IP" || status == "Ordered-All" || status == "Ordered-Declined" || status == "Delivered" || status == "For-Delivery" || status == "For Delivery" || status == "Closed"
+      "green"
+    elsif status == "For Decision" || status == "For-Decision"
+      "brown"
+    elsif status == "Declined" || status == "Declined-All"
+      "orange"
+    elsif status == "Lose" 
+      "offwhite"
+    elsif status == "Updated" 
+      "white"
+    elsif status == "Online" || status == "Relisted" || status == "Additional"
+      "highlight"
+    elsif status == "New" 
+      "white"
+    else
+      "just-border"
+    end
+  end
     
   def delimited(target)
     if target > 0

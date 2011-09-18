@@ -6,8 +6,8 @@ class Message < ActiveRecord::Base
   belongs_to :entry
   belongs_to :order
   belongs_to :user
+  belongs_to :user_company, :class_name => "Company"
   belongs_to :receiver, :class_name => "User"
-  belongs_to :company
   belongs_to :receiver_company, :class_name => "Company"
   
   scope :open, where(:open => true)

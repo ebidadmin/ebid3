@@ -159,15 +159,14 @@ class SellerController < ApplicationController
     @entry = Entry.find(params[:id])
     @priv_messages = @entry.messages.closed.restricted(current_user.company)
     @pub_messages = @entry.messages.open
-    if @entry.buyer_status == 'Relisted'
+    if @entry.is_now_online?
       @line_items = @entry.line_items.order('status DESC').includes(:car_part, :bids)
     else
       @line_items = @entry.line_items.includes(:car_part, :bids)
     end
     @company = current_user.company
-    # unless @entry.user.company.friendships.collect(&:friend_id).include?(company.id)
     unless @entry.user.company.friends.include?(@company) || current_user.has_role?('admin')
-      flash[:error] = "Sorry, <strong>#{@company.name}</strong>.  Your access for this item is not allowed.  Call 892-5835 to fix this.".html_safe
+      flash[:error] = "Sorry, <strong>#{@company.name}</strong>.  Your access for this entry is not allowed.  Call 892-5835 to fix this.".html_safe
       redirect_to :back
     end 
   end
@@ -192,7 +191,7 @@ class SellerController < ApplicationController
   def orders
     @title = "Purchase Orders"
     @sort_order =" PO date - descending order"
-    @all_orders = Order.by_this_seller(current_user.company.users).recent
+    @all_orders = Order.by_this_seller(current_user.company.users).recent.order('confirmed')
     @search = @all_orders.search(params[:search])
     if params[:status]
       @orders = Order.by_this_seller(current_user.company.users).where(:status => params[:status]).desc.inclusions_for_seller.paginate :page => params[:page], :per_page => 10
@@ -268,5 +267,16 @@ class SellerController < ApplicationController
     @buyers_path = seller_declines_path(:buyer => params[:buyer])
     @period_path = seller_declines_path(current_user)
   end
-    
+ 
+  def archives
+    @search = Entry.for_seller_archives.where('entries.created_at >= ?', metering_date).user_company_friendships_friend_id_eq(current_user.company).search(params[:search])
+    @entries = @search.desc.includes(:car_brand, :car_model, :car_variant, :city, :term, :photos, :messages).paginate(:page => params[:page], :per_page => 10)
+    @company = current_user.company
+  end
+  
+  private
+  
+  def metering_date
+    current_user.company.metering_date
+  end
 end

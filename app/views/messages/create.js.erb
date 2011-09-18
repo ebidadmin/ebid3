@@ -2,3 +2,4 @@ $("#private").html("<%= escape_javascript(render 'messages/private_messages') %>
 $("#public").html("<%= escape_javascript(render 'messages/public_messages') %>");
 $("#msg-fields").html("<%= escape_javascript(render 'messages/buttons') %>");
 $("#confirmation").html("<%= escape_javascript(render 'messages/flash_notice') %>").effect("highlight", {}, 4000).fadeOut(700);
+$(".spinner").hide();

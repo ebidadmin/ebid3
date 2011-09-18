@@ -13,7 +13,7 @@
 				<%= content_tag :p, 'Bidder/s' %>
 				<%= content_tag :p, item.bids.collect(&:user_id).uniq.count, :class => 'number strong' %>
 			</div>
-			<%= render 'bid_hi_lo_labels' if item.bids_count > 0  %>
+			<%= render 'entries/bid_hi_lo_labels' if item.bids_count > 0  %>
 		</div>
 		<div class="bid-selection">
 
@@ -36,6 +36,8 @@
 					<%= content_tag :span, 'Paid' %> as of <%= item.order.paid.strftime('%b %d')  %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
 			<% elsif item.status == "Closed" %>
 					<%= content_tag :span, 'Closed' %> as of <%= item.order.paid.strftime('%b %d')  unless item.order.paid.nil? %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) unless item.order.nil? %>
+			<% elsif item.status == "Cancelled by buyer" || item.status == "Cancelled by seller" || item.status == "Cancelled by admin" %>
+					<%= content_tag :span, item.status, :class => 'highlight' %>  <%= link_to "(view order # #{item.order.id} )", order_path(item.order) unless item.order.nil? %>
 			<% else  %>
 					<%= content_tag :span, item.status, :class => 'highlight' %>
 			<% end %>

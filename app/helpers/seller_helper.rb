@@ -1,7 +1,9 @@
 module SellerHelper
   def online_or_relisted?(entry) # used in seller#hub
-    if entry.buyer_status == 'Relisted'
+    if entry.buyer_status == 'Relisted' 
       content_tag :strong, entry.buyer_status
+    elsif entry.buyer_status == 'Additional'
+      content_tag :b, entry.buyer_status, :class => 'green'
     else
       entry.buyer_status
     end
@@ -16,25 +18,4 @@ module SellerHelper
   		<p class='bid-amounts #{quote_class(last_bid.status) unless last_bid.nil?}'>#{ last_bid.status unless last_bid.nil? }</p>
   	</div>").html_safe
   end
-
-  def quote_class(status)
-    if status == "Paid" || status == "Ordered" || status == "PO Released" || status == "Ordered-IP" || status == "Delivered" || status == "For-Delivery" || status == "For Delivery" || status == "Closed"
-      "green"
-    elsif status == "For Decision" || status == "For-Decision"
-      "brown"
-    elsif status == "Declined" || status == "Declined-All"
-      "orange"
-    elsif status == "Lose" 
-      "offwhite"
-    elsif status == "Updated" 
-      "white"
-    elsif status == "Online" 
-      "highlight"
-    elsif status == "New" 
-      "white"
-    else
-      "just-border"
-    end
-  end
-
 end

@@ -1,6 +1,41 @@
 <% title "Messages" %>
-<ul>
-	<%= render @messages %>
-</ul>
 
-<p><%= link_to "New Message", new_message_path %></p>
+<%= will_paginate @messages %>
+<%= page_info @messages %>
+
+<table id='message-list'>
+	<tr>
+		<%= content_tag :th, 'Sender', :class => 'sender' %>
+		<%= content_tag :th, 'Receiver', :class => 'receiver' %>
+		<%= content_tag :th, 'Message', :class => 'message' %>
+		<%= content_tag :th, 'Entry' %>
+		<%= content_tag :th, 'Order' %>
+	</tr>
+	<% for m in @messages %>
+	<tr>
+		<td>
+			<%= content_tag :p, m.user.username %>
+			<%= content_tag :p, truncate(m.user_company.name, :length => 15) %>
+		</td>
+		<td>
+			<%= content_tag :p, m.receiver.username if m.receiver.present? %>
+			<%= content_tag :p, truncate(m.receiver_company.name, :length => 15) if m.receiver_company.present? %>
+		</td>
+		<td>
+			<p>
+				<%= content_tag :span, (m.open ? 'Open' : 'Closed'), :class => "#{m.open ? 'green' : 'orange'}" %>
+				<%= content_tag :b, short_date(m.created_at), :class => 'datetime white' %>
+				<%= content_tag :span, m.message, :class => 'message' %>
+				<%#= link_to 'reply', show_fields_messages_path(:msg_type => message.user_type, :entry => @entry, :open => message.open, :parent_id => message), :remote => true, :class => 'msg-link' %>
+				<%= link_to 'edit', edit_message_path(m), :class => 'msg-link' %>
+				<%= link_to 'delete', m, :class => 'msg-link', :confirm => 'Are you sure you want to delete this message?', :method => :delete %>
+			</p>
+		</td>
+		<%= content_tag :td, (link_to "View Entry #{m.entry_id}", m.entry if m.entry_id.present?) %>
+		<%= content_tag :td, (link_to "View Order #{m.order_id}", m.order if m.order_id.present?) %>
+	</tr>
+	<% end %>
+</table>
+
+<%= will_paginate @messages %>
+<%= content_tag :div, (link_to "New Message", new_message_path, :class => 'button'), :class => 'page-links' %>

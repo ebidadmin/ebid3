@@ -47,7 +47,7 @@
 			<% elsif (item.status == "Online" || item.status == "Relisted") && item.bids.present? %>
 					<%= content_tag :span, item.status %> (bids are hidden)
 			<% else  %>
-					<%= content_tag :span, item.status %> 
+					<%= content_tag :span, item.status %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) unless item.order.nil? %>
 			<% end %>
 		<% end %>
 		</div>
@@ -59,7 +59,7 @@
   <td colspan=2></td>
   <td>
 		<%= content_tag :p, 'Select bid/s before you decide.', :class => 'instruction strong' %>
-  	<%= submit_tag "Accept Selected" -%>
+  	<%= submit_tag "Accept Selected", :class => 'green-button' %>
   	<%= submit_tag "Decline Selected", :confirm => 'Are you sure you want to decline the selected bid/s?',
   	 			:method => :get %>
   </td>

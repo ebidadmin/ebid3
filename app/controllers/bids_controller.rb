@@ -1,8 +1,12 @@
 class BidsController < ApplicationController
   include ActionView::Helpers::NumberHelper
+  before_filter :check_admin_role, :only => [:index, :edit, :update]
   respond_to :html, :js
   
   def index
+    @search = LineItem.with_bids.search(params[:search])
+    @line_items = @search.desc.inclusions2.paginate :page => params[:page], :per_page => 20 
+    render 'bids/index' 
   end
 
   def create
@@ -57,7 +61,19 @@ class BidsController < ApplicationController
     end      
   end
 
-  def show
+  def edit
+    session['referer'] = request.env["HTTP_REFERER"]
+    @bid = Bid.find(params[:id])
+  end
+  
+  def update
+    @bid = Bid.find(params[:id])
+    if @bid.update_attributes(params[:bid])
+      redirect_to session['referer'], :notice => 'Bid successfully updated.'
+      session['referer'] = nil
+    else
+      render 'edit'
+    end 
   end
 
   def accept

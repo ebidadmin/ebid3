@@ -1,5 +1,5 @@
 <% unless current_page? edit_entry_path(@entry) %>
-	<%= render 'entries/message_view' if @line_items.present? && @entry.photos.present?  %>
+	<%= render 'messages/message_view' if @line_items.present? && @entry.photos.present?  %>
 <% end %>
 
 <%= form_tag accept_bids_path(:entry_id => @entry), :method => :post do |f|  %>
@@ -35,5 +35,5 @@
 	  <%= link_to "Put New Parts Online", relist_entry_path(@entry), :class => 'button green-button' if @entry.ready_for_online? %>
 	<% end %>
 	<%= render 'entries/reveal_bids_button', :entry => @entry %>
-	<%= render 'entries/relist_button', :entry => @entry, :line_items => @line_items %>
+	<%= render 'entries/relist_button', :entry => @entry, :line_items => @line_items unless @line_items.fresh.present? %>
 </div>

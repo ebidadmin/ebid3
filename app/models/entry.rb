@@ -52,6 +52,7 @@ class Entry < ActiveRecord::Base
   scope :closed, where(:buyer_status => 'Closed')
   scope :discarded, where(:buyer_status =>  ['Removed', 'Expired'])
   scope :alive, where("buyer_status != ?", 'Removed')
+  scope :for_seller_archives, buyer_status_not_like("New").buyer_status_not_like("Edited").buyer_status_not_like("Removed")
   
   scope :with_bids, where("entries.bids_count > ?", 0)
   scope :without_bids, where('entries.bids_count < ?', 1)
@@ -106,7 +107,7 @@ class Entry < ActiveRecord::Base
 	end
 
 	def vehicle
-	  "#{year_model} #{car_brand.name} #{car_model.name} #{car_variant.name if car_variant}" 
+	  "#{year_model} #{car_brand.name} #{car_model.name} #{car_variant.name if car_variant}".html_safe 
 	end
 	
 	def brand
@@ -171,6 +172,7 @@ class Entry < ActiveRecord::Base
       scoped
     end
   end
+
   def bids_count
 	  bids.count
 	end
@@ -218,12 +220,20 @@ class Entry < ActiveRecord::Base
     bid_until.blank?
   end
 
+  def newly_created? # used in entries_table
+    buyer_status == 'New' || buyer_status == 'Edited'
+  end
+  
   def ready_for_online?
     line_items.fresh.present? && photos.present?
   end
   
+  def is_now_online? # used in seller#show
+    buyer_status == 'Online' || buyer_status == 'Relisted' || buyer_status == 'Additional'
+  end
+  
   def cannot_be_relisted?
-    buyer_status == 'New' || buyer_status == 'Edited' || buyer_status == 'Online' || buyer_status == 'Relisted' 
+    buyer_status == 'New' || buyer_status == 'Edited' || buyer_status == 'Online' || buyer_status == 'Relisted' || buyer_status == 'Additional'
   end
   
   def ready_for_reveal?

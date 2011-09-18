@@ -1,9 +1,51 @@
 <% title 'Admin Utilities' %>
-<ul>
-  <%= nav_link 'Create Entry',  new_user_entry_path(current_user) %>
-	<%= nav_link 'Expire Entries', admin_expire_entries_path %> 
-	<%= nav_link 'Automatic Ratings', auto_ratings_path %> 
-	<%= nav_link 'Cleanup Bids & Compute Fees', admin_cleanup_path %> 
-	<%= nav_link 'Automatic Payment Tagging', auto_paid_orders_path %> 
-	<%= nav_link 'Update Performance Ratios', admin_update_perf_ratios_path %> 
-</ul>
+<table id='utilities'>
+	<%= content_tag :th, 'Task', :class => 'task' %>
+	<%= content_tag :th, 'Description', :class => 'description' %>
+	<tr>
+		<td>
+		  <%= link_to 'Create Entry',  new_user_entry_path(current_user), :class => 'button' %>
+		</td>
+		<%= content_tag :td %>
+	</tr>
+	<tr>
+		<td>
+			<%= link_to 'Update Performance Ratios', admin_update_perf_ratios_path, :class => 'button' %> 
+			<%= link_to 'Expire Entries', admin_expire_entries_path, :class => 'button' %> 
+		</td>
+		<%= content_tag :td %>
+	</tr>
+	<tr>
+		<td>
+			<%= link_to 'Automatic Payment Tagging', auto_paid_orders_path, :class => 'button' %> 
+			<%= link_to 'Automatic Ratings', auto_ratings_path, :class => 'button' %> 
+		</td>
+		<%= content_tag :td %>
+	</tr>
+	<tr>
+		<td>
+			<%= link_to 'Cleanup Bids & Compute Fees', admin_cleanup_path, :class => 'button' %> 
+		</td>
+		<%= content_tag :td %>
+	</tr>
+	<tr>
+		<td>
+			<%= link_to 'Car Brands', car_brands_path, :class => 'button' %> 
+			<%= link_to 'Car Models', car_models_path, :class => 'button' %> 
+			<%= link_to 'Car Variants', car_variants_path, :class => 'button' %> 
+		</td>
+		<%= content_tag :td %>
+	</tr>
+	<tr>
+		<td>
+			<%= link_to 'Parts DB', car_parts_path, :class => 'button' %> 
+		</td>
+		<%= content_tag :td %>
+	</tr>
+	<tr>
+		<td>
+			<%= link_to 'Messages', messages_path, :class => 'button' %> 
+		</td>
+		<%= content_tag :td %>
+	</tr>
+</table>

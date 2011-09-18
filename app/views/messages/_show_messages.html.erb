@@ -1,25 +1,10 @@
 <% unless messages.blank? %>
 	<ul>
 		<% for message in messages %>
-		<li>
-			<span id="creator">
-				<% unless message.user == current_user %>
-				<%= message.user_type %> said:<br>
-				<%= link_to 'reply', show_fields_messages_path(:msg_type => message.user_type, :entry => @entry, :open => message.open, :parent_id => message), :remote => true, :class => 'msg-link' %>
-				<% else %>
-				<%= content_tag :b, 'YOU said:' %><br>
-				<%= link_to 'edit', edit_message_path(message, :entry => @entry), :remote => true, :class => 'msg-link' %>
-				<% end %>
-				<%= link_to 'delete', message, :class => 'msg-link', :confirm => 'Are you sure you want to delete this message?', :method => :delete if message.user == current_user || current_user.has_role?('admin') %>
-			</span>
-			<span id="comment">
-				<%= content_tag :b, short_date(message.created_at), :id => 'datetime', :class => 'white' %>
-				<%= message.message %> <br>
-			</span>
-		</li>
+		<%= render :partial => 'messages/message_liner', :message => message %>
 		<% end %>
 	</ul>
 <% else %>
 	<%= content_tag :h4, 'No messages yet.', :class => 'instruction' %>
 <% end %>
-	
+<!-- for deletion -->

@@ -19,7 +19,7 @@
 			</div>
 		</th>
 	</thead>
-	<% @line_items.group_by(&:entry).each do |entry, line_items| -%>
+	<% @line_items.group_by(&:entry).each do |entry, line_items| %>
   <tr>
 		<td class="vehicle">	
 			<%= content_tag :p, (link_to truncate(entry.vehicle, :length => 30), entry) %>
@@ -37,23 +37,17 @@
 				<div class="bid-group">
 					<div class="amount orig">
 					<% for bid in line_item.bids.orig  %>
-						<%= content_tag :p, ph_currency(bid.amount), :class => 'vals' %>
-						<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
-						<%= content_tag :p, "#{bid.user.username} | #{distance_of_time_in_words(bid.bid_speed)}", :class => 'instruction'   %>
+						<%= render 'bids/bid_array', :bid => bid %>
 	   			<% end %>
 					</div>
 					<div class="amount rep">
 					<% for bid in line_item.bids.rep  %>
-						<%= content_tag :p, ph_currency(bid.amount), :class => 'vals' %>
-						<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
-						<%= content_tag :p, "#{bid.user.username} | #{distance_of_time_in_words(bid.bid_speed)}", :class => 'instruction'   %>
+						<%= render 'bids/bid_array', :bid => bid %>
 	   			<% end %>
 					</div>
 					<div class="amount surp">
 					<% for bid in line_item.bids.surp  %>
-						<%= content_tag :p, ph_currency(bid.amount), :class => 'vals' %>
-						<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
-						<%= content_tag :p, "#{bid.user.username} | #{distance_of_time_in_words(bid.bid_speed)}", :class => 'instruction'   %>
+						<%= render 'bids/bid_array', :bid => bid %>
 	   			<% end %>
 					</div>
 				</div>

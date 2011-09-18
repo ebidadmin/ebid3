@@ -78,7 +78,7 @@ Ebid::Application.routes.draw do
   match 'admin/bids(/:page(/:brand))' => 'admin#bids', :as => :admin_bids, :via => :get
   match 'admin/orders(/:page)' => 'admin#orders', :as => :admin_orders, :via => :get
   match 'admin/payments(/:seller(/:page))' => 'admin#payments', :as => :admin_payments, :via => :get
-  match 'admin/buyer_fees(/:buyer(/:page))' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
+  match 'admin/buyer_fees(/:buyer(/:seller))' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
   match 'admin/seller_fees(/:page)' => 'admin#seller_fees', :as => :admin_seller_fees, :via => :get
   match 'admin/utilities' => 'admin#utilities', :as => :admin_utilities, :via => :get
   match 'admin/expire_entries' => 'admin#expire_entries', :as => :admin_expire_entries, :via => :get
@@ -111,7 +111,8 @@ Ebid::Application.routes.draw do
   match 'seller/:user_id/fees(/:page)' => 'seller#fees', :as => :seller_fees, :via => :get
   match 'seller/:user_id/fees_print(/:page)' => 'seller#fees_print', :as => :seller_fees_print, :via => :get
   match 'seller/:user_id/declines(/:buyer)' => 'seller#declines', :as => :seller_declines, :via => :get
-  get 'seller/index'
+  match 'seller/:user_id/archives(/:page)' => 'seller#archives', :as => :seller_archives, :via => :get
+  # get 'seller/index'
   
   resources :bids do
     collection do

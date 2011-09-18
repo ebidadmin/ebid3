@@ -18,7 +18,10 @@
 	<tr>
   	<td >	
  			<% for order_item in  order.order_items %>
-				<%= content_tag :p, "[ #{order_item.quantity} ] " + order_item.line_item.part_name %>
+				<p class="part">
+			    <%= content_tag :span, "#{order_item.quantity} ", :class => 'qty' %>
+					<%= content_tag :span, order_item.line_item.part_name, :class => 'name' %>
+				</p>
 			<% end %>
 	 	</td>
 		<td class='amount'>

@@ -1,5 +1,5 @@
 <% title @title %>
-<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer], :user_id => params[:user_id]), :id => 'print-preview' %>
+<%= link_to 'Print Preview', buyer_fees_print_path(:start => @start_date, :end => @end_date, :buyer => params[:buyer], :seller => params[:seller], :user_id => params[:user_id]), :id => 'print-preview' %>
 
 <%= render 'buyer/filter_by_user' unless @user_group.nil? %>
 <%= render 'admin/filter_by_buyer' if @buyers %>
@@ -8,6 +8,7 @@
 <% content_for :subnav do %>
 	<%= form_tag @period_path, :class => 'groups highlight', :method => :get do  %>
 		<%= hidden_field_tag :buyer, params[:buyer] unless params[:buyer].blank? %>
+		<%= hidden_field_tag :seller, params[:seller] unless params[:seller].blank? %>
 		<ul class="links groups">
 			<li class="label">For the period</li>
 			<li><%= text_field_tag :start, @start_date, :id => 'start', :size => 10 %></li>
@@ -32,6 +33,8 @@
 	
 	<%= will_paginate @decline_fees  %>
 	<%= page_info @decline_fees %>
+	<%= content_tag :span, " - #{params[:buyer]}", :class => 'strong highlight' if params[:buyer] %>
+	<%= content_tag :span, " - #{params[:seller]}", :class => 'strong highlight' if params[:seller] %>
 
 	<table id="buyer-fees">
 		<thead>
@@ -67,7 +70,6 @@
 				</div>
 				<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' %>
 				<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate)} #{content_tag :p, fee.perf_ratio, :class => 'small'}".html_safe, :class => 'rate' -%>
-				<%#= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' -%>
 				<div class='fee'>
 					<%= content_tag :p, (number_to_currency fee.fee, :unit => "") -%>
 					<%= content_tag :p, fee.created_at.strftime("%d %b '%y"), :class => 'instruction' %>

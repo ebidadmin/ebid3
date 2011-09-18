@@ -1,2 +1,9 @@
 <%= content_tag :h3, 'Public Messages' %>
-<%= render 'messages/show_messages', :messages => @pub_messages %>
+<%#= render 'messages/show_messages', :messages => @pub_messages %>
+<% unless @pub_messages.blank? %>
+	<ul>
+		<%= nested_messages @pub_messages.arrange(:order => :created_at) %>
+	</ul>
+<% else %>
+	<%= content_tag :h4, 'No messages yet.', :class => 'instruction' %>
+<% end %>

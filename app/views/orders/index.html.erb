@@ -6,7 +6,7 @@
 	<%#= render 'buyer/filter_by_status' unless @status_tags.nil? %>
 	<%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 	<%= render 'buyer/filter_by_search' %>
-	<%= render 'buyer/print' unless request.parameters['controller'] == ('admin' || 'seller') %>
+	<%= render 'buyer/print_button' unless request.parameters['controller'] == ('admin' || 'seller') %>
 
 	<%= content_tag :h3, "Total: #{ph_currency(@all_orders.collect(&:order_total).sum)}", :id => 'order-total' %>
 	<%= content_tag :p, "#{User.find(params[:seller]).company_name} only: #{ph_currency(@search.collect(&:order_total).sum)}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>

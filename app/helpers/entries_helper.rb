@@ -22,7 +22,7 @@ module EntriesHelper
     unless entry.buyer_status == "Removed" || entry.buyer_status == "Closed" 
       (content_tag :p, "#{current_status_or_expired?(entry)} #{online_date_status(entry)}".html_safe)
     else
-      ("#{current_status_or_expired?(entry)} (Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')})").html_safe
+      ("#{current_status_or_expired?(entry)} (Created: #{long_date(entry.created_at)})").html_safe
     end
   end
 

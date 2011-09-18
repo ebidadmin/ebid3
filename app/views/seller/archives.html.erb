@@ -1,0 +1,49 @@
+<% title 'Bidding Archive' %>
+
+<%= render 'buyer/filter_by_search' %>
+
+<%= will_paginate @entries %>
+<%= page_info @entries %>
+
+<% unless @entries.count < 1 %>
+<table id="main-bids">
+	<thead>
+		<th class="vehicle">Vehicle</th>
+		<th class="requirements">Requirements</th>
+		<th class="status">Status</th>
+	</thead>
+	<% for entry in @entries %>
+	<tr>
+		<td class="vehicle">
+			<%= render 'shared/photo_first', :entry => entry %>
+      <div class="details">
+				<%= content_tag :p, truncate(entry.vehicle, :length => 30), :class => 'strong' %>
+        <%= content_tag :p, entry.plate_no %>
+				<%= link_to 'View Entry', seller_show_path(:id => entry.id), :class => 'button' %>
+			</div>
+		</td>
+		<td class="requirements">
+      <%= content_tag :p, (content_tag :span, 'Delivery:') + (content_tag :b, entry.city.name, :class => 'highlight') if entry.city %>
+      <%= content_tag :p, (content_tag :span, 'Credit:') + entry.term.term_name if entry.term %>
+			<%= content_tag :p, (content_tag :span, 'Parts:') + (pluralize entry.line_items.size, "part"), :class => 'strong' %>
+		</td>
+		<td class="status">
+      <%= content_tag :span, 'M', :class => 'message-mark' if entry.messages.restricted(@company).present? || entry.messages.open.present? %>
+			<%#= content_tag :p, (entry.is_now_online? ? current_status_or_expired?(entry) : 'Offline'), :class => "stat #{quote_class(entry.buyer_status)}" %> 
+ 			<%= content_tag :p, entry.buyer_status, :class => "stat #{quote_class(entry.buyer_status)}" if entry.is_now_online? %> 
+      <%= content_tag :p, "Date Created: #{long_date(entry.created_at)}", :class => 'small instruction' %>
+      <%= content_tag :p, "Date Online: #{long_date(entry.online)}", :class => 'instruction' if entry.online.present?  %>
+			<% if entry.bids.where(:user_id => @company.users).present? %>
+				<%= content_tag :p, "#{image_tag '/images/base/yes.png'} You have bids #{link_to 'here', seller_show_path(:id => entry)}".html_safe, :class => 'instruction large' %>
+			<% else %>
+				<%= content_tag :p, "#{image_tag '/images/base/no.png'} You don't have bids for this entry.".html_safe  %>
+			<% end %>
+		</td>
+	</tr>
+	<% end %>
+</table>
+<% end %>
+
+<%= will_paginate @entries %>
+
+
