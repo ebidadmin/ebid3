@@ -55,12 +55,12 @@ class EntriesController < ApplicationController
   end
   
   def create
-    @search = Entry.search(params[:entry][:plate_no])
-    if @search.present?
-      @entries = @search.paginate(:page => params[:page], :per_page => 10)
-      render 'entries/index'
-    else
-      @entry = current_user.entries.build(params[:entry])
+    # @search = Entry.search(params[:entry][:plate_no])
+    #  if @search.present?
+    #    @entries = @search.paginate(:page => params[:page], :per_page => 10)
+    #    render 'entries/index'
+    #  else
+       @entry = current_user.entries.build(params[:entry])
       if current_user.company.entries << @entry
         redirect_to edit_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."
       else
@@ -68,7 +68,7 @@ class EntriesController < ApplicationController
         flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
         render 'new'
       end
-    end
+    # end
   end
   
   def attach_photos

@@ -1,4 +1,4 @@
-body { font-family: Verdana, Arial, Tahoma; font-size: 10px; color: #000000; padding: 0; margin: 0;}
+body { font-family: Verdana, Arial, Tahoma; font-size: 11px; color: #000000; padding: 0; margin: 0;}
 ul { margin: 0; padding: 0; }
 li { list-style-type: none;  }
 #print-header { border-bottom: 1px solid black; margin: 0px auto; overflow: hidden; position: relative; width: 800px;  }
@@ -20,10 +20,10 @@ li { list-style-type: none;  }
 #message-box h3 { clear: both; }
 #message-box ul { float: left; margin-bottom: 25px; width: 100%; }
 #message-box li { float: left; margin: 0 0 10px 0; width: 100%;}
-#creator, #comment { float: left; }
-#creator { clear: both; font-weight: bold; margin-right: 10px; width: 15%;  }
-#comment { width: 82%; margin-right: 10px; }
-#datetime { margin-right: 10px; width: 15%; }
+/*.creator, .comment { float: left; }
+.creator { clear: both; font-weight: bold; margin-right: 10px; width: 15%;  }
+.comment { width: 82%; margin-right: 10px; }*/
+.datetime { margin-right: 10px; width: 15%; }
 .msg-link { display: none; }
 form { display: none; }
 

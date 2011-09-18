@@ -47,6 +47,7 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .main-title { color: #919191; float: left; width: 55%; }
 #bidding-message, h3.highlight { clear: both; margin: 0 0 1em; padding: 5px 0 15px; text-align: center; }
 /*.*/
+.small { color: #919191; font-size: 0.8em; }
 
 /* HEADER
 ---------------------------------------------------------------------- */
@@ -218,6 +219,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #entry-create td { padding: 8px; }
 #entry-create p { float: left; }
 #entry-create input { margin-top: 0; text-align: center; }
+#entry-create .temporary { color: #C00; font-size: 18px; text-align: center; }
 #entry-create a.button, #entry-create input[type="submit"] { font-size: 12px; padding: 4px 12px; margin: 0; }
 #entry-create .add-link, #entry-create .remove-link, #entry-create .delete-link { border: 0; margin: 0; padding: 2px 6px; }
 #entry-create .qty { font-weight: bold; position: relative; width: 25%; }
@@ -300,7 +302,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 ---------------------------------------------------------------------- */
 #orders-list th.items { text-align: left; }
 #orders-list .vehicle { width: 30%; }
-#orders-list .amount { text-align: left; }
+#orders-list .amount { text-align: left; width: 15%; }
 #orders-list .stat { text-align: center; width: 30%; }
 #orders-list .stat .highlight { margin-bottom: 5px; }
 #orders-list .total { font-size: 14px; margin-bottom: 5px; }
@@ -324,7 +326,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #delivery form li { margin-bottom: 15px; }
 #delivery label { display: block; float: left; width: 29%; }
 #delivery abbr { color: #C00; float: right; margin-right: 4px; }
-#delivery input, #delivery textarea { width: 65%; }
+#delivery div input, #delivery div textarea { width: 300px; }
 #delivery .inline-hints { font-size: 12px; }
 #delivery .inline-errors { color: #C00; font-weight: bold; }
 #del-instructions { width: 450px; }
