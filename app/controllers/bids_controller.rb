@@ -80,6 +80,12 @@ class BidsController < ApplicationController
     end 
   end
 
+  def destroy
+    @bid = Bid.find(params[:id])
+    @bid.destroy
+    redirect_to :back, :notice => "Deleted your bid."
+  end
+
   def accept
     # raise params.to_yaml
     @body = 'accept-order'

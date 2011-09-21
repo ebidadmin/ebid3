@@ -10,4 +10,5 @@
 <%#= content_tag :p, "speed: #{distance_of_time_in_words(last_bid.bid_speed)} | #{last_bid.user.username}" , :class => 'instruction'   %>
 	<%= content_tag :p, "speed: #{distance_of_time_in_words(last_bid.bid_speed)}" , :class => 'instruction'   %>
 	<%= content_tag :span, "> #{last_bid.user.username}", :class => 'instruction highlight' if last_bid.user != current_user  %>
+	<%= content_tag :p, (link_to "delete", last_bid, :confirm => 'Are you sure??? This will permanently delete your bid.', :method => :delete) if last_bid.online? %>
 <% end %>
