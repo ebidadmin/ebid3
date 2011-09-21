@@ -1,9 +1,0 @@
-<%= semantic_form_for "entry", :remote => true  do |form| %>
-	<% if !car_models.blank? %>
-		<%= f.input :car_model, :collection => car_models.collect{ |s| [s.name,s.id]} %>
-	<% else %>
-		<%= f.input :car_model, :collection => [] %>
-	<% end %>
-<% end %>
-
-

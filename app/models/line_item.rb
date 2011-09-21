@@ -12,8 +12,9 @@ class LineItem < ActiveRecord::Base
   
   scope :desc, order('id desc')
   scope :fresh, where(:status => ['New', 'Edited'])
-  scope :online, where(:status => ['Online', 'Relisted'])
+  scope :online, where(:status => ['Online', 'Relisted', 'Additional'])
   scope :relistable, where(:status => 'No Bids')
+  scope :cancelled, where('line_items.status LIKE ?', "%Cancelled%")
   scope :with_bids, where('line_items.bids_count > 0')
   scope :two_and_up, where('line_items.bids_count > 2')
   scope :without_bids, where('line_items.bids_count < 1')
@@ -36,6 +37,32 @@ class LineItem < ActiveRecord::Base
 		li 
 	end 
 	
+	def update_for_decision
+	  if bids.present?
+      update_attribute(:status, "For-Decision")
+      if bids.orig.present?
+        low_orig = bids.orig.not_cancelled.last
+        low_orig.update_attribute(:status, "For-Decision")
+        other_orig = bids.orig.not_cancelled.where("id != ?", low_orig)
+        other_orig.update_all(:status => "Lose") 
+      end
+      if bids.rep.present?
+        low_rep = bids.rep.not_cancelled.last
+        low_rep.update_attribute(:status, "For-Decision")
+        other_rep = bids.rep.not_cancelled.where("id != ?", low_rep)
+        other_rep.update_all(:status => "Lose") 
+      end
+      if bids.surp.present?
+        low_surp = bids.surp.not_cancelled.last
+        low_surp.update_attribute(:status, "For-Decision")
+        other_surp = bids.surp.not_cancelled.where("id != ?", low_surp)
+        other_surp.update_all(:status => "Lose") 
+      end
+	  else
+      update_attribute(:status, "No Bids") 
+	  end 
+	end
+	
 	def check_and_update_associated_relationships
     bids.each { |bid| bid.update_attributes(:quantity => quantity, :total => bid.amount * quantity) } if bids
     order_item.update_attributes(:quantity => quantity, :total => order_item.price * quantity)  if order_item
@@ -46,12 +73,12 @@ class LineItem < ActiveRecord::Base
 	end
 
 	def high_bid(bid_type)
-    bids.where(:bid_type => bid_type).order('amount').last
+    bids.where(:bid_type => bid_type).not_cancelled.order('amount DESC').order('bid_speed DESC').first
 	end
 	
 	def low_bid(bid_type)
     # self.bids.bid_type_eq(bid_type).status_does_not_equal('Ordered').descend_by_amount.last
-    bids.where(:bid_type => bid_type).order('amount').first
+    bids.where(:bid_type => bid_type).not_cancelled.order('amount DESC').order('bid_speed DESC').last
 	end
 	
 	def last_diff(bid_type)
@@ -68,6 +95,10 @@ class LineItem < ActiveRecord::Base
 	
 	def self.fastest
     # collecbids.order(:bid_speed).last.map { |bid| bid.speed }
+	end
+	
+	def cancelled?
+	  status == "Cancelled by buyer" || status == "Cancelled by seller" || status == "Cancelled by admin"
 	end
 	
 	def compute_lowest_bids # used in diff summary

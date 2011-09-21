@@ -31,7 +31,7 @@
 			<p class="instruction">
 			  <%= display_number_of_bidders(entry) unless entry.newly_created? %>
         <%= render 'entries/online_links', :entry => entry %>
-			  <%= "| #{content_tag :abbr, (pluralize entry.orders.count, 'order'), :class => 'highlight'}".html_safe unless entry.orders.blank? %>
+			  <%= "| #{content_tag :abbr, (pluralize entry.orders.not_cancelled.count, 'order'), :class => 'highlight'}".html_safe unless entry.orders.blank? %>
       </p>
 			<%= content_tag :p, "Bidding Speed: " + distance_of_time_in_words(entry.bids.minimum(:bid_speed)), :class => 'comfy-alert' unless entry.bids.first.blank? %>
 		</td>

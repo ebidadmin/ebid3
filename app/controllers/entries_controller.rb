@@ -151,14 +151,20 @@ class EntriesController < ApplicationController
   end
 
   def reveal_bids 
-    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    @entry = Entry.find(params[:id], :include => :line_items)
     unless @entry.bids.blank?
       if @entry.update_attribute(:buyer_status, "For-Decision")
-        @entry.update_associated_status("For-Decision")
-        flash[:notice] = ("Great! You can now view the winning bids in your <strong>Results</strong> tab.").html_safe
+        # @entry.update_associated_status("For-Decision")
+        # find low bids for each type, tag as for-dec, decline others
+        for item in @entry.line_items.online.includes(:bids, :order_item)
+          unless item.order_item.present? 
+            item.update_for_decision
+          end
+        end
+        flash[:notice] = "Great! Your entry is now OFFLINE and transferred into your <strong>Results</strong> tab.".html_safe
       end
     else
-      flash[:warning] = "You have no quotes to decide on."
+      flash[:warning] = "Sorry, there no bids to reveal."
     end 
     redirect_to @entry #:back
   end
@@ -195,10 +201,11 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
     if @entry.update_attributes(:buyer_status => 'For-Decision', :chargeable_expiry => nil, :expired => nil)
       @entry.line_items.each do |line_item|
-        unless line_item.order_item
+        unless line_item.order_item.present?
           line_item.update_attribute(:status, 'For-Decision') 
-          line_item.bids.update_all(:status => 'For-Decision', :declined => nil, :expired => nil)
-          line_item.fee.destroy if line_item.fee #TODO fee should be updated temporarily, not deleted
+          # line_item.bids.not_cancelled.update_all(:status => 'For-Decision', :declined => nil, :expired => nil)
+          line_item.update_for_decision
+          # line_item.fee.destroy if line_item.fee #TODO fee should be updated temporarily, not deleted
         end
       end
     end

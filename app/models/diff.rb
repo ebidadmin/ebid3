@@ -25,15 +25,15 @@ class Diff < ActiveRecord::Base
 		diff.canvass_total = amount * line_item.quantity.to_i
     diff.canvass_company_id = canvass_company
     # existing_bid = Bid.find_by_line_item_id_and_bid_type_and_amount(@line_item.id, diff[0], diff[1]) #Bid.find_by_line_item_id_and_bid_type(line_item, diff[0])
-        existing_bid = Bid.where(:line_item_id => line_item.id, :bid_type => diff_type).order(:amount).first
+    existing_bid = Bid.where(:line_item_id => line_item.id, :bid_type => diff_type).order(:amount).first
     if existing_bid.present? 
-          diff.seller_company_id = existing_bid.user.company.id
-          diff.seller_id = existing_bid.user_id
-          diff.bid_id = existing_bid.id 
-          diff.amount = existing_bid.amount 
-          diff.quantity = existing_bid.quantity
-          diff.total = existing_bid.total
-          diff.diff = diff.total - diff.canvass_total
+      diff.seller_company_id = existing_bid.user.company.id
+      diff.seller_id = existing_bid.user_id
+      diff.bid_id = existing_bid.id 
+      diff.amount = existing_bid.amount 
+      diff.quantity = existing_bid.quantity
+      diff.total = existing_bid.total
+      diff.diff = diff.total - diff.canvass_total
     end
     diff.save!
   end

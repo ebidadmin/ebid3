@@ -13,7 +13,7 @@
 	</table>
 	<div class="page-links">
 	  <%= link_to "<< Back", @back, :class => 'button' %>
-		<%= submit_tag 'Place Bid/s', :class => 'green-button' if @entry.buyer_status == "Online" || @entry.buyer_status == "Relisted"  %>
+		<%= submit_tag 'Place Bid/s', :class => 'green-button' if @entry.is_now_online?  %>
 	</div>
 <% end %>
 <%= content_tag :h3, '', :id => 'bidding-message' %>

@@ -29,7 +29,7 @@
 		  <%= link_to "View PO", order, :class => 'button' %>
 		  <%#= link_to "Print PO", print_order_path(order), :class => 'button' %>
 		</td>
-  	<td class='stat'>
+  	<td class='stat<%= ' highlight' if order.seller_confirmation == false %>'>
   		<%= content_tag :p, 'Seller: ' + order.seller.company.name, :class => 'instruction'  %>
 		  <%= render 'orders/order_status_buyer', :order => order %>
 			<% if order.paid && order.paid_but_overdue %>

@@ -23,15 +23,18 @@ class BidsController < ApplicationController
           @line_item = LineItem.find(line_item)
           @existing_bid = Bid.find_by_user_id_and_line_item_id_and_bid_type(@company.users, line_item, bid[0])
           if @existing_bid.nil? 
-            @new_bid = current_user.bids.build
-        		@new_bid.entry_id = @entry.id
-        		@new_bid.line_item_id = line_item
-        		@new_bid.amount = bid[1]
-        		@new_bid.quantity = @line_item.quantity
-        		@new_bid.total = bid[1].to_f * @line_item.quantity.to_i
-            @new_bid.bid_type = bid[0]
-            @new_bid.car_brand_id = @entry.car_brand_id
-            @new_bid.bid_speed = @new_bid.compute_bid_speed
+            #             @new_bid = current_user.bids.build
+            # @new_bid.entry_id = @entry.id
+            # @new_bid.line_item_id = line_item
+            # @new_bid.amount = bid[1]
+            # @new_bid.quantity = @line_item.quantity
+            # @new_bid.total = bid[1].to_f * @line_item.quantity.to_i
+            #             @new_bid.bid_type = bid[0]
+            #             @new_bid.car_brand_id = @entry.car_brand_id
+            #             @new_bid.bid_speed = @new_bid.compute_bid_speed
+            #             @new_bids << @new_bid unless @new_bid.amount < 1
+
+            @new_bid = Bid.populate(current_user, @entry, @line_item, bid[1], bid[0])
             @new_bids << @new_bid unless @new_bid.amount < 1
           else
             if @existing_bid.user != current_user
@@ -68,6 +71,7 @@ class BidsController < ApplicationController
   
   def update
     @bid = Bid.find(params[:id])
+    @bid.total = (params[:bid][:amount].to_f * params[:bid][:quantity].to_i)
     if @bid.update_attributes(params[:bid])
       redirect_to session['referer'], :notice => 'Bid successfully updated.'
       session['referer'] = nil

@@ -1,25 +1,16 @@
 <% title "#{@entry.vehicle}" %>
 <%= link_to 'Print Preview', print_entry_path(@entry), :id => 'print-preview' unless @line_items.blank? %>
-<%= content_tag :h3, "Status: #{current_status_or_expired?(@entry)}", :class => "#{quote_class( @entry.buyer_status)}", :id => 'status' %>
+<%= content_tag :h3, "Status: #{@entry.buyer_status}".html_safe, :class => "#{quote_class( @entry.buyer_status)}", :id => 'status' %>
 
 <%= render 'shared/info_vehicle', :entry => @entry %>
-<% if current_page? edit_entry_path(@entry) %>
-	<div class='photo-set'>
-		<%= render 'entries/attach_photos' %>
-	</div>
-	<div id="select-parts-box">
+<%= render 'shared/photo_set' %>
+<div id="select-parts-box">
+	<% unless @line_items.blank? %>
+		<%= render 'entries_show' %>
+	<% else %>
 		<%= render 'cart/cart', :entry => @entry %>
-	</div>
-<% else %>
-	<%= render 'shared/photo_set' %>
-	<div id="select-parts-box">
-		<% unless @line_items.blank? %>
-			<%= render 'entries_show' %>
-		<% else %>
-			<%= render 'cart/cart', :entry => @entry %>
-		<% end %>
-	</div>
-<% end %>
+	<% end %>
+</div>
 
 <% content_for :javascripts do %>
 	<% stylesheet 'shadowbox' %>

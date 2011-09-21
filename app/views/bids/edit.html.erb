@@ -1,5 +1,6 @@
 <% title 'Edit Bid' %>
 <%= simple_form_for @bid, :validate => true do |f| %>
+	<%= f.input :id, :disabled => true %>
 	<%= f.association :user, :collection => Role.find(3).users.map { |u| [u.username, u.id] } %>
 	<%= f.input :entry_id %>
 	<%= f.input :line_item_id %>

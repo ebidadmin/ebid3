@@ -28,7 +28,7 @@
       <%= content_tag :p, ph_currency(order.order_total), :class => 'total' %>
 		  <%= link_to "View PO", order, :class => 'button' unless order.seller_confirmation == false %>
 		</td>
-  	<td class='stat'>
+  	<td class='stat<%= ' highlight' if order.seller_confirmation == false %>'>
   		<% unless order.seller_confirmation == false %>
   			<%= content_tag :p, 'Buyer: ' + order.company.name, :class => 'instruction'  %>
   		<% end %>

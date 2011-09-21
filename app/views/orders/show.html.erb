@@ -17,8 +17,16 @@
 	<%= render 'shared/info_vehicle', :entry => @entry %>
 	<%#= render 'shared/info_parts' if current_user.has_role?('admin')  %>
 	<%= link_to "View Photos", seller_show_path(@entry), :class => 'button', :id => 'view-vehicle-button' if current_user == @order.seller %>
-	<%= content_tag :h3, 'Notes & Messages' %>
-	<%= render 'messages/show_messages', :messages => @priv_messages %>
+	<%= content_tag :h3, 'Private Messages for this PO', :id => 'order-msg' %>
+	<div id="msg-list">
+	<% unless @priv_messages.blank? %>
+		<ul>
+			<%= nested_messages @priv_messages.arrange(:order => :created_at) %>
+		</ul>
+	<% else %>
+		<%= content_tag :h4, 'No messages yet.', :class => 'instruction' %>
+	<% end %>
+	</div>
 
 	<%= form_tag cancel_order_path(@order), :method => :get do  %>
 	<table class="parts-set">
@@ -64,7 +72,7 @@
 			<%= link_to "<< Back", :back, :class => 'button' %>
 		<% else %>
 			<%= form_tag confirm_order_path, :method => :put  do %>
-				<%= link_to "<< Back", seller_orders_path(current_user), :class => 'button' %> <%= submit_tag "Accept Order", :id => 'feature-button' %>
+				<%= link_to "<< Back", seller_orders_path(current_user), :class => 'button' %> <%= submit_tag "Accept Order", :class => 'green-button' if  @order.order_items.present? %>
 			<% end %>
 		<% end %>
 

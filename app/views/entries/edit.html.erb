@@ -3,9 +3,7 @@
 <%= content_tag :h3, "Status: #{@entry.buyer_status}", :class => "#{quote_class( @entry.buyer_status)}", :id => 'status' %>
 
 <%= render 'shared/info_vehicle', :entry => @entry %>
-<div class='photo-set'>
-	<%= render 'entries/attach_photos' %>
-</div>
+<%= render 'shared/photo_set' %>
 <div id="select-parts-box">
 	<%= render 'cart/cart', :entry => @entry %>
 </div>

@@ -1,5 +1,5 @@
 class Message < ActiveRecord::Base
-  attr_accessible :user_id, :user_company_id, :receiver_id, :receiver_company_id, :entry_id, :order_id, :message, :parent_id, :ancestry
+  attr_accessible :user_id, :user_company_id, :receiver_id, :receiver_company_id, :entry_id, :order_id, :message, :parent_id, :open, :ancestry
   
   has_ancestry
   

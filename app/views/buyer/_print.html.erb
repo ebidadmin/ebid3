@@ -1,3 +1,0 @@
-<% content_for :subnav do %>
-	<%= link_to 'Print Preview', buyer_payments_print_path(:user_id => params[:user_id], :seller => params[:seller]), :class => 'button' if current_page? buyer_payments_path(:user_id => params[:user_id], :seller => params[:seller]) %>
-<% end %>

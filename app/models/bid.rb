@@ -23,13 +23,35 @@ class Bid < ActiveRecord::Base
   scope :cancelled, where('status LIKE ?', "%Cancelled%") # used in Orders#Show
   scope :not_cancelled, where('status NOT LIKE ?', "%Cancelled%") # used in Orders#Show
   
-  scope :orig, where(:bid_type => 'original').order('amount DESC')
-  scope :rep, where(:bid_type => 'replacement').order('amount DESC')
-  scope :surp, where(:bid_type => 'surplus').order('amount DESC')
+  scope :orig, where(:bid_type => 'original').order('amount DESC').order('bid_speed DESC')
+  scope :rep, where(:bid_type => 'replacement').order('amount DESC').order('bid_speed DESC')
+  scope :surp, where(:bid_type => 'surplus').order('amount DESC').order('bid_speed DESC')
   
   scope :metered, where('bids.created_at >= ?', '2011-04-16'.to_datetime)
   scope :ftm, where('bids.created_at >= ?', Time.now.beginning_of_month)
-    
+  
+  def self.search(search)  
+    if search  
+      finder = Entry.where('plate_no LIKE ? ', "%#{search}%") 
+      where(:entry_id => finder)
+    else  
+      scoped  
+    end  
+  end  
+  
+  def self.populate(user, entry, line_item, amount, type)
+    nb = user.bids.build
+		nb.entry_id = entry.id
+		nb.line_item_id = line_item.id
+		nb.amount = amount
+		nb.quantity = line_item.quantity
+		nb.total = amount.to_f * line_item.quantity.to_i
+    nb.bid_type = type
+    nb.car_brand_id = entry.car_brand_id
+    nb.bid_speed = nb.compute_bid_speed  
+    nb  
+  end  
+  
   def self.for_this_buyer(user)
     where(:entry_id => user.entries).count
   end
@@ -48,20 +70,16 @@ class Bid < ActiveRecord::Base
 
   def update_unselected_bids(line_item)
     all_bids_for_item = Bid.where(:line_item_id => line_item)
-    bids_by_same_seller = all_bids_for_item.where("user_id = ? AND id != ?", self.user_id, self.id)
+    bids_by_same_seller = all_bids_for_item.where("user_id = ? AND id != ?", self.user_id, self.id).not_cancelled
     bids_by_same_seller.update_all(:status => "Dropped", :ordered => nil, :order_id => nil, :delivered => nil, :paid => nil, :declined => nil)
-    bids_by_other_sellers = all_bids_for_item.where("user_id != ?", self.user_id)
+    bids_by_other_sellers = all_bids_for_item.where("user_id != ?", self.user_id).not_cancelled
     bids_by_other_sellers.update_all(:status => "Lose", :ordered => nil, :order_id => nil, :delivered => nil, :paid => nil, :declined => nil)
   end
   
-  def self.search(search)  
-    if search  
-      finder = Entry.where('plate_no LIKE ? ', "%#{search}%") 
-      where(:entry_id => finder)
-    else  
-      scoped  
-    end  
-  end  
+  def update_unselected_bids2(line_item)
+    peer_bids = Bid.where(:line_item_id => line_item, :status => 'For-Decision').where("bid_type != ?", self.bid_type)
+    peer_bids.update_all(:status => "Dropped", :ordered => nil, :order_id => nil, :delivered => nil, :paid => nil, :declined => nil)
+  end
   
   def compute_bid_speed
     if entry.buyer_status == 'Relisted'

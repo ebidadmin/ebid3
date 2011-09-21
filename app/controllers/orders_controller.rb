@@ -25,7 +25,8 @@ class OrdersController < ApplicationController
       @bids.each do |bid|
         @line_item = LineItem.find(bid.line_item_id)
         bid.update_attributes(:status => "PO Released", :ordered => Date.today, :order_id => OrderItem.line_item_id_eq(@line_item).last.order.id, :fee => nil, :declined => nil, :expired => nil)
-        bid.update_unselected_bids(@line_item)
+        # bid.update_unselected_bids(@line_item)
+        bid.update_unselected_bids2(@line_item)
         @line_item.update_attribute(:status, "PO Released")
       end
       @entry.update_status unless @entry.buyer_status == 'Relisted'
@@ -49,7 +50,11 @@ class OrdersController < ApplicationController
     find_order_and_entry
     # @order_items = @order.order_items
     @order_items1 = @order.bids#.not_cancelled
-    @priv_messages = @order.messages.closed.restricted(current_user.company)
+    if current_user.has_role?('admin')
+      @priv_messages = @order.messages
+    else
+      @priv_messages = @order.messages.closed.restricted(current_user.company)
+    end
   end
 
   def print
@@ -123,11 +128,13 @@ class OrdersController < ApplicationController
       @bids.each do |bid|
         bid.update_attribute(:status, "Cancelled by #{params[:msg_type]}")
         bid.line_item.update_attribute(:status, "Cancelled by #{params[:msg_type]}")
+        bid.order_item.destroy
       end
       @message = current_user.messages.build
       @message.user_company_id = current_user.company.id
       @message.user_type = params[:msg_type]
       @message.entry_id = @entry.id 
+      
       if params[:msg_type] == 'seller'
         @message.receiver_id = @entry.user_id
         @message.receiver_company_id = @entry.company_id
@@ -135,14 +142,15 @@ class OrdersController < ApplicationController
         @message.receiver_id = @order.seller_id
         @message.receiver_company_id = @order.seller.company.id
       end
-      if @order.bids.cancelled.count == @order.order_items.count
-        @message.message = "ENTIRE ORDER cancelled (#{Time.now.strftime('%b %d, %Y %a %R')}): #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
+      
+      if @order.bids.cancelled.count == @order.order_items.count # refacor, not working ...
+        @message.message = "ENTIRE ORDER cancelled: #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
         @message.message << " REASON: #{params[:order][:message][:message]}"
         @order.messages << @message
         @order.update_attributes(:status => "Cancelled by #{params[:msg_type]}", :order_total => @order.bids.collect(&:total).sum)
         flash[:error] = "Cancelled the ENTIRE ORDER."
       else
-        @message.message = "PARTIAL ORDER cancelled (#{Time.now.strftime('%b %d, %Y %a %R')}): #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
+        @message.message = "PARTIAL ORDER cancelled: #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
         @message.message << " REASON: #{params[:order][:message][:message]}"
         @order.messages << @message
         @order.update_attribute(:order_total, @order.order_total - @bids.collect(&:total).sum) unless  @order.order_total == 0

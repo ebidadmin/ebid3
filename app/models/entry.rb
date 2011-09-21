@@ -119,15 +119,16 @@ class Entry < ActiveRecord::Base
 	end
 
 	def update_associated_status(status)
-    if status == "For-Decision"
-      line_items.online.each do |item|
-        unless item.order_item || item.status == 'Declined' || item.status == 'Lose' || item.status == 'Dropped'
-          item.update_attribute(:status, status) if item.bids 
-          item.update_attribute(:status, "No Bids") if item.bids.blank?
-          item.bids.update_all(:status => status) if bids
-        end
-      end
-    elsif status == "Online"
+    # if status == "For-Decision"
+    #   line_items.online.each do |item|
+    #     unless item.order_item || item.status == 'Declined' || item.status == 'Lose' || item.status == 'Dropped'
+    #       item.update_attribute(:status, status) if item.bids 
+    #       item.update_attribute(:status, "No Bids") if item.bids.blank?
+    #       item.bids.update_all(:status => status) if bids
+    #     end
+    #   end
+    # elsif status == "Online"
+    if status == "Online"
       line_items.update_all(:status => status)
       bids.update_all(:status => 'Submitted') if bids
     else
@@ -173,15 +174,15 @@ class Entry < ActiveRecord::Base
     end
   end
 
-  def bids_count
-	  bids.count
-	end
+  #   def bids_count
+  #   bids.count
+  # end
 	
 	def bid_amounts # used in diff summary
 	  bids.sum(:total)
 	end
 	
-	def expire
+	def expire # REVIEW THIS!
     if (buyer_status == "Online" || buyer_status == "Relisted") && Time.now > bid_until #&& expired.nil?
       update_attribute(:expired, Time.now)
       line_items.each do |line_item|
@@ -234,6 +235,10 @@ class Entry < ActiveRecord::Base
   
   def cannot_be_relisted?
     buyer_status == 'New' || buyer_status == 'Edited' || buyer_status == 'Online' || buyer_status == 'Relisted' || buyer_status == 'Additional'
+  end
+  
+  def can_be_ordered?
+    buyer_status == "For-Decision" || buyer_status == "Ordered-IP" || buyer_status == "Declined-IP" || buyer_status == 'Relisted'
   end
   
   def ready_for_reveal?

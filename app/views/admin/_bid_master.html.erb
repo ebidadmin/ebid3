@@ -13,18 +13,27 @@
 				<%= content_tag :p, 'Bidder/s' %>
 				<%= content_tag :p, item.bids.collect(&:user_id).uniq.count, :class => 'number strong' %>
 			</div>
-			<%= render 'entries/bid_hi_lo_labels' if item.bids_count > 0  %>
 		</div>
 		<div class="bid-selection">
 
 			<% unless item.bids.size < 1 %>
-				<%= content_tag :div, admin_high_bid("original", item), :class => 'bid-field orig' %>
-				<%= content_tag :div, admin_high_bid("replacement", item), :class => 'bid-field rep' %>
-				<%= content_tag :div, admin_high_bid("surplus", item), :class => 'bid-field surp' %>
-			  <%= content_tag :div, admin_low_bid("original", item), :class => 'bid-field orig' %>
-			  <%= content_tag :div, admin_low_bid("replacement", item), :class => 'bid-field rep' %>
-			  <%= content_tag :div, admin_low_bid("surplus", item), :class => 'bid-field surp' %>
+				<div class="bid-field orig">
+				<% for bid in item.bids.orig  %>
+					<%= content_tag :p, "#{ph_currency(bid.total)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+	 			<% end %>
+				</div>
+				<div class="bid-field rep">
+				<% for bid in item.bids.rep  %>
+				<%= content_tag :p, "#{ph_currency(bid.total)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+	 			<% end %>
+				</div>
+				<div class="bid-field surp">
+				<% for bid in item.bids.surp  %>
+				<%= content_tag :p, "#{ph_currency(bid.total)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+	 			<% end %>
+				</div>
 			<% end %>
+		</div>
 
 		  <% if item.status == "PO Released" || item.status == "Ordered" %>
 					<%= content_tag :span, item.status %> as of <%= item.order.created_at.strftime('%b %d') %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
@@ -36,13 +45,12 @@
 					<%= content_tag :span, 'Paid' %> as of <%= item.order.paid.strftime('%b %d')  %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) %>
 			<% elsif item.status == "Closed" %>
 					<%= content_tag :span, 'Closed' %> as of <%= item.order.paid.strftime('%b %d')  unless item.order.paid.nil? %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) unless item.order.nil? %>
-			<% elsif item.status == "Cancelled by buyer" || item.status == "Cancelled by seller" || item.status == "Cancelled by admin" %>
+			<% elsif item.cancelled? %>
 					<%= content_tag :span, item.status, :class => 'highlight' %>  <%= link_to "(view order # #{item.order.id} )", order_path(item.order) unless item.order.nil? %>
 			<% else  %>
 					<%= content_tag :span, item.status, :class => 'highlight' %>
 			<% end %>
 
-		</div>
 	</td>
 </tr>
 <% end %>

@@ -7,15 +7,18 @@
 		<%= content_tag :p, "Bidding Speed: " + distance_of_time_in_words(item.bids.first.bid_speed), :class => 'instruction' unless item.bids.first.blank? %>
 	</td>
 	<td class="bid-box">
+		<% if item.cancelled? %>
+		<%= content_tag :p, "Previous order #{item.status.downcase} #{link_to('(view order)', order_path(item.order)) unless item.order.nil?}. <br>You may re-order from next lowest bidder".html_safe, :class => 'comfy-alert clear-both' %> 
+		<% end %>
 		<div class="bid-labels">
 			<div class="bidder-count">
 				<%= content_tag :p, 'Bidder/s' %>
 				<%= content_tag :p, item.bids.collect(&:user_id).uniq.count, :class => 'number strong' %>
 			</div>
-			<%= render 'entries/bid_hi_lo_labels' if item.bids_count > 0 && item.status == "For-Decision" %>
+			<%= render 'entries/bid_hi_lo_labels' if item.bids_count > 0 && item.status == "For-Decision" || item.cancelled? %>
 		</div>
 		<div class="bid-selection">
-		<% if item.status == "For-Decision" %>
+		<% if item.status == "For-Decision" || item.cancelled? %>
 			<% if item.bids.size < 1 %>
 					<%= content_tag :span, 'Sorry, there are no bids for this item.' %>
 			<% else %>
@@ -47,14 +50,14 @@
 			<% elsif (item.status == "Online" || item.status == "Relisted") && item.bids.present? %>
 					<%= content_tag :span, item.status %> (bids are hidden)
 			<% else  %>
-					<%= content_tag :span, item.status %> <%= link_to "(view order # #{item.order.id} )", order_path(item.order) unless item.order.nil? %>
+					<%= content_tag :span, item.status %> <%= link_to "(view order # #{item.order.last.id} )", order_path(item.order) unless item.order.nil? %>
 			<% end %>
 		<% end %>
 		</div>
 	</td>
 </tr>
 <% end %>
-<% if (@entry.buyer_status == "For-Decision" || @entry.buyer_status == "Ordered-IP" || @entry.buyer_status == "Declined-IP" || @entry.buyer_status == 'Relisted') && @entry.expired.nil? %>
+<% if (@entry.can_be_ordered? || @entry.line_items.cancelled.present?) && @entry.expired.nil? %>
 <tr id="accept-decline">
   <td colspan=2></td>
   <td>

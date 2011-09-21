@@ -36,6 +36,7 @@ class Order < ActiveRecord::Base
   scope :paid_and_closed, where(:status => ['Paid', 'Closed']).order('paid desc')
   scope :payment_valid, where('orders.paid IS NOT NULL')
   scope :payment_pending, where('orders.paid IS NULL')
+  scope :not_cancelled, where('orders.status NOT LIKE ?', "%Cancelled%") # used in Orders#Show
 
   scope :within_term, delivered.where('pay_until >= ?', Date.today)
   scope :due_soon, delivered.where(:pay_until => Date.today .. Date.today + 1.week).unpaid
@@ -169,7 +170,9 @@ class Order < ActiveRecord::Base
   
   def can_be_cancelled?(user)
     # status == 'PO Released' || status == 'For-Delivery'
-    if user.has_role?('seller')
+    if user.id == 1
+      true
+    elsif user.has_role?('seller')
       status == 'PO Released' || status == 'For-Delivery'
     else
       status == 'PO Released'
