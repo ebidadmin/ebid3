@@ -82,6 +82,7 @@ namespace :passenger do
   desc "Restart Application"
   task :restart do
     run "cd #{current_path}; touch tmp/restart.txt" 
+    run "sudo chown -R nobody /srv/www/ebid.com.ph/shared/system/photos/"
   end
 end
 

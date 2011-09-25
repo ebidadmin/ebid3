@@ -63,6 +63,93 @@ class LineItem < ActiveRecord::Base
 	  end 
 	end
 	
+	def update_for_decline
+    if bids.present? #WITH BIDS
+      update_attribute(:status, "Expired")
+      lowest_bid = bids.where(:status => 'For-Decision').order(:amount, :bid_speed).first
+      lowest_bid.update_attributes(:status => "Declined", :declined => Time.now, :expired => Time.now) if lowest_bid.present? # lowest bid gets decline fee, others are dropped
+      if bids.orig.present?
+        low_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
+        low_orig.update_attribute(:status, "Dropped") if low_orig.present?
+      end
+      if bids.rep.present?
+        low_rep = bids.rep.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
+        low_rep.update_attribute(:status, "Dropped") if low_rep.present?
+      end
+      if bids.surp.present?
+        low_surp = bids.surp.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
+        low_surp.update_attribute(:status, "Dropped") if low_surp.present?
+      end
+      Fee.compute(lowest_bid, "Declined")
+    else #WITHOUT BIDS
+      update_attribute(:status, "No Bids")
+    end
+	end
+	
+	def fix_ordered
+    # find bid with order, lowest for other bid types dropped, others lose
+    ordered = bids.with_order.first
+    if ordered.present?
+      if bids.orig.present?
+        low_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', ordered.bid_type).last
+        if low_orig.present?
+          low_orig.update_attribute(:status, "Dropped") 
+          other_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', ordered.bid_type).where("id != ?", low_orig)
+          other_orig.update_all(:status => "Lose") if other_orig.present?
+        end
+      end
+      if bids.rep.present?
+        low_rep = bids.rep.not_cancelled.where('bids.bid_type != ?', ordered.bid_type).last
+        if low_rep.present?
+          low_rep.update_attribute(:status, "Dropped") 
+          other_rep = bids.rep.not_cancelled.where('bids.bid_type != ?', ordered.bid_type).where("id != ?", low_rep)
+          other_rep.update_all(:status => "Lose") if other_rep.present?
+        end
+      end
+      if bids.surp.present?
+        low_surp = bids.surp.not_cancelled.where('bids.bid_type != ?', ordered.bid_type).last
+        if low_surp.present?
+          low_surp.update_attribute(:status, "Dropped") 
+          other_surp = bids.surp.not_cancelled.where('bids.bid_type != ?', ordered.bid_type).where("id != ?", low_surp)
+          other_surp.update_all(:status => "Lose") if other_surp.present?
+        end
+      end
+    end
+	end
+	
+	def fix_declined
+    # find bid with decline, lowest for other bid types dropped, others lose
+    declined = bids.declined.first
+    if declined.present?
+      if bids.orig.present?
+        low_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', declined.bid_type).last
+        if low_orig.present?
+          low_orig.update_attribute(:status, "Dropped") 
+          other_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', declined.bid_type).where("id != ?", low_orig)
+          other_orig.update_all(:status => "Lose") if other_orig.present?
+        end
+      end
+      if bids.rep.present?
+        low_rep = bids.rep.not_cancelled.where('bids.bid_type != ?', declined.bid_type).last
+        if low_rep.present?
+          low_rep.update_attribute(:status, "Dropped") 
+          other_rep = bids.rep.not_cancelled.where('bids.bid_type != ?', declined.bid_type).where("id != ?", low_rep)
+          other_rep.update_all(:status => "Lose") if other_rep.present?
+        end
+      end
+      if bids.surp.present?
+        low_surp = bids.surp.not_cancelled.where('bids.bid_type != ?', declined.bid_type).last
+        if low_surp.present?
+          low_surp.update_attribute(:status, "Dropped") 
+          other_surp = bids.surp.not_cancelled.where('bids.bid_type != ?', declined.bid_type).where("id != ?", low_surp)
+          other_surp.update_all(:status => "Lose") if other_surp.present?
+        end
+      end
+      others = bids.not_cancelled.where(:bid_type => declined.bid_type).where("id != ?", declined)
+      others.update_all(:status => "Lose") if others.present?
+    end
+	end
+	
 	def check_and_update_associated_relationships
     bids.each { |bid| bid.update_attributes(:quantity => quantity, :total => bid.amount * quantity) } if bids
     order_item.update_attributes(:quantity => quantity, :total => order_item.price * quantity)  if order_item

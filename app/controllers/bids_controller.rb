@@ -117,9 +117,7 @@ class BidsController < ApplicationController
       end
       @entry.update_status unless @entry.buyer_status == 'Relisted'
       flash[:warning] = ("Winning bid was declined.  A minimal Transaction Fee worth 
-         will be charged 
-        to compensate the winning supplier.<br>
-        Thank you.").html_safe
+         will be charged to compensate the winning supplier.<br> Thank you.").html_safe
     else
       flash[:error] = "Something went wrong. Please try again."
     end

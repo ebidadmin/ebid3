@@ -32,7 +32,9 @@
 			<%= content_tag :div, "#{display_status(entry)} *** #{display_number_of_bidders(entry)} ***".html_safe, :class => 'instruction highlight info' %>
    		<% line_items.each do |line_item| %>
 				<div class="part">
-			    <%= line_item.part_name %>
+			    <%= content_tag :p, line_item.part_name %>
+			    <%= content_tag :p, "ID: #{line_item.id}" %>
+			    <%= content_tag :p, "Status: #{line_item.status}" %>
 				</div>
 				<div class="bid-group">
 					<div class="amount orig">
@@ -51,6 +53,7 @@
 	   			<% end %>
 					</div>
 				</div>
+				<hr>
 		  <% end %>
 		</td>                          
 	</tr>

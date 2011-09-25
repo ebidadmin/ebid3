@@ -145,4 +145,13 @@ class Fee < ActiveRecord::Base
       end 
     end
   end
+
+  def revert
+    f = Fee.new(self.attributes)
+    f.fee = 0 - self.fee
+    f.fee_type = 'Reverted'
+    f.created_at = Time.now.utc.to_date
+    f.split_amount = 0 - self.split_amount
+    f.save
+  end
 end

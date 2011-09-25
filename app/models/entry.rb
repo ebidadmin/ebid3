@@ -119,15 +119,6 @@ class Entry < ActiveRecord::Base
 	end
 
 	def update_associated_status(status)
-    # if status == "For-Decision"
-    #   line_items.online.each do |item|
-    #     unless item.order_item || item.status == 'Declined' || item.status == 'Lose' || item.status == 'Dropped'
-    #       item.update_attribute(:status, status) if item.bids 
-    #       item.update_attribute(:status, "No Bids") if item.bids.blank?
-    #       item.bids.update_all(:status => status) if bids
-    #     end
-    #   end
-    # elsif status == "Online"
     if status == "Online"
       line_items.update_all(:status => status)
       bids.update_all(:status => 'Submitted') if bids
@@ -140,7 +131,7 @@ class Entry < ActiveRecord::Base
 	def update_status
     item_count = bids.collect(&:line_item_id).uniq.count
 	  unless orders.blank?
-      if item_count == order_items.count || item_count == orders.count
+      if item_count == order_items.count || item_count == orders.not_cancelled.count
         update_attribute(:buyer_status, "Ordered-All")
       elsif item_count == order_items.count + line_items.where("status IN  ('Declined', 'Expired')").count
         update_attribute(:buyer_status, "Ordered-Declined")
@@ -183,7 +174,7 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def expire # REVIEW THIS!
-    if (buyer_status == "Online" || buyer_status == "Relisted") && Time.now > bid_until #&& expired.nil?
+    if self.is_now_online? && Time.now > bid_until #&& expired.nil?
       update_attribute(:expired, Time.now)
       line_items.each do |line_item|
         if line_item.bids.exists?
@@ -193,24 +184,12 @@ class Entry < ActiveRecord::Base
           line_item.update_attribute(:status, "No Bids")
         end
       end
-    elsif (buyer_status == "For Decision" || buyer_status == "For-Decision" || buyer_status == "Ordered-IP" || buyer_status == "Declined-IP")
+    elsif self.bids_revealed?
       deadline = bid_until + 3.days unless bid_until.nil?
-      if Time.now > deadline #&& expired_at.nil?
+      if Time.now >= deadline #&& expired_at.nil?
         update_attributes(:chargeable_expiry => true, :expired => Time.now)
-        line_items.each do |line_item|
-          unless (line_item.order_item || line_item.status == "Declined")
-            itembids = line_item.bids #.where(:lot => nil)
-            unless itembids.blank? #WITH BIDS
-              lowest = itembids.order('amount').first
-              others = itembids.where('id != ?', lowest)
-              line_item.update_attribute(:status, "Expired")
-              lowest.update_attributes(:status => "Declined", :declined => Time.now, :expired => Time.now) # lowest bid gets decline fee, others are dropped
-              others.update_all(:status => 'Dropped', :declined => nil, :expired => Time.now)
-              Fee.compute(lowest, "Declined")
-            else #WITHOUT BIDS
-              line_item.update_attribute(:status, "No Bids")
-            end
-          end
+        line_items.each do |item|
+          item.update_for_decline unless item.order_item.present? || item.status == "Declined"
         end
         update_status #unless orders.exists?
       end
@@ -247,6 +226,10 @@ class Entry < ActiveRecord::Base
     else         
       Time.now > online + 180.minutes
     end
+  end
+  
+  def bids_revealed?
+    buyer_status == "For Decision" || buyer_status == "For-Decision" || buyer_status == "Ordered-IP" || buyer_status == "Declined-IP"
   end
 
   def with_diffs

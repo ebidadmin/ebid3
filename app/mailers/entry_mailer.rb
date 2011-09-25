@@ -28,7 +28,25 @@ class EntryMailer < ActionMailer::Base
       )
   end
 
-  # def online_entry_alert(friends, entry)
+  def relisted_entry_alert(seller, entry)
+    @seller = seller
+    @entry = entry
+    if entry.buyer_status == 'Additional'
+      mail(
+        :to => "#{seller.profile.full_name} <#{seller.email}>", 
+        :subject => "ADDITIONAL Parts: #{entry.vehicle}", 
+        :bcc => "cymarquez@ebid.com.ph"
+        )
+    else
+      mail(
+        :to => "#{seller.profile.full_name} <#{seller.email}>", 
+        :subject => "RELISTED: #{entry.vehicle}", 
+        :bcc => "cymarquez@ebid.com.ph"
+        )
+    end
+  end
+
+ # def online_entry_alert(friends, entry)
   #   @friends = friends
   #   @entry = entry
   #   mail(

@@ -129,9 +129,9 @@ class EntriesController < ApplicationController
     @line_items = @entry.line_items
     
     if @line_items.fresh.present? && @entry.photos.present?
-      if @entry.update_attributes(:buyer_status => "Online", :online => Time.now, :bid_until => Time.now + 1.week)
+      if @entry.update_attributes(:buyer_status => "Online", :online => Time.now, :bid_until => 1.week.from_now)
         @entry.update_associated_status("Online")
-        flash[:notice] = ("Your entry is <strong>now online</strong>. Thanks!").html_safe
+        flash[:notice] = "Your entry is <strong>now online</strong>. Thanks!".html_safe
       end
       redirect_to :back
       for friend in @entry.user.company.friends
@@ -145,21 +145,14 @@ class EntriesController < ApplicationController
       flash[:error] = "Oops ... your entry is not yet complete. Please check the photos and parts before you proceed."
       redirect_to :back
     end
-    # @powerbuyers = @entry.user.company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
-    # @friends = @entry.user.company.friends.map {|f| f.users.collect{ |u| "#{u.profile.full_name} <#{u.email}>" }}
-    # EntryMailer.delay.online_entry_alert(@friends, @entry)
   end
 
   def reveal_bids 
     @entry = Entry.find(params[:id], :include => :line_items)
     unless @entry.bids.blank?
       if @entry.update_attribute(:buyer_status, "For-Decision")
-        # @entry.update_associated_status("For-Decision")
-        # find low bids for each type, tag as for-dec, decline others
         for item in @entry.line_items.online.includes(:bids, :order_item)
-          unless item.order_item.present? 
-            item.update_for_decision
-          end
+          item.update_for_decision unless item.order_item.present?
         end
         flash[:notice] = "Great! Your entry is now OFFLINE and transferred into your <strong>Results</strong> tab.".html_safe
       end
@@ -175,12 +168,12 @@ class EntriesController < ApplicationController
     unless @line_items.without_bids.blank?
       if @line_items.relistable.present?
         @line_items.relistable.update_all(:status => 'Relisted', :relisted => Time.now)
-        @entry.update_attributes(:buyer_status => 'Relisted', :bid_until => Time.now + 1.week, :relisted => Time.now, :relist_count => @entry.relist_count += 1, :chargeable_expiry => nil, :expired => nil)
+        @entry.update_attributes(:buyer_status => 'Relisted', :bid_until => 1.week.from_now, :relisted => Time.now, :relist_count => @entry.relist_count += 1, :chargeable_expiry => nil, :expired => nil)
         flash[:notice] = "Entry was re-listed. Please check your <strong>Online</strong> tab.".html_safe
       end
       if @line_items.fresh.present?
         @line_items.fresh.update_all(:status => 'Online')
-        @entry.update_attributes(:buyer_status => 'Additional', :bid_until => Time.now + 1.week, :relisted => Time.now, :relist_count => @entry.relist_count += 1, :chargeable_expiry => nil, :expired => nil)
+        @entry.update_attributes(:buyer_status => 'Additional', :bid_until => 1.week.from_now, :relisted => Time.now, :relist_count => @entry.relist_count += 1, :chargeable_expiry => nil, :expired => nil)
         flash[:notice] = "New parts are now online. Please check your <strong>Online</strong> tab.".html_safe
       end
       redirect_to @entry
@@ -188,17 +181,17 @@ class EntriesController < ApplicationController
       flash[:error] = "Sorry, there are no items to relist."
       redirect_to :back
     end
-    # for friend in @entry.user.company.friends
-    #   unless friend.users.nil?
-    #     for seller in friend.users
-    #       EntryMailer.delay.online_entry_alert(seller, @entry)
-    #     end
-    #   end
-    # end
+    for friend in @entry.user.company.friends
+      unless friend.users.nil?
+        for seller in friend.users
+          EntryMailer.delay.relisted_entry_alert(seller, @entry) if seller.opt_in == true
+        end
+      end
+    end
   end
 
   def reactivate
-    @entry = Entry.find(params[:id], :include => ([:line_items => [:car_part, :bids]]))
+    @entry = Entry.find(params[:id], :include => :line_items)
     if @entry.update_attributes(:buyer_status => 'For-Decision', :chargeable_expiry => nil, :expired => nil)
       @entry.line_items.each do |line_item|
         unless line_item.order_item.present?
@@ -206,6 +199,7 @@ class EntriesController < ApplicationController
           # line_item.bids.not_cancelled.update_all(:status => 'For-Decision', :declined => nil, :expired => nil)
           line_item.update_for_decision
           # line_item.fee.destroy if line_item.fee #TODO fee should be updated temporarily, not deleted
+          line_item.fee.revert
         end
       end
     end

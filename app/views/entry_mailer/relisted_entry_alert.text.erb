@@ -1,0 +1,28 @@
+<%= @entry.buyer_status.upcase %> parts for:
+
+	<%= @entry.vehicle %>
+	(<%= @entry.plate_no %>)
+	
+	Chassis/Serial No. or VIN: 
+		<%= @entry.serial_no %> 
+	
+	Engine/Motor No.: 
+		<%= @entry.motor_no %>
+
+
+******** ******** *******
+
+Put your bids here: http://www.ebid.com.ph<%= seller_show_path(:id => @entry.id) %>
+
+******** ******** *******
+
+
+Parts: 
+	<% @entry.line_items.online.each do |li| %>
+	[ <%= li.quantity %> ]  <%= li.car_part.name.html_safe %>
+	<% end %>
+
+This entry will be online until: <%= @entry.bid_until.to_s(:long) %> (maximum)
+
+Sali na sa bidding!  The more you bid ... the higher the probability to get orders.  
+

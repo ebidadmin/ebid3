@@ -11,26 +11,26 @@
 	<%= f.association :car_brand %>
 	<%= f.input :bid_speed %>
 	<%= f.input :created_at do %>
-	  <%= f.text_field :created_at, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	  <%= f.text_field :created_at, :class => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
 	<% end %>
 	<%= f.input :updated_at do %>
-	  <%= f.text_field :updated_at, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	  <%= f.text_field :updated_at, :class => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
 	<% end %>
 	<%= f.input :ordered do %>
-	  <%= f.text_field :ordered, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	  <%= f.text_field :ordered, :class => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
 	<% end %>
 	<%= f.input :order_id %>
 	<%= f.input :delivered do %>
-	  <%= f.text_field :delivered, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	  <%= f.text_field :delivered, :class => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
 	<% end %>
 	<%= f.input :paid do %>
-	  <%= f.text_field :paid, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	  <%= f.text_field :paid, :class => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
 	<% end %>
 	<%= f.input :declined do %>
-	  <%= f.text_field :declined, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	  <%= f.text_field :declined, :class => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
 	<% end %>
 	<%= f.input :expired do %>
-	  <%= f.text_field :expired, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	  <%= f.text_field :expired, :class => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
 	<% end %>
 	<div class='page-links'>
 	<%= f.submit %>
@@ -41,14 +41,16 @@
 	<% stylesheet 'blitzer/jquery-ui-1.8.6.custom' %>
 	<script type="text/javascript" charset="utf-8">
 	$(function() {
-		$('#datepicker').datepicker({ 
-				dateFormat: "yy-mm-dd",
-				maxDate: 0,
-				numberOfMonths: 2,
-				showButtonPanel: true, 
-				showOn: "both",
-				buttonImage: "/images/calendar.gif",
-				buttonImageOnly: true
+		$('.datepicker').each(function(){
+		    $(this).datepicker({ 
+						dateFormat: "yy-mm-dd",
+						maxDate: 0,
+						numberOfMonths: 2,
+						showButtonPanel: true, 
+						showOn: "both",
+						buttonImage: "/images/calendar.gif",
+						buttonImageOnly: true
+				});
 		});
 	});
 	</script>

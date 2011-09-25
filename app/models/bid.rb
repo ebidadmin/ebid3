@@ -27,6 +27,8 @@ class Bid < ActiveRecord::Base
   scope :rep, where(:bid_type => 'replacement').order('amount DESC').order('bid_speed DESC')
   scope :surp, where(:bid_type => 'surplus').order('amount DESC').order('bid_speed DESC')
   
+  scope :with_order, order_id_not_null
+  
   scope :metered, where('bids.created_at >= ?', '2011-04-16'.to_datetime)
   scope :ftm, where('bids.created_at >= ?', Time.now.beginning_of_month)
   
@@ -62,10 +64,8 @@ class Bid < ActiveRecord::Base
   
   def decline_process
     update_attributes(:status => "Declined", :ordered => nil, :order_id => nil, :delivered => nil, :declined => Date.today)
-    update_unselected_bids(line_item_id)
-    if fee.nil?
-      Fee.compute(self, status)
-    end
+    update_unselected_bids2(line_item_id) 
+    Fee.compute(self, status) if fee.nil?
   end
 
   def update_unselected_bids(line_item)
@@ -82,7 +82,7 @@ class Bid < ActiveRecord::Base
   end
   
   def compute_bid_speed
-    if entry.buyer_status == 'Relisted'
+    if entry.buyer_status == 'Relisted' || entry.buyer_status == 'Additional'
       bid_speed = (Time.now - entry.relisted).to_i
     else
       bid_speed = (Time.now - entry.online).to_i

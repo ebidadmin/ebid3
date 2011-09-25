@@ -1,3 +1,7 @@
 <%= content_tag :p, link_to(ph_currency(bid.amount), edit_bid_path(bid)), :class => 'vals' %>
-<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
+<% if bid.order_id.nil? %>
+	<%= content_tag :p, bid.status, :class => "stat #{quote_class(bid.status)}"  %>
+<% else %>
+	<%= content_tag :p, link_to(bid.status, order_path(bid.order_id)), :class => "stat #{quote_class(bid.status)}"  %>
+<% end %>
 <%= content_tag :p, "#{bid.user.username} | #{distance_of_time_in_words(bid.bid_speed)}", :class => 'instruction'   %>

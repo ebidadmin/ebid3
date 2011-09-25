@@ -137,7 +137,7 @@ class AdminController < ApplicationController
   end
 
   def expire_entries
-    @entries = Entry.online.unexpired.includes(:line_items) + Entry.results.unexpired.includes(:line_items)
+    @entries = Entry.results.unexpired.includes(:line_items)
     @entries.each do |entry|
       entry.expire
     end
@@ -154,7 +154,39 @@ class AdminController < ApplicationController
     #   entry.company_id = entry.user.company.id
     #   entry.save!
     # end
+    entries = Entry.results
+    for entry in entries
+      for item in entry.line_items.with_bids.includes(:bids, :order_item)
+        if item.order_item.present? 
+          item.update_for_decision
+        else
+          item.fix_ordered
+        end
+      end
+    end
  
+    entries = Entry.ordered
+    for entry in entries.includes(:line_items)
+      for item in entry.line_items.with_bids.includes(:bids, :order_item)
+        if item.order_item.present? 
+          item.fix_ordered
+        else
+          item.fix_declined
+        end
+      end
+    end
+    
+    entries = Entry.expired
+    for entry in entries.includes(:line_items)
+      for item in entry.line_items.with_bids.includes(:bids, :order_item)
+        if item.order_item.present? 
+          item.fix_ordered
+        else
+          item.fix_declined
+        end
+      end
+    end
+    
     # line_items = LineItem.all
     # for item in line_items
     #   item.bids_count = item.bids.count
@@ -180,12 +212,12 @@ class AdminController < ApplicationController
     #   end
     # end
 
-    all_orders = Order.scoped.includes(:order_items, :bids)
-    all_orders.each do |order|
-      order.order_total = order.bids.collect(&:total).sum
-      order.order_items_count = order.order_items.count
-      order.save!
-    end
+    # all_orders = Order.scoped.includes(:order_items, :bids)
+    # all_orders.each do |order|
+    #   order.order_total = order.bids.collect(&:total).sum
+    #   order.order_items_count = order.order_items.count
+    #   order.save!
+    # end
     
     flash[:notice] = "Successful cleanup"
     redirect_to request.env["HTTP_REFERER"]
