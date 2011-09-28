@@ -1,5 +1,3 @@
-<%= content_tag :h3, 'Private Messages' %>
-<%#= render 'messages/show_messages', :messages => @priv_messages %>
 <% unless @priv_messages.blank? %>
 	<%= content_tag :h4, pluralize(@priv_messages.count, 'message'), :class => 'instruction' %>
 	<ul>

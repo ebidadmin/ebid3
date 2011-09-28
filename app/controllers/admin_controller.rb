@@ -154,16 +154,16 @@ class AdminController < ApplicationController
     #   entry.company_id = entry.user.company.id
     #   entry.save!
     # end
-    entries = Entry.results
-    for entry in entries
-      for item in entry.line_items.with_bids.includes(:bids, :order_item)
-        if item.order_item.present? 
-          item.update_for_decision
-        else
-          item.fix_ordered
-        end
-      end
-    end
+    # entries = Entry.results
+    # for entry in entries
+    #   for item in entry.line_items.with_bids.includes(:bids, :order_item)
+    #     if item.order_item.present? 
+    #       item.update_for_decision
+    #     else
+    #       item.fix_ordered
+    #     end
+    #   end
+    # end
  
     entries = Entry.ordered
     for entry in entries.includes(:line_items)
@@ -248,8 +248,8 @@ class AdminController < ApplicationController
         end
         end
       elsif company.primary_role == 3 # seller
-        line_items = LineItem.metered.count
-        parts_bided = company.users.map{|user| user.bids.metered.collect(&:line_item_id).uniq.count}.sum
+        parts_bided = company.users.map{|user| user.bids.since_eval(company.evaln).collect(&:line_item_id).uniq.count}.sum
+        line_items = LineItem.since_eval(company.evaln).count
         company.perf_ratio = (BigDecimal("#{parts_bided}")/BigDecimal("#{line_items}")).to_f * 100
       end
       company.save!

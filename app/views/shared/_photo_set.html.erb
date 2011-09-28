@@ -1,5 +1,5 @@
 <div class="photo-set">
-	<% if @entry.photos.present? %>
+	<% unless @entry.photos.blank? %>
 	<ul>
 		<li class="instruction photo">Click on photos to enlarge.</li>
 		<% @entry.photos.each do |photo| %>

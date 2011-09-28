@@ -20,8 +20,8 @@ class Bid < ActiveRecord::Base
   scope :bt, order('bid_type')
   scope :online, where(:status => ['Submitted', 'Updated'])
   scope :declined, where(:status => 'Declined')#.order('declined DESC', 'entry_id DESC')
-  scope :cancelled, where('status LIKE ?', "%Cancelled%") # used in Orders#Show
-  scope :not_cancelled, where('status NOT LIKE ?', "%Cancelled%") # used in Orders#Show
+  scope :cancelled, where('bids.status LIKE ?', "%Cancelled%") # used in Orders#Show
+  scope :not_cancelled, where('bids.status NOT LIKE ?', "%Cancelled%") # used in Orders#Show
   
   scope :orig, where(:bid_type => 'original').order('amount DESC').order('bid_speed DESC')
   scope :rep, where(:bid_type => 'replacement').order('amount DESC').order('bid_speed DESC')
@@ -96,4 +96,13 @@ class Bid < ActiveRecord::Base
   def online? # used in Seller#Show to allow deletion of bids
     status == 'Submitted' || status == 'Updated' 
   end
+  
+  def self.since_eval(date)
+    where('bids.created_at >= ?', date)
+  end
+  
+  def self.ordered_this_month
+    where('bids.ordered >= ?', Time.now.beginning_of_month)
+  end
+  
 end

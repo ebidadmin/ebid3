@@ -190,4 +190,14 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # for dashboards and fees
+    def eval_date
+      trial_date = current_user.company.trial_start
+      if trial_date.present? 
+        @eval_date = trial_date
+      else
+        @eval_date = '2011-04-16'.to_date
+      end
+    end
+
 end

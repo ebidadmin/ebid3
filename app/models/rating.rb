@@ -10,4 +10,8 @@ class Rating < ActiveRecord::Base
   
   scope :desc, order('id DESC')
   scope :metered, where('ratings.created_at >= ?', '2011-04-16')
+  
+  def self.since_eval(date)
+    where('ratings.created_at >= ?', date)
+  end
 end

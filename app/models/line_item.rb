@@ -205,4 +205,8 @@ class LineItem < ActiveRecord::Base
     end  
   end  
 
+  def self.since_eval(date)
+    where('line_items.created_at >= ?', date)
+  end
+
 end

@@ -4,12 +4,13 @@
 	<% else %>
 		<%= content_tag :b, 'YOU said:', :class => 'orange' %>
 	<% end %>
-	<%= content_tag :b, short_date(message.created_at), :class => 'datetime white' %>
-	<%= link_to 'reply', show_fields_messages_path(:msg_type => message.user_type, :entry => @entry, :open => message.open, :parent_id => message), :remote => true, :class => 'msg-link' %>
+	<%= content_tag :b, short_date(message.created_at), :class => 'datetime' %>
+	<%= link_to 'reply', show_fields_messages_path(:msg_type => message.user_type, :entry => @entry, :order => @order, :open => message.open, :parent_id => message), :remote => true, :class => 'msg-link' %>
 	<% if message.user == current_user || current_user.has_role?('admin') %>
-		<%= link_to 'edit', edit_message_path(message, :entry => @entry), :remote => true, :class => 'msg-link' %>
+		<%= link_to 'edit', edit_message_path(message, :entry => @entry, :order => @order), :remote => true, :class => 'msg-link' %>
 		<%= link_to 'delete', message, :class => 'msg-link', :confirm => 'Are you sure you want to delete this message?', :method => :delete %>
 	<% end %>
+	<%= content_tag :span, '(private msg attached to PO)', :class => 'small' if message.order_id.present? && current_page?(entry_path) %>
 </span>
 <span class="comment instruction">
 	<%= message.message %> 

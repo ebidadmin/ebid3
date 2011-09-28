@@ -1,6 +1,7 @@
 <%= content_tag :h3, 'Public Messages' %>
 <%#= render 'messages/show_messages', :messages => @pub_messages %>
 <% unless @pub_messages.blank? %>
+	<%= content_tag :h4, pluralize(@pub_messages.count, 'message'), :class => 'instruction' %>
 	<ul>
 		<%= nested_messages @pub_messages.arrange(:order => :created_at) %>
 	</ul>

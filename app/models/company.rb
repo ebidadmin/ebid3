@@ -23,4 +23,11 @@ class Company < ActiveRecord::Base
   validates_presence_of :name, :address1, :city, :approver
   validates_uniqueness_of :name, :message => "This company is already in our database."
   
+  def evaln
+    if trial_start && trial_start > '2011-04-16'.to_date
+      trial_start
+    else
+      metering_date
+    end
+  end
 end

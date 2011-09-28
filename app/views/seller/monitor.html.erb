@@ -24,10 +24,15 @@
 		<td class="vehicle">	
 			<%= content_tag :p, truncate(entry.vehicle, :length => 30), :class => 'strong' %>
 			<%= content_tag :p, entry.plate_no  %>
+      <%= content_tag :p, "Created: #{short_date(entry.created_at)}", :class => 'instruction' %>
+      <%= content_tag :p, "Online: #{short_date(entry.online)}", :class => 'instruction' if entry.online  %>
 			<%= link_to 'View Entry', seller_show_path(:id => entry.id), :class => 'button' %>
 		</td>
 	  <td>
-			<%= content_tag :div, "#{display_status(entry)} *** Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')} ***".html_safe, :class => 'instruction highlight info' %>
+			<div class="mild-alert info">
+				<%= display_status(entry) %>
+				<%= content_tag :p, "*** You bided on #{bids.collect(&:line_item_id).uniq.count} out of #{pluralize(entry.line_items.size, 'part')} ***", :class => 'instruction' %>
+			</div>
    		<% bids.group_by(&:line_item).each do |line_item, bids| %>
 				<div class="part">
 			    <%= content_tag :p, line_item.part_name %>
@@ -42,6 +47,7 @@
 					</div>
    			<% end %>
 				</div>
+				<hr>
 		  <% end %>
 		</td>                          
 	</tr>

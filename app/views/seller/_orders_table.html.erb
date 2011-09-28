@@ -26,16 +26,17 @@
 		<td class='amount'>
       <%= content_tag :p, order.seller.username, :class => 'instruction highlight' if order.seller != current_user  %>
       <%= content_tag :p, ph_currency(order.order_total), :class => 'total' %>
+      <%#= content_tag :p, ph_currency(order.bids.not_cancelled.sum(:total)), :class => 'total' %>
 		  <%= link_to "View PO", order, :class => 'button' unless order.seller_confirmation == false %>
 		</td>
-  	<td class='stat<%= ' highlight' if order.seller_confirmation == false %>'>
+  	<td class="stat<%= ' highlight' if order.seller_confirmation == false %><%= ' white' if order.confirmed < 5.days.ago && order.delivered.nil? %>">
   		<% unless order.seller_confirmation == false %>
   			<%= content_tag :p, 'Buyer: ' + order.company.name, :class => 'instruction'  %>
   		<% end %>
 			<%= render 'orders/order_status_seller', :order => order %>
 			<% if order.paid && order.paid_but_overdue %>
 				<%= content_tag :p , ('Overdue: ' + (pluralize order.paid_but_overdue, 'day')), :id => 'overdue' if order.paid_but_overdue > 0 %>
-				<%= content_tag :p , 'Paid before due date!', :id => 'overdue' if order.paid_but_overdue <= 0 %>
+				<%= content_tag :p , 'Paid before due date!', :id => 'overdue', :class => 'highlight' if order.paid_but_overdue <= 0 %>
 			<% end %>
 		</td>
   </tr>

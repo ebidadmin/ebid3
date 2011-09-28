@@ -43,8 +43,9 @@
 			<td>
 	      <%= content_tag :h5, 'Total: ' + ph_currency(order.order_total) %>
 			  <%= link_to "View PO", order, :class => 'button' %>
+			  <%= link_to "Edit", edit_order_path(order) %>
 			</td>
-	  	<td class='stat'>
+	  	<td class="stat<%= ' highlight' if order.seller_confirmation == false %><%= ' white' if order.confirmed < 5.days.ago && order.delivered.nil? %>">
   			<%= content_tag :p, 'Buyer: ' + order.company.name, :class => 'instruction'  %>
 	  		<%= content_tag :p, 'Seller: ' + order.seller.profile.company.name, :class => 'instruction'  %>
 			  <%= render 'admin/order_status_admin', :order => order %>

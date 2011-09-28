@@ -1,8 +1,37 @@
 <% title "Edit Line Item" %>
 
-<%= render 'form' %>
+<%= simple_form_for @line_item do |f| %>
+	<%= content_tag :h2, @line_item.part_name %>
+  <%= f.error_messages %>
+	<%= f.input :entry_id, :disabled => true %>
+	<%= f.input :car_part_id %>
+	<%= f.input :part_no, :label => 'Details' %>
+	<%= f.input :quantity %>
+	<%= f.input :status %>
+	<%= f.input :bids_count %>
+	<%= f.input :relisted, :label => 'Relisting Date' do %>
+	  <%= f.text_field :relisted, :id => 'datepicker', :size => 25, :placeholder => 'Click to select date' %>
+	<% end %>
+	<div>
+		<%= f.submit %>
+	  <%= link_to "Show", @line_item %> |
+	  <%= link_to "View All", line_items_path %>
+	</div>
+<% end %>
 
-<p>
-  <%= link_to "Show", @line_item %> |
-  <%= link_to "View All", line_items_path %>
-</p>
+<% content_for :javascripts do %>
+	<% stylesheet 'blitzer/jquery-ui-1.8.6.custom' %>
+	<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('#datepicker').datepicker({ 
+				dateFormat: "yy-mm-dd",
+				maxDate: 0,
+				numberOfMonths: 2,
+				showButtonPanel: true, 
+				showOn: "both",
+				buttonImage: "/images/calendar.gif",
+				buttonImageOnly: true
+		});
+	});
+	</script>
+<% end %>

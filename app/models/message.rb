@@ -20,10 +20,11 @@ class Message < ActiveRecord::Base
     where('user_company_id = ? OR receiver_company_id = ?', company, company)
   end
   
-  def create_message(current_user, msg_type, open_msg_tag = nil, receiver = nil, receiver_company = nil, entry = nil)
+  def create_message(current_user, msg_type, open_msg_tag = nil, receiver = nil, receiver_company = nil, entry = nil, order = nil)
     self.user_company_id = current_user.company.id
     self.user_type = current_user.roles.first.name
     self.entry_id = entry.id unless entry.blank?
+    self.order_id = order.id unless order.blank?
     if msg_type == 'admin'
       self.receiver_id = 1
       self.receiver_company_id = 1
@@ -35,6 +36,10 @@ class Message < ActiveRecord::Base
     elsif msg_type == 'seller'
       self.receiver_id = receiver
       self.receiver_company_id = receiver_company
+      self.open = open_msg_tag unless open_msg_tag.blank?
+    elsif msg_type == 'order-seller'
+      self.receiver_id = order.seller_id
+      self.receiver_company_id = order.seller.company.id
       self.open = open_msg_tag unless open_msg_tag.blank?
     elsif msg_type == 'public'
       self.open = true

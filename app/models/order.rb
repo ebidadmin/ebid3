@@ -38,6 +38,9 @@ class Order < ActiveRecord::Base
   scope :payment_pending, where('orders.paid IS NULL')
   scope :not_cancelled, where('orders.status NOT LIKE ?', "%Cancelled%") # used in Orders#Show
 
+  scope :needs_confirmation, paid.payment_pending
+  scope :needs_rating, paid.payment_valid
+  
   scope :within_term, delivered.where('pay_until >= ?', Date.today)
   scope :due_soon, delivered.where(:pay_until => Date.today .. Date.today + 1.week).unpaid
   scope :overdue, delivered.where('pay_until < ?', Date.today)
@@ -194,5 +197,10 @@ class Order < ActiveRecord::Base
     # You could modify the select block to also check for holidays
     range.select { |d| (1..5).include?(d.wday) }.size
   end
+
+  def self.since_eval(date)
+    where('orders.created_at >= ?', date)
+  end
+  
 
 end

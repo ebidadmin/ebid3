@@ -16,15 +16,20 @@ li { list-style-type: none;  }
 .vehicle-set li { clear: both;  }
 .vehicle-set li span { font-weight: bold; display: block; float: left; width: 40%; }
 
-#message-box { clear: both; margin-bottom: 2em; overflow: hidden; }
+#message-box { clear: both; overflow: hidden; }
 #message-box h3 { clear: both; }
-#message-box ul { float: left; margin-bottom: 25px; width: 100%; }
+#message-box ul { float: left; width: 100%; }
 #message-box li { float: left; margin: 0 0 10px 0; width: 100%;}
 /*.creator, .comment { float: left; }
 .creator { clear: both; font-weight: bold; margin-right: 10px; width: 15%;  }
 .comment { width: 82%; margin-right: 10px; }*/
 .datetime { margin-right: 10px; width: 15%; }
 .msg-link { display: none; }
+#message-box .nested { margin: 10px 0 0 15px; }
+#message-box .nested li { margin-bottom: 15px; }
+#message-box .nested .creator { background: url(../images/arrow_right.png) no-repeat scroll left center;padding-left: 15px; }
+#message-box .nested .nested li { overflow: visible; }
+
 form { display: none; }
 
 table { border-collapse: collapse; margin: 0 auto 1.5em; width: 100%; text-align: center; overflow: hidden; }
@@ -49,7 +54,7 @@ table p { margin: 0 0 5px; }
 
 .first { float: left; overflow: hidden; width: 380px; min-height: 200px;  margin: 0 10px 20px 0;  }
 .second { float: right; width: 380px; border-left: 1px solid black; padding-left: 20px; margin-bottom: 1.5em;}
-.first h2, .second h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid black; }
+.first h2, .second h2, #message-box h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid black; }
 .first .who { color: #C00; }
 .first .full-name { margin-top: 1.2em; font-weight: bold; }
 .first .highlight, .highlight { background-color: #FFF6BF; padding: 0 10px; }

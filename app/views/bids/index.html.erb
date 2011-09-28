@@ -29,10 +29,13 @@
 			<%= content_tag :p, "ID: #{entry.id}" %>
 		</td>
 	  <td>
-			<%= content_tag :div, "#{display_status(entry)} *** #{display_number_of_bidders(entry)} ***".html_safe, :class => 'instruction highlight info' %>
+			<div class="mild-alert info">
+				<%= display_status(entry) %>
+				<%= content_tag :p, "*** #{display_number_of_bidders(entry)} ***", :class => 'instruction' %>
+			</div>
    		<% line_items.each do |line_item| %>
 				<div class="part">
-			    <%= content_tag :p, line_item.part_name %>
+			    <%= content_tag :p, link_to(line_item.part_name, edit_line_item_path(line_item)) %>
 			    <%= content_tag :p, "ID: #{line_item.id}" %>
 			    <%= content_tag :p, "Status: #{line_item.status}" %>
 				</div>

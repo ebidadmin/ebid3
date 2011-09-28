@@ -127,4 +127,7 @@ module ApplicationHelper
     date.strftime('%d-%b-%y, %R')
   end
   
+  def regular_date(date)
+    date.strftime('%d %b %Y')
+  end
 end

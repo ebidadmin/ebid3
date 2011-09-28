@@ -9,13 +9,14 @@ class MessagesController < ApplicationController
   
   def show_fields
     @message = current_user.messages.build(:parent_id => params[:parent_id])
-    # @msg_to = params[:msg_to]
     @msg_type = params[:msg_type]
     @entry = params[:entry]
+    @order = params[:order] if params[:order]
   end
   
   def cancel
     @entry = Entry.find(params[:entry])
+    @order = Order.find(params[:order]) unless params[:order].blank?
     respond_to do |format| 
       format.html { redirect_to :back }
       format.js 
@@ -31,17 +32,12 @@ class MessagesController < ApplicationController
     # raise params.to_yaml
     @message = current_user.messages.build(params[:message])
     @entry = Entry.find(params[:entry]) unless params[:entry].blank?
-    @message.create_message(current_user, params[:msg_type], params[:open], params[:receiver], params[:receiver_company], @entry)
+    @order = Order.find(params[:order]) unless params[:order].blank?
+    @message.create_message(current_user, params[:msg_type], params[:open], params[:receiver], params[:receiver_company], @entry, @order)
     
-    unless  request.env["HTTP_REFERER"] == new_message_url
+    unless request.env["HTTP_REFERER"] == new_message_url
       respond_to do |format|
-        if current_user.has_role?('admin')
-          @priv_messages = @entry.messages.closed
-        else
-          @priv_messages = @entry.messages.closed.restricted(current_user.company)
-        end
-        @pub_messages = @entry.messages.open
-
+        initialize_messages
         if current_user.messages << @message
           format.html { redirect_to session['referer'], :notice => "Successfully created message."; session['referer'] = nil }
           format.js { flash.now[:notice] = "Successfully created message." }
@@ -61,6 +57,7 @@ class MessagesController < ApplicationController
     session['referer'] = request.env["HTTP_REFERER"]
     @message = Message.find(params[:id])
     @entry = params[:entry]
+    @order = params[:order] if params[:order]
     respond_to do |format|
       format.html { render :edit }
       format.js { render :action => "show_fields"}
@@ -70,15 +67,10 @@ class MessagesController < ApplicationController
   def update
     @message = Message.find(params[:id])
     @entry = Entry.find(params[:entry]) unless params[:entry].blank?
-    
+    @order = Order.find(params[:order]) unless params[:order].blank?
+
     unless  request.env["HTTP_REFERER"] == edit_message_url(@message)
-      if current_user.has_role?('admin')
-        @priv_messages = @entry.messages.closed
-      else
-        @priv_messages = @entry.messages.closed.restricted(current_user.company)
-      end
-      @pub_messages = @entry.messages.open
-    
+      initialize_messages
       respond_to do |format|
         if @message.update_attributes(params[:message])
           format.html { redirect_to session['referer'], :notice => "Successfully updated  message."; session['referer'] = nil }
@@ -101,6 +93,25 @@ class MessagesController < ApplicationController
     respond_to  do |format|
       format.html { redirect_to :back, :notice => "Deleted message." }# redirect_to messages_url, :notice => "Successfully destroyed message."
       format.js { flash.now[:notice] = "Message deleted." }
+    end
+  end
+  
+  private
+  
+  def initialize_messages
+    if @order.present?
+      if current_user.has_role?('admin')
+        @priv_messages = @order.messages
+      else
+        @priv_messages = @order.messages.closed.restricted(current_user.company)
+      end
+    else
+      if current_user.has_role?('admin')
+        @priv_messages = @entry.messages.closed
+      else
+        @priv_messages = @entry.messages.closed.restricted(current_user.company)
+      end
+      @pub_messages = @entry.messages.open
     end
   end
 end

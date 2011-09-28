@@ -86,9 +86,9 @@ class EntriesController < ApplicationController
       @entry = current_user.entries.find(params[:id])
     end
     @line_items = @entry.line_items.includes(:car_part, :bids)
-    if @entry.photos.first.blank?
-      2.times {@entry.photos.build}
-    end
+    # if @entry.photos.first.blank?
+    #   2.times {@entry.photos.build}
+    # end
   end
   
   def edit_vehicle

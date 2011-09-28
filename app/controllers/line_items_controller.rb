@@ -33,6 +33,7 @@ class LineItemsController < ApplicationController
   end
   
   def edit
+    session['referer'] = request.env["HTTP_REFERER"]
     @line_item = LineItem.find(params[:id])
   end
   
@@ -40,7 +41,8 @@ class LineItemsController < ApplicationController
     @line_item = LineItem.find(params[:id])
     if @line_item.update_attributes(params[:line_item])
       flash[:notice] = "Successfully updated line item."
-      redirect_to @line_item
+      redirect_to session['referer']
+      session['referer'] = nil
     else
       render :action => 'edit'
     end

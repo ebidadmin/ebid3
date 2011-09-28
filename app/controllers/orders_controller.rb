@@ -46,20 +46,21 @@ class OrdersController < ApplicationController
     end
   end
 
+  def edit
+    find_order_and_entry
+  end
+  
   def show
     find_order_and_entry
     # @order_items = @order.order_items
-    @order_items1 = @order.bids#.not_cancelled
-    if current_user.has_role?('admin')
-      @priv_messages = @order.messages
-    else
-      @priv_messages = @order.messages.closed.restricted(current_user.company)
-    end
+    @order_items1 = @order.bids
+    initialize_messages
   end
 
   def print
     find_order_and_entry
     @order_items1 = @order.bids.not_cancelled
+    initialize_messages
     render :layout => 'print'
   end
 
@@ -197,5 +198,13 @@ class OrdersController < ApplicationController
       @order.update_attribute(:paid, Date.today)
       flash[:notice] = ("Successfully updated the status of the order to <strong>Paid</strong>.<br>
       Please rate your buyer to close the order.").html_safe
+    end
+
+    def initialize_messages
+      if current_user.has_role?('admin')
+        @priv_messages = @order.messages
+      else
+        @priv_messages = @order.messages.closed.restricted(current_user.company)
+      end
     end
 end

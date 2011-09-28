@@ -1,0 +1,60 @@
+<% title "Edit Purchase Order" %>
+
+<%= content_tag :h2, 'Vehicle' %>
+<%= render 'shared/info_vehicle', :entry => entry %>
+
+<%= render 'orders/order_buyer', :entry => entry %>
+<%= render 'orders/order_seller', :order => @order %>
+
+<% @bids.group_by(&:entry).each do |entry, bids| -%>
+
+  <div id="transaction" class="create">
+    
+		<%= content_tag :h2, 'Vehicle' %>
+  	<%= render 'shared/info_vehicle', :entry => entry %>
+  	
+		<%= content_tag :h2, ('Transaction ' + (content_tag :span, "(#{ pluralize @bid_users.count, 'supplier' })", :class => 'highlight' )).html_safe %>
+ 
+    <!-- create an order for each supplier -->
+    <% bids.group_by(&:user_id).each do |seller, seller_bids| -%>
+    	<%= render 'orders/order_buyer', :entry => entry %>
+    	<%= render 'orders/order_seller', :order => @order %>
+    	<table class="parts-set">
+    		<%= render 'shared/part_titles' %>
+      	<% for bid in seller_bids %>
+      		<tr>	
+      			<td class="qty"><%=h bid.quantity %></td>
+      			<td class="partname">
+      				<%= content_tag :p, (bid.line_item.part_name + (content_tag :strong, " (#{bid.bid_type})")).html_safe %> 
+      				<%= content_tag :p, "(Details: #{content_tag :strong, bid.line_item.part_no})".html_safe, :class => 'partnum' unless bid.line_item.part_no.blank?  %>
+      			</td>
+      			<td class="price">
+      				<%= number_to_currency bid.amount, :unit => "P " %>
+      			</td>
+      			<td class="price">
+      				<%= number_to_currency bid.total, :unit => "P " %>
+      			</td>
+      		</tr>
+      		<!-- pass all bid.ids as an array into the form -->
+      		<% content_for :bids_array do %>
+        		<%= hidden_field_tag 'bids[]', bid.id -%>
+      		<% end %>
+    		<% end %>
+    		<tr class="selection-total">
+    			<td class="label" colspan=2>Total Order</td>
+    			<td class="amount" colspan=2><%= number_to_currency seller_bids.collect(&:total).sum, :unit => "P " %></td>
+    		</tr>
+    	</table>
+  	<% end %>
+  	
+  </div>
+
+  <div id="delivery" class="create">
+  	<h2>Delivery</h2>
+    <%= simple_form_for @order, :url => orders_path(:entry_id => entry.id), :validate => true, :method => :post do |f|  %>
+    	<%= yield :bids_array %>
+  		<%= render 'orders/deliver_form', :f => f %>
+    <% end %>
+  </div>
+
+<% end %>

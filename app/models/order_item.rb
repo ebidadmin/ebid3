@@ -24,4 +24,9 @@ class OrderItem < ActiveRecord::Base
     end
   end
 
+  def self.since_eval(date)
+    where('order_items.created_at >= ?', date)
+  end
+  
+
 end

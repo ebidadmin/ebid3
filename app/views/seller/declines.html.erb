@@ -21,11 +21,10 @@
 <%= content_tag :p, (content_tag :strong, 'What is a Decline Fee? ') + 'Sometimes, the Buyer cannot order (for one reason or another).  
   We collect a Decline Fee, ' + (content_tag :strong, 'then you receive 50% of it for your effort in posting the “winning” bid.'), :class => 'clear-both instruction' %>
 
-<% unless @decline_fees.blank? %>
-	<h2 class="highlight">
-		Total Decline Fees: <%= ph_currency(@search.collect(&:fee).sum) %> /
-		Your Share: <%= ph_currency(@search.collect(&:split_amount).sum) %>
-	</h2>
+<h2 class="highlight">
+	Total Decline Fees: <%= ph_currency(@search.collect(&:fee).sum) %> /
+	Your Share: <%= ph_currency(@search.collect(&:split_amount).sum) %>
+</h2>
 <%= will_paginate @decline_fees  %>
 <%= page_info @decline_fees %>
 
@@ -80,9 +79,6 @@
 	  </td>
 	</tr>
 </table>
-<% else %>
-	<%= content_tag :h2, 'Sorry, no records found.' %> 
-<% end %>
 
 <%= will_paginate @decline_fees  %>
 

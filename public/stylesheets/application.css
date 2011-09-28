@@ -165,31 +165,32 @@ h3#status { float: right; margin: -2px 1em 1em; padding: 15px 25px; text-align: 
 fieldset { clear: both; padding: 1.4em; border: 1px solid #ccc; margin: 10px 0; position: relative; }
 legend { font-weight: bold; font-size: 1.2em; padding: 0.4em 0.8em; background: #cc0000; color: #fffeff; margin-bottom: 15px; }
 label { font-weight: bold; }
-input, textarea, select { border: 2px solid #ccc; margin-top: 0.5em; padding: 5px; }
+input, textarea, select { border: 2px solid #ccc; /*margin-top: 0.5em;*/ padding: 5px; }
 input:hover, textarea:hover, select:hover { border-color: #6B9D28; }
 input:focus, textarea:focus, select:focus { border-color: #6B9D28; }
 input[type=hidden] { display: none; }
 input#datepicker, input.datepicker { margin-right: 10px; }
 
-.simple_form { width: 100%; }
+.simple_form { clear: both; width: 100%; }
 .simple_form div { clear: both; float: left; margin-bottom: 15px; width: 100%; }
 .simple_form label.required { color: #C00; }
 .simple_form label { float: left; width: 30%; }
 .simple_form .check_boxes div, .simple_form .radio div { clear: none; float: left; width: 50%; }
 .simple_form label.check_boxes { font-size: 2em; font-weight: normal; }
 .simple_form input.check_boxes, .simple_form input.radio { clear: both; float: left; margin-right: 10px; }
-.simple_form input.string, .simple_form input.password,.simple_form textarea, .simple_form select/*, .simple_form input.hasDatepicker*/ { float: left; margin: 0; }
+.simple_form input.string, .simple_form input.password,.simple_form textarea, .simple_form select { /*float: left;*/ margin: 0; }
 .simple_form .error { clear: left; margin-left: 30%; font-size: 12px; color: #D00; display: block; }
 .simple_form .hint { clear: left; margin-left: 30%; font-size: 12px; color: #555; display: block; font-style: italic; }
+.simple_form .datetime { margin: 0; }
 form.user, form.car_variant { width: 60%; }
 #label_new_city { margin-left: 30%; width: 70%;}
 #entry_new_city { clear: both; margin-left: 30%; }
 #content-main #order_submit, #content-main #user_submit, #content-main #car_variant_submit { margin-left: 30%; }
 #entry_final_submit { float: right; }
-#company_submit { margin-top: 30px; }
+#company_submit, #line_item_submit { margin-left: 30%; margin-top: 10px;}
 #user_new #user_submit { margin: 0; }
 /*#step-back { float: left; }*/
-#car_variant_name { border-color: #C00; font-size: 1.2em; }
+#car_variant_name, #entry_car_variant_id { border-color: #C00; font-size: 1.2em; }
 
 /* BUTTONS
 ---------------------------------------------------------------------- */
@@ -210,7 +211,7 @@ input[type="submit"]:hover, input[type="button"]:hover, #content-main  .button:h
 #content-main .green-button:hover, #content-main .red-button:hover { background-color: #5C5C5C }
 #content-main #relist-button, #content-main #reveal-bids-button { font-size: 16px; }
 
-#add-parts-button { float: left; }
+#add-parts-button, #cancel-edit-button { float: left; }
 
 /* VEHICLE
 ---------------------------------------------------------------------- */
@@ -326,15 +327,15 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #msg-list { float: left; margin-bottom: 10px; overflow: hidden; width: 100%; }
 #msg-list #private { float: left; width: 48%; }
 #msg-list #public { float: right; width: 48%; }
-#msg-list h3, #msg-list h4 { text-align: center; }
+#msg-list h3, #msg-list h4 { text-align: center; margin-bottom: 10px; }
 #msg-list .msg-link { margin-right: 5px; }
-#msg-list ul { margin: 0; padding: 0; }
+#msg-list ul { margin: 0; padding: 0; height: 200px; overflow: auto; }
 #msg-list li { background-color: white; margin-bottom: 10px; overflow: hidden; padding: 8px; position: relative; }
 .creator, .comment { display: block; width: 100%;}
 .creator { border-bottom: 1px solid #CCC; font-weight: bold; margin-bottom: 4px; padding-bottom: 4px; }
 .comment { font-size: 1.2em; }
 .datetime { color: #999; margin: 0 10px; }
-#msg-list .nested { margin: 10px 0 0 15px; }
+#msg-list .nested { height: auto; margin: 10px 0 0 15px; }
 #msg-list .nested li { margin-bottom: 0; }
 #msg-list .nested .creator { background: url(../images/arrow_right.png) no-repeat scroll left center;padding-left: 15px; }
 #msg-list .nested .nested li { overflow: visible; }
@@ -397,7 +398,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 .selection-total td { font-size: 1.5em; font-weight: bold; color: #C00; text-align: right; padding: 10px 8px 10px 0; border-bottom: none; }
 
 #content-main a#view-vehicle-button { float: left; margin-bottom: 20px; }
-#order h3#order-msg { clear: both; }
+#order h3#order-msg { clear: both; margin-bottom: 10px; }
 #order h4 { text-align: left; }
 #order #creator { width: 9%;  }
 #order #comment { width: 85%; margin-right: 10px; }
@@ -443,7 +444,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #supplier-bids .stat { float: right; text-align: center; width: 42%;}
 #supplier-bids .amount .instruction { clear: both; margin-bottom: 5px; text-align: center; }
 
-#supplier-bids .info { margin:10px 0; padding: 5px 0; text-align: center; width: 100%; }
+#supplier-bids .info { margin: 0 0 10px; padding: 5px 0; text-align: center; width: 100%; }
 #supplier-bids .orig, #supplier-bids .rep, #supplier-bids .surp { float: left; min-height: 4em;}
 #supplier-bids .rep, #supplier-bids .surp { margin-left: 2%; }
 #supplier-bids hr { margin-top: 0;}

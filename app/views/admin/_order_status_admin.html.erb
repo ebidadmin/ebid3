@@ -1,6 +1,7 @@
 <% if order.status == "For Delivery" || order.status == "For-Delivery" %>
 	
-	<%= order.status %> (<%= order.confirmed.strftime('%b %d') %>)&nbsp;
+	<%= order.status %> &nbsp;
+	<%= content_tag :span, " #{time_ago_in_words order.confirmed} ago", :class => 'highlight'  %> 
 
 <% elsif order.status == "Delivered" %>
 

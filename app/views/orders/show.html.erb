@@ -19,13 +19,10 @@
 	<%= link_to "View Photos", seller_show_path(@entry), :class => 'button', :id => 'view-vehicle-button' if current_user == @order.seller %>
 	<%= content_tag :h3, 'Private Messages for this PO', :id => 'order-msg' %>
 	<div id="msg-list">
-	<% unless @priv_messages.blank? %>
-		<ul>
-			<%= nested_messages @priv_messages.arrange(:order => :created_at) %>
-		</ul>
-	<% else %>
-		<%= content_tag :h4, 'No messages yet.', :class => 'instruction' %>
-	<% end %>
+		<%= render 'messages/order_messages' %>
+	</div>
+	<div id="msg-fields">
+		<%= render 'messages/buttons' %>
 	</div>
 
 	<%= form_tag cancel_order_path(@order), :method => :get do  %>
