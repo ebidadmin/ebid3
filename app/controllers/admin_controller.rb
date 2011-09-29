@@ -133,7 +133,6 @@ class AdminController < ApplicationController
   end
 
   def utilities
-    
   end
 
   def expire_entries
@@ -143,10 +142,40 @@ class AdminController < ApplicationController
     end
     flash[:notice] = "Successful"
     redirect_to :back  
-    # render 'entries/index'
   end
 
   def cleanup
+    entries = Entry.results.unexpired#.where(:id => [1866, 1856])#
+    for entry in entries
+      for item in entry.line_items.with_bids.includes(:bids, :order_item)
+        item.update_for_decision
+     end
+    end
+ 
+    entries = Entry.ordered
+    for entry in entries.includes(:line_items)
+      for item in entry.line_items.with_bids.includes(:bids, :order_item)
+        if item.order_item.present? 
+          item.fix_ordered
+        # else
+        #   item.fix_declined
+        end
+      end
+      entry.update_status
+    end
+    
+    entries = Entry.expired.where('created_at <= ?', 1.year.ago)
+    for entry in entries.includes(:line_items)
+      for item in entry.line_items.with_bids.includes(:bids, :order_item)
+        if item.order_item.present? 
+          item.fix_ordered
+        else
+          item.fix_declined
+        end
+      end
+    entry.update_status
+    end
+    
     # entries = Entry.all
     # for entry in entries
     #   entry.line_items_count = entry.line_items.count
@@ -154,39 +183,6 @@ class AdminController < ApplicationController
     #   entry.company_id = entry.user.company.id
     #   entry.save!
     # end
-    # entries = Entry.results
-    # for entry in entries
-    #   for item in entry.line_items.with_bids.includes(:bids, :order_item)
-    #     if item.order_item.present? 
-    #       item.update_for_decision
-    #     else
-    #       item.fix_ordered
-    #     end
-    #   end
-    # end
- 
-    entries = Entry.ordered
-    for entry in entries.includes(:line_items)
-      for item in entry.line_items.with_bids.includes(:bids, :order_item)
-        if item.order_item.present? 
-          item.fix_ordered
-        else
-          item.fix_declined
-        end
-      end
-    end
-    
-    entries = Entry.expired
-    for entry in entries.includes(:line_items)
-      for item in entry.line_items.with_bids.includes(:bids, :order_item)
-        if item.order_item.present? 
-          item.fix_ordered
-        else
-          item.fix_declined
-        end
-      end
-    end
-    
     # line_items = LineItem.all
     # for item in line_items
     #   item.bids_count = item.bids.count

@@ -39,24 +39,30 @@ class LineItem < ActiveRecord::Base
 	
 	def update_for_decision
 	  if bids.present?
-      update_attribute(:status, "For-Decision")
+      update_attribute(:status, "For-Decision") unless order.present?
       if bids.orig.present?
         low_orig = bids.orig.not_cancelled.last
-        low_orig.update_attribute(:status, "For-Decision")
+        if low_orig
+        low_orig.update_attribute(:status, "For-Decision") unless order.present?
         other_orig = bids.orig.not_cancelled.where("id != ?", low_orig)
         other_orig.update_all(:status => "Lose") 
+        end
       end
       if bids.rep.present?
         low_rep = bids.rep.not_cancelled.last
-        low_rep.update_attribute(:status, "For-Decision")
+        if low_rep
+        low_rep.update_attribute(:status, "For-Decision") unless order.present?
         other_rep = bids.rep.not_cancelled.where("id != ?", low_rep)
         other_rep.update_all(:status => "Lose") 
+        end
       end
       if bids.surp.present?
         low_surp = bids.surp.not_cancelled.last
-        low_surp.update_attribute(:status, "For-Decision")
+        if low_surp
+        low_surp.update_attribute(:status, "For-Decision") unless order.present?
         other_surp = bids.surp.not_cancelled.where("id != ?", low_surp)
         other_surp.update_all(:status => "Lose") 
+        end
       end
 	  else
       update_attribute(:status, "No Bids") 
@@ -71,14 +77,20 @@ class LineItem < ActiveRecord::Base
       if bids.orig.present?
         low_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
         low_orig.update_attribute(:status, "Dropped") if low_orig.present?
+        other_orig = bids.orig.not_cancelled.where("id != ?", low_orig)
+        other_orig.update_all(:status => "Lose") 
       end
       if bids.rep.present?
         low_rep = bids.rep.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
         low_rep.update_attribute(:status, "Dropped") if low_rep.present?
+        other_rep = bids.rep.not_cancelled.where("id != ?", low_rep)
+        other_rep.update_all(:status => "Lose") 
       end
       if bids.surp.present?
         low_surp = bids.surp.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
         low_surp.update_attribute(:status, "Dropped") if low_surp.present?
+        other_surp = bids.surp.not_cancelled.where("id != ?", low_surp)
+        other_surp.update_all(:status => "Lose") 
       end
       Fee.compute(lowest_bid, "Declined")
     else #WITHOUT BIDS
@@ -88,7 +100,7 @@ class LineItem < ActiveRecord::Base
 	
 	def fix_ordered
     # find bid with order, lowest for other bid types dropped, others lose
-    ordered = bids.with_order.first
+    ordered = bids.not_cancelled.with_order.first
     if ordered.present?
       if bids.orig.present?
         low_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', ordered.bid_type).last
@@ -114,6 +126,10 @@ class LineItem < ActiveRecord::Base
           other_surp.update_all(:status => "Lose") if other_surp.present?
         end
       end
+      others = bids.not_cancelled.where(:bid_type => ordered.bid_type).where("id != ?", ordered)
+      others.update_all(:status => "Lose") if others
+      ordered.update_attribute(:status, order.status)
+      update_attribute(:status, order.status)
     end
 	end
 	

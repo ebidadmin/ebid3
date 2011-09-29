@@ -58,6 +58,8 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
     @entry = params[:entry]
     @order = params[:order] if params[:order]
+    @company_type = Role.find(1, 2, 3)
+    @company_users = Company.where(:primary_role => [1,2,3]).includes(:users)
     respond_to do |format|
       format.html { render :edit }
       format.js { render :action => "show_fields"}

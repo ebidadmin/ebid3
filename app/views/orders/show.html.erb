@@ -72,6 +72,5 @@
 				<%= link_to "<< Back", seller_orders_path(current_user), :class => 'button' %> <%= submit_tag "Accept Order", :class => 'green-button' if  @order.order_items.present? %>
 			<% end %>
 		<% end %>
-
 	<% end %>
 </div>

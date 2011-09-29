@@ -172,14 +172,18 @@ class Order < ActiveRecord::Base
   end
   
   def can_be_cancelled?(user)
-    # status == 'PO Released' || status == 'For-Delivery'
     if user.id == 1
       true
-    elsif user.has_role?('seller')
-      status == 'PO Released' || status == 'For-Delivery'
+    # elsif user.has_role?('seller')
+    #   status == 'PO Released' || status == 'For-Delivery'
     else
-      status == 'PO Released'
+      # status == 'PO Released'
+      status == 'PO Released' || status == 'For-Delivery'
     end
+  end
+  
+  def cancelled?
+    status == 'Cancelled by buyer' || status == 'Cancelled by seller' || status == 'Cancelled by admin'
   end
  
   def close

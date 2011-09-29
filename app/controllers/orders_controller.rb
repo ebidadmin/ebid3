@@ -47,9 +47,23 @@ class OrdersController < ApplicationController
   end
 
   def edit
+    session['referer'] = request.env["HTTP_REFERER"]
     find_order_and_entry
+    @buyer_companies = Company.where(:primary_role => 2).includes(:users)
+    @seller_companies = Company.where(:primary_role => 3).includes(:users)
   end
   
+  def update
+    find_order_and_entry
+    if @order.update_attributes(params[:order])
+      redirect_to session['referer'], :notice => 'Updated the PO.' 
+      session['referer'] = nil
+    else
+      flash[:error] = "Unable to update PO."
+      render 'edit'
+    end 
+      
+  end
   def show
     find_order_and_entry
     # @order_items = @order.order_items
@@ -131,38 +145,44 @@ class OrdersController < ApplicationController
         bid.line_item.update_attribute(:status, "Cancelled by #{params[:msg_type]}")
         bid.order_item.destroy
       end
+      
       @message = current_user.messages.build
-      @message.user_company_id = current_user.company.id
+      if params[:msg_type] == 'admin'
+        @message.user_company_id = @entry.company_id
+      else
+        @message.user_company_id = current_user.company.id
+      end
       @message.user_type = params[:msg_type]
       @message.entry_id = @entry.id 
       
-      if params[:msg_type] == 'seller'
+      if params[:msg_type] == 'seller' 
         @message.receiver_id = @entry.user_id
         @message.receiver_company_id = @entry.company_id
-      elsif params[:msg_type] == 'buyer'
+      elsif params[:msg_type] == 'buyer' || params[:msg_type] == 'admin'
         @message.receiver_id = @order.seller_id
         @message.receiver_company_id = @order.seller.company.id
       end
       
-      if @order.bids.cancelled.count == @order.order_items.count # refacor, not working ...
+      # if @order.bids.cancelled.count == @order.order_items.count # refacor, not working ...
+      if @order.bids.all?(&:cancelled?)
         @message.message = "ENTIRE ORDER cancelled: #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
         @message.message << " REASON: #{params[:order][:message][:message]}"
         @order.messages << @message
         @order.update_attributes(:status => "Cancelled by #{params[:msg_type]}", :order_total => @order.bids.collect(&:total).sum)
-        flash[:error] = "Cancelled the ENTIRE ORDER."
+        flash[:info] = "ENTIRE ORDER cancelled."
       else
         @message.message = "PARTIAL ORDER cancelled: #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
         @message.message << " REASON: #{params[:order][:message][:message]}"
         @order.messages << @message
         @order.update_attribute(:order_total, @order.order_total - @bids.collect(&:total).sum) unless  @order.order_total == 0
-        flash[:error] = "Cancelled some order items."
+        flash[:info] = "PARTIAL ORDER cancelled."
       end
       redirect_to @order
+      MessageMailer.delay.cancelled_order_message(@order, @message, flash[:info])
     else
       flash[:warning] = "Please indicate your reason for cancelling the order."
       redirect_to :back
     end
-    #TODO award to next bidder?
   end
   
   def auto_paid

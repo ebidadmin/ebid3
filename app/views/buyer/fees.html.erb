@@ -21,7 +21,7 @@
 	<% end %>
 <% end %>
 
-<% unless @decline_fees.blank? %>
+<% if @decline_fees %>
 	<h2 class="highlight">
 		Total Decline Fees: <%= ph_currency(@search.collect(&:fee).sum) %> /
 		Supplier Share: <%= ph_currency(@search.collect(&:split_amount).sum) %>
@@ -64,7 +64,7 @@
 	  	<% for fee in fees %>
 		    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
 		    <%#= content_tag :div, "#{fee.fee_type}: #{content_tag :span, fee.created_at.strftime("%d %b '%y"), :class => 'instruction'}".html_safe, :class => 'fee-type' %>
-				<div class='lowest-bid'>
+				<div class='fee'>
 			    <%= content_tag :p, (number_to_currency fee.bid_total, :unit => "") %>
 					<%= content_tag :p, fee.bid_type, :class => 'instruction' %>
 				</div>

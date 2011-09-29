@@ -18,7 +18,7 @@
 	<% end %>
 <% end %>
 
-<% unless @market_fees.blank? %>
+<% if @market_fees %>
 <h2 class="highlight">
   Total Paid Orders: <%= ph_currency @search.collect(&:bid_total).sum %> /
   Total Market Fee: <%= ph_currency @search.collect(&:fee).sum %>
@@ -55,12 +55,13 @@
 			    <%= content_tag :span, "#{fee.line_item.quantity} ", :class => 'qty' %>
 					<%= content_tag :span, fee.line_item.part_name, :class => 'name' %>
 				</div>
-					<div class='amount-paid'>
+					<div class='fee'>
 				    <%= content_tag :p, (number_to_currency fee.bid_total, :unit => "")  %>
-						<%= content_tag :p, fee.order_paid.strftime('%d %b %Y'), :class => 'instruction' %>
+						<%= content_tag :p, fee.order_paid.strftime("%d %b '%y"), :class => 'instruction' %>
 					</div>
 					<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' -%>
-					<%= content_tag :div, percentage(fee.fee_rate), :class => 'rate instruction' %>
+					<%#= content_tag :div, percentage(fee.fee_rate), :class => 'rate instruction' %>
+					<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate)} #{content_tag :p, fee.perf_ratio, :class => 'small'}".html_safe, :class => 'rate' -%>
 					<div class='fee'>
 				    <%= content_tag :p, (number_to_currency fee.fee, :unit => "") %>
 						<%= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>

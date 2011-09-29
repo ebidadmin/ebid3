@@ -181,7 +181,7 @@ input#datepicker, input.datepicker { margin-right: 10px; }
 .simple_form input.string, .simple_form input.password,.simple_form textarea, .simple_form select { /*float: left;*/ margin: 0; }
 .simple_form .error { clear: left; margin-left: 30%; font-size: 12px; color: #D00; display: block; }
 .simple_form .hint { clear: left; margin-left: 30%; font-size: 12px; color: #555; display: block; font-style: italic; }
-.simple_form .datetime { margin: 0; }
+.simple_form .datetime { margin-left: 0; margin-right: 0; }
 form.user, form.car_variant { width: 60%; }
 #label_new_city { margin-left: 30%; width: 70%;}
 #entry_new_city { clear: both; margin-left: 30%; }
@@ -329,7 +329,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #msg-list #public { float: right; width: 48%; }
 #msg-list h3, #msg-list h4 { text-align: center; margin-bottom: 10px; }
 #msg-list .msg-link { margin-right: 5px; }
-#msg-list ul { margin: 0; padding: 0; height: 200px; overflow: auto; }
+#msg-list ul { margin: 0; padding: 0; max-height: 200px; overflow: auto; }
 #msg-list li { background-color: white; margin-bottom: 10px; overflow: hidden; padding: 8px; position: relative; }
 .creator, .comment { display: block; width: 100%;}
 .creator { border-bottom: 1px solid #CCC; font-weight: bold; margin-bottom: 4px; padding-bottom: 4px; }

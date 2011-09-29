@@ -1,60 +1,49 @@
 <% title "Edit Purchase Order" %>
 
-<%= content_tag :h2, 'Vehicle' %>
-<%= render 'shared/info_vehicle', :entry => entry %>
 
-<%= render 'orders/order_buyer', :entry => entry %>
-<%= render 'orders/order_seller', :order => @order %>
 
-<% @bids.group_by(&:entry).each do |entry, bids| -%>
+<div id="order">
+	<%= content_tag :h2, 'Vehicle' %>
+	<%= render 'shared/info_vehicle', :entry => @entry %>
 
-  <div id="transaction" class="create">
-    
-		<%= content_tag :h2, 'Vehicle' %>
-  	<%= render 'shared/info_vehicle', :entry => entry %>
-  	
-		<%= content_tag :h2, ('Transaction ' + (content_tag :span, "(#{ pluralize @bid_users.count, 'supplier' })", :class => 'highlight' )).html_safe %>
- 
-    <!-- create an order for each supplier -->
-    <% bids.group_by(&:user_id).each do |seller, seller_bids| -%>
-    	<%= render 'orders/order_buyer', :entry => entry %>
-    	<%= render 'orders/order_seller', :order => @order %>
-    	<table class="parts-set">
-    		<%= render 'shared/part_titles' %>
-      	<% for bid in seller_bids %>
-      		<tr>	
-      			<td class="qty"><%=h bid.quantity %></td>
-      			<td class="partname">
-      				<%= content_tag :p, (bid.line_item.part_name + (content_tag :strong, " (#{bid.bid_type})")).html_safe %> 
-      				<%= content_tag :p, "(Details: #{content_tag :strong, bid.line_item.part_no})".html_safe, :class => 'partnum' unless bid.line_item.part_no.blank?  %>
-      			</td>
-      			<td class="price">
-      				<%= number_to_currency bid.amount, :unit => "P " %>
-      			</td>
-      			<td class="price">
-      				<%= number_to_currency bid.total, :unit => "P " %>
-      			</td>
-      		</tr>
-      		<!-- pass all bid.ids as an array into the form -->
-      		<% content_for :bids_array do %>
-        		<%= hidden_field_tag 'bids[]', bid.id -%>
-      		<% end %>
-    		<% end %>
-    		<tr class="selection-total">
-    			<td class="label" colspan=2>Total Order</td>
-    			<td class="amount" colspan=2><%= number_to_currency seller_bids.collect(&:total).sum, :unit => "P " %></td>
-    		</tr>
-    	</table>
-  	<% end %>
-  	
-  </div>
+	<%= content_tag :h2, 'Transaction' %>
+	<%= render 'orders/order_buyer', :entry => @entry %>
+	<%= render 'orders/order_seller', :order => @order %>
 
-  <div id="delivery" class="create">
-  	<h2>Delivery</h2>
-    <%= simple_form_for @order, :url => orders_path(:entry_id => entry.id), :validate => true, :method => :post do |f|  %>
-    	<%= yield :bids_array %>
-  		<%= render 'orders/deliver_form', :f => f %>
-    <% end %>
-  </div>
+	<%= content_tag :h2, 'Delivery' %>
+	<%= simple_form_for @order, :validate => true, :method => :post do |f|  %>
+		<%= f.input :deliver_to, :hint => 'put the name of repair shop or receiving establishment' %>
+		<%= f.input :contact_person %>
+		<%= f.input :address1, :label => 'Address (line 1)', :hint => "requested location was: #{@entry.city.name}" %>
+		<%= f.input :address2, :label => 'Address (line 2)' %>
+		<%= f.input :phone %>
+		<%= f.input :fax %>
+		<%= f.input :instructions, :label => 'Special Instructions', :input_html => { :rows => 2 } %>
+		<hr>
+		<%= f.input :user do %>
+		  <%= f.grouped_collection_select :user_id,  @buyer_companies, :users, :name, :id, :username, {:include_blank => true} %>
+		<% end %>
+		<%=  f.input :company do %>
+		  <%= f.grouped_collection_select :company_id,  Role.find(1, 2), :companies, :name, :id, :name, {:include_blank => true} %>
+		<% end %>
+		<%= f.input :seller do %>
+		  <%= f.grouped_collection_select :seller_id,  @seller_companies, :users, :name, :id, :username, {:include_blank => true} %>
+		<% end %>
+		<%= f.input :entry_id %>
+		<%= f.input :status, :collection => ['PO Released', 'For-Delivery', 'Delivered', 'Paid', 'Closed'] %>
+		<%= f.input :order_total %>
+		<%= f.input :created_at %>
+		<%= f.input :confirmed, :include_blank => true %>
+		<%= f.input :delivered, :include_blank => true %>
+		<%= f.input :pay_until, :include_blank => true %>
+		<%= f.input :paid, :include_blank => true %>
+		<%= f.input :paid_temp, :include_blank => true %>
 
+		<%= f.button :submit %> 
+		<%= link_to "Cancel", :back %>
+	<% end %>
+</div>
+
+<%= content_for :javascripts do %>
+	<%= javascript_include_tag 'rails.validations' %>
 <% end %>

@@ -129,7 +129,7 @@ class Entry < ActiveRecord::Base
 	end
 
 	def update_status
-    item_count = bids.collect(&:line_item_id).uniq.count
+    item_count = bids.not_cancelled.collect(&:line_item_id).uniq.count
 	  unless orders.blank?
       if item_count == order_items.count || item_count == orders.not_cancelled.count
         update_attribute(:buyer_status, "Ordered-All")
@@ -189,7 +189,7 @@ class Entry < ActiveRecord::Base
       if Time.now >= deadline #&& expired_at.nil?
         update_attributes(:chargeable_expiry => true, :expired => Time.now)
         line_items.each do |item|
-          item.update_for_decline unless item.order_item.present? || item.status == "Declined"
+          item.update_for_decline unless item.order_item.present? || item.status == "Declined" || item.status == "Expired"
         end
         update_status #unless orders.exists?
       end

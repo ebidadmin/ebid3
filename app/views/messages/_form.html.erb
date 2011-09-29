@@ -1,14 +1,18 @@
 <%= simple_form_for @message do |f| %>
   <%= f.error_messages %>
 	<%= f.input :user do %>
-	  <%= f.grouped_collection_select :user_id,  Company.scoped.includes(:users), :users, :name, :id, :username, {:include_blank => true} %>
+	  <%= f.grouped_collection_select :user_id,  @company_users, :users, :name, :id, :username, {:include_blank => true} %>
 	<% end %>
-	<%= f.association :user_company %>
+	<%=  f.input :user_company do %>
+	  <%= f.grouped_collection_select :user_company_id,  @company_type, :companies, :name, :id, :name, {:include_blank => true} %>
+	<% end %>
 	<%= f.input :user_type, :collection => ['admin', 'buyer', 'seller'] %>
 	<%= f.input :receiver do %>
-	  <%= f.grouped_collection_select :receiver_id,  Company.scoped.includes(:users), :users, :name, :id, :username, {:include_blank => true} %>
+	  <%= f.grouped_collection_select :receiver_id,  @company_users, :users, :name, :id, :username, {:include_blank => true} %>
 	<% end %>
-	<%= f.association :receiver_company %>
+	<%=  f.input :receiver_company do %>
+	  <%= f.grouped_collection_select :receiver_company_id,  @company_type, :companies, :name, :id, :name, {:include_blank => true} %>
+	<% end %>
 	<%= f.input :entry_id %>
 	<%= f.input :order_id %>
 	<%= f.input :open, :as => :radio %>

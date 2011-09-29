@@ -49,6 +49,9 @@ table p { margin: 0 0 5px; }
 .bid-type { min-height: 1.5em; text-align: left; }
 .bid-field { float: left; display: inline; width: 32%; min-height: 1.5em; text-align: right; }
 
+.part .qty { float: left; width: 10%; }
+.part .name { float: left; width: 90%; }
+
 /* PURCHASE ORDER
 ---------------------------------------------------------------------- */
 
