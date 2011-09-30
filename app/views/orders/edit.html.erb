@@ -30,7 +30,7 @@
 		  <%= f.grouped_collection_select :seller_id,  @seller_companies, :users, :name, :id, :username, {:include_blank => true} %>
 		<% end %>
 		<%= f.input :entry_id %>
-		<%= f.input :status, :collection => ['PO Released', 'For-Delivery', 'Delivered', 'Paid', 'Closed'] %>
+		<%= f.input :status, :collection => ['PO Released', 'For-Delivery', 'Delivered', 'Paid', 'Closed', 'Cancelled by buyer', 'Cancelled by seller', 'Cancelled by admin'] %>
 		<%= f.input :order_total %>
 		<%= f.input :created_at %>
 		<%= f.input :confirmed, :include_blank => true %>

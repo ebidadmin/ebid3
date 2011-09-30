@@ -67,6 +67,12 @@ class Bid < ActiveRecord::Base
     update_unselected_bids2(line_item_id) 
     Fee.compute(self, status) if fee.nil?
   end
+  
+  def cancel_process(msg_type)
+    update_attribute(:status, "Cancelled by #{msg_type}")
+    line_item.update_attribute(:status, "Cancelled by #{msg_type}")
+    order_item.destroy
+  end
 
   def update_unselected_bids(line_item)
     all_bids_for_item = Bid.where(:line_item_id => line_item)

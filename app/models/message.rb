@@ -44,6 +44,36 @@ class Message < ActiveRecord::Base
     elsif msg_type == 'public'
       self.open = true
     end
+  end
+  
+  def self.for_cancelled_order(current_user, msg_sender, entry, order, cancelled_bids, reason)
+    msg = current_user.messages.build
+    if msg_sender == 'admin'
+      msg.user_company_id = entry.company_id
+    else
+      msg.user_company_id = current_user.company.id
+    end
+    msg.user_type = msg_sender
+    msg.entry_id = entry.id 
+    
+    if msg_sender == 'seller' 
+      msg.receiver_id = entry.user_id
+      msg.receiver_company_id = entry.company_id
+    elsif msg_sender == 'buyer' || msg_sender == 'admin'
+      msg.receiver_id = order.seller_id
+      msg.receiver_company_id = order.seller.company.id
+    end
+    
+    if order.bids.all?(&:cancelled?)
+      msg.message = "ENTIRE ORDER cancelled *** #{cancelled_bids.collect { |b| b.line_item.part_name}.to_sentence} *** REASON: #{reason}"
+      order.update_attributes(:status => "Cancelled by #{msg_sender}", :order_total => order.bids.collect(&:total).sum)
+      # "ENTIRE ORDER cancelled."
+    else
+      msg.message = "PARTIAL ORDER cancelled *** #{cancelled_bids.collect { |b| b.line_item.part_name}.to_sentence} *** REASON: #{reason}"
+      order.update_attribute(:order_total, order.order_total - cancelled_bids.collect(&:total).sum) unless  order.order_total == 0
+      # "PARTIAL ORDER cancelled."
+    end
+    order.messages << msg
     
   end
 

@@ -136,49 +136,16 @@ class OrdersController < ApplicationController
   end
   
   def confirm_cancel
-    # raise params.to_yaml
     if params[:order][:message][:message].present?
       find_order_and_entry
       @bids = Bid.find(params[:bid_ids])
       @bids.each do |bid|
-        bid.update_attribute(:status, "Cancelled by #{params[:msg_type]}")
-        bid.line_item.update_attribute(:status, "Cancelled by #{params[:msg_type]}")
-        bid.order_item.destroy
+        bid.cancel_process(params[:msg_type])
       end
-      
-      @message = current_user.messages.build
-      if params[:msg_type] == 'admin'
-        @message.user_company_id = @entry.company_id
-      else
-        @message.user_company_id = current_user.company.id
-      end
-      @message.user_type = params[:msg_type]
-      @message.entry_id = @entry.id 
-      
-      if params[:msg_type] == 'seller' 
-        @message.receiver_id = @entry.user_id
-        @message.receiver_company_id = @entry.company_id
-      elsif params[:msg_type] == 'buyer' || params[:msg_type] == 'admin'
-        @message.receiver_id = @order.seller_id
-        @message.receiver_company_id = @order.seller.company.id
-      end
-      
-      # if @order.bids.cancelled.count == @order.order_items.count # refacor, not working ...
-      if @order.bids.all?(&:cancelled?)
-        @message.message = "ENTIRE ORDER cancelled: #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
-        @message.message << " REASON: #{params[:order][:message][:message]}"
-        @order.messages << @message
-        @order.update_attributes(:status => "Cancelled by #{params[:msg_type]}", :order_total => @order.bids.collect(&:total).sum)
-        flash[:info] = "ENTIRE ORDER cancelled."
-      else
-        @message.message = "PARTIAL ORDER cancelled: #{@bids.collect { |b| b.line_item.part_name}.to_sentence}."
-        @message.message << " REASON: #{params[:order][:message][:message]}"
-        @order.messages << @message
-        @order.update_attribute(:order_total, @order.order_total - @bids.collect(&:total).sum) unless  @order.order_total == 0
-        flash[:info] = "PARTIAL ORDER cancelled."
-      end
+      Message.for_cancelled_order(current_user, params[:msg_type], @entry, @order, @bids, params[:order][:message][:message])
+      flash[:info] = "Order cancelled. Sayang ..."
       redirect_to @order
-      MessageMailer.delay.cancelled_order_message(@order, @message, flash[:info])
+      MessageMailer.delay.cancelled_order_message(@order, @message)
     else
       flash[:warning] = "Please indicate your reason for cancelling the order."
       redirect_to :back

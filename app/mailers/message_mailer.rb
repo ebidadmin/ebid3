@@ -18,12 +18,12 @@ class MessageMailer < ActionMailer::Base
     end
   end
   
-  def cancelled_order_message(order, message, heading)
+  def cancelled_order_message(order, message)
     @order = order
     @message = message
     mail(
       :to => ["#{order.user.profile.full_name} <#{order.user.email}>", "#{order.seller.profile.full_name} <#{order.seller.email}>"],
-      :subject => heading,
+      :subject => "Order CANCELLED",
       :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"]
     )
   end

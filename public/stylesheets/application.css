@@ -200,12 +200,12 @@ input[type="submit"]:hover, input[type="button"]:hover, #content-main  .button:h
 #attachments .add_nested_fields:hover { background-color: #6B9D28 /*#D02200*/; text-decoration: none; border-bottom: 0; }
 
 #content-main #print-preview { border-radius: 6px; border: 1px solid #dcdcdc; color: #333; float: right; font-weight: bold; padding: 12px 24px; text-decoration: none;  background: #CCC url(../images/base/print.gif) no-repeat center center;  text-indent: -9999px; width: 100px; }
-#content-main #print-preview:hover { background-color: #f6f6f6; }
+#content-main #print-preview:hover, #content-main #cancel-button:hover { background-color: #f6f6f6; }
 #content-main #print-preview:active { position: relative; top: 1px; }
 
-#content-main .aside #feature-button:hover, #content-main #feature-button:hover, #content-main #cancel-button:hover { background-color: #D02200; }
+#content-main .aside #feature-button:hover, #content-main #feature-button:hover { background-color: #D02200; }
 #content-main #feature-button, #content-main .green-button { color: white !important; background-color: #6B9D28; }
-#content-main #cancel-button { background-color: #CCC; float: right;}
+#content-main #cancel-button { background-color: #CCC; background-image: none; color: black !important; float: right;}
 
 #content-main #relist-button, #content-main #reveal-bids-button, #content-main .red-button { background-color: #D02200;  }
 #content-main .green-button:hover, #content-main .red-button:hover { background-color: #5C5C5C }
