@@ -10,4 +10,5 @@ public/system/*
 .git/*
 lib/development_mail_interceptor.rb
 config/database.yml
-config/initializers/setup_mail.rb
+setup_mail.rb
+application.rb
