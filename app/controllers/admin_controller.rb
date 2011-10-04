@@ -63,11 +63,7 @@ class AdminController < ApplicationController
     @sort_order =" due date (per vehicle) - ascending order"
  
     @all_orders = Order.total_delivered.payment_pending
-    if params[:seller]
-      @search = @all_orders.where(:seller_id => params[:seller]).asc.search(params[:search]) 
-    else
-      @search = @all_orders.search(params[:search])
-    end  
+    @search = @all_orders.by_this_buyer(params[:buyer]).by_this_seller(params[:seller]).search(params[:search]).asc
     @orders = @search.inclusions_for_admin.with_ratings.paginate :page => params[:page], :per_page => 10   
 
     @buyers = @all_orders.collect(&:company_id).uniq.collect { |buyer| [Company.find(buyer).name, admin_payments_path(:buyer => buyer)] }
@@ -164,7 +160,7 @@ class AdminController < ApplicationController
       entry.update_status
     end
     
-    entries = Entry.expired.where('created_at <= ?', 1.year.ago)
+    entries = Entry.expired.where('created_at >= ?', 1.month.ago)
     for entry in entries.includes(:line_items)
       for item in entry.line_items.with_bids.includes(:bids, :order_item)
         if item.order_item.present? 

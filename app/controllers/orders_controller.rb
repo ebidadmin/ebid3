@@ -142,7 +142,7 @@ class OrdersController < ApplicationController
       @bids.each do |bid|
         bid.cancel_process(params[:msg_type])
       end
-      Message.for_cancelled_order(current_user, params[:msg_type], @entry, @order, @bids, params[:order][:message][:message])
+      @message = Message.for_cancelled_order(current_user, params[:msg_type], @entry, @order, @bids, params[:order][:message][:message])
       flash[:info] = "Order cancelled. Sayang ..."
       redirect_to @order
       MessageMailer.delay.cancelled_order_message(@order, @message)

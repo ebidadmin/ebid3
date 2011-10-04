@@ -50,8 +50,20 @@ class Order < ActiveRecord::Base
   scope :metered, where('orders.created_at >= ?', '2011-04-16')
   scope :ftm, where('orders.created_at >= ?', Time.now.beginning_of_month)
  
-  def self.by_this_seller(user)
-    where(:seller_id => user)
+  def self.by_this_seller(id, indicator = nil)
+    if id.present?
+      where(:seller_id => id)
+    else
+      scoped
+    end
+  end
+
+  def self.by_this_buyer(id)
+    if id.present?
+      where(:company_id => id)
+    else
+      scoped
+    end
   end
 
   def initialize_order(user, seller, ip)

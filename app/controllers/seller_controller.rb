@@ -192,7 +192,7 @@ class SellerController < ApplicationController
   def orders
     @title = "Purchase Orders"
     @sort_order =" PO date - descending order"
-    @all_orders = Order.by_this_seller(current_user.company.users).recent.order('confirmed')
+    @all_orders = Order.by_this_seller(current_user.company.users).recent.order(:confirmed)
     @search = @all_orders.search(params[:search])
     if params[:status]
       @orders = Order.by_this_seller(current_user.company.users).where(:status => params[:status]).desc.inclusions_for_seller.paginate :page => params[:page], :per_page => 10

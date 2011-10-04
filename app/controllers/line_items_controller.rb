@@ -49,7 +49,6 @@ class LineItemsController < ApplicationController
   end
   
   def destroy
-    @line_item = LineItem.find(params[:id])
     @line_item.destroy
     flash[:notice] = "Deleted #{@line_item.part_name}."
     redirect_to :back

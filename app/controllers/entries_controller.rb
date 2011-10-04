@@ -199,7 +199,7 @@ class EntriesController < ApplicationController
           # line_item.bids.not_cancelled.update_all(:status => 'For-Decision', :declined => nil, :expired => nil)
           line_item.update_for_decision
           # line_item.fee.destroy if line_item.fee #TODO fee should be updated temporarily, not deleted
-          line_item.fee.revert
+          line_item.fee.revert if line_item.fee
         end
       end
     end

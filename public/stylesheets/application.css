@@ -225,6 +225,7 @@ input[type="submit"]:hover, input[type="button"]:hover, #content-main  .button:h
 .photo { float: left; padding: 5px; background-color: white; border: 1px solid #CCC; height: 60px; width: 80px; }
 .photo:hover { border: 1px solid #5f6252; -moz-box-shadow: 0 0 4px #999999; -webkit-box-shadow: 0 0 4px #999999; }
 .photo-set { float: right; margin-bottom: 20px; width: 59%; }
+.photo-set ul { border: 1px solid #CCC; max-height: 150px; overflow: auto; padding: 10px;}
 .photo-set ul li { float: left; margin: 0 5px 10px 0; }
 #add-photo-button { clear: both; float: left; }
 
@@ -319,7 +320,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #accept-decline { text-align: center; }
 #accept-decline .instruction { margin-bottom: 10px; }
 
-.bid-box .comfy-alert { margin-top: 0; margin-bottom: 10px; }
+.bid-box .mild-alert { margin-top: 0; margin-bottom: 10px; }
 
 /* MESSAGES
 ---------------------------------------------------------------------- */

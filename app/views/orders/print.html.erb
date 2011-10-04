@@ -11,7 +11,7 @@
 	<h4 id="del-status">Status: <%= @order.status %></h4>
 </div>
 
-<% if @priv_messages  %>
+<% if @priv_messages.present?  %>
 	<div id="message-box">
 		<%= content_tag :h2, 'Private Messages for this Order' %>
 		<%= render 'messages/order_messages' %>

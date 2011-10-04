@@ -8,7 +8,7 @@
 	</td>
 	<td class="bid-box">
 		<% if item.cancelled? %>
-		<%= content_tag :p, "Previous order #{item.status.downcase} #{link_to('(view order)', order_path(item.order)) unless item.order.nil?}. <br>You may re-order from next lowest bidder".html_safe, :class => 'comfy-alert clear-both' %> 
+		<%= content_tag :p, "Previous order #{item.status.downcase}. <br>You may re-order from next lowest bidder".html_safe, :class => 'mild-alert clear-both' %> 
 		<% end %>
 		<div class="bid-labels">
 			<div class="bidder-count">

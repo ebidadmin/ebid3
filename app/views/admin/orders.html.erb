@@ -6,12 +6,12 @@
 <%= render 'buyer/filter_by_sellers' unless @sellers.blank? %>
 <%= render 'buyer/filter_by_search' %>
 
-<%#= content_tag :h3, "Total: #{number_to_currency(@all_orders.collect(&:total_order_amounts).sum, :unit => "P ")}", :id => 'order-total' %>
-<%#= content_tag :p, "#{User.find(params[:seller]).company_name} only: #{number_to_currency(@search.collect(&:total_order_amounts).sum, :unit => "P ")}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>
 <%= link_to 'Send Overdue Reminder', admin_overdue_reminder_path, :id => 'payment-reminder', :class => 'button' if current_page?(admin_payments_path) %>
+<%= content_tag :h3, "Total: #{ph_currency(@all_orders.sum(:order_total))}", :id => 'order-total' %>
 
 <%= will_paginate @orders %>
 <%= page_info @orders, @sort_order %>
+<%= content_tag :p, "#{User.find(params[:seller]).company_name} only: #{ph_currency(@search.sum(:order_total))}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>
 
 <%- unless @orders.blank? -%>
 	<table id="orders-list">

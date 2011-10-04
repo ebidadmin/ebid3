@@ -12,7 +12,7 @@ $(function() {
 	
 	$("select#username, select#brand, select#status, select#seller, select#buyer").bind("change", function() { window.location.pathname = $(this).val() });
 	
-	$("#entry_submit, #entry_final_submit, #finalize-button, #message_submit, #cancel-order .red-button ").live("click", function() {
+	$("#entry_submit, #entry_final_submit, #finalize-button, #message_submit, #cancel-order .red-button, #order_submit").live("click", function() {
 	    $(".spinner").toggle();
 	});
 	
@@ -35,6 +35,8 @@ $(function() {
 	
 	$("#select-all").bind("click",function() { 
 		$("form").find("input:checkbox").attr("checked", true);
+		return false;
 	});
+	
 });
 

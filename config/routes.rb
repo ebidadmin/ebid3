@@ -58,8 +58,6 @@ Ebid::Application.routes.draw do
   resources :photos do
     put :attach, :on => :collection
   end
-  # get 'photos/add', :as => :add_photo
-  # delete 'photos/remove', :as => :remove_photo
   
   resources :car_parts do
     get :search, :on => :collection
@@ -77,7 +75,7 @@ Ebid::Application.routes.draw do
   match 'admin/online(/:page)' => 'admin#online', :as => :admin_online, :via => :get
   match 'admin/bids(/:page(/:brand))' => 'admin#bids', :as => :admin_bids, :via => :get
   match 'admin/orders(/:page)' => 'admin#orders', :as => :admin_orders, :via => :get
-  match 'admin/payments(/:seller(/:page))' => 'admin#payments', :as => :admin_payments, :via => :get
+  match 'admin/payments(-:buyer)(/:seller(/:page))' => 'admin#payments', :as => :admin_payments, :via => :get
   match 'admin/buyer_fees(/:buyer(/:seller))' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
   match 'admin/seller_fees(/:page)' => 'admin#seller_fees', :as => :admin_seller_fees, :via => :get
   match 'admin/utilities' => 'admin#utilities', :as => :admin_utilities, :via => :get
@@ -102,7 +100,6 @@ Ebid::Application.routes.draw do
   match 'seller/:user_id/main' => 'seller#main', :as => :seller_main, :via => :get
   match 'seller/:user_id/hub/:brand(/page-(:page))' => 'seller#hub', :as => :seller_hub, :via => :get
   match 'seller/show/:id' => 'seller#show', :as => :seller_show, :via => :get
-  # match 'seller/:user_id/hub/:brand/:id' => 'seller#show', :as => :seller_show, :via => :get
   match 'seller/:user_id/monitor(/:page)' => 'seller#monitor', :as => :seller_monitor, :via => :get
   match 'seller/:user_id/orders(/:page)' => 'seller#orders', :as => :seller_orders, :via => :get
   match 'seller/:user_id/payments(/:page)' => 'seller#payments', :as => :seller_payments, :via => :get

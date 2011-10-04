@@ -59,7 +59,7 @@ class BuyerController < ApplicationController
     @tag_collection = ["PO Released", "For Delivery", "For-Delivery"]
     initiate_list
     find_orders
-    @search = @all_orders.search_orders(params[:search], params[:seller], 'entries.created_at desc')
+    @search = @all_orders.search_orders(params[:search], params[:seller], 'orders.created_at desc')
     @orders = @search.inclusions.paginate :page => params[:page], :per_page => 10    
     render 'orders/index'  
   end

@@ -45,7 +45,7 @@ module EntriesHelper
       end
       
     #online entries
-    elsif entry.buyer_status == "Online" || entry.buyer_status == "Relisted"
+    elsif entry.buyer_status == "Online" || entry.buyer_status == "Relisted" || entry.buyer_status == "Additional" 
       if entry.bid_until > Time.now
         "(max #{entry.bid_until.strftime('%b %d')})"
       elsif entry.bid_until == Time.now

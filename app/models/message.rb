@@ -74,7 +74,7 @@ class Message < ActiveRecord::Base
       # "PARTIAL ORDER cancelled."
     end
     order.messages << msg
-    
+    msg
   end
 
 end
