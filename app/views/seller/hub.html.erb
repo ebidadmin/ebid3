@@ -6,6 +6,7 @@
 <%= page_info @entries %>
 
 <% unless @entries.count < 1 %>
+<%= link_to 'Print Bidding Worksheet', seller_worksheet_path, :class => 'button green-button', :id => 'worksheet-button' %>
 <table id="main-bids">
 	<thead>
 		<th class="vehicle">Vehicle</th>

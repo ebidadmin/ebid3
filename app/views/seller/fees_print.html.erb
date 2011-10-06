@@ -34,7 +34,7 @@
 				<% for fee in fees %>
 			    <%#= content_tag :div, "[ #{fee.line_item.quantity} ] " + fee.line_item.part_name, :class => 'part' %>
 					<div class="part">
-				    <%= content_tag :span, "#{fee.line_item.quantity} ", :class => 'qty' %>
+				    <%= content_tag :span, fee.line_item.quantity, :class => 'qty' %>
 						<%= content_tag :span, fee.line_item.part_name, :class => 'name' %>
 					</div>
 			    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'amount-paid'  %>

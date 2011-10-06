@@ -109,7 +109,7 @@ Ebid::Application.routes.draw do
   match 'seller/:user_id/fees_print(/:page)' => 'seller#fees_print', :as => :seller_fees_print, :via => :get
   match 'seller/:user_id/declines(/:buyer)' => 'seller#declines', :as => :seller_declines, :via => :get
   match 'seller/:user_id/archives(/:page)' => 'seller#archives', :as => :seller_archives, :via => :get
-  # get 'seller/index'
+  get 'seller/worksheet'
   
   resources :bids do
     collection do

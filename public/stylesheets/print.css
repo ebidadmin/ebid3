@@ -74,6 +74,15 @@ table p { margin: 0 0 5px; }
 #order .price { width: 18%; text-align: right; padding: 10px 8px 10px 0; }
 #order .selection-total { font-weight: bold; font-size: 1.2em; text-align: right; }
 
+/* SUPPLIER - WORKSHEET
+---------------------------------------------------------------------- */
+#worksheet .vehicle { text-align: left; width: 25%; }
+#worksheet div { float: left; }
+#worksheet .part { clear: both; margin: 15px 0; text-align: left; width: 40%; }
+#worksheet .price { float: left; margin: 15px 0; width: 20%; }
+hr { background: black; clear: both; float: none; width: 100%; height: .1em; border: none; }
+hr:last-child { display: none; }
+
 /* FEES
 ---------------------------------------------------------------------- */
 

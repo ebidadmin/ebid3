@@ -212,6 +212,7 @@ input[type="submit"]:hover, input[type="button"]:hover, #content-main  .button:h
 #content-main #relist-button, #content-main #reveal-bids-button { font-size: 16px; }
 
 #add-parts-button, #cancel-edit-button { float: left; }
+#worksheet-button { float: right; }
 
 /* VEHICLE
 ---------------------------------------------------------------------- */
@@ -427,7 +428,6 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 
 /* SUPPLIER - MONITOR BIDS
 ---------------------------------------------------------------------- */
-
 #supplier-bids th.vehicle, #supplier-bids th .part { text-align: left; }
 #supplier-bids .vehicle { width: 20%; }
 #supplier-bids .vehicle a { font-size: 1em; }

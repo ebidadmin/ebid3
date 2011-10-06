@@ -3,7 +3,7 @@ module SellerHelper
     if entry.buyer_status == 'Relisted' 
       content_tag :strong, entry.buyer_status
     elsif entry.buyer_status == 'Additional'
-      content_tag :b, entry.buyer_status, :class => 'green'
+      content_tag :b, 'Additional Parts', :class => 'green'
     else
       entry.buyer_status
     end

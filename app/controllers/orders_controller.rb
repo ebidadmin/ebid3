@@ -64,6 +64,7 @@ class OrdersController < ApplicationController
     end 
       
   end
+
   def show
     find_order_and_entry
     # @order_items = @order.order_items
@@ -153,7 +154,7 @@ class OrdersController < ApplicationController
   end
   
   def auto_paid
-    orders = Order.paid.paid_null
+    orders = Order.paid.where("orders.paid_temp <= ?", 3.days.ago).paid_null
     orders.each do |order|
       order.bids.each do |bid|
         if bid.paid

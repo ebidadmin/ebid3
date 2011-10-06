@@ -107,7 +107,7 @@ class Entry < ActiveRecord::Base
 	end
 
 	def vehicle
-	  "#{year_model} #{car_brand.name} #{car_model.name} #{car_variant.name if car_variant}".html_safe 
+	  "#{year_model} #{car_brand.name} #{car_model.name if car_model} #{car_variant.name if car_variant}".html_safe 
 	end
 	
 	def brand

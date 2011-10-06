@@ -140,6 +140,7 @@ class SellerController < ApplicationController
   end
   
   def hub
+    @title = 'Place Bids'
     all_entries = Entry.online.active
     @friend_entries = all_entries.user_company_friendships_friend_id_eq(current_user.company)
     @brand_links = @friend_entries.collect(&:car_brand).uniq.collect { |brand| [brand.name, seller_hub_path(current_user, :brand => brand.name)] }  #.sort! { |a,b| a.name.downcase <=> b.name.downcase }
@@ -153,6 +154,12 @@ class SellerController < ApplicationController
       brand = CarBrand.find_by_name(params[:brand])
       @entries = @friend_entries.seller_inclusions.where(:car_brand_id => brand).paginate :page => params[:page], :per_page => 10
     end
+  end
+  
+  def worksheet
+    @entries = Entry.online.active.user_company_friendships_friend_id_eq(current_user.company).seller_inclusions
+    @company = current_user.company
+    render :layout => 'print'
   end
   
   def show
