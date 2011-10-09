@@ -6,7 +6,9 @@
 <%= page_info @entries %>
 
 <% unless @entries.count < 1 %>
-<%= link_to 'Print Bidding Worksheet', seller_worksheet_path, :class => 'button green-button', :id => 'worksheet-button' %>
+<%= form_tag seller_worksheet_path, :id => 'hub-form', :method => :get do %>
+<%#= link_to 'Print Bidding Worksheet', seller_worksheet_path, :class => 'button green-button', :id => 'worksheet-button' %>
+<%= submit_tag 'Print Bidding Worksheet', :class => 'green-button', :id => 'worksheet-button' %>
 <table id="main-bids">
 	<thead>
 		<th class="vehicle">Vehicle</th>
@@ -28,6 +30,7 @@
       <%= content_tag :p, (content_tag :span, 'Parts:') + (link_to (pluralize entry.line_items.online.collect(&:quantity).sum, "item"), seller_show_path(:id => entry)) %>
 		</td>
 		<td class="status">
+			<%= check_box_tag 'entries[]', entry.id %>
       <%= content_tag :span, 'M', :class => 'message-mark' if entry.messages.restricted(@company).present? || entry.messages.open.present? %>
       <%= content_tag :p, "Date Created: #{long_date(entry.created_at)}", :class => 'small' %>
       <%= content_tag :p, "#{online_or_relisted?(entry)} until: #{entry.bid_until.strftime('%b %d, %Y')} (maximum)".html_safe  %>
@@ -42,6 +45,7 @@
 	</tr>
 	<% end %>
 </table>
+<% end %>
 <% end %>
 
 <%= will_paginate @entries %>

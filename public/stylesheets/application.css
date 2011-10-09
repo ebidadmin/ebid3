@@ -412,6 +412,9 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 
 /* SUPPLIER - PLACE BIDS
 ---------------------------------------------------------------------- */
+#hub-form table { clear: right; }
+#hub-form input { float: right; }
+
 #item-bids { clear: both; margin: 4em 0 1em; }
 .bid-box { width: 60%; overflow: hidden; text-align: center; }
 .bid-box span { color: #C00; }

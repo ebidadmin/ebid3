@@ -157,7 +157,11 @@ class SellerController < ApplicationController
   end
   
   def worksheet
-    @entries = Entry.online.active.user_company_friendships_friend_id_eq(current_user.company).seller_inclusions
+    if params[:entries] 
+      @entries = Entry.where(:id => params[:entries]).inclusions.desc
+    else
+    @entries = Entry.online.active.user_company_friendships_friend_id_eq(current_user.company).inclusions
+    end
     @company = current_user.company
     render :layout => 'print'
   end
