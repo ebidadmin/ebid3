@@ -18,4 +18,12 @@ module SellerHelper
   		<p class='bid-amounts #{quote_class(last_bid.status) unless last_bid.nil?}'>#{ last_bid.status unless last_bid.nil? }</p>
   	</div>").html_safe
   end
+  
+  def show_vehicle(entry) # used in seller#fees
+    if current_user.has_role?('admin')
+      entry
+    else
+      seller_show_path(:id => entry)
+    end
+  end
 end

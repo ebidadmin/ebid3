@@ -47,6 +47,7 @@
 </table>
 <div class="page-links">
 	<%= select_tag :canvass_company_id, options_for_select(CanvassCompany.where(:role => 3).order(:name).collect { |c| [c.name, c.id] }), :include_blank => 'Choose Supplier'  %>
+	<%= text_field_tag :new_canvass_company %>
 	<%= submit_tag 'Submit Diffs', :class => 'green-button'  %>
   <%= link_to "Done", :back %>
 </div>

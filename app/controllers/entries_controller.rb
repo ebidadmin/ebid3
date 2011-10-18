@@ -1,6 +1,9 @@
 class EntriesController < ApplicationController
-  before_filter :initialize_cart, :only => [:select_parts, :show, :edit]
+  before_filter :initialize_cart, :only => [:show, :edit]
   before_filter :check_buyer_role
+  
+  include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::TagHelper
 
   def index
     @title = "All Entries"
@@ -41,27 +44,22 @@ class EntriesController < ApplicationController
     render :layout => 'print'
   end
   
-  def duplicates
-    @search = Entry.search(params[:search])
-    @entries = @search.paginate(:page => params[:page], :per_page => 10)
-    render 'entries/index'
-  end
-  
   def new
     @entry = current_user.entries.build
     @entry.date_of_loss = Date.today
-    @entry.term_id = 4
+    @entry.term_id = 4 # default credit term is 30 days
     @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
   end
   
   def create
+    @entry = current_user.entries.build(params[:entry])
     # @search = Entry.search(params[:entry][:plate_no])
-    #  if @search.present?
-    #    @entries = @search.paginate(:page => params[:page], :per_page => 10)
-    #    render 'entries/index'
-    #  else
-       @entry = current_user.entries.build(params[:entry])
-      if current_user.company.entries << @entry
+    #   if @search.present?
+    #     @entries = @search.desc
+    #     flash[:warning] = "Warning: #{content_tag :strong, pluralize(@entries.count, 'record')} found with similar Plate No.".html_safe
+    #     render 'entries/duplicates'
+    #   else
+       if current_user.company.entries << @entry
         redirect_to edit_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."
       else
         @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
@@ -69,6 +67,18 @@ class EntriesController < ApplicationController
         render 'new'
       end
     # end
+  end
+  
+  def force_create
+    raise params.to_yaml
+    @entry = current_user.entries.build(params[:entry])
+    if current_user.company.entries << @entry
+      redirect_to edit_entry_path(@entry), :notice => "Saved #{@entry.vehicle}. Next step is to choose parts."
+    else
+      @car_origins = CarOrigin.includes(:car_brands) # eager loading to make query faster
+      flash[:error] = "Looks like you forgot to complete the required vehicle info.  Try again!"
+      render 'new'
+    end
   end
   
   def attach_photos
@@ -86,9 +96,6 @@ class EntriesController < ApplicationController
       @entry = current_user.entries.find(params[:id])
     end
     @line_items = @entry.line_items.includes(:car_part, :bids)
-    # if @entry.photos.first.blank?
-    #   2.times {@entry.photos.build}
-    # end
   end
   
   def edit_vehicle

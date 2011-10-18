@@ -31,6 +31,7 @@ Ebid::Application.routes.draw do
       delete :destroy_role
     end
     resources :entries, :shallow => true do
+      post :force_create, :on => :collection
       member do
         get :edit_vehicle
         get :attach_photos
@@ -40,10 +41,7 @@ Ebid::Application.routes.draw do
         get :relist
         get :reactivate
       end
-      collection do
-        get :duplicates
-      end
-   end
+    end
   end
       
   get 'cart/add'
@@ -77,7 +75,7 @@ Ebid::Application.routes.draw do
   match 'admin/orders(/:page)' => 'admin#orders', :as => :admin_orders, :via => :get
   match 'admin/payments(-:buyer)(/:seller(/:page))' => 'admin#payments', :as => :admin_payments, :via => :get
   match 'admin/buyer_fees(/:buyer(/:seller))' => 'admin#buyer_fees', :as => :admin_buyer_fees, :via => :get
-  match 'admin/seller_fees(/:page)' => 'admin#seller_fees', :as => :admin_seller_fees, :via => :get
+  match 'admin/seller_fees(/:seller(/:page))' => 'admin#seller_fees', :as => :admin_seller_fees, :via => :get
   match 'admin/utilities' => 'admin#utilities', :as => :admin_utilities, :via => :get
   match 'admin/expire_entries' => 'admin#expire_entries', :as => :admin_expire_entries, :via => :get
   get 'admin/cleanup'

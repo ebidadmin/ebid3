@@ -132,7 +132,7 @@ class AdminController < ApplicationController
   end
 
   def expire_entries
-    @entries = Entry.results.unexpired.includes(:line_items)
+    @entries = Entry.results.unexpired.includes(:line_items) + Entry.online.unexpired.includes(:line_items)
     @entries.each do |entry|
       entry.expire
     end

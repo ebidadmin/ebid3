@@ -20,7 +20,7 @@ class DiffsController < ApplicationController
   
   def create
     # raise params.to_yaml
-    @company = params[:canvass_company_id].to_i
+    @company = params[:canvass_company_id].to_i 
     unless @company.nil?
       @entry = Entry.find(params[:entry_id])
       @line_items = Array.new
@@ -56,10 +56,10 @@ class DiffsController < ApplicationController
   end
 
   def summary
-    @entries = Entry.by_this_company(23) # @entries = Entry.where(:company_id => current_user.company, :created_at => ('2010-12-01'..'2011-02-01'))
+    @entries = Entry.by_this_company(2).where('entries.created_at >= ?', Time.now.beginning_of_year) # @entries = Entry.where(:company_id => current_user.company, :created_at => ('2010-12-01'..'2011-02-01'))
     @line_items = LineItem.where(:entry_id => @entries) # @line_items = @entries.sum(:line_items_count)
     @with_bids = @line_items.with_bids # @without_bids = @line_items.without_bids.count
-    @with_diffs = Diff.where(:buyer_company_id => 23)
+    @with_diffs = Diff.where(:buyer_company_id => 2)
     
     @sample = @with_diffs.collect(&:entry_id).uniq
     @sample_parts = LineItem.where(:entry_id => @sample) #@with_diffs.collect(&:line_item_id).uniq
@@ -78,7 +78,7 @@ class DiffsController < ApplicationController
 
     @total_effect = @ebid_lower.sum(:diff).abs + @ebid_higher.sum(:diff) + @same.sum(:total) + @projected_savings
     @decline_fees = @search = Fee.where(:entry_id => @sample).declined
-    @orders = Order.where(:company_id => 23).total_delivered
+    @orders = Order.where(:company_id => 2).total_delivered.where('orders.created_at >= ?', Time.now.beginning_of_year)
     @ordered_parts = @orders.sum(:order_items_count)
     @orders_in_survey = @orders.where(:entry_id => @sample)
     render :layout => 'print'

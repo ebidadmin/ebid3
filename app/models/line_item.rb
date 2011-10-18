@@ -15,6 +15,7 @@ class LineItem < ActiveRecord::Base
   scope :online, where(:status => ['Online', 'Relisted', 'Additional'])
   scope :relistable, where(:status => 'No Bids')
   scope :cancelled, where('line_items.status LIKE ?', "%Cancelled%")
+  scope :not_cancelled, where('bids.status NOT LIKE ?', "%Cancelled%") 
   scope :with_bids, where('line_items.bids_count > 0')
   scope :two_and_up, where('line_items.bids_count > 2')
   scope :without_bids, where('line_items.bids_count < 1')

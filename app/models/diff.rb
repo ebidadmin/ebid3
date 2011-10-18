@@ -2,6 +2,9 @@ class Diff < ActiveRecord::Base
   attr_accessible :buyer_company_id, :buyer_id, :seller_company_id, :seller_id, :entry_id, :line_item_id, :amount, :quantity, :total,
     :bid_type, :canvass_amount, :canvass_total, :diff, :canvass_company_id
      
+  attr_accessor :new_canvass_company
+  before_save :create_canvass_company
+  
   belongs_to :buyer_company, :class_name => "Company"
   belongs_to :seller_company, :class_name => "Company"
   belongs_to :buyer, :class_name => "User"
@@ -12,7 +15,8 @@ class Diff < ActiveRecord::Base
   belongs_to :canvass_company
 
   validates :canvass_amount, :numericality => {:greater_than => 0}, :presence => true
-  validates :canvass_company, :presence => true
+  # validates :canvass_company, :presence => true, :if => :new_canvass_company_blank
+  validates_presence_of :canvass_company, :if => :new_canvass_company_blank
   
   def self.populate(entry, line_item, diff_type, amount, canvass_company)
     diff = Diff.new
@@ -36,5 +40,13 @@ class Diff < ActiveRecord::Base
       diff.diff = diff.total - diff.canvass_total
     end
     diff.save!
+  end
+  
+  def create_canvass_company
+    create_canvass_company(:name => new_canvass_company.strip) unless new_canvass_company.blank?
+  end
+  
+  def new_canvass_company_blank
+    new_canvass_company.blank?
   end
 end

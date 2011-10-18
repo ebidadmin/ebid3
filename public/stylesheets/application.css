@@ -73,7 +73,7 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .regular-alert { background-color: white; border-color: #B60002; }
 .comfy-alert { background-color: white; border-color: #CCC; }
 .box { background-color: #ddd; padding: 5px; }
-.main-title { color: #919191; float: left; width: 50%; }
+.main-title { color: #919191; /*float: left; width: 50%;*/ }
 h3#status { float: right; margin: -2px 1em 1em; padding: 15px 25px; text-align: center; }
 .small { color: #919191; font-size: 0.8em; }
 
@@ -190,7 +190,7 @@ form.user, form.car_variant { width: 60%; }
 #company_submit, #line_item_submit { margin-left: 30%; margin-top: 10px;}
 #user_new #user_submit { margin: 0; }
 /*#step-back { float: left; }*/
-#car_variant_name, #entry_car_variant_id { border-color: #C00; font-size: 1.2em; }
+#car_variant_name, #entry_car_variant_id { background-color: #FFF6BF; border-color: #C00; font-size: 1.2em; }
 
 /* BUTTONS
 ---------------------------------------------------------------------- */
@@ -213,6 +213,7 @@ input[type="submit"]:hover, input[type="button"]:hover, #content-main  .button:h
 
 #add-parts-button, #cancel-edit-button { float: left; }
 #worksheet-button { float: right; }
+#force-create-button { padding: 18px 24px !important; position: absolute; top: 0; right: 0; }
 
 /* VEHICLE
 ---------------------------------------------------------------------- */
@@ -303,6 +304,15 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 .button_to { float: right; }
 .button_to input { margin: 0 0 0 10px; }
 
+/* ENTRY#DUPLICATES
+---------------------------------------------------------------------- */
+.dupl { float: left; margin: 0 15px 25px 0; width: 305px; }
+.dupl-entry { border: 1px solid #CCC;  margin-bottom: 10px; max-height: 200px; min-height: 200px; overflow: auto; padding: 10px; }
+.dupl-entry dl { clear: both; margin-bottom: 10px; overflow: hidden; }
+.dupl-entry dt { clear: both; float: left; width: 30%; }
+.dupl-entry dd { float: left; width: 70%; }
+.dupl-entry img { margin: 0 10px 10px 0; }
+.dupl-actions { text-align: center; }
 
 /* ENTRY#SHOW
 ---------------------------------------------------------------------- */

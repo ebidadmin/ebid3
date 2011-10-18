@@ -72,7 +72,6 @@ class Entry < ActiveRecord::Base
 
 	def add_or_edit_line_items_from_cart(cart)
 		cart.cart_items.each do |item|
-      # existing_item = LineItem.where(:entry_id => self.id, :car_part_id => item.car_part_id)
 		  existing_item = LineItem.find_by_entry_id_and_car_part_id(self.id, item.car_part_id)
 		  unless existing_item.nil?
 		    existing_item.update_attributes(:quantity => existing_item.quantity + item.quantity, :part_no => item.part_no)
@@ -174,7 +173,7 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def expire # REVIEW THIS!
-    if self.is_now_online? && Time.now > bid_until #&& expired.nil?
+    if self.is_now_online? && Time.now >= bid_until #&& expired.nil?
       update_attribute(:expired, Time.now)
       line_items.each do |line_item|
         if line_item.bids.exists?

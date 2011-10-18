@@ -41,7 +41,7 @@
 	<% @market_fees.group_by(&:entry).each do |entry, fees| %>
   <tr>
 		<td class="vehicle">	
-      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 30), seller_show_path(:id => entry.id)) %>
+      <%= content_tag :p, link_to(truncate(entry.vehicle, :length => 30), show_vehicle(entry)) %>
 			<p>
 				<%= entry.plate_no %>
 				<%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' unless current_user.primary_role != 1 %>

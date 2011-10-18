@@ -1,0 +1,41 @@
+<% title 'Possible Duplicates?' %>
+<%= button_to "No, it's a different car. Proceed »", force_create_user_entries_path(current_user, :entry => @entry), :id => 'force-create-button', :class => 'button' %>
+
+<% for entry in @entries %>
+<div class="dupl">
+	<div class="dupl-entry">
+	  <%= link_to image_tag(entry.photos.first.photo.url(:tiny), :class => "photo", :alt => "Photo of #{entry.plate_no}"), entry.photos.first.photo.url(:large), :rel => "shadowbox[dup]" unless entry.photos.nil? %>
+		<%= content_tag :p, entry.company.name, :class => 'small' %>
+		<%= content_tag :h3, entry.vehicle %>
+		<dl>
+			<%= content_tag :dt, 'Plate No.' %>
+			<%= content_tag :dd, entry.plate_no, :class => 'strong' %>
+			<%= content_tag :dt, 'Chassis No.' %>
+			<%= content_tag :dd, entry.serial_no, :class => 'strong' %>
+			<%= content_tag :dt, 'Motor No.' %>
+			<%= content_tag :dd, entry.motor_no, :class => 'strong' %>
+		</dl>
+		<ul>
+			<%= content_tag :h3, 'Parts' %>
+			<% for item in entry.line_items %>
+			<%= content_tag :li, item.part_name %>
+			<% end %>
+		</ul>
+	</div>
+	<div class="dupl-actions">
+		<% if current_user.company.id == entry.company_id  %>
+			<%= link_to '+ Add Parts', edit_entry_path(entry), :class => 'button green-button' %>
+		<% else %>
+			<%= link_to 'Report Duplicate Entry', edit_entry_path(entry), :class => 'button red-button' %>
+		<% end %>
+	</div>
+</div>
+<% end %>
+
+<% content_for :javascripts do %>
+	<% stylesheet 'shadowbox' %>
+	<%= javascript_include_tag 'shadowbox' %>
+	<script type="text/javascript">
+			Shadowbox.init();		
+	</script>
+<% end %>
