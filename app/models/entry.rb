@@ -234,4 +234,8 @@ class Entry < ActiveRecord::Base
   def with_diffs
     diffs.count > 0
   end
+  
+  def needs_to_check_stock?
+    online <= 3.days.ago
+  end
 end

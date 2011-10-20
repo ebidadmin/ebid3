@@ -3,7 +3,6 @@
 <% @bids.group_by(&:entry).each do |entry, bids| -%>
 
   <div id="transaction" class="create">
-    
 		<%= content_tag :h2, 'Vehicle' %>
   	<%= render 'shared/info_vehicle', :entry => entry %>
   	
@@ -11,23 +10,19 @@
  
     <!-- create an order for each supplier -->
     <% bids.group_by(&:user_id).each do |seller, seller_bids| -%>
-    	<%= render 'orders/order_buyer', :entry => entry %>
+    	<%#= render 'orders/order_buyer', :entry => entry %>
     	<%= render 'orders/order_seller', :order => @order %>
     	<table class="parts-set">
     		<%= render 'shared/part_titles' %>
       	<% for bid in seller_bids %>
       		<tr>	
-      			<td class="qty"><%=h bid.quantity %></td>
+      			<%= content_tag :td, bid.quantity, :class => 'qty' %>
       			<td class="partname">
       				<%= content_tag :p, (bid.line_item.part_name + (content_tag :strong, " (#{bid.bid_type})")).html_safe %> 
       				<%= content_tag :p, "(Details: #{content_tag :strong, bid.line_item.part_no})".html_safe, :class => 'partnum' unless bid.line_item.part_no.blank?  %>
       			</td>
-      			<td class="price">
-      				<%= number_to_currency bid.amount, :unit => "P " %>
-      			</td>
-      			<td class="price">
-      				<%= number_to_currency bid.total, :unit => "P " %>
-      			</td>
+     				<%= content_tag :td, ph_currency(bid.amount), :class => 'price' %>
+     				<%= content_tag :td, ph_currency(bid.total), :class => 'price' %>
       		</tr>
       		<!-- pass all bid.ids as an array into the form -->
       		<% content_for :bids_array do %>
@@ -40,11 +35,17 @@
     		</tr>
     	</table>
   	<% end %>
-  	
   </div>
 
   <div id="delivery" class="create">
-  	<h2>Delivery</h2>
+		<%= content_tag :h2, 'Delivery' %>
+		<% if entry.needs_to_check_stock? %>
+			<div id="flash_warning" class="flash">
+				<%= content_tag :p, "Important: bidding was done #{content_tag :strong, time_ago_in_words(entry.online) + ' ago'}.".html_safe %>
+				<%= content_tag :p, "Check if the parts you are ordering are still on stock before you place the order." %>
+				<%= content_tag :p, " Please call E-Bid at (02) 892-5835 or (0917) 405-6077.", :class => 'small' %>
+			</div>
+		<% end %>
     <%= simple_form_for @order, :url => orders_path(:entry_id => entry.id), :validate => true, :method => :post do |f|  %>
     	<%= yield :bids_array %>
   		<%= render 'orders/deliver_form', :f => f %>
