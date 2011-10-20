@@ -77,7 +77,7 @@ class AdminController < ApplicationController
   end
   
   def overdue_reminder
-    @overdue_orders = Order.delivered.payment_pending.where('pay_until < ?', Date.today) #.paginate :page => params[:page], :per_page => 10
+    @overdue_orders = Order.overdue.payment_pending 
     if @overdue_orders
       @overdue_orders.group_by(&:company).each do |company, overdue_orders|
         @powerbuyers = company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
@@ -87,7 +87,19 @@ class AdminController < ApplicationController
       end
     end
     redirect_to admin_payments_path, :notice => 'Sent payment reminders to Buyers.'
-    # render 'admin/orders'  
+  end
+  
+  def due_now_reminder
+    @due_now_orders = Order.due_soon.payment_pending
+    if @due_now_orders
+      @due_now_orders.group_by(&:company).each do |company, due_now_orders|
+        @powerbuyers = company.users.where(:id => Role.find_by_name('powerbuyer').users).collect { |u| "#{u.profile.full_name} <#{u.email}>" }
+        @powerbuyers.each do |powerbuyer|
+          OrderMailer.delay.due_now_alert(powerbuyer, due_now_orders)
+        end
+      end
+    end
+    redirect_to admin_payments_path, :notice => 'Sent payment reminders to Buyers.'
   end
   
   def buyer_fees

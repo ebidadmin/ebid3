@@ -2,7 +2,7 @@
 
 Good day E-Bid Poweruser!
 
-Please be reminded of the following overdue payments worth <%= ph_currency(@orders.collect(&:order_total).sum) %> for the orders your company made through E-Bid
+Please be reminded of the following payments DUE THIS WEEK worth <%= ph_currency(@orders.collect(&:order_total).sum) %> for the orders your company made through E-Bid
 
 <% @orders.each do |order| %>
 	Claim No:   <%= order.entry.ref_no %>
@@ -13,16 +13,14 @@ Please be reminded of the following overdue payments worth <%= ph_currency(@orde
 
 	Delivered:     <%= order.delivered.strftime('%d-%b-%Y, %a') %>
 	Due Date:      <%= order.pay_until.strftime('%d-%b-%Y, %a') %>
-
-	OVERDUE:   <%= pluralize order.days_overdue, 'day' %>  <--------------------------
 	
-	Use this link to view PO:  http://www.ebid.com.ph<%= order_path(order.id) %>
+	Use this link to view PO:  http://<%= order_url(order.id) %>
 	
 	********
 	
 <% end %>
 
-Please make payments promptly ... it's what motivates the suppliers to give you the best parts prices 
+Hope you can pay on time ... it's what motivates the suppliers to give you the best parts prices 
 at the fastest response times.
 
 Thank you!

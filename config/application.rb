@@ -16,7 +16,7 @@ module Ebid
     
     config.middleware.use ::ExceptionNotifier,
       :email_prefix => "E-Bid Errors: ",
-      :sender_address => %w{admin@ebid.com.ph},
+      :sender_address => %w{E-Bid Admin <admin@ebid.com.ph>},
       :exception_recipients => %w{cymarquez@ebid.com.ph}
     
   end

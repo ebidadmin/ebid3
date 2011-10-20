@@ -7,6 +7,7 @@
 <%= render 'buyer/filter_by_search' %>
 
 <%= link_to 'Send Overdue Reminder', admin_overdue_reminder_path, :id => 'payment-reminder', :class => 'button' if current_page?(admin_payments_path) %>
+<%= link_to 'Send Due This Week Reminder', admin_due_now_reminder_path, :id => 'payment-reminder', :class => 'button' if current_page?(admin_payments_path) %>
 <%= content_tag :h3, "Total: #{ph_currency(@all_orders.sum(:order_total))}", :id => 'order-total' %>
 
 <%= will_paginate @orders %>

@@ -42,7 +42,7 @@ class Order < ActiveRecord::Base
   scope :needs_rating, paid.payment_valid
   
   scope :within_term, delivered.where('pay_until >= ?', Date.today)
-  scope :due_soon, delivered.where(:pay_until => Date.today .. Date.today + 1.week).unpaid
+  scope :due_soon, delivered.where(:pay_until => Date.today .. 1.week.from_now.to_date).unpaid
   scope :overdue, delivered.where('pay_until < ?', Date.today)
   
   scope :for_auto_rating, where('ratings_count < ?', 2)

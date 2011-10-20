@@ -212,7 +212,7 @@ input[type="submit"]:hover, input[type="button"]:hover, #content-main  .button:h
 #content-main #relist-button, #content-main #reveal-bids-button { font-size: 16px; }
 
 #add-parts-button, #cancel-edit-button { float: left; }
-#worksheet-button { float: right; }
+#worksheet-button { position: absolute; right: 0; top: 10px; }
 #force-create-button { padding: 18px 24px !important; position: absolute; top: 0; right: 0; }
 
 /* VEHICLE
@@ -506,7 +506,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 /* RATINGS#NEW & #SHOW
 ---------------------------------------------------------------------- */
-.second.rating { float: right; }
+.second.rating { float: right; width: 49%;}
 .rating p { margin-bottom: 1.1em; }
 .rating .label, .rating label, #show-rating .label { color: #999; font-weight: bold; text-transform: uppercase; }
 .rating .name { color: #C00; font-size: 1.5em; }

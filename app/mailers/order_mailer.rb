@@ -32,4 +32,13 @@ class OrderMailer < ActionMailer::Base
       :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"]
       )
   end
+
+  def due_now_alert(powerbuyer, orders)
+    @orders = orders
+    mail(
+      :to => powerbuyer, 
+      :subject => "DUE THIS WEEK Reminder", 
+      :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"]
+      )
+  end
 end
