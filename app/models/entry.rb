@@ -164,10 +164,6 @@ class Entry < ActiveRecord::Base
     end
   end
 
-  #   def bids_count
-  #   bids.count
-  # end
-	
 	def bid_amounts # used in diff summary
 	  bids.sum(:total)
 	end

@@ -2,7 +2,7 @@
 <tr class="entry-item">
 	<%= content_tag :td, item.quantity, :class => 'qty' %>
 	<td class="partname">    	
-		<%= content_tag :p, item.part_name %> 
+		<%= content_tag :p, link_to(item.part_name, edit_line_item_path(item)) %> 
 		<%= content_tag :p, "(Details: <strong>#{item.part_no}</strong>)".html_safe, :class => 'partnum' unless item.part_no.blank?  %>
 		<%= content_tag :p, "Bidding Speed: " + distance_of_time_in_words(item.bids.first.bid_speed), :class => 'instruction' unless item.bids.first.blank? %>
 		<%= content_tag :p, "ID: #{item.id}" %>
@@ -19,17 +19,17 @@
 			<% unless item.bids.size < 1 %>
 				<div class="bid-field orig">
 				<% for bid in item.bids.orig  %>
-					<%= content_tag :p, "#{ph_currency(bid.total)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+					<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
 	 			<% end %>
 				</div>
 				<div class="bid-field rep">
 				<% for bid in item.bids.rep  %>
-				<%= content_tag :p, "#{ph_currency(bid.total)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+				<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
 	 			<% end %>
 				</div>
 				<div class="bid-field surp">
 				<% for bid in item.bids.surp  %>
-				<%= content_tag :p, "#{ph_currency(bid.total)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+				<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
 	 			<% end %>
 				</div>
 			<% end %>

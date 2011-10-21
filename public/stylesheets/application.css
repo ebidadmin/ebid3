@@ -348,7 +348,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 .creator { border-bottom: 1px solid #CCC; font-weight: bold; margin-bottom: 4px; padding-bottom: 4px; }
 .comment { font-size: 1.2em; }
 .datetime { color: #999; margin: 0 10px; }
-#msg-list .nested { height: auto; margin: 10px 0 0 15px; }
+#msg-list .nested { height: auto; margin: 10px 0 0 15px; overflow: visible; }
 #msg-list .nested li { margin-bottom: 0; }
 #msg-list .nested .creator { background: url(../images/arrow_right.png) no-repeat scroll left center;padding-left: 15px; }
 #msg-list .nested .nested li { overflow: visible; }
