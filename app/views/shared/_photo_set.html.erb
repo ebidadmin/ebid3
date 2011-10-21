@@ -9,8 +9,8 @@
 				<li><%= link_to (image_tag photo.photo.url(:tiny), :class => "photo", :alt => "Photo of #{@entry.plate_no}"), photo.photo.url(:large), :rel => "shadowbox[#{@entry.id}]" %></li>
 			<% end %>
 		<% end %>
-		<%= link_to 'Add or Change Photos', attach_photos_entry_path(@entry), :id => 'add-photo-button', :class => 'button green-button', :remote => true if current_page? edit_entry_path(@entry) %>
 	</ul>	
+		<%= link_to 'Add or Change Photos', attach_photos_entry_path(@entry), :id => 'add-photo-button', :class => 'button green-button', :remote => true if current_page? edit_entry_path(@entry) %>
 	<% else %>
 		<%= content_tag :h3, 'No photos submitted yet.' %>
 		<%= link_to 'Attach Photos', attach_photos_entry_path(@entry), :id => 'add-photo-button', :class => 'button green-button', :remote => true  %>

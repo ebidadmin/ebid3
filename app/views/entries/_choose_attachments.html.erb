@@ -3,6 +3,12 @@
 <% if @entry.photos.first.new_record? %>
 	<p class="instruction">Please attach <strong>at least 2 photos</strong> (in jpg, jpeg, or png format).  Just click <strong><em>'Browse'</em></strong> to select the attachment.</p>
 
+	<div id="flash_info" class="flash">
+		<%= content_tag :p, "The #{content_tag :strong, 'first photo'} should always be the #{content_tag :strong, 'entire front or rear of the vehicle'}.".html_safe  %>
+		<%= content_tag :p, "The #{content_tag :strong, 'other photos'} should #{content_tag :strong, 'clearly	show the parts you are requesting'}.".html_safe %>  
+		<%= content_tag :p, "This is very important #{content_tag :strong, 'to avoid mistakes'}. Thanks for your cooperation.".html_safe %>  
+	</div>
+
 	<%= f.fields_for :photos do |photo| %>	
 		<%= render 'entries/photo', :f => photo %>
 	<% end %>

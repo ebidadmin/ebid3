@@ -295,6 +295,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #add-part-box { padding: 20px 5px; text-align: center; width: 100%; }
 #add-part-box #car_part_name  { font-size: 1.2em; margin: 12px 5px 0 0; text-align: center; width: 400px; }
 
+#attachments .flash { margin-top: 10px; font-size: 1.1em; }
 #attachments .fields { float: left; width: 45%; margin: 4px; padding: 10px; background: #ddd; }
 #attachments .fields input { width: 85%; }
 #attachments p { margin: 0; }
