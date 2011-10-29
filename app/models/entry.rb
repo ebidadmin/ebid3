@@ -184,7 +184,7 @@ class Entry < ActiveRecord::Base
       if Time.now >= deadline #&& expired_at.nil?
         update_attributes(:chargeable_expiry => true, :expired => Time.now)
         line_items.each do |item|
-          item.update_for_decline unless item.order_item.present? || item.status == "Declined" || item.status == "Expired"
+          item.update_for_decline unless item.order_item.present? || item.status == "Declined" || item.status == "Expired" || item.cancelled?
         end
         update_status #unless orders.exists?
       end

@@ -93,7 +93,7 @@ h3#status { float: right; margin: -2px 1em 1em; padding: 15px 25px; text-align: 
 #browser #chrome { background: url(../images/browsers/Chrome.png) no-repeat 0 center; padding-left: 30px; }
 #browser #safari { background: url(../images/browsers/Safari.png) no-repeat 0 center; padding-left: 30px; }
 #browser #firefox { background: url(../images/browsers/Firefox.png) no-repeat 0 center; padding-left: 30px; }
-#footer { color: white; font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; overflow: hidden; padding: 40px 0; }
+#footer { border-top: #CCC solid 5px; color: white; font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; overflow: hidden; padding: 40px 0; }
 #footer .container { margin: 0 auto; }
 #footer p { clear: left; 
 /*float: left;*/ margin-bottom: 0.4em; }
