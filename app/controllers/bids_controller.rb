@@ -76,26 +76,20 @@ class BidsController < ApplicationController
   end
 
   def accept
-    # raise params.to_yaml
     @body = 'accept-order'
     unless params[:bids].blank?
-      case params[:commit]
-      when 'Accept Selected'
-        @bids = Bid.find(params[:bids].collect { |item, id| id.values })
-        @bid_users = @bids.collect(&:user_id).uniq
-        @entry = Entry.find(params[:entry_id])
-        order_count = @bid_users.count
-        @order = current_user.orders.build
-      when 'Decline Selected'
-        decline
-      end
+      @bids = Bid.find(params[:bids].collect { |item, id| id.values })
+      @bid_users = @bids.collect(&:user_id).uniq
+      @entry = Entry.find(params[:entry_id])
+      order_count = @bid_users.count
+      @order = current_user.orders.build
     else
-      flash[:error] = ("Ooops! Choose one of the <strong>Low Bids</strong> first before you accept or decline.").html_safe
+      flash[:error] = ("Ooops! Select the <strong>Low Bids</strong> first before you create a PO.").html_safe
       redirect_to :back
     end
   end
 
-  def decline
+  def decline # deprecate this
     @line_items = LineItem.find(params[:bids].keys)
     @bids = Bid.find(params[:bids].collect { |item, id| id.values })
     @entry = Entry.find(params[:entry_id])

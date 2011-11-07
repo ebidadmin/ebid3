@@ -190,7 +190,7 @@ form.user, form.car_variant { width: 60%; }
 #company_submit, #line_item_submit { margin-left: 30%; margin-top: 10px;}
 #user_new #user_submit { margin: 0; }
 /*#step-back { float: left; }*/
-#car_variant_name, #entry_car_variant_id { background-color: #FFF6BF; border-color: #C00; font-size: 1.2em; }
+#car_variant_name, #entry_car_variant_id { background-color: #FFF6BF; border-color: #C00; font-size: 1.5em; }
 
 /* BUTTONS
 ---------------------------------------------------------------------- */
@@ -325,7 +325,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #entries-show .bidder-count { background-color: white; float: left; min-height: 3em; padding: 2px 0; width: 50%; }
 #entries-show .number { font-size: 1.2em; }
 #entries-show .bid-type { float: left; min-height: 1.5em; padding: 2px 0; width: 49%; }
-#entries-show .bid-field { min-height: 1.5em; }
+#entries-show .bid-field { min-height: 1.6em; }
 #entries-show th .bid-field { text-align: center; }
 #entries-show .bid-field span { display: inline-block; font-size: 0.8em; line-height: 1em; min-height: 1em; width: 30%; }
 #entries-show .orig { clear: both; }
@@ -376,9 +376,9 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 /* PURCHASE ORDERS
 ---------------------------------------------------------------------- */
 #transaction { clear: both; float: left; overflow: hidden; width: 47%; min-height: 200px; margin: 0 10px 20px 0; }
-#delivery { border-left: 1px solid #999; float: left; width: 47%; padding-left: 20px; margin-bottom: 1.5em; }
-#transaction.create { border-right: 1px solid #999; margin-right: 0; padding-right: 30px; }
-#delivery.create { border: 0; }
+#delivery { border-left: 1px solid #999; float: right; width: 47%; padding-left: 20px; margin-bottom: 1.5em; }
+#transaction.create { margin-right: 0; padding-right: 30px; width: 45%;}
+#delivery.create { border: 1px solid #999; padding: 0 20px 20px; }
 #delivery div input, #delivery div textarea { width: 300px; }
 #transaction h2, #delivery h2, #order h2 { clear: both; line-height: 2em; border-bottom: 1px solid #999; }
 #transaction .who { color: #C00; font-weight: bold; }
@@ -388,6 +388,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #supplier-company.multiple { clear: both; background-color: #FFF6BF; }
 #buyer-company h3, #supplier-company h3 { font-size: 1em; color: #999; text-transform: uppercase; }
 #buyer-company h4, #supplier-company h4 { margin-bottom: 0.8em; }
+#delivery .flash { font-size: 1.2em; }
 #delivery form li { margin-bottom: 15px; }
 #delivery label { display: block; float: left; width: 29%; }
 #delivery abbr { color: #C00; float: right; margin-right: 4px; }

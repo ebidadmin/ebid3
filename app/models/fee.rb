@@ -9,7 +9,7 @@ class Fee < ActiveRecord::Base
   belongs_to :bid
   
   scope :ordered, where(:fee_type => 'Ordered').order('order_paid DESC')
-  scope :declined, where(:fee_type => ['Declined', 'Expired']).order('created_at DESC')
+  scope :declined, where(:fee_type => ['Declined', 'Expired', 'Reverted']).order('created_at DESC')
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], [:line_item => :car_part], :seller )
   scope :with_orders, includes(:order)
   

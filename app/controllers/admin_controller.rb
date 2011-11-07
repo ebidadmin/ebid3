@@ -265,6 +265,7 @@ class AdminController < ApplicationController
 private
   
   def get_stats
+    @presenter = AdminPresenter.new(current_user)
     @line_items = LineItem.scoped
       @li_all = @line_items.count
       @li_m = @line_items.metered.count

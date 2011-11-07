@@ -1,9 +1,10 @@
 <p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
 <%= f.input :deliver_to, :hint => 'put the name of repair shop or receiving establishment' %>
 <%= f.input :contact_person %>
-<%= f.input :address1, :label => 'Address (line 1)', 
-		:hint => "requested location was: #{@entry.city.name}" %>
-<%= f.input :address2, :label => 'Address (line 2)' %>
+<%= content_tag :p, 'Address', :class => 'strong' %>
+<%= content_tag :p, "Note: original request was #{content_tag :span, @entry.city.name, :class => 'highlight'} - charges may apply for farther areas".html_safe, :class => 'instruction' %>
+<%= f.input :address1, :label => 'Bldg, number, street' %>
+<%= f.input :address2, :label => "Baranggay/district,<br> city or province".html_safe %>
 <%= f.input :phone %>
 <%= f.input :fax %>
 <%= f.input :instructions, :label => 'Special Instructions', :input_html => { :rows => 2 } %>

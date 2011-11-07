@@ -1,17 +1,17 @@
 <% title "Place Order" %>
 
-<% @bids.group_by(&:entry).each do |entry, bids| -%>
+
+<% @bids.group_by(&:entry).each do |entry, bids| %>
 
   <div id="transaction" class="create">
 		<%= content_tag :h2, 'Vehicle' %>
   	<%= render 'shared/info_vehicle', :entry => entry %>
   	
-		<%= content_tag :h2, ('Transaction ' + (content_tag :span, "(#{ pluralize @bid_users.count, 'supplier' })", :class => 'highlight' )).html_safe %>
+		<%= content_tag :h2, "Transaction #{content_tag :span, pluralize(@bid_users.count, 'supplier'), :class => 'highlight'}".html_safe %>
  
     <!-- create an order for each supplier -->
-    <% bids.group_by(&:user_id).each do |seller, seller_bids| -%>
-    	<%#= render 'orders/order_buyer', :entry => entry %>
-    	<%= render 'orders/order_seller', :order => @order %>
+    <% bids.group_by(&:user_id).each do |seller, seller_bids| %>
+	   	<%#= render 'orders/order_seller', :order => @order %>
     	<table class="parts-set">
     		<%= render 'shared/part_titles' %>
       	<% for bid in seller_bids %>
@@ -26,12 +26,12 @@
       		</tr>
       		<!-- pass all bid.ids as an array into the form -->
       		<% content_for :bids_array do %>
-        		<%= hidden_field_tag 'bids[]', bid.id -%>
+        		<%= hidden_field_tag 'bids[]', bid.id %>
       		<% end %>
     		<% end %>
     		<tr class="selection-total">
-    			<td class="label" colspan=2>Total Order</td>
-    			<td class="amount" colspan=2><%= number_to_currency seller_bids.collect(&:total).sum, :unit => "P " %></td>
+    			<%= content_tag :td, 'Total Order', :class => 'label', :colspan => 2 %>
+    			<%= content_tag :td, ph_currency(seller_bids.collect(&:total).sum), :class => 'amount', :colspan => 2 %>
     		</tr>
     	</table>
   	<% end %>
@@ -40,15 +40,14 @@
   <div id="delivery" class="create">
 		<%= content_tag :h2, 'Delivery' %>
 		<% if entry.needs_to_check_stock? %>
-			<div id="flash_warning" class="flash">
-				<%= content_tag :p, "Important: bidding was done #{content_tag :strong, time_ago_in_words(entry.online) + ' ago'}.".html_safe %>
-				<%= content_tag :p, "If you are rushing, check if the parts you are ordering are still on stock before you place the order." %>
-				<%= content_tag :p, " Please call E-Bid at (02) 892-5835 or (0917) 405-6077.", :class => 'small' %>
-			</div>
+			<%= render 'bids/stock_and_price_warning', :entry => entry %>
 		<% end %>
     <%= simple_form_for @order, :url => orders_path(:entry_id => entry.id), :validate => true, :method => :post do |f|  %>
     	<%= yield :bids_array %>
   		<%= render 'orders/deliver_form', :f => f %>
+			<%= f.fields_for :entry do %>
+				<%= f.input :ref_no, :label => 'Claim No.' %>
+			<% end %>
     <% end %>
   </div>
 

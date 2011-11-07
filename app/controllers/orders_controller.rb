@@ -14,9 +14,7 @@ class OrdersController < ApplicationController
     @bid_users.each do |bid_user|
       @order = current_user.orders.build(params[:order])
       user_bids = @bids.where(:user_id => bid_user)
-      @order.initialize_order(current_user, bid_user, @client_ip)
-      OrderItem.populate(@order, user_bids)
-      @order.order_total = user_bids.collect(&:total).sum
+      @order.initialize_order(current_user, user_bids, bid_user, @client_ip)
       @orders << @order
     end 
 
@@ -24,13 +22,10 @@ class OrdersController < ApplicationController
       @entry.orders << @orders 
       @bids.each do |bid|
         @line_item = LineItem.find(bid.line_item_id)
-        bid.update_attributes(:status => "PO Released", :ordered => Date.today, :order_id => OrderItem.line_item_id_eq(@line_item).last.order.id, :fee => nil, :declined => nil, :expired => nil)
-        # bid.update_unselected_bids(@line_item)
-        bid.update_unselected_bids2(@line_item)
-        @line_item.update_attribute(:status, "PO Released")
+        bid.order_process(@line_item)
       end
       @entry.update_status unless @entry.buyer_status == 'Relisted'
-      OrderMailer.delay.order_alert(@orders)
+      @orders.each { |order| OrderMailer.delay.order_alert(order) }
       unless @orders.count < 2
         flash[:notice] = "Your POs have been released and will be processed right away. Thanks!"
         redirect_to @entry 

@@ -1,10 +1,11 @@
 class Order < ActiveRecord::Base
-  
   require 'date'
+
   belongs_to :user
   belongs_to :seller, :class_name => "User"
   
   belongs_to :entry
+  accepts_nested_attributes_for :entry
   belongs_to :company
   has_many :order_items
   has_many :line_items, :through => :order_items  
@@ -14,7 +15,7 @@ class Order < ActiveRecord::Base
   has_many :messages
   accepts_nested_attributes_for :messages
  
-  validates_presence_of :deliver_to, :address1, :phone
+  validates_presence_of :deliver_to, :address1, :address2, :phone
 
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:seller => :company], [:order_items => [:line_item => :car_part]])
   scope :inclusions_for_seller, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:order_items => [:line_item => :car_part]])
@@ -66,10 +67,12 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def initialize_order(user, seller, ip)
+  def initialize_order(user, user_bids, seller, ip)
     self.company_id = user.company.id
     self.buyer_ip = ip
     self.seller_id = seller
+    OrderItem.populate(self, user_bids)
+    self.order_total = user_bids.collect(&:total).sum
   end
     
   # Updates line_items & bids to status = For Delivery, Delivered, or Paid
@@ -209,14 +212,15 @@ class Order < ActiveRecord::Base
     update_associated_status("Paid")
   end
 
-  def weekdays_range(range)
-    # You could modify the select block to also check for holidays
-    range.select { |d| (1..5).include?(d.wday) }.size
-  end
-
   def self.since_eval(date)
     where('orders.created_at >= ?', date)
   end
   
-
+  def days_late
+    weekdays_in_date_range( self.confirmed.to_date..(Date.today) )
+  end
+  
+  def weekdays_in_date_range(range)
+    range.select { |d| (1..5).include?(d.wday) }.size
+  end
 end

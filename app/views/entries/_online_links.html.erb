@@ -19,8 +19,7 @@
 <% else %>
 
   <% unless entry.chargeable_expiry == false || entry.expired.blank? %>
-  	<%= link_to "Reactivate?", reactivate_entry_path(entry), 
-  		:confirm => 'Are you sure you want to reactivate this entry?' -%>
+  	<%= link_to "Reactivate?", entry %>
   <% end %>
 
 <% end %>

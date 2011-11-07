@@ -1,0 +1,12 @@
+<% if item.status == "Expired" %>
+		<%= fields_for 'bids[]', item do |f| %>
+		<%= content_tag :div, low_bid("original", item, f), :class => 'bid-field' %>
+		<%= content_tag :div, low_bid("replacement", item, f), :class => 'bid-field' %>
+		<%= content_tag :div, low_bid("surplus", item, f), :class => 'bid-field' %>
+		<% end %>
+<% elsif item.bids.size > 0 && item.status != "Online" && item.status != "Relisted" %>
+	  <%= content_tag :div, low_bid_no_radiobutton("original", item), :class => 'center bid-field orig' %>
+	  <%= content_tag :div, low_bid_no_radiobutton("replacement", item), :class => 'center bid-field rep' %>
+	  <%= content_tag :div, low_bid_no_radiobutton("surplus", item), :class => 'center bid-field surp' %>
+<% end %>
+<%= show_item_status_and_links(item) %>

@@ -1,0 +1,11 @@
+<div id="flash_warning" class="flash">
+	<%= content_tag :p, "Important:", :class => 'strong' %>
+	<% if entry.expired? %>
+		<%= content_tag :p, "Bidding was done #{content_tag :strong, time_ago_in_words(entry.online) + ' ago'} and your Entry has #{content_tag :strong, 'expired'}.".html_safe %>
+		<%= content_tag :p, "Prices may have changed or parts may be out of stock.  If you are rushing, call us before you place the order.", :class => 'small' %>
+	<% else %>
+		<%= content_tag :p, "Bidding was done #{content_tag :strong, time_ago_in_words(entry.online) + ' ago'}.".html_safe %>
+		<%= content_tag :p, "If you are rushing, check if the parts you are ordering are still on stock before you place the order.", :class => 'small' %>
+	<% end %>
+	<%= content_tag :p, "Please call E-Bid at (02) 892-5835 or (0917) 405-6077.", :class => 'small' %>
+</div>

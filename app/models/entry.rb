@@ -15,7 +15,6 @@ class Entry < ActiveRecord::Base
   belongs_to :company
 
   has_many :photos, :dependent => :destroy
-  # accepts_nested_attributes_for :photos, :reject_if => lambda { |a| a.values.all?(&:blank?) }, :allow_destroy => true
   accepts_nested_attributes_for :photos, :allow_destroy => true, :reject_if => proc { |a| a['photo'].blank? }
   has_many :bids, :dependent => :destroy
   accepts_nested_attributes_for :bids
@@ -208,7 +207,7 @@ class Entry < ActiveRecord::Base
   end
   
   def cannot_be_relisted?
-    buyer_status == 'New' || buyer_status == 'Edited' || buyer_status == 'Online' || buyer_status == 'Relisted' || buyer_status == 'Additional'
+    (buyer_status == 'New' || buyer_status == 'Edited' || buyer_status == 'Online' || buyer_status == 'Relisted' || buyer_status == 'Additional') || created_at > 2.months.ago
   end
   
   def can_be_ordered?

@@ -10,6 +10,7 @@
     <th>Name</th>
     <th>Start Year</th>
     <th>End Year</th>
+		<%= content_tag :th, 'Entries' %>
 		<%= content_tag :th %>
   </tr>
   <% for car_variant in @car_variants %>
@@ -19,6 +20,7 @@
       <td><%= car_variant.name %></td>
       <td><%= car_variant.start_year %></td>
       <td><%= car_variant.end_year %></td>
+			<%= content_tag :td, car_variant.entries.count %>
       <td>
 				<%= link_to "Show", car_variant %>
 				<%= link_to "Edit", edit_car_variant_path(car_variant) %>

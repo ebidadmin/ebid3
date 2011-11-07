@@ -197,15 +197,13 @@ class EntriesController < ApplicationController
     end
   end
 
-  def reactivate
+  def reactivate # deprecate this
     @entry = Entry.find(params[:id], :include => :line_items)
     if @entry.update_attributes(:buyer_status => 'For-Decision', :chargeable_expiry => nil, :expired => nil)
       @entry.line_items.each do |line_item|
         unless line_item.order_item.present?
           line_item.update_attribute(:status, 'For-Decision') 
-          # line_item.bids.not_cancelled.update_all(:status => 'For-Decision', :declined => nil, :expired => nil)
           line_item.update_for_decision
-          # line_item.fee.destroy if line_item.fee #TODO fee should be updated temporarily, not deleted
           line_item.fee.revert if line_item.fee
         end
       end

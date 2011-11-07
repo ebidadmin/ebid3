@@ -1,6 +1,6 @@
 class CarVariantsController < ApplicationController
   def index
-    @car_variants = CarVariant.scoped.paginate(:page => params[:page], :per_page => 20)
+    @car_variants = CarVariant.includes(:entries).paginate(:page => params[:page], :per_page => 20)
   end
   
   def show
@@ -26,6 +26,7 @@ class CarVariantsController < ApplicationController
   end
   
   def edit
+    session['referer'] = request.env["HTTP_REFERER"]
     @car_variant = CarVariant.find(params[:id])
   end
   
@@ -33,16 +34,17 @@ class CarVariantsController < ApplicationController
     @car_variant = CarVariant.find(params[:id])
     if @car_variant.update_attributes(params[:car_variant])
       flash[:notice] = "Successfully updated car variant."
-      redirect_to @car_variant
+      redirect_to session['referer']; session['referer'] = nil
     else
       render :action => 'edit'
     end
   end
   
   def destroy
+    session['referer'] = request.env["HTTP_REFERER"]
     @car_variant = CarVariant.find(params[:id])
     @car_variant.destroy
     flash[:notice] = "Successfully destroyed car variant."
-    redirect_to car_variants_url
+    redirect_to session['referer']; session['referer'] = nil
   end
 end

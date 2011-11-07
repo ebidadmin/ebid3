@@ -63,6 +63,15 @@ class Bid < ActiveRecord::Base
     where(:entry_id => company.users.collect(&:entries)).count
   end
   
+  def order_process(line_item)
+    if self.expired?
+      fee.revert if fee.present?
+    end
+    self.update_attributes(:status => "PO Released", :ordered => Date.today, :order_id => OrderItem.line_item_id_eq(line_item).last.order.id, :fee => nil, :declined => nil, :expired => nil)
+    self.update_unselected_bids2(line_item)  
+    line_item.update_attribute(:status, "PO Released")
+  end
+  
   def decline_process
     update_attributes(:status => "Declined", :ordered => nil, :order_id => nil, :delivered => nil, :declined => Date.today)
     update_unselected_bids2(line_item_id) 
@@ -75,7 +84,7 @@ class Bid < ActiveRecord::Base
     order_item.destroy
   end
 
-  def update_unselected_bids(line_item)
+  def update_unselected_bids(line_item) # deprecate this
     all_bids_for_item = Bid.where(:line_item_id => line_item)
     bids_by_same_seller = all_bids_for_item.where("user_id = ? AND id != ?", self.user_id, self.id).not_cancelled
     bids_by_same_seller.update_all(:status => "Dropped", :ordered => nil, :order_id => nil, :delivered => nil, :paid => nil, :declined => nil)
@@ -111,5 +120,4 @@ class Bid < ActiveRecord::Base
   def self.ordered_this_month
     where('bids.ordered >= ?', Time.now.beginning_of_month)
   end
-  
 end
