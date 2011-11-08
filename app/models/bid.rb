@@ -21,7 +21,6 @@ class Bid < ActiveRecord::Base
   scope :online, where(:status => ['Submitted', 'Updated'])
   scope :declined, where(:status => 'Declined')#.order('declined DESC', 'entry_id DESC')
   scope :cancelled, where('bids.status LIKE ?', "%Cancelled%") # used in Orders#Show
-  # scope :not_cancelled, where('bids.status NOT LIKE ?', "%Cancelled%") # used in Orders#Show
   scope :not_cancelled, status_not_like("Cancelled")#.status_not_like("Dropped") 
   
   scope :orig, where(:bid_type => 'original').order('amount DESC').order('bid_speed DESC')

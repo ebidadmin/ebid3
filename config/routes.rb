@@ -1,5 +1,9 @@
 Ebid::Application.routes.draw do
 
+  get "fees/destroy"
+
+  resources :fees
+
   resources :messages do
     get :show_fields, :on => :collection
     get :cancel, :on => :collection

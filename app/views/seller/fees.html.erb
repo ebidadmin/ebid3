@@ -51,20 +51,23 @@
   	<% fees.group_by(&:order).each do |order, fees| %>
 			<div class="po-group">
 				<% for fee in fees %>
-				<div class="part">
-			    <%= content_tag :span, "#{fee.line_item.quantity} ", :class => 'qty' %>
-					<%= content_tag :span, fee.line_item.part_name, :class => 'name' %>
-				</div>
-					<div class='fee'>
-				    <%= content_tag :p, (number_to_currency fee.bid_total, :unit => "")  %>
-						<%= content_tag :p, fee.order_paid.strftime("%d %b '%y"), :class => 'instruction' %>
-					</div>
-					<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' -%>
-					<%#= content_tag :div, percentage(fee.fee_rate), :class => 'rate instruction' %>
-					<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate)} #{content_tag :p, fee.perf_ratio, :class => 'small'}".html_safe, :class => 'rate' -%>
-					<div class='fee'>
-				    <%= content_tag :p, (number_to_currency fee.fee, :unit => "") %>
-						<%= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>
+					<div id="<%= fee.id %>" class="fee-group">
+						<div class="part">
+					    <%= content_tag :span, "#{fee.line_item.quantity} ", :class => 'qty' %>
+							<%= content_tag :span, fee.line_item.part_name, :class => 'name' %>
+						</div>
+						<div class='fee'>
+					    <%= content_tag :p, (number_to_currency fee.bid_total, :unit => "")  %>
+							<%= content_tag :p, fee.order_paid.strftime("%d %b '%y"), :class => 'instruction' %>
+						</div>
+						<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' -%>
+						<%#= content_tag :div, percentage(fee.fee_rate), :class => 'rate instruction' %>
+						<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate)} #{content_tag :p, fee.perf_ratio, :class => 'small'}".html_safe, :class => 'rate' -%>
+						<div class='fee'>
+					    <%= content_tag :p, (number_to_currency fee.fee, :unit => "") %>
+							<%= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>
+							<%= content_tag :p, link_to('delete', fee, :method => :delete, :confirm => 'Are you sure?', :remote => true, :class => 'delete-fee', :id => fee.id), :class => 'small' if current_user.id == 1 %>                         
+						</div>
 					</div>
 				<% end %>
 				<%= link_to "View PO", order, :class => 'button' %>

@@ -38,5 +38,16 @@ $(function() {
 		return false;
 	});
 	
+	$(document).ajaxSend(function(e, xhr, options) {
+	  var token = $("meta[name='csrf-token']").attr("content");
+	  xhr.setRequestHeader("X-CSRF-Token", token);
+	});
+	
+	$('a.delete-fee').bind('ajax:success', function() {  
+		var id = $(this).attr('id');
+		var parent = 'div#' + id;
+		$(parent).fadeOut();
+	});
+	
 });
 

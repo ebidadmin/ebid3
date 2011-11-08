@@ -498,6 +498,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #supplier-fees .amount-paid, #supplier-fees .fee { width: 15%; }
 #supplier-fees .speed { width: 20%; }
 #supplier-fees .rate { width: 10%; }
+.negative { color: #C00; font-weight: normal; }
 
 /* RATINGS#INDEX
 ---------------------------------------------------------------------- */

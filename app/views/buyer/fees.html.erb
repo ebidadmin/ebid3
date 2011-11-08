@@ -62,6 +62,7 @@
 			</td>
 		  <td>
 	  	<% for fee in fees %>
+				<div id="<%= fee.id  %>" class="fee-group">
 		    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
 		    <%#= content_tag :div, "#{fee.fee_type}: #{content_tag :span, fee.created_at.strftime("%d %b '%y"), :class => 'instruction'}".html_safe, :class => 'fee-type' %>
 				<div class='fee'>
@@ -71,15 +72,18 @@
 				<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' %>
 				<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate)} #{content_tag :p, fee.perf_ratio, :class => 'small'}".html_safe, :class => 'rate' -%>
 				<div class='fee'>
-					<%= content_tag :p, (number_to_currency fee.fee, :unit => "") -%>
+					<%= content_tag :p, (number_to_currency fee.fee, :unit => ""), :class => "#{'negative' if fee.fee < 0}" %>
 					<%= content_tag :p, fee.created_at.strftime("%d %b '%y"), :class => 'instruction' %>
+					<%= content_tag :p, link_to('delete', fee, :method => :delete, :confirm => 'Are you sure?', :remote => true, :class => 'delete-fee', :id => fee.id), :class => 'small' if current_user.id == 1 %>                         
 				</div>
 				<div class='fee'>
-					<%= content_tag :p, (number_to_currency fee.split_amount, :unit => "") -%>
+					<%= content_tag :p, (number_to_currency fee.split_amount, :unit => "") %>
 					<%= content_tag :p, truncate(fee.seller.company.name, :length => 10), :class => 'instruction' unless fee.seller == current_user %>
 				</div>
+				</div>
+				
 			<% end %>
-			</td>                          
+			</td> 
 		</tr>
 		<% end %>
 		<tr class="totals">
