@@ -164,7 +164,7 @@ h3#status { float: right; margin: -2px 1em 1em; padding: 15px 25px; text-align: 
 ---------------------------------------------------------------------- */
 fieldset { clear: both; padding: 1.4em; border: 1px solid #ccc; margin: 10px 0; position: relative; }
 legend { font-weight: bold; font-size: 1.2em; padding: 0.4em 0.8em; background: #cc0000; color: #fffeff; margin-bottom: 15px; }
-label { font-weight: bold; }
+/*label { font-weight: bold; }*/
 input, textarea, select { border: 2px solid #ccc; /*margin-top: 0.5em;*/ padding: 5px; }
 input:hover, textarea:hover, select:hover { border-color: #6B9D28; }
 input:focus, textarea:focus, select:focus { border-color: #6B9D28; }
@@ -388,13 +388,14 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #supplier-company.multiple { clear: both; background-color: #FFF6BF; }
 #buyer-company h3, #supplier-company h3 { font-size: 1em; color: #999; text-transform: uppercase; }
 #buyer-company h4, #supplier-company h4 { margin-bottom: 0.8em; }
-#delivery .flash { font-size: 1.2em; }
+#delivery .flash { font-size: 1.2em; margin-bottom: 25px; }
 #delivery form li { margin-bottom: 15px; }
-#delivery label { display: block; float: left; width: 29%; }
+#delivery label { display: block; float: left; width: 30%; }
 #delivery abbr { color: #C00; float: right; margin-right: 4px; }
-/*#delivery input, #delivery textarea { width: 65%; }*/
 #delivery .inline-hints { font-size: 12px; }
 #delivery .inline-errors { color: #C00; font-weight: bold; }
+#delivery #address-label { color: #C00; font-weight: bold; }
+#delivery #note { color: #919191; }
 #del-instructions { width: 450px; }
 #del-instructions li { clear: both; padding-left: 140px; }
 #del-instructions span { font-weight: bold; color: #999; display: block; float: left; margin-left: -140px; width: 30%; }

@@ -80,8 +80,10 @@ class OrdersController < ApplicationController
     if @order.update_attributes(:status => "For-Delivery", :confirmed => Date.today, :seller_confirmation => true)
       @order.update_associated_status("For-Delivery")
       flash[:notice] = ("You buyer is <strong>#{@entry.user.profile.company.name}</strong>.<br> Please deliver ASAP. Thanks!").html_safe
-      redirect_to :back
+    else
+      flash[:error] = "Something went wrong with your request ... please try again later."
     end
+    redirect_to :back
   end
 
   def seller_status # For seller to update status of Orders
@@ -114,9 +116,11 @@ class OrdersController < ApplicationController
     if @order.update_attributes(:status => status, :paid_temp => Date.today)
       flash[:notice] = ("Successfully updated the status of the order to <strong>Paid</strong>.<br>
       We will notify the seller to confirm your payment.").html_safe
-      redirect_to :back
       OrderMailer.delay.order_paid_alert(@order, @entry)
+    else
+      flash[:error] = "Something went wrong with your request ... please try again later."
     end
+    redirect_to :back
   end
 
   def cancel

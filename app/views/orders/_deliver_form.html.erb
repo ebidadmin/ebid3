@@ -1,13 +1,13 @@
-<p class="instruction">Fields marked with <strong>asterisks (*)</strong> are required.</p>
+<%= content_tag :h4, "Fields marked with #{content_tag :strong, 'asterisks (*)'} are required.".html_safe, :class => 'instruction' %>
 <%= f.input :deliver_to, :hint => 'put the name of repair shop or receiving establishment' %>
 <%= f.input :contact_person %>
-<%= content_tag :p, 'Address', :class => 'strong' %>
-<%= content_tag :p, "Note: original request was #{content_tag :span, @entry.city.name, :class => 'highlight'} - charges may apply for farther areas".html_safe, :class => 'instruction' %>
+<%= content_tag :p, 'Address', :id => 'address-label' %>
+<%= content_tag :p, "Note: original request was #{content_tag :span, @entry.city.name, :class => 'highlight'} - charges may apply for farther areas".html_safe, :id => 'note' %>
 <%= f.input :address1, :label => 'Bldg, number, street' %>
-<%= f.input :address2, :label => "Baranggay/district,<br> city or province".html_safe %>
+<%= f.input :address2, :label => "Baranggay/district,<br> city or province".html_safe, :required => true %>
 <%= f.input :phone %>
 <%= f.input :fax %>
-<%= f.input :instructions, :label => 'Special Instructions', :input_html => { :rows => 2 } %>
+<%= f.input :instructions, :label => 'Special Request', :input_html => { :rows => 2 } %>
 <%= f.button :submit %> 
 <%= link_to "Cancel", @entry %>
 

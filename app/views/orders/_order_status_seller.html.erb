@@ -1,7 +1,7 @@
 <% if order.status == "PO Released" %>
 
 	<%= content_tag :p, ('Status: ' + order.status + " (#{time_ago_in_words order.created_at} ago) ") %>
-	<%= content_tag :p, (link_to "Confirm PO Now!", order, :class => 'button green-button') %>
+	<%= content_tag :p, (link_to "Accept PO Now!", order, :class => 'button green-button') %>
 
 <% elsif order.status == "For Delivery" || order.status == "For-Delivery" %>
 

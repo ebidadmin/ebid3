@@ -63,7 +63,7 @@
 		<%= link_to "<< Back", @entry, :class => 'button' %>
 		<% end %>
 		
-	<% elsif current_user.has_role?('seller') %>
+	<% elsif current_user.has_role?('seller') || current_user.has_role?('admin')%>
 
 		<% if @order.seller_confirmation == true %>
 			<%= link_to "<< Back", :back, :class => 'button' %>

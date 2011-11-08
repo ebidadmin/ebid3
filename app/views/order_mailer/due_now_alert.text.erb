@@ -14,7 +14,7 @@ Please be reminded of the following payments DUE THIS WEEK worth <%= ph_currency
 	Delivered:     <%= order.delivered.strftime('%d-%b-%Y, %a') %>
 	Due Date:      <%= order.pay_until.strftime('%d-%b-%Y, %a') %>
 	
-	Use this link to view PO:  <%= order_url(order.id) %>
+	Use this link to view PO:  http://www.ebid.com.ph<%= order_path(order.id) %>
 	
 	********
 	

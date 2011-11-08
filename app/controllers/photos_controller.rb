@@ -7,7 +7,7 @@ class PhotosController < ApplicationController
     
     if @entry.update_attributes(params[:entry])
       if @entry.line_items.present?
-        redirect_to @entry, :notice => "Successfully updated your photos. Your Entry is complete. You can still Edit it, or proceed to put it online."
+        redirect_to @entry, :notice => "Successfully updated your photos."
       else
         flash[:warning] = "Successfully uploaded your photos. Please select parts."
         redirect_to @entry

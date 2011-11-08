@@ -6,9 +6,10 @@ class Photo < ActiveRecord::Base
       :tiny => ["80x60#", :jpg],
       # :thumb => ["150x113#", :jpg],
       :large => ["640x480>", :jpg]
-    },
-    :url => "/system/:class/:id/:style/:basename.:extension",
-    :path => ":rails_root/public/system/:class/:id/:style/:basename.:extension"
+    }
+    #,
+    # :url => "/system/:class/:id/:style/:basename.:extension",
+    # :path => ":rails_root/public/system/:class/:id/:style/:basename.:extension"
     
  
   validates_attachment_presence :photo, :message => "^You must upload at least 2 photos."

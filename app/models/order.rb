@@ -15,7 +15,7 @@ class Order < ActiveRecord::Base
   has_many :messages
   accepts_nested_attributes_for :messages
  
-  validates_presence_of :deliver_to, :address1, :address2, :phone
+  validates_presence_of :deliver_to, :address1, :phone
 
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:seller => :company], [:order_items => [:line_item => :car_part]])
   scope :inclusions_for_seller, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], :company, [:order_items => [:line_item => :car_part]])
@@ -85,7 +85,6 @@ class Order < ActiveRecord::Base
     elsif status == "Paid"
       bids.update_all(:status => status, :paid => Date.today)
       bids.each do |bid|
-        # bid.update_attribute(:fee, bid.total * 0.035)
         if bid.fee.nil?
           Fee.compute(bid, status, self.id)
         end
