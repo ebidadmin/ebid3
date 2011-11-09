@@ -80,7 +80,7 @@ module ApplicationHelper
   end
     
   def delimited(target)
-    if target > 0
+    if target > 0 
       number_with_delimiter target.to_i
     else
       '-'
@@ -96,24 +96,24 @@ module ApplicationHelper
   end
 
   def currency(target)
-    if target > 0
+    if target > 0 || target < 0
       number_to_currency target, :unit => ''
     else
       '-'
     end
   end
   
-  def percentage(computation)
-    if computation > 0
-      number_to_percentage computation, :precision => 2
+  def percentage(target)
+    if target > 0
+      number_to_percentage target, :precision => 2
     else
       nil
     end
   end
   
-  def percentage3(computation)
-    if computation > 0
-      number_to_percentage computation, :precision => 3
+  def percentage3(target)
+    if target > 0
+      number_to_percentage target, :precision => 3
     else
       'FREE'
     end
@@ -127,7 +127,11 @@ module ApplicationHelper
     date.strftime('%d-%b-%y, %R')
   end
   
-  def regular_date(date)
-    date.strftime('%d %b %Y')
+  def regular_date(date, digits=nil)
+    digits.present? ? date.strftime("%d %b '%y") : date.strftime('%d %b %Y')
+  end
+  
+  def shorten(target, size)
+    truncate(target, :length => size, :separator => ' ')
   end
 end

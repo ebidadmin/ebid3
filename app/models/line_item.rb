@@ -99,7 +99,8 @@ class LineItem < ActiveRecord::Base
         other_surp.update_all(:status => "Lose") 
         end
       end
-      Fee.compute(lowest_bid, "Declined")
+      # fee.blank? ? Fee.compute(lowest_bid, "Declined") : self.fee.update_attribute(:fee_type, "Expired") 
+      Fee.compute(lowest_bid, "Declined") if fee.blank?
     else #WITHOUT BIDS
       update_attribute(:status, "No Bids")
     end
@@ -207,7 +208,7 @@ class LineItem < ActiveRecord::Base
     # collecbids.order(:bid_speed).last.map { |bid| bid.speed }
 	end
 	
-	def cancelled?
+	def cancelled? # in entry#expire
 	  status == "Cancelled by buyer" || status == "Cancelled by seller" || status == "Cancelled by admin"
 	end
 	
@@ -232,4 +233,7 @@ class LineItem < ActiveRecord::Base
     where('line_items.created_at >= ?', date)
   end
 
+  def declined_or_expired? # in entry#expire
+    status == "Declined" || status == "Expired"
+  end
 end

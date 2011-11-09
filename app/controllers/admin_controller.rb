@@ -113,14 +113,19 @@ class AdminController < ApplicationController
     @search = @all_decline_fees.by_this_buyer(params[:buyer], 'comp').by_this_seller(params[:seller], 'comp').search(params[:search])
     @decline_fees = @search.inclusions.paginate :page => params[:page], :per_page => 30
 
-    @buyers = @all_decline_fees.collect(&:buyer_company_id).uniq.collect { |buyer| [Company.find(buyer).name, admin_buyer_fees_path(:buyer => buyer)] }
+    @buyers = Company.where(:primary_role => 2).collect { |buyer| [buyer.name, admin_buyer_fees_path(:buyer => buyer)] }
     @buyers.push(['All', admin_buyer_fees_path(:buyer => nil)]) unless @buyers.blank?
     @buyers_path = admin_buyer_fees_path(:buyer => params[:buyer]) 
 
-    @sellers = @all_decline_fees.collect(&:seller_company_id).uniq.collect { |seller| [Company.find(seller).name, admin_buyer_fees_path(:seller => seller)] }
+    @sellers = Company.where(:primary_role => 3).collect { |seller| [seller.name, admin_buyer_fees_path(:seller => seller)] }
     @sellers.push(['All', admin_buyer_fees_path(:seller => nil)]) unless @sellers.blank?
     @sellers_path = admin_buyer_fees_path(:seller => params[:seller])
     @period_path = admin_buyer_fees_path
+    
+    reverted = @all_decline_fees.where(:fee_type => 'Reverted')
+    reverted.each { |r| r.update_attributes(bid_type: nil, bid_speed: nil, perf_ratio: nil, 
+      fee_rate: nil, bid_total: 0, fee_type: 'Reversed')  } 
+    
     render 'buyer/fees'
   end
 
@@ -144,10 +149,12 @@ class AdminController < ApplicationController
   end
 
   def expire_entries
-    @entries = Entry.results.unexpired.includes(:line_items) + Entry.online.unexpired.includes(:line_items)
-    @entries.each do |entry|
-      entry.expire
-    end
+    # @entries = Entry.results.unexpired.includes(:line_items) + Entry.online.unexpired.includes(:line_items)
+    # @entries.each do |entry|
+    #   entry.expire
+    # end
+    @entry = Entry.find(2239)
+    @entry.expire
     flash[:notice] = "Successful"
     redirect_to :back  
   end

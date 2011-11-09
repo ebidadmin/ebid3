@@ -1,7 +1,5 @@
 Ebid::Application.routes.draw do
 
-  get "fees/destroy"
-
   resources :fees
 
   resources :messages do

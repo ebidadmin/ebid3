@@ -102,8 +102,7 @@
 		var dates = $( "#start, #end" ).datepicker({
 			dateFormat: "yy-mm-dd",
 			maxDate: 0,
-			changeMonth: true,
-			changeYear: true,
+			numberOfMonths: 3,
 			onSelect: function( selectedDate ) {
 				var option = this.id == "start" ? "minDate" : "maxDate",
 					instance = $( this ).data( "datepicker" ),

@@ -64,7 +64,7 @@ class Bid < ActiveRecord::Base
   
   def order_process(line_item)
     if self.expired?
-      fee.revert if fee.present?
+      fee.reverse if fee.present?
     end
     self.update_attributes(:status => "PO Released", :ordered => Date.today, :order_id => OrderItem.line_item_id_eq(line_item).last.order.id, :fee => nil, :declined => nil, :expired => nil)
     self.update_unselected_bids2(line_item)  

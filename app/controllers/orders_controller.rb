@@ -77,7 +77,7 @@ class OrdersController < ApplicationController
   def confirm # For seller to confirm PO
     find_order_and_entry
     
-    if @order.update_attributes(:status => "For-Delivery", :confirmed => Date.today, :seller_confirmation => true)
+    if @order.update_attributes(:status => "For-Delivery", :confirmed => Time.now, :seller_confirmation => true)
       @order.update_associated_status("For-Delivery")
       flash[:notice] = ("You buyer is <strong>#{@entry.user.profile.company.name}</strong>.<br> Please deliver ASAP. Thanks!").html_safe
     else

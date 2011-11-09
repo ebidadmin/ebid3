@@ -117,7 +117,7 @@ class BuyerController < ApplicationController
     if current_user.has_role?('admin') 
       @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_buyer(params[:buyer], 'comp').by_this_seller(params[:seller], 'comp')
     elsif current_user.has_role?('seller')
-      @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').by_this_buyer(params[:buyer], 'comp').declined.by_this_seller(current_user)
+      @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').by_this_buyer(params[:buyer], 'comp').declined.by_this_seller(current_user.company.users)
     else
       if params[:user_id] == 'all'
         @all_decline_fees = Fee.date_range(params[:start], params[:end], 'i').declined.by_this_buyer(current_user.company, 'comp')

@@ -43,10 +43,10 @@
 	<% @decline_fees.group_by(&:entry).each do |entry, fees|  %>
   <tr>
 		<td class="vehicle">	
-			<%= content_tag :p, truncate(entry.vehicle, :length => 30), :class => 'strong' %>
+			<%= content_tag :p, shorten(entry.vehicle, 30), :class => 'strong' %>
 			<p>
 				<%= entry.plate_no %>
-				<%= content_tag :abbr, truncate(entry.user.company_name, :length => 12), :class => 'highlight' unless current_user == entry.user %>
+				<%= content_tag :abbr, shorten(entry.user.company_name, 12), :class => 'highlight' unless current_user == entry.user %>
 			</p>
 		  <%= content_tag :p, "#{fees.count} of #{pluralize entry.line_items.count, 'item'}" %> 	
 			<%= link_to "View Entry", seller_show_path(:id => entry), :class => 'button' %>
@@ -54,15 +54,21 @@
 	  <td>
   	<% for fee in fees %>
 	    <%= content_tag :div, fee.line_item.part_name, :class => 'part' %>
-	    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'lowest-bid'  %>
-	    <%= content_tag :div, "#{fee.fee_type}: #{content_tag :span, fee.created_at.strftime("%d %b '%y"), :class => 'instruction'}".html_safe, :class => 'fee-type' %>
-			<div class='rate'>
-				<%= content_tag :p, percentage3(fee.fee_rate), :class => 'strong' %>
-				<%= content_tag :p, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'instruction' %>
+	    <%= content_tag :div, currency(fee.bid_total), :class => 'lowest-bid'  %>
+			<div class="fee-type">
+				<% if fee.fee_type == 'Reverted' || fee.fee_type == 'Reversed' %>
+					<%= content_tag :p, fee.fee_type.upcase, :class => 'small negative'  %>
+				<% else %>
+					<%= content_tag :p, fee.fee_type %>
+				<% end %>
+				<%= content_tag :p, regular_date(fee.created_at, 2), :class => 'instruction' if fee.fee? %>
 			</div>
-			<%#= content_tag :div, percentage3(fee.fee_rate), :class => 'rate' -%>
-	    <%= content_tag :div, (number_to_currency fee.fee, :unit => ""), :class => 'fee' %>
-			<%= content_tag :div, (number_to_currency fee.split_amount, :unit => ""), :class => 'fee' -%>
+			<div class='rate'>
+				<%= content_tag :p, (percentage3(fee.fee_rate) if fee.fee_rate?), :class => 'strong' %>
+				<%= content_tag :p, (distance_of_time_in_words fee.bid_speed if fee.bid_speed?), :class => 'instruction' %>
+			</div>
+			<%= content_tag :div, currency(fee.fee), :class => "fee#{' negative' if fee.fee < 0}" %>
+			<%= content_tag :div, currency(fee.split_amount), :class => "fee#{' negative' if fee.split_amount < 0}" %>
 		<% end %>
 		</td>                          
 	</tr>
@@ -89,8 +95,7 @@
 		var dates = $( "#start, #end" ).datepicker({
 			dateFormat: "yy-mm-dd",
 			maxDate: 0,
-			changeMonth: true,
-			changeYear: true,
+			numberOfMonths: 3,
 			onSelect: function( selectedDate ) {
 				var option = this.id == "start" ? "minDate" : "maxDate",
 					instance = $( this ).data( "datepicker" ),

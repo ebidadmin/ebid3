@@ -57,13 +57,7 @@
 
 
 <div class="page-links">
-	<% if current_user.has_role?('powerbuyer') || current_user.has_role?('buyer') %>
-	
-		<% if @order.status == "PO Released" && @order.seller_confirmation == false %>
-		<%= link_to "<< Back", @entry, :class => 'button' %>
-		<% end %>
-		
-	<% elsif current_user.has_role?('seller') || current_user.has_role?('admin')%>
+	<% if current_user.has_role?('seller') || current_user.has_role?('admin')%>
 
 		<% if @order.seller_confirmation == true %>
 			<%= link_to "<< Back", :back, :class => 'button' %>
@@ -72,5 +66,12 @@
 				<%= link_to "<< Back", seller_orders_path(current_user), :class => 'button' %> <%= submit_tag "Accept Order", :class => 'green-button' if  @order.order_items.present? %>
 			<% end %>
 		<% end %>
+		
+	<% elsif current_user.has_role?('powerbuyer') || current_user.has_role?('buyer') %>
+	
+		<% if @order.status == "PO Released" && @order.seller_confirmation == false %>
+		<%= link_to "<< Back", @entry, :class => 'button' %>
+		<% end %>
+		
 	<% end %>
 </div>

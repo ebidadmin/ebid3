@@ -68,6 +68,8 @@ GEM
     devise (1.1.5)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
+    draper (0.9.5)
+      activesupport (>= 2.3.10)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     exception_notification (2.5.2)
@@ -145,6 +147,7 @@ DEPENDENCIES
   client_side_validations (= 3.0.5)
   delayed_job
   devise (= 1.1.5)
+  draper
   exception_notification
   jquery-rails
   mocha

@@ -107,6 +107,7 @@ hr:last-child { display: none; }
 #supplier-fees .speed { width: 20%; }
 #supplier-fees .rate { width: 10%; }
 table .totals { font-weight: bold; padding-top: 10px; padding-bottom: 10px; text-transform: uppercase; } 
+.negative { color: #C00; font-weight: normal; }
 
 
 #print-payments-list { text-align: left; width: 100%;}
