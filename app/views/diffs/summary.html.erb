@@ -1,24 +1,28 @@
 <% title 'E-Bid vs Manual Canvass (FortuneGen)' %>
-
-<dl id="diff-stats">
+<%= content_tag :p, "Printing date: #{Time.now.to_s(:long)}" %>
+<dl class="diff-stats">
+	<%= content_tag :h3, "General Stats #{content_tag :span, '(for the period 9/19/2011 to 10/31/2011)', :class => 'small'}".html_safe %>
 	<%= content_tag :dt, 'Total Entries Created' %>
 	<%= content_tag :dd, pluralize(@entries.count, 'entry') %>
 	<%= content_tag :dt, 'Total Parts Requested' %>
 	<%= content_tag :dd, pluralize(delimited(@line_items.count), 'part'), :class => 'number' %>
 	<%= content_tag :dt, 'Total Bids Received' %>
 	<%= content_tag :dd, ph_currency(@entries.collect(&:bid_amounts).sum) %>
-	<%= content_tag :dt, 'Total Orders' %>
+	<%= content_tag :dt, 'Total Orders (among these Entries)' %>
 	<%= content_tag :dd, "(#{pluralize(@orders.count, 'order')} | #{pluralize(@ordered_parts, 'part')}) #{ph_currency(@orders.sum(:order_total))}" %>
-	<%= content_tag :dt, 'Entries in Survey', :class => 'survey-count' %>
-	<%= content_tag :dd, pluralize(@sample.count, 'entry'), :class => 'survey-count' %>
+</dl>
+<dl class="diff-stats">
+	<%= content_tag :h3, 'Survey Stats' %>
+	<%= content_tag :dt, 'Entries in Survey' %>
+	<%= content_tag :dd, pluralize(@sample.count, 'entry') %>
 	<%= content_tag :dt, 'Parts in Survey' %>
-	<%= content_tag :dd, "(#{percentage(@sample_parts_pct)}) #{pluralize(@sample_parts.count, 'part')}", :class => 'number' %>
+	<%= content_tag :dd, "(#{percentage(@sample_parts_pct)} of Total Parts) #{pluralize(@sample_parts.count, 'part')}", :class => 'number' %>
 	<%= content_tag :dt, 'Total Financial Benefit in Survey', :class => 'survey-count' %>
 	<%= content_tag :dd, ph_currency(@total_effect), :class => 'survey-count' %>
 	<%= content_tag :dt, 'Decline Fees in Survey' %>
-	<%= content_tag :dd, "(#{pluralize(@decline_fees.count, 'part')}) #{ph_currency(@decline_fees.sum(:fee))}" %>
+	<%= content_tag :dd, "(#{pluralize(@decline_fees.count, 'part')}) #{ph_currency(@decline_fees.collect(&:fee).sum)}" %>
 	<%= content_tag :dt, 'Orders in Survey' %>
-	<%= content_tag :dd, ph_currency(@orders_in_survey.sum(:order_total)) %>
+	<%= content_tag :dd, ph_currency(@orders_in_survey.collect(&:order_total).sum) %>
 </dl>
 
 <table id="diff-table">

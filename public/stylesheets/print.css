@@ -118,31 +118,32 @@ table .totals { font-weight: bold; padding-top: 10px; padding-bottom: 10px; text
  /* DIFF TABLE
 ----------------------------------------------------------------------*/ 
 
-#diff .vehicle { width: 25%; }
-#diff .vehicle .button { margin-top: 15px; }
-#diff h3 { padding: 10px 0; text-align: center; }
+#diff .vehicle { width: 25%; text-align: left; }
+#diff .vehicle a.button, #diff .vehicle img  { display: none; }
+#diff h3 { margin-top: 0; background-color: none; border: 1px solid black; padding: 5px 0;}
 #diff div { float: left; margin-bottom: 5px; min-height: 20px; line-height: 18px; }
 #diff td .part { clear: both; }
-#diff .part { width: 200px; }
+#diff .part { width: 25%; }
 #diff .qty { float: left; width: 10%; }
-#diff .name { float: left; width: 90%; }
-#diff .amounts { margin-left: 10px; width: 490px; }
+#diff .name { float: left; text-align: left; width: 90%; }
+#diff .amounts { width: 75%; }
 #diff .labels { clear: both; font-weight: bold; width: 50px; }
 #diff .ebid { color: #C00; }
 #diff .manual { color: green; }
-#diff .amount { margin-left: 10px; text-align: right; width: 135px; }
-#diff .no-bid { color: #919191; margin-left: 10px; text-align: center; width: 420px;  }
+#diff .amount { margin-left: 10px; text-align: right; width: 117px; }
+#diff .no-bid { color: #919191; margin-left: 10px; text-align: center; width: 370px;  }
 #diff .company { float: right; color: #C00; font-size: 0.8em; width: 40%;}
+#diff .orange { background-color: white; border: 1px solid black; margin-top: 8px; }
 #diff hr { margin-top: 0;}
 #diff hr:last-child { display: none; }
 #canvass_company_id { font-size: 1em; margin-right: 10px;}
 
-#diff-stats { clear: both; font-size: 12px; margin-bottom: 30px; overflow: hidden; width: 100%; }
-#diff-stats dt { clear: both; float: left; width: 30%; }
-#diff-stats dd { float: left; text-align: right; width: 30%; }
-#diff-stats .survey-count { margin-top: 20px; }
+.diff-stats { clear: both; font-size: 12px; margin-bottom: 30px; overflow: hidden; width: 100%; }
+.diff-stats dt { clear: both; float: left; width: 30%; }
+.diff-stats dd { float: left; text-align: right; width: 30%; }
+.diff-stats .survey-count { margin-top: 20px; }
 
-#diff-table { text-align: center; }
+#diff-table { text-align: center; width: 99%; overflow: auto;}
 #diff-table th, #diff-table td { color: black; border: 1px solid #000; }
 #diff-table .column1 { width: 432px; }
 #diff-table .row1 { height: 360px; }

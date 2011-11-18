@@ -47,4 +47,12 @@ class CarVariantsController < ApplicationController
     flash[:notice] = "Successfully destroyed car variant."
     redirect_to session['referer']; session['referer'] = nil
   end
+
+  def rationalize
+    # raise params.to_yaml
+    @car_variant = CarVariant.find(params[:id])
+    @entries = @car_variant.entries
+    @entries.update_all(:car_variant_id => params[:new_variant])
+    redirect_to :back
+  end
 end

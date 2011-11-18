@@ -22,10 +22,10 @@
 	<% @market_fees.group_by(&:entry).each do |entry, fees| %>
   <tr>
 		<td class="vehicle">	
-      <%= content_tag :p, entry.vehicle %>
+      <%= content_tag :p, shorten(entry.vehicle, 25) %>
 			<p>
 				<%= entry.plate_no %>
-				<%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight' unless current_user.primary_role != 1 %>
+				<%= content_tag :abbr, "by #{entry.user.username}", :class => 'highlight'  %>
 			</p>
 		</td>
 	  <td>

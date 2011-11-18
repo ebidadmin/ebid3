@@ -19,17 +19,17 @@
 			<% unless item.bids.size < 1 %>
 				<div class="bid-field orig">
 				<% for bid in item.bids.orig  %>
-					<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+					<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals #{quote_class(bid.status)}" %>
 	 			<% end %>
 				</div>
 				<div class="bid-field rep">
 				<% for bid in item.bids.rep  %>
-				<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+				<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals #{quote_class(bid.status)}" %>
 	 			<% end %>
 				</div>
 				<div class="bid-field surp">
 				<% for bid in item.bids.surp  %>
-				<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals#{' cancelled' if bid.cancelled?}" %>
+				<%= content_tag :p, "#{link_to ph_currency(bid.total), edit_bid_path(bid)} #{content_tag :span, (truncate(bid.user.username, :length => 10)), :class => 'instruction'}".html_safe, :class => "vals #{quote_class(bid.status)}" %>
 	 			<% end %>
 				</div>
 			<% end %>

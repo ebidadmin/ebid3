@@ -1,9 +1,9 @@
-<%# title @title %>
-
-<%= render 'admin/filter_by_buyer' if @buyers %>
+<% title 'E-Bid vs Manual Canvass: Raw Data' %>
+<%= content_tag :p, 'Note: NEGATIVE AMOUNTS = E-Bid is lower; POSITIVE AMOUNTS = E-Bid is higher' %>
+<%#= render 'admin/filter_by_buyer' if @buyers %>
 <%= render 'buyer/filter_by_search' %>
 
-<%= will_paginate @entries  %>
+<%#= will_paginate @entries  %>
 <%= page_info @entries %>
 
 <% unless @entries.blank? %>
@@ -19,8 +19,8 @@
 	<tr>
 		<td class="vehicle">	
       <%= content_tag :p, entry.ref_no unless entry.ref_no.nil? %>
-			<%= content_tag :span, 'M', :class => 'message-mark' if entry.messages.present? %>
-      <%= content_tag :p, (link_to truncate(entry.vehicle), entry), :class => 'strong' %>
+			<%#= content_tag :span, 'M', :class => 'message-mark' if entry.messages.present? %>
+      <%= content_tag :p, (link_to shorten(entry.vehicle, 25), entry), :class => 'strong' %>
       <%= content_tag :span, entry.plate_no %>
       <%= content_tag :span, "(by #{entry.user.username})", :class => 'highlight' %>
       <%= content_tag :p, "Created: #{entry.created_at.strftime('%d-%b-%Y, %a %R')}", :class => 'instruction' %>
@@ -78,4 +78,4 @@
 </table>
 <% end %>
 
-<%= will_paginate @entries  %>
+<%#= will_paginate @entries  %>

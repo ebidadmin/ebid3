@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  include ActionView::Helpers::TagHelper
+  
   def index
   end
 
@@ -27,11 +29,12 @@ class OrdersController < ApplicationController
       @entry.update_status unless @entry.buyer_status == 'Relisted'
       @orders.each { |order| OrderMailer.delay.order_alert(order) }
       unless @orders.count < 2
-        flash[:notice] = "Your POs have been released and will be processed right away. Thanks!"
+        flash[:notice] = "Your POs have been released and will be processed right away.<br>
+          Your suppliers are #{content_tag :strong, @orders.collect{ |o| o.seller.profile.company.name }.to_sentence}. Thanks!".html_safe
         redirect_to @entry 
       else
         flash[:notice] = ("Your PO has been released and will be processed right away.<br> 
-          Your supplier is <strong>#{@order.seller.profile.company.name}</strong>. Thanks!").html_safe
+          Your supplier is #{content_tag :strong, @order.seller.profile.company.name}. Thanks!").html_safe
         redirect_to @order
       end
     else

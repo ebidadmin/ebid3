@@ -167,7 +167,7 @@ class ApplicationController < ActionController::Base
     end
     
     def seller_company
-      if current_user.has_role?('admin')
+      if current_user.has_role?('admin') || current_user.has_role?('buyer')
         if params[:seller]
           @seller_company = Company.find(params[:seller]).name
         else

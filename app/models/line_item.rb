@@ -74,29 +74,31 @@ class LineItem < ActiveRecord::Base
     if bids.present? #WITH BIDS
       update_attribute(:status, "Expired")
       lowest_bid = bids.where(:status => 'For-Decision').order(:amount, :bid_speed).first
-      lowest_bid.update_attributes(:status => "Declined", :declined => Time.now, :expired => Time.now) if lowest_bid.present? # lowest bid gets decline fee, others are dropped
-      if bids.orig.present?
-        low_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
-        if low_orig.present?
-        low_orig.update_attribute(:status, "Dropped") 
-        other_orig = bids.orig.not_cancelled.where("id != ?", low_orig)
-        other_orig.update_all(:status => "Lose") 
+      if lowest_bid.present?
+        lowest_bid.update_attributes(:status => "Declined", :declined => Time.now, :expired => Time.now)  # lowest bid gets decline fee, others are dropped
+        if bids.orig.present?
+          low_orig = bids.orig.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
+          if low_orig.present?
+          low_orig.update_attribute(:status, "Dropped") 
+          other_orig = bids.orig.not_cancelled.where("id != ?", low_orig)
+          other_orig.update_all(:status => "Lose") 
+          end
         end
-      end
-      if bids.rep.present?
-        low_rep = bids.rep.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
-        if low_rep.present?
-        low_rep.update_attribute(:status, "Dropped") 
-        other_rep = bids.rep.not_cancelled.where("id != ?", low_rep)
-        other_rep.update_all(:status => "Lose") 
+        if bids.rep.present?
+          low_rep = bids.rep.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
+          if low_rep.present?
+          low_rep.update_attribute(:status, "Dropped") 
+          other_rep = bids.rep.not_cancelled.where("id != ?", low_rep)
+          other_rep.update_all(:status => "Lose") 
+          end
         end
-      end
-      if bids.surp.present?
-        low_surp = bids.surp.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
-        if low_surp.present?
-        low_surp.update_attribute(:status, "Dropped") 
-        other_surp = bids.surp.not_cancelled.where("id != ?", low_surp)
-        other_surp.update_all(:status => "Lose") 
+        if bids.surp.present?
+          low_surp = bids.surp.not_cancelled.where('bids.bid_type != ?', lowest_bid.bid_type).last
+          if low_surp.present?
+          low_surp.update_attribute(:status, "Dropped") 
+          other_surp = bids.surp.not_cancelled.where("id != ?", low_surp)
+          other_surp.update_all(:status => "Lose") 
+          end
         end
       end
       # fee.blank? ? Fee.compute(lowest_bid, "Declined") : self.fee.update_attribute(:fee_type, "Expired") 

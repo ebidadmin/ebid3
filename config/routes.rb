@@ -64,7 +64,9 @@ Ebid::Application.routes.draw do
     get :add_more, :on => :collection
   end
 
-  resources :car_variants
+  resources :car_variants do
+    put :rationalize, :on => :member
+  end
   resources :car_models
   resources :car_brands
   resources :companies

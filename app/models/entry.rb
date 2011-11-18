@@ -180,13 +180,13 @@ class Entry < ActiveRecord::Base
       end
     elsif self.bids_revealed?
       deadline = bid_until + 3.days unless bid_until.nil?
-      if Time.now >= deadline #&& expired_at.nil?
+      # if Time.now >= deadline #&& expired_at.nil?
         update_attributes(:chargeable_expiry => true, :expired => Time.now)
         line_items.each do |item|
           item.update_for_decline unless item.order_item.present? || item.declined_or_expired? || item.cancelled?
         end
         update_status #unless orders.exists?
-      end
+      # end
     end
 	end
 
@@ -215,7 +215,7 @@ class Entry < ActiveRecord::Base
   end
   
   def ready_for_reveal?
-    if buyer_status == 'Relisted'
+    if buyer_status == 'Relisted' || buyer_status == 'Additional'
       Time.now > relisted + 150.minutes
     else         
       Time.now > online + 150.minutes
@@ -226,7 +226,7 @@ class Entry < ActiveRecord::Base
     buyer_status == "For Decision" || buyer_status == "For-Decision" || buyer_status == "Ordered-IP" || buyer_status == "Declined-IP"
   end
 
-  def with_diffs
+  def self.with_diffs
     diffs.count > 0
   end
   

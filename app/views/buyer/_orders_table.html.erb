@@ -9,7 +9,7 @@
 	<tr>
 		<td rowspan=<%= orders.count + 1 %> class='vehicle'>	
 			<%= content_tag :p, (entry.ref_no unless entry.ref_no.nil?)  %>
-      <%= content_tag :p, (link_to truncate(entry.vehicle, :length => 35), entry)  %>
+      <%= content_tag :p, link_to(shorten(entry.vehicle, 35), entry)  %>
 			<%= content_tag :span, entry.plate_no %>
 			<%= content_tag :span, "(created by #{entry.user.username})", :class => 'highlight' %>
 		</td>
@@ -17,10 +17,10 @@
 	<% for order in orders %>
 	<tr>
   	<td >	
- 			<% for order_item in  order.order_items %>
+ 			<% for bid in  order.bids %>
 				<p class="part">
-			    <%= content_tag :span, "#{order_item.quantity} ", :class => 'qty' %>
-					<%= content_tag :span, order_item.line_item.part_name, :class => 'name' %>
+			    <%= content_tag :span, "#{bid.quantity} ", :class => 'qty' %>
+					<%= content_tag :span, bid.line_item.part_name, :class => 'name' %>
 				</p>
 			<% end %>
 	 	</td>

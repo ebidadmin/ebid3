@@ -27,8 +27,8 @@
 
 <div class="page-links">
 	<%= link_to '+ Add Parts', add_more_car_parts_path(:id => @entry), :class => 'button green-button', :id => 'add-parts-button', :remote => true %>
-  <%= link_to "<< Back", :back, :class => 'button' %>
   <%= link_to "Edit", edit_entry_path(@entry), :class => 'button' unless current_page? edit_entry_path(@entry) %>
+  <%= link_to "<< Back", :back, :class => 'button' %>
 	<% if @entry.never_online? && @entry.ready_for_online? %>
 	  <%= link_to "Put Online", put_online_entry_path(@entry), :class => 'button green-button' %>
 	<% else %>

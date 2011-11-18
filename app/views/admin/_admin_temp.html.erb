@@ -1,0 +1,218 @@
+<div id="perf-ind" class="comfy-alert" >
+	<%= content_tag :h4, 'Performance Indicators', :class => 'highlight' %>
+	<%= content_tag :p, (content_tag :span, 'Bidding Ratio: ') + (percentage @ob_m_pct) %>
+	<%= content_tag :p, (content_tag :span, 'Fastest Bid: ') + (link_to distance_of_time_in_words(@speed.minimum(:bid_speed)), entry_path(@speed.first.entry)) if @speed.present? %>
+	<%= content_tag :p, (content_tag :span, 'Average Bid: ') + (distance_of_time_in_words(@speed.average(:bid_speed))) if @speed.present? %>
+</div>
+
+
+<table id="dash-stats">
+    <%= content_tag :th, 'Bidding Stats', :class => 'big' %>
+    <%= content_tag :th, 'All-Time', :class => 'val' %>
+    <%= content_tag :th, 'Since<br> 16 Apr 2011'.html_safe, :class => 'val' %>
+    <%= content_tag :th, "This month<br> #{Time.now.strftime('%b %Y')}".html_safe, :class => 'val' %>
+    <tr>
+        <%= content_tag :td, 'Total parts requested', :class => 'label' %>
+        <%= content_tag :td, (delimited @presenter.line_items.count) %>
+        <%= content_tag :td, (delimited @presenter.line_items.metered.count)  %>
+        <%= content_tag :td, (delimited @presenter.line_items.ftm.count) %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Parts with bids', :class => 'label' %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ob_all_pct), :class => 'instruction'} #{delimited  @presenter.uniq_bids}".html_safe  %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ob_m_pct), :class => 'highlight' if @ob_m_pct > 0 } #{delimited  @presenter.uniq_bids_m}".html_safe  %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ob_f_pct), :class => 'instruction'} #{delimited  @presenter.uniq_bids_f}".html_safe  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Parts with 2 or more bids', :class => 'label indent' %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ob2_all_pct), :class => 'instruction'} #{delimited  @presenter.line_items.two_and_up.count}".html_safe  %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ob2_m_pct), :class => 'instruction'} #{delimited  @presenter.line_items.two_and_up.metered.count}".html_safe  %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ob2_f_pct), :class => 'instruction'} #{delimited  @presenter.line_items.two_and_up.ftm.count}".html_safe  %>
+    </tr>
+    <tr class='divide'>
+        <%= content_tag :td, 'Missed opportunity', :class => 'label' %>
+        <%#= content_tag :td, (delimited @missed) %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @msd_all_pct), :class => 'instruction'} #{delimited  @missed}".html_safe  %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @msd_m_pct), :class => 'instruction'} #{delimited  @msd_m}".html_safe  %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @msd_f_pct), :class => 'instruction'} #{delimited  @msd_f}".html_safe  %>
+    </tr>
+    <tr class='divide'>
+        <%= content_tag :td, 'Total Bids Submitted', :class => 'label' %>
+        <%= content_tag :td, (delimited @total_bids) %>
+        <%= content_tag :td, (delimited @tb_m)  %>
+        <%= content_tag :td, (delimited @tb_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Original', :class => 'label indent' %>
+        <%= content_tag :td, (delimited @orig_all) %>
+        <%= content_tag :td, (delimited @orig_m)  %>
+        <%= content_tag :td, (delimited @orig_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Replacement', :class => 'label indent' %>
+        <%= content_tag :td, (delimited @rep_all) %>
+        <%= content_tag :td, (delimited @rep_m)  %>
+        <%= content_tag :td, (delimited @rep_f)  %>
+    </tr>
+    <tr class='divide'>
+        <%= content_tag :td, 'Surplus', :class => 'label indent' %>
+        <%= content_tag :td, (delimited @surp_all) %>
+        <%= content_tag :td, (delimited @surp_m)  %>
+        <%= content_tag :td, (delimited @surp_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'With Orders', :class => 'label indent' %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ordered_all_pct), :class => 'instruction'} #{delimited @ordered_all}".html_safe  %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ordered_m_pct), :class => 'instruction'} #{delimited @ordered_m}".html_safe  %>
+        <%= content_tag :td, "#{content_tag :span, percentage( @ordered_f_pct), :class => 'instruction'} #{delimited @ordered_f}".html_safe  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Ordered but cannot supply', :class => 'label indent' %>
+        <%= content_tag :td, (delimited @canc_all) %>
+        <%= content_tag :td, (delimited @canc_m)  %>
+        <%= content_tag :td, (delimited @canc_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'For Decision', :class => 'label indent' %>
+        <%= content_tag :td, (delimited @fdec_all) %>
+        <%= content_tag :td, (delimited @fdec_m)  %>
+        <%= content_tag :td, (delimited @fdec_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Declined', :class => 'label indent' %>
+        <%= content_tag :td, (delimited @decl_all) %>
+        <%= content_tag :td, (delimited @decl_m)  %>
+        <%= content_tag :td, (delimited @decl_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Lose/Dropped/Expired', :class => 'label indent' %>
+        <%= content_tag :td, (delimited @lose_all) %>
+        <%= content_tag :td, (delimited @lose_m)  %>
+        <%= content_tag :td, (delimited @lose_f)  %>
+    </tr>
+    <tr class='divide'>
+        <%= content_tag :td, 'Newly Submitted', :class => 'label indent' %>
+        <%= content_tag :td, (delimited @nb_all) %>
+        <%= content_tag :td, (delimited @nb_m)  %>
+        <%= content_tag :td, (delimited @nb_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Metered Days', :class => 'label' %>
+        <%= content_tag :td, '' %>
+        <%= content_tag :td, (pluralize(@days_m.to_i, 'day'))  %>
+        <%= content_tag :td, (pluralize(@days_f.to_i, 'day'))  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Average Number of Bids', :class => 'label' %>
+        <%= content_tag :td, '' %>
+        <%= content_tag :td, "#{@average_m} per day"  %>
+        <%= content_tag :td, "#{@average_f} per day"  %>
+    </tr>
+</table>
+
+<table id="dash-stats">
+    <%= content_tag :th, 'Order Stats', :class => 'big' %>
+    <%= content_tag :th, 'All-Time', :class => 'val' %>
+    <%= content_tag :th, 'Since<br> 16 Apr 2011'.html_safe, :class => 'val' %>
+    <%= content_tag :th, "This month<br> #{Time.now.strftime('%b %Y')}".html_safe, :class => 'val' %>
+    <tr class='divide'>
+        <%= content_tag :td, 'Total Orders through E-Bid', :class => 'label' %>
+        <%= content_tag :td, ph_currency(@eb_all) %>
+        <%= content_tag :td, ph_currency(@eb_m)  %>
+        <%= content_tag :td, ph_currency(@eb_f) %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'New POs', :class => 'label' %>
+        <%= content_tag :td, ph_currency(@new_all) %>
+        <%= content_tag :td, ph_currency(@new_m)    %>
+        <%= content_tag :td, ph_currency(@new_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Cancelled POs', :class => 'label' %>
+        <%= content_tag :td, ph_currency(@co_all) %>
+        <%= content_tag :td, ph_currency(@co_m)    %>
+        <%= content_tag :td, ph_currency(@co_f)  %>
+    </tr>
+    <tr class='divide'>
+        <%= content_tag :td, 'Delivered POs', :class => 'label' %>
+        <%= content_tag :td, ph_currency(@td_all) %>
+        <%= content_tag :td, ph_currency(@td_m)    %>
+        <%= content_tag :td, ph_currency(@td_f)  %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Within Credit Term', :class => 'label indent' %>
+        <td>
+            <%= content_tag :p, (ph_currency @wt_all) %>
+            <%= content_tag :p, (percentage @wt_all_pct), :class => 'instruction' %>
+        </td>
+        <td>
+            <%= content_tag :p, (ph_currency @wt_m) %>
+            <%= content_tag :p, (percentage @wt_m_pct), :class => 'instruction' %>
+        </td>                                        
+        <td>                                         
+            <%= content_tag :p, (ph_currency @wt_f) %>   
+            <%= content_tag :p, (percentage @wt_f_pct), :class => 'instruction' %>
+        </td>
+    </tr>
+    <tr <%= "class='mild-alert'" if @ovr_all > 0 %>>
+        <%= content_tag :td, 'Overdue', :class => 'label indent' %>
+        <td>
+            <%= content_tag :p, (ph_currency @ovr_all) %>
+            <%= content_tag :p, (percentage @ovr_all_pct), :class => 'instruction' %>
+        </td>
+        <td>
+            <%= content_tag :p, (ph_currency @ovr_m) %>
+            <%= content_tag :p, (percentage @ovr_m_pct), :class => 'instruction' %>
+        </td>                                        
+        <td>                                         
+            <%= content_tag :p, (ph_currency @ovr_f) %>   
+            <%= content_tag :p, (percentage @ovr_f_pct), :class => 'instruction' %>
+        </td>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Tagged as Paid (needs confirmation)', :class => 'label indent' %>
+        <td>
+            <%= content_tag :p, (ph_currency @pend_all) %>
+            <%= content_tag :p, (percentage @pend_all_pct), :class => 'instruction' %>
+        </td>
+        <td>
+            <%= content_tag :p, (ph_currency @pend_m) %>
+            <%= content_tag :p, (percentage @pend_m_pct), :class => 'instruction' %>
+        </td>                                        
+        <td>                                         
+            <%= content_tag :p, (ph_currency @pend_f) %>   
+            <%= content_tag :p, (percentage @pend_f_pct), :class => 'instruction' %>
+        </td>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Paid (needs rating)', :class => 'label indent' %>
+        <td>
+            <%= content_tag :p, (ph_currency @paid_all) %>
+            <%= content_tag :p, (percentage @paid_all_pct), :class => 'instruction' %>
+        </td>
+        <td>
+            <%= content_tag :p, (ph_currency @paid_m) %>
+            <%= content_tag :p, (percentage @paid_m_pct), :class => 'instruction' %>
+        </td>                                        
+        <td>                                         
+            <%= content_tag :p, (ph_currency @paid_f) %>   
+            <%= content_tag :p, (percentage @paid_f_pct), :class => 'instruction' %>
+        </td>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'Closed', :class => 'label indent' %>
+        <td>
+            <%= content_tag :p, (ph_currency @closed_all) %>
+            <%= content_tag :p, (percentage @closed_all_pct), :class => 'instruction' %>
+        </td>
+        <td>
+            <%= content_tag :p, (ph_currency @closed_m) %>
+            <%= content_tag :p, (percentage @closed_m_pct), :class => 'instruction' %>
+        </td>                                        
+        <td>                                         
+            <%= content_tag :p, (ph_currency @closed_f) %>   
+            <%= content_tag :p, (percentage @closed_f_pct), :class => 'instruction' %>
+        </td>
+    </tr>
+</table>
+

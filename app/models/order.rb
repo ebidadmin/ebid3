@@ -83,8 +83,9 @@ class Order < ActiveRecord::Base
     if status == "Delivered"
       bids.update_all(:status => status, :delivered => Date.today)
     elsif status == "Paid"
-      bids.update_all(:status => status, :paid => Date.today)
-      bids.each do |bid|
+      active_bids ||= bids.not_cancelled
+      active_bids.update_all(:status => status, :paid => Date.today)
+      active_bids.each do |bid|
         if bid.fee.nil?
           Fee.compute(bid, status, self.id)
         end

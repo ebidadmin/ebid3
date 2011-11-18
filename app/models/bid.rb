@@ -105,7 +105,7 @@ class Bid < ActiveRecord::Base
   end
   
   def cancelled?
-    status.include?('Cancelled') || status.include?('Dropped')
+    status.include?('Cancelled') #|| status.include?('Dropped')
   end
   
   def online? # used in Seller#Show to allow deletion of bids

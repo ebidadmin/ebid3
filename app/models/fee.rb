@@ -9,7 +9,7 @@ class Fee < ActiveRecord::Base
   belongs_to :bid
   
   scope :ordered, where(:fee_type => 'Ordered').order('order_paid DESC')
-  scope :declined, where(:fee_type => ['Declined', 'Expired', 'Expired-Rvtd', 'Reverted', 'Reversed']).order('created_at DESC')
+  scope :declined, where(:fee_type => ['Declined', 'Expired', 'Expired-Rvsd', 'Reverted', 'Reversed']).order('created_at DESC')
   scope :inclusions, includes([:entry => [:car_brand, :car_model, :car_variant, :user]], [:line_item => :car_part], :seller )
   scope :with_orders, includes(:order)
   
@@ -147,13 +147,13 @@ class Fee < ActiveRecord::Base
   end
 
   def reverse
-    update_attribute(:fee_type, fee_type + '-Rvsd') unless self.reverted?
+    update_attribute(:fee_type, fee_type + '-Rvsd') unless self.reversed?
     f = Fee.new(self.attributes)
     f.bid_type = f.bid_speed = f.perf_ratio = f.fee_rate = nil
     f.bid_total = 0
     f.fee = 0 - self.fee
     f.fee_type = 'Reversed'
-    f.created_at = Time.now.utc.to_date
+    f.created_at = Time.now.to_date
     f.split_amount = 0 - self.split_amount
     f.save
   end

@@ -5,28 +5,37 @@
 
 <table>
   <tr>
-    <th>Car Brand</th>
-    <th>Car Model</th>
-    <th>Name</th>
+    <th>Variant</th>
     <th>Start Year</th>
     <th>End Year</th>
 		<%= content_tag :th, 'Entries' %>
+		<%= content_tag :th, 'Rationalize' %>
 		<%= content_tag :th %>
   </tr>
   <% for car_variant in @car_variants %>
-    <tr>
-      <td><%= car_variant.car_brand.name %></td>
-      <td><%= car_variant.car_model.name %></td>
-      <td><%= car_variant.name %></td>
+    <!-- <tr> -->
+		<%= content_tag_for :tr, car_variant do %>
+      <td>
+				<%= car_variant.id %> -
+				<%= car_variant.car_brand.name %> <%= car_variant.car_model.name %><br>
+     		<%= content_tag :p, car_variant.name, :class => 'highlight' %>
+			</td>
       <td><%= car_variant.start_year %></td>
       <td><%= car_variant.end_year %></td>
-			<%= content_tag :td, car_variant.entries.count %>
-      <td>
+			<%= content_tag :td, car_variant.entries.map { |e| link_to(e.id, e) }.to_sentence.html_safe %>
+			<%= content_tag :td do %>
+				<%= form_tag rationalize_car_variant_path(car_variant), :method => :put do  %>
+					<%= number_field_tag :new_variant, nil, :size => 5 %>
+					<%= submit_tag 'Go', :confirm => 'Are you sure?' %>
+				<% end %>
+			<% end %>
+			<td>
 				<%= link_to "Show", car_variant %>
 				<%= link_to "Edit", edit_car_variant_path(car_variant) %>
 				<%= link_to "Destroy", car_variant, :confirm => 'Are you sure?', :method => :delete %>
 			</td>
-    </tr>
+    <!-- </tr> -->
+			<% end %>
   <% end %>
 </table>
 

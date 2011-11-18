@@ -49,5 +49,9 @@ $(function() {
 		$(parent).fadeOut();
 	});
 	
+	// $('.photo').error(function () { 
+	// 	$(this).attr('src=images/rails.png')
+	// });
+	
 });
 

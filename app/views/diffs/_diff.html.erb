@@ -1,5 +1,5 @@
 <% if diff.present? %>
 <%= ph_currency diff.canvass_total  %>
-<%= content_tag :span, diff.canvass_company_id, :class => 'company'  %>
+<%#= content_tag :span, diff.canvass_company_id, :class => 'company'  %>
 <%= content_tag :p, (ph_currency diff.diff.to_f), :class => 'orange' %>
 <% end %>

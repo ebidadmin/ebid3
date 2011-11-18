@@ -3,7 +3,7 @@ class AdminController < ApplicationController
 
   def index
     @users = User.active
-    get_stats
+    # get_stats
   end
 
   def entries
@@ -153,11 +153,11 @@ class AdminController < ApplicationController
     # @entries.each do |entry|
     #   entry.expire
     # end
-    @entry = Entry.find(2239)
+    @entry = Entry.find(2325)
     @entry.expire
     flash[:notice] = "Successful"
-    redirect_to :back  
-  end
+     redirect_to :back  
+   end
 
   def cleanup
     entries = Entry.results.unexpired#.where(:id => [1866, 1856])#

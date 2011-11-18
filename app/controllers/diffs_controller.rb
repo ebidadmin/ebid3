@@ -4,14 +4,16 @@ class DiffsController < ApplicationController
 
   def index
     if current_user.has_role?('admin')
-      @search = Entry.bids_count_gt(0).by_this_company(params[:buyer]).search(params[:search])
+      @search = Entry.by_this_company(params[:buyer]).desc.search(params[:search])
       @buyers = Company.where(:primary_role => 2).collect { |buyer| [buyer.name, diffs_path(:buyer => buyer)] }
       @buyers.push(['All', diffs_path(:buyer => nil)]) unless @buyers.blank?
       @buyers_path = diffs_path(:buyer => params[:buyer])
+      # @search = Entry.diffs_buyer_company_id_eq(23).where(:created_at => '2011-09-19'.to_datetime .. '2011-10-31'.to_datetime).desc.search(params[:search])
     else
       @search = Entry.bids_count_gt(0).by_this_company(current_user.company).desc.search(params[:search])
     end
     @entries = @search.inclusions.paginate :page => params[:page], :per_page => 5
+    # render :layout => 'print'
   end
 
   def show
@@ -56,10 +58,13 @@ class DiffsController < ApplicationController
   end
 
   def summary
-    @entries = Entry.by_this_company(2).where('entries.created_at >= ?', Time.now.beginning_of_year) # @entries = Entry.where(:company_id => current_user.company, :created_at => ('2010-12-01'..'2011-02-01'))
+    company = 23
+    start_date = '2011-09-19'.to_datetime
+    end_date = '2011-10-31'.to_datetime
+    @entries = Entry.by_this_company(company).where(:created_at => start_date .. end_date) # @entries = Entry.where(:company_id => current_user.company, :created_at => ('2010-12-01'..'2011-02-01'))
     @line_items = LineItem.where(:entry_id => @entries) # @line_items = @entries.sum(:line_items_count)
     @with_bids = @line_items.with_bids # @without_bids = @line_items.without_bids.count
-    @with_diffs = Diff.where(:buyer_company_id => 2)
+    @with_diffs = Diff.buyer_company_id_eq(company).where('diffs.created_at >= ?', '2011-10-01'.to_datetime)
     
     @sample = @with_diffs.collect(&:entry_id).uniq
     @sample_parts = LineItem.where(:entry_id => @sample) #@with_diffs.collect(&:line_item_id).uniq
@@ -78,7 +83,7 @@ class DiffsController < ApplicationController
 
     @total_effect = @ebid_lower.sum(:diff).abs + @ebid_higher.sum(:diff) + @same.sum(:total) + @projected_savings
     @decline_fees = @search = Fee.where(:entry_id => @sample).declined
-    @orders = Order.where(:company_id => 2).total_delivered.where('orders.created_at >= ?', Time.now.beginning_of_year)
+    @orders = Order.where(:company_id => company).total_delivered.where(:entry_id => @entries)
     @ordered_parts = @orders.sum(:order_items_count)
     @orders_in_survey = @orders.where(:entry_id => @sample)
     render :layout => 'print'

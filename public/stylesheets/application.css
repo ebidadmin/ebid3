@@ -61,7 +61,7 @@ strong, .strong { font-weight: bold; font-size: 1.1em; color: #C00; }
 .cancelled { text-decoration: line-through; }
 .highlight { background-color: #FFF6BF; padding: 0 10px; }
 .green { background-color: #264409; color: #FFF; }
-.brown { color: white; background-color: #8a1f11; }
+.brown { color: white !important; background-color: #8a1f11; }
 .offwhite { background-color: #eaeaea; }
 .white { background-color: white; }
 .orange { background-color: orange; }
@@ -333,6 +333,7 @@ td.bid-box, td.status { background-color: #eaeaea; text-align: center; }
 #accept-decline .instruction { margin-bottom: 10px; }
 
 .bid-box .mild-alert { margin-top: 0; margin-bottom: 10px; }
+#content-main .vals a { background-color: transparent; border-color: black; color: black; font-weight: normal; }
 
 /* MESSAGES
 ---------------------------------------------------------------------- */
