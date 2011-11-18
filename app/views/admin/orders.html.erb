@@ -34,10 +34,10 @@
 		<% for order in orders %>
 		<tr>
 	  	<td >	
-	 			<% for order_item in  order.order_items %>
+	 			<% for bid in  order.bids %>
 				<p class="part">
-			    <%= content_tag :span, "#{order_item.quantity} ", :class => 'qty' %>
-					<%= content_tag :span, order_item.part_name, :class => 'name' %>
+			    <%= content_tag :span, "#{bid.quantity} ", :class => "qty#{ ' cancelled' if bid.cancelled?}" %>
+					<%= content_tag :span, bid.line_item.part_name, :class => "name#{ ' cancelled' if bid.cancelled?}" %>
 				</p>
 				<% end %>
 		 	</td>

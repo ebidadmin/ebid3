@@ -18,10 +18,10 @@
 	<tr>
   	<td >	
  			<% for bid in  order.bids %>
-				<p class="part">
-			    <%= content_tag :span, "#{bid.quantity} ", :class => 'qty' %>
-					<%= content_tag :span, bid.line_item.part_name, :class => 'name' %>
-				</p>
+			<p class="part">
+		    <%= content_tag :span, "#{bid.quantity} ", :class => "qty#{ ' cancelled' if bid.cancelled?}" %>
+				<%= content_tag :span, bid.line_item.part_name, :class => "name#{ ' cancelled' if bid.cancelled?}" %>
+			</p>
 			<% end %>
 	 	</td>
 		<td class='amount'>
