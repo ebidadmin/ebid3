@@ -51,8 +51,12 @@ class CarVariantsController < ApplicationController
   def rationalize
     # raise params.to_yaml
     @car_variant = CarVariant.find(params[:id])
+    @new_variant = CarVariant.find(params[:new_variant])
     @entries = @car_variant.entries
-    @entries.update_all(:car_variant_id => params[:new_variant])
-    redirect_to :back
+    @entries.update_all(:car_variant_id => @new_variant.id)
+    respond_to do |format|
+      format.html { redirect_to :back, :notice => 'Transferred the entries to new variant!' }
+      format.js 
+    end
   end
 end

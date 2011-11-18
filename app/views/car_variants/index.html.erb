@@ -3,7 +3,7 @@
 <%= will_paginate @car_variants %>
 <%= page_info @car_variants %>
 
-<table>
+<table id="car_variants">
   <tr>
     <th>Variant</th>
     <th>Start Year</th>
@@ -22,9 +22,9 @@
 			</td>
       <td><%= car_variant.start_year %></td>
       <td><%= car_variant.end_year %></td>
-			<%= content_tag :td, car_variant.entries.map { |e| link_to(e.id, e) }.to_sentence.html_safe %>
-			<%= content_tag :td do %>
-				<%= form_tag rationalize_car_variant_path(car_variant), :method => :put do  %>
+			<%= content_tag :td, car_variant.entries.map { |e| link_to(e.id, e) }.to_sentence.html_safe, :class => 'entries' %>
+			<%= content_tag :td, '', :class => 'rationalize' do %>
+				<%= form_tag rationalize_car_variant_path(car_variant), :method => :put, :remote => true do  %>
 					<%= number_field_tag :new_variant, nil, :size => 5 %>
 					<%= submit_tag 'Go', :confirm => 'Are you sure?' %>
 				<% end %>

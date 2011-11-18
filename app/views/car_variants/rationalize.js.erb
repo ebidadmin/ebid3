@@ -1,0 +1,3 @@
+$("tr#car_variant_<%= @new_variant.id %> .entries").html("<%= escape_javascript(@new_variant.entries.map { |e| link_to(e.id, e) }.to_sentence.html_safe) %>").effect("highlight", {}, 3000);
+$("tr#car_variant_<%= @car_variant.id %> .entries").text("Transferred the entries to new variant!").effect("highlight", {}, 3000);
+$("tr#car_variant_<%= @car_variant.id %> form")[0].reset(); 

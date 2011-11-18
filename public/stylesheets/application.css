@@ -684,6 +684,11 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #faq li { list-style-type: disc; list-style-position: outside; margin: 0 0 10px 130px; padding-left: 20px; }
 #faq ul.regular li { margin-left: 40px; }
 
+#car_variants .entries { width: 30%; }
+#car_variants .rationalize { width: 15%; }
+#car_variants .rationalize input[type="submit"] { padding: 5px 10px; }
+
+
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */
 @media print {
