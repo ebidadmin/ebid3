@@ -8,12 +8,12 @@ class MessageMailer < ActionMailer::Base
       mail(
         :to => "#{message.receiver.profile.full_name} <#{message.receiver.email}>", 
         :subject => "Message Alert: #{entry.vehicle}", 
-        :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"]
+        :bcc => ["Chris Marquez <cymarquez@ebid.com.ph>"]
         )
     else
       mail(
         :to => "Chris Marquez <cymarquez@ebid.com.ph>", 
-        :subject => "OPEN Message Alert: #{entry.vehicle}", 
+        :subject => "OPEN Message: #{entry.vehicle}", 
         )
     end
   end

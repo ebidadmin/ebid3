@@ -3,6 +3,7 @@ class AdminController < ApplicationController
 
   def index
     @users = User.active
+    @presenter = AdminPresenter.new(current_user)
     # get_stats
   end
 

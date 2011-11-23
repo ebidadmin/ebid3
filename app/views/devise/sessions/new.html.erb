@@ -1,4 +1,7 @@
-<h2>Sign in</h2>
+<div id="xmas">
+	<h1 id="countdown" class="instruction">
+		<%= pluralize(('2011-12-25'.to_date - Date.today).to_i, 'day') %> na lang ... Pasko na!
+	</h1>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
   <p><%= f.label :username, :class => 'inlined' %><br>
@@ -7,11 +10,8 @@
   <p><%= f.label :password, :class => 'inlined' %><br>
   <%= f.password_field :password, :class => 'input-text' %></p>
 
-  <% if devise_mapping.rememberable? -%>
-    <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
-  <% end -%>
-
-  <p><%= f.submit "Sign in" %></p>
+  <%#= render :partial => 'remember' %>
+  <p><%= f.submit "Login" %></p>
 <% end %>
 
-<%= render :partial => "devise/shared/links" %>
+</div>

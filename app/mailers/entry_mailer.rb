@@ -12,7 +12,7 @@ class EntryMailer < ActionMailer::Base
     #     )
     # else
       mail(
-        :to => ["Chris Marquez <cymarquez@ebid.com.ph>", "Efren Magtibay <epmagtibay@ebid.com.ph>"],
+        :to => "Chris Marquez <cymarquez@ebid.com.ph>", 
         :subject => "New Entry: #{entry.vehicle}" 
         )
     # end

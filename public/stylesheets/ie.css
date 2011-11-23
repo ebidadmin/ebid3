@@ -514,3 +514,7 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #about-people h3 { color: #C00; margin-bottom: 5px; }
 #about-people .position { font-style: italic; }
 #about-people p { margin-bottom: 20px; }
+
+#xmas { background: url(../images/xmas_banner.gif) no-repeat center top; height: 400px; }
+#xmas #countdown { color: #fafb3e; font-size: 2em; text-align: center; padding-top: 15px; }
+#user_new { margin-left: 500px; padding-top: 10px;}

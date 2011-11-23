@@ -18,7 +18,8 @@
 			<%= content_tag :div, 'Bidding Speed', :class => 'speed' -%>
 			<%= content_tag :div, 'Rate', :class => 'rate' -%>
 	    <%= content_tag :div, 'Decline Date', :class => 'fee' %>
-	    <%= content_tag :div, 'Supplier Share', :class => 'fee' %>
+	    <%#= content_tag :div, 'Supplier Share', :class => 'fee' %>
+	    <%= content_tag :div, 'Decline Fee', :class => 'fee' %>
 		</th>
 	</thead>
 	<% @decline_fees.group_by(&:entry).each do |entry, fees|  %>
@@ -48,8 +49,9 @@
 				<%= content_tag :p, link_to('delete', fee, :method => :delete, :confirm => 'Are you sure?', :remote => true, :class => 'delete-fee', :id => fee.id), :class => 'small' if current_user.id == 1 %>                         
 			</div>
 			<div class='fee'>
-				<%= content_tag :p, currency(fee.split_amount), :class => "#{'negative' if fee.split_amount < 0}" %>
+				<%#= content_tag :p, currency(fee.split_amount), :class => "#{'negative' if fee.split_amount < 0}" %>
 				<%#= content_tag :p, shorten(fee.seller.company.name, 12), :class => 'instruction' if params[:seller].blank? && fee.split_amount? %>
+				<%= content_tag :p, currency(fee.fee), :class => "#{'negative' if fee.fee < 0}" %>
 			</div>
 		</div>
 		<% end %>
@@ -63,8 +65,9 @@
 	    <%= content_tag :div, '', :class => 'lowest-bid' %>
 	    <%= content_tag :div, '', :class => 'speed' %>
 	    <%= content_tag :div, '', :class => 'rate' %>
+	    <%= content_tag :div, '', :class => 'fee' %>
 	    <%= content_tag :div, (ph_currency @decline_fees.collect(&:fee).sum), :class => 'fee' %>
-	    <%= content_tag :div, (ph_currency @decline_fees.collect(&:split_amount).sum), :class => 'fee' %>
+	    <%#= content_tag :div, (ph_currency @decline_fees.collect(&:split_amount).sum), :class => 'fee' %>
 	  </td>
 	</tr>
 </table>

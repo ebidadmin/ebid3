@@ -689,6 +689,10 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #car_variants .rationalize input[type="submit"] { padding: 5px 10px; }
 
 
+#xmas { background: url(../images/xmas_banner.gif) no-repeat center top; height: 400px; }
+#xmas #countdown { color: #fafb3e; text-align: center; padding-top: 15px; }
+#user_new { margin-left: 400px; padding-top: 10px;}
+
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */
 @media print {

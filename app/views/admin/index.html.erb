@@ -9,4 +9,88 @@
 	</ul>
 </div>
 
-<%#= render :partial => 'admin_temp' %>
+<table id="dash-stats">
+   <%= content_tag :th, 'Bidding Stats', :class => 'big' %>
+   <%= content_tag :th, 'All-Time', :class => 'val' %>
+   <%= content_tag :th, 'Since<br> 16 Apr 2011'.html_safe, :class => 'val' %>
+   <%= content_tag :th, "This month<br> #{Time.now.strftime('%b %Y')}".html_safe, :class => 'val' %>
+   <tr>
+       <%= content_tag :td, 'Total parts requested', :class => 'label' %>
+       <%= content_tag :td, (delimited @presenter.li_all) %>
+       <%= content_tag :td, (delimited @presenter.li_m)  %>
+       <%= content_tag :td, (delimited @presenter.li_f) %>
+   </tr>
+   <tr>
+       <%= content_tag :td, 'Parts with bids', :class => 'label' %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.uniq_bids_pct), :class => 'instruction'} #{delimited  @presenter.uniq_bids}".html_safe  %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.uniq_bids_m_pct), :class => 'highlight'  } #{delimited  @presenter.uniq_bids_m}".html_safe  %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.uniq_bids_f_pct), :class => 'instruction'} #{delimited  @presenter.uniq_bids_f}".html_safe  %>
+   </tr>
+   <tr class='divide'>
+       <%= content_tag :td, 'Parts with 2 or more bids', :class => 'label indent' %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.two_and_up_pct), :class => 'instruction'} #{delimited  @presenter.two_and_up}".html_safe  %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.two_and_up_m_pct), :class => 'instruction'} #{delimited  @presenter.two_and_up_m}".html_safe  %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.two_and_up_f_pct), :class => 'instruction'} #{delimited  @presenter.two_and_up_f}".html_safe  %>
+   </tr>
+   <tr class='divide'>
+       <%= content_tag :td, 'Total Bids Submitted', :class => 'label' %>
+       <%= content_tag :td, (delimited @presenter.total_bids) %>
+       <%= content_tag :td, (delimited @presenter.total_bids_m)  %>
+       <%= content_tag :td, (delimited @presenter.total_bids_f)  %>
+   </tr>
+   <tr>
+       <%= content_tag :td, 'Original', :class => 'label indent' %>
+       <%= content_tag :td, (delimited @presenter.bids_orig.count) %>
+       <%= content_tag :td, (delimited @presenter.bids_orig.metered.count)  %>
+       <%= content_tag :td, (delimited @presenter.bids_orig.ftm.count)  %>
+   </tr>
+   <tr>
+       <%= content_tag :td, 'Replacement', :class => 'label indent' %>
+       <%= content_tag :td, (delimited @presenter.bids_rep.count) %>
+       <%= content_tag :td, (delimited @presenter.bids_rep.metered.count)  %>
+       <%= content_tag :td, (delimited @presenter.bids_rep.ftm.count)  %>
+   </tr>
+   <tr class='divide'>
+       <%= content_tag :td, 'Surplus', :class => 'label indent' %>
+       <%= content_tag :td, (delimited @presenter.bids_surp.count) %>
+       <%= content_tag :td, (delimited @presenter.bids_surp.metered.count)  %>
+       <%= content_tag :td, (delimited @presenter.bids_surp.ftm.count)  %>
+   </tr>
+   <tr class='divide'>
+       <%= content_tag :td, 'With Orders', :class => 'label indent' %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.bids_w_orders_pct), :class => 'instruction'} #{delimited @presenter.orders.count}".html_safe  %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.bids_w_orders_m_pct), :class => 'instruction'} #{delimited @presenter.bids_w_orders_m.count}".html_safe  %>
+       <%= content_tag :td, "#{content_tag :span, percentage(@presenter.bids_w_orders_f_pct), :class => 'instruction'} #{delimited @presenter.bids_w_orders_f.count}".html_safe  %>
+   </tr>
+   <tr>
+       <%= content_tag :td, 'Metered Days', :class => 'label' %>
+       <%= content_tag :td, '' %>
+       <%= content_tag :td, (pluralize(@presenter.days_m.to_i, 'day'))  %>
+       <%= content_tag :td, (pluralize(@presenter.days_f.to_i, 'day'))  %>
+   </tr>
+   <tr>
+       <%= content_tag :td, 'Average Number of Bids', :class => 'label' %>
+       <%= content_tag :td, '' %>
+       <%= content_tag :td, "#{@presenter.average_bids_m} per day"  %>
+       <%= content_tag :td, "#{@presenter.average_bids_f} per day"  %>
+   </tr>
+</table>
+
+<table id="dash-stats">
+    <%= content_tag :th, 'Order Stats', :class => 'big' %>
+    <%= content_tag :th, 'All-Time', :class => 'val' %>
+    <%= content_tag :th, 'Since<br> 16 Apr 2011'.html_safe, :class => 'val' %>
+    <%= content_tag :th, "This month<br> #{Time.now.strftime('%b %Y')}".html_safe, :class => 'val' %>
+    <tr class='divide'>
+        <%= content_tag :td, 'Total Orders through E-Bid', :class => 'label' %>
+        <%= content_tag :td, ph_currency(@presenter.bids_w_orders_amount) %>
+        <%= content_tag :td, ph_currency(@presenter.bids_w_orders_m_amount)  %>
+        <%= content_tag :td, ph_currency(@presenter.bids_w_orders_f_amount) %>
+    </tr>
+    <tr>
+        <%= content_tag :td, 'New POs', :class => 'label' %>
+        <%= content_tag :td %>
+        <%= content_tag :td, ph_currency(@presenter.new_orders_m)    %>
+        <%= content_tag :td, ph_currency(@presenter.new_orders_f)  %>
+    </tr>
+</table>
