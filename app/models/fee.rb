@@ -172,4 +172,8 @@ class Fee < ActiveRecord::Base
   def reversed?
     fee_type == 'Expired-Rvsd'
   end
+
+  def for_order
+    fee_type == 'Ordered'
+  end
 end

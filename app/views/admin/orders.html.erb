@@ -12,7 +12,7 @@
 
 <%= will_paginate @orders %>
 <%= page_info @orders, @sort_order %>
-<%= content_tag :p, "#{User.find(params[:seller]).company_name} only: #{ph_currency(@search.sum(:order_total))}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>
+<%= content_tag :p, "#{Company.find(params[:seller]).name} only: #{ph_currency(@search.sum(:order_total))}", :id => 'supplier-total', :class => 'strong highlight' unless params[:seller].nil? %>
 
 <%- unless @orders.blank? -%>
 	<table id="orders-list">

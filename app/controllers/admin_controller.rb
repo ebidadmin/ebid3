@@ -47,16 +47,23 @@ class AdminController < ApplicationController
     # TODO - move or orders#index
     @title = "Purchase Orders"
     @sort_order =" PO date - descending order"
-    @tag_collection = ["PO Released", "For Delivery", "For-Delivery"]
-    # initiate_list
-    @all_orders = Order.where(:status =>  @tag_collection)
-    @search = @all_orders.search(params[:search])
+    # @tag_collection = ["PO Released", "For Delivery", "For-Delivery"]
+    @all_orders = Order.scoped #where(:status =>  @tag_collection)
+    # @search = @all_orders.search(params[:search])
+    @search = @all_orders.by_this_buyer(params[:buyer]).by_this_seller(params[:seller], 'comp').search(params[:search]).asc
     if params[:status]
       @orders = Order.where(:status => params[:status]).desc.inclusions_for_admin.paginate :page => params[:page], :per_page => 10
     else
       @orders = @search.desc.inclusions_for_admin.paginate :page => params[:page], :per_page => 10    
     end
-    # render 'orders/index'  
+ 
+    @buyers = Company.where(:primary_role => 2).collect { |buyer| [buyer.name, admin_orders_path(:buyer => buyer)] }
+    @buyers.push(['All', admin_orders_path(:buyer => nil)]) unless @buyers.blank?
+    @buyers_path = admin_orders_path(:buyer => params[:buyer]) 
+
+    @sellers = Company.where(:primary_role => 3).collect { |seller| [seller.name, admin_orders_path(:seller => seller)] }
+    @sellers.push(['All', admin_orders_path(:seller => nil)]) unless @sellers.blank?
+    @sellers_path = admin_orders_path(:seller => params[:seller])
   end
   
   def payments
@@ -123,9 +130,9 @@ class AdminController < ApplicationController
     @sellers_path = admin_buyer_fees_path(:seller => params[:seller])
     @period_path = admin_buyer_fees_path
     
-    reverted = @all_decline_fees.where(:fee_type => 'Reverted')
-    reverted.each { |r| r.update_attributes(bid_type: nil, bid_speed: nil, perf_ratio: nil, 
-      fee_rate: nil, bid_total: 0, fee_type: 'Reversed')  } 
+    # reverted = @all_decline_fees.where(:fee_type => 'Reverted')
+    # reverted.each { |r| r.update_attributes(bid_type: nil, bid_speed: nil, perf_ratio: nil, 
+    #   fee_rate: nil, bid_total: 0, fee_type: 'Reversed')  } 
     
     render 'buyer/fees'
   end
@@ -158,7 +165,7 @@ class AdminController < ApplicationController
     # @entry.expire
     flash[:notice] = "Successful"
      redirect_to :back  
-   end
+  end
 
   def cleanup
     entries = Entry.results.unexpired#.where(:id => [1866, 1856])#

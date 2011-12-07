@@ -165,9 +165,10 @@ class OrdersController < ApplicationController
         else
           order.update_attribute(:paid, order.pay_until + 1.week)
         end        
-        if (bid.fee.present? && bid.fee.reversed?) || bid.fee.nil? 
-          Fee.compute(bid, 'Paid', order.id)
-        end
+        # if (bid.fee.present? && bid.fee.reversed?) || bid.fee.nil? 
+        #   Fee.compute(bid, 'Paid', order.id)
+        # end
+        Fee.compute(bid, 'Paid', order.id) unless bid.fee.present? && bid.fee.for_order 
       end
       order.bids.not_cancelled.update_all(:status => 'Paid', :paid => order.paid)
       order.line_items.update_all(:status => 'Paid')

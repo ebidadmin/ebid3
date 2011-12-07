@@ -53,7 +53,13 @@ class Order < ActiveRecord::Base
  
   def self.by_this_seller(id, indicator = nil)
     if id.present?
-      where(:seller_id => id)
+      # where(:seller_id => id)
+      if indicator == 'comp'
+        seller_company_id_eq(id)
+      else     
+        where(:seller_id => id)
+      end
+      
     else
       scoped
     end
