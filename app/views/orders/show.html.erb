@@ -57,7 +57,7 @@
 
 
 <div class="page-links">
-	<% if current_user.has_role?('seller') || current_user.has_role?('admin')%>
+	<% if current_user.has_role?('seller') || current_user.has_role?('admin') %>
 
 		<% if @order.seller_confirmation == true %>
 			<%= link_to "<< Back", :back, :class => 'button' %>
@@ -74,4 +74,6 @@
 		<% end %>
 		
 	<% end %>
+	
+	<%= link_to 'Edit PO', edit_order_path(@order), :class => 'button' if current_user.has_role?('admin')  %>
 </div>

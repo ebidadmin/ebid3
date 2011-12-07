@@ -66,7 +66,12 @@
 				<div class='fee'>
 			    <%= content_tag :p, currency(fee.bid_total) if fee.bid_total? %>
 					<%= content_tag :p, fee.bid_type, :class => 'instruction' if fee.bid_type? %>
-					<%= content_tag :p, fee.fee_type.upcase, :class => 'small negative' if fee.fee_type == 'Reverted' || fee.fee_type == 'Reversed' %>
+					<%#= content_tag :p, fee.fee_type.upcase, :class => 'small negative' if fee.fee_type == 'Reverted' || fee.fee_type == 'Reversed' %>
+					<% if fee.fee_type == 'Reverted' || fee.fee_type == 'Reversed' %>
+						<%= content_tag :p, fee.fee_type.upcase, :class => 'small negative'  %>
+					<% else %>
+					<%= content_tag :p, fee.fee_type, :class => 'small'  %>
+					<% end %>
 				</div>
 				<%= content_tag :div, (distance_of_time_in_words fee.bid_speed if fee.bid_speed?), :class => 'speed' %>
 				<%= content_tag :div, "#{content_tag :p, percentage3(fee.fee_rate) unless fee.fee_rate.nil?} #{content_tag :p, fee.perf_ratio, :class => 'small' if fee.perf_ratio? && fee.fee_rate?}".html_safe, :class => 'rate' -%>

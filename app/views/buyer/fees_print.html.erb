@@ -46,7 +46,7 @@
 			<div class='fee'>
 				<%#= content_tag :p, currency(fee.fee), :class => "#{'negative' if fee.fee < 0}" %>
 				<%= content_tag :p, regular_date(fee.created_at, 2), :class => 'instruction' if fee.fee? %>
-				<%= content_tag :p, link_to('delete', fee, :method => :delete, :confirm => 'Are you sure?', :remote => true, :class => 'delete-fee', :id => fee.id), :class => 'small' if current_user.id == 1 %>                         
+				<%#= content_tag :p, link_to('delete', fee, :method => :delete, :confirm => 'Are you sure?', :remote => true, :class => 'delete-fee', :id => fee.id), :class => 'small' if current_user.id == 1 %>                         
 			</div>
 			<div class='fee'>
 				<%#= content_tag :p, currency(fee.split_amount), :class => "#{'negative' if fee.split_amount < 0}" %>

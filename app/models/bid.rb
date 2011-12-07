@@ -63,11 +63,16 @@ class Bid < ActiveRecord::Base
   end
   
   def order_process(line_item)
-    if self.expired?
-      fee.reverse if fee.present?
+    self.update_attributes(:status => "PO Released", :ordered => Date.today, :order_id => OrderItem.line_item_id_eq(line_item).last.order.id, :declined => nil, :expired => nil)
+    if line_item.declined_or_expired? # if Order is due to reactivation, reverse the decline fee and update the bid
+      if line_item.fee.present?
+        orig_fee ||= line_item.fee
+        orig_fee.reverse
+        orig_fee.bid.update_attribute(:status, 'Dropped') unless orig_fee.bid == self
+      end
+    else 
+      self.update_unselected_bids2(line_item)  
     end
-    self.update_attributes(:status => "PO Released", :ordered => Date.today, :order_id => OrderItem.line_item_id_eq(line_item).last.order.id, :fee => nil, :declined => nil, :expired => nil)
-    self.update_unselected_bids2(line_item)  
     line_item.update_attribute(:status, "PO Released")
   end
   

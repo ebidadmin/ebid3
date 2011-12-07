@@ -162,23 +162,57 @@ class AdminPresenter
   end
   
   def new_orders
-    orders.recent
+    # orders.recent
   end
   
   def new_orders_all
-    new_orders.collect(&:order_total).sum
+    orders.recent.collect(&:order_total).sum
   end
   
   def new_orders_m
-    new_orders.metered.collect(&:order_total).sum
+    bids_w_orders_m.recent.collect(&:order_total).sum
   end
   
   def new_orders_f
-    new_orders.ftm.collect(&:order_total).sum
+    bids_w_orders_f.recent.collect(&:order_total).sum
   end
+ 
+  def cancelled_orders
+    # orders.where("status LIKE ?", "%Cancelled%")
+  end
+  
+  def co_all
+    orders.where("status LIKE ?", "%Cancelled%").collect(&:order_total).sum
+  end
+  
+  def co_m
+    bids_w_orders_m.where("status LIKE ?", "%Cancelled%").collect(&:order_total).sum
+  end
+  
+  def co_f
+    bids_w_orders_f.where("status LIKE ?", "%Cancelled%").collect(&:order_total).sum
+  end
+  
+  def td_all
+    orders.total_delivered.collect(&:order_total).sum
+  end
+  
+  def td_m 
+     bids_w_orders_m.total_delivered.collect(&:order_total).sum
+  end
+  
+  def td_f
+     bids_w_orders_f.total_delivered.collect(&:order_total).sum
+  end
+  
+ 
+  # @total_delivered = @own_orders.total_delivered
+  #   @td_all = @total_delivered.collect(&:order_total).sum
+  #   @td_m = @total_delivered.metered.collect(&:order_total).sum
+  #   @td_f = @total_delivered.ftm.collect(&:order_total).sum
  
   memoize :line_items, :bids, :orders, :li_all, :li_m, :li_f, :uniq_bids, :uniq_bids_m, :uniq_bids_f,
   :two_and_up, :two_and_up_m, :two_and_up_f, :total_bids, :total_bids_m, :total_bids_f, :bids_orig, :bids_rep, :bids_surp, 
   :bids_w_orders_all, :bids_w_orders_m, :bids_w_orders_f, :bids_w_orders_amount, :bids_w_orders_m_amount, :bids_w_orders_f_amount,
-  :new_orders
+  :new_orders, :cancelled_orders
 end

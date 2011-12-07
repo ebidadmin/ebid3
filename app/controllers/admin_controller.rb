@@ -150,12 +150,12 @@ class AdminController < ApplicationController
   end
 
   def expire_entries
-    # @entries = Entry.results.unexpired.includes(:line_items) + Entry.online.unexpired.includes(:line_items)
-    # @entries.each do |entry|
-    #   entry.expire
-    # end
-    @entry = Entry.find(2325)
-    @entry.expire
+    @entries = Entry.results.unexpired.includes(:line_items) + Entry.online.unexpired.includes(:line_items)
+    @entries.each do |entry|
+      entry.expire
+    end
+    # @entry = Entry.find(2325)
+    # @entry.expire
     flash[:notice] = "Successful"
      redirect_to :back  
    end

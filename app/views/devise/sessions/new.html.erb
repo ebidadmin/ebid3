@@ -4,10 +4,10 @@
 	</h1>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <p><%= f.label :username, :class => 'inlined' %><br>
+  <p><%= f.label :username, :class => 'inlined' %>
   <%= f.text_field :username, :class => 'input-text' %></p>
 
-  <p><%= f.label :password, :class => 'inlined' %><br>
+  <p><%= f.label :password, :class => 'inlined' %>
   <%= f.password_field :password, :class => 'input-text' %></p>
 
   <%#= render :partial => 'remember' %>

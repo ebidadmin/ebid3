@@ -147,7 +147,7 @@ form.user, form.car_variant { width: 60%; }
 #car_variant_name { border-color: #C00; font-size: 1.2em; }
 #entry_submit, #entry_final_submit { float: right; }
 #company_submit { margin-top: 30px; }
-#user_new #user_submit { margin: 0; }
+#user_new #user_submit { margin: 0 0 0 80px; }
 #car_variant_name { border-color: #C00; font-size: 1.2em; }
 
 /* BUTTONS
@@ -517,4 +517,5 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 
 #xmas { background: url(../images/xmas_banner.gif) no-repeat center top; height: 400px; }
 #xmas #countdown { color: #fafb3e; font-size: 2em; text-align: center; padding-top: 15px; }
-#user_new { margin-left: 500px; padding-top: 10px;}
+#user_new { margin-left: 440px; padding-top: 65px;}
+#user_new label { color: white; float: left; width: 75px; }

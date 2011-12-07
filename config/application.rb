@@ -14,11 +14,11 @@ module Ebid
     
     Dir.glob("./lib/*.{rb}").each { |file| require file }
     
-    # config.middleware.use ::ExceptionNotifier,
-    #   :email_prefix => "E-Bid Errors: ",
-    #   :sender_address => %w{E-Bid Admin <admin@ebid.com.ph>},
-    #   :exception_recipients => %w{cymarquez@ebid.com.ph}
-    
+    config.middleware.use ::ExceptionNotifier,
+       :email_prefix => "E-Bid Errors: ",
+       :sender_address => %w{E-Bid Admin <admin@ebid.com.ph>},
+       :exception_recipients => %w{cymarquez@ebid.com.ph}
+     
   end
 end
 

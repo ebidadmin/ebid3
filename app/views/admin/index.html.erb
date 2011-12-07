@@ -93,4 +93,16 @@
         <%= content_tag :td, ph_currency(@presenter.new_orders_m)    %>
         <%= content_tag :td, ph_currency(@presenter.new_orders_f)  %>
     </tr>
+    <tr>
+        <%= content_tag :td, 'Cancelled POs', :class => 'label' %>
+        <%= content_tag :td, ph_currency(@presenter.co_all) %>
+        <%= content_tag :td, ph_currency(@presenter.co_m)    %>
+        <%= content_tag :td, ph_currency(@presenter.co_f)  %>
+    </tr>
+    <tr class='divide'>
+        <%= content_tag :td, 'Delivered POs', :class => 'label' %>
+        <%= content_tag :td, ph_currency(@presenter.td_all) %>
+        <%= content_tag :td, ph_currency(@presenter.td_m)    %>
+        <%= content_tag :td, ph_currency(@presenter.td_f)  %>
+    </tr>
 </table>

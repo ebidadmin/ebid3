@@ -10,7 +10,7 @@
 		<%= link_to 'edit', edit_message_path(message, :entry => @entry, :order => @order), :remote => true, :class => 'msg-link' %>
 		<%= link_to 'delete', message, :class => 'msg-link', :confirm => 'Are you sure you want to delete this message?', :method => :delete %>
 	<% end %>
-	<%= content_tag :span, '(private msg attached to PO)', :class => 'small' if message.order_id.present? && current_page?(entry_path(@entry)) %>
+	<%= content_tag :span, "(private msg #{link_to 'attached to PO', message.order})".html_safe, :class => 'small' if message.order_id.present? && current_page?(entry_path(@entry)) %>
 </span>
 <span class="comment instruction">
 	<%= message.message %> 

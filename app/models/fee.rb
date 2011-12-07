@@ -1,4 +1,8 @@
 class Fee < ActiveRecord::Base
+  attr_accessible :buyer_company_id, :buyer_id, :seller_company_id, :seller_id, :entry_id, :line_item_id, :order_id,
+  :bid_id, :bid_total, :bid_type, :fee, :fee_type, :remitted, :split_amount, :split_date, :bid_speed, :fee_rate, :order_paid,
+  :perf_ratio
+  
   belongs_to :buyer_company, :class_name => "Company"
   belongs_to :seller_company, :class_name => "Company"
   belongs_to :buyer, :class_name => "User"
@@ -149,6 +153,13 @@ class Fee < ActiveRecord::Base
   def reverse
     update_attribute(:fee_type, fee_type + '-Rvsd') unless self.reversed?
     f = Fee.new(self.attributes)
+    # f.buyer_company_id = self.buyer_company_id
+    # f.buyer_id = self.buyer_id
+    # f.seller_company_id = self.seller_company_id
+    # f.seller_id = self.seller_id
+    # f.entry_id = self.entry_id
+    # f.line_item_id = self.line_item_id
+    # f.bid_id = self.bid_id
     f.bid_type = f.bid_speed = f.perf_ratio = f.fee_rate = nil
     f.bid_total = 0
     f.fee = 0 - self.fee

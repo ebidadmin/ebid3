@@ -27,7 +27,7 @@ class OrdersController < ApplicationController
         bid.order_process(@line_item)
       end
       @entry.update_status unless @entry.buyer_status == 'Relisted'
-      @orders.each { |order| OrderMailer.delay.order_alert(order) }
+      # @orders.each { |order| OrderMailer.delay.order_alert(order) }
       unless @orders.count < 2
         flash[:notice] = "Your POs have been released and will be processed right away.<br>
           Your suppliers are #{content_tag :strong, @orders.collect{ |o| o.seller.profile.company.name }.to_sentence}. Thanks!".html_safe
@@ -90,7 +90,6 @@ class OrdersController < ApplicationController
   end
 
   def seller_status # For seller to update status of Orders
-    # raise params.to_yaml
     find_order_and_entry
 
     if params[:seller_status] == "Confirm Payment"
@@ -156,7 +155,7 @@ class OrdersController < ApplicationController
   end
   
   def auto_paid
-    orders = Order.paid.where("orders.paid_temp <= ?", 3.days.ago).paid_null
+    orders = Order.paid.paid_null
     orders.each do |order|
       order.bids.not_cancelled.each do |bid|
         if bid.paid
@@ -166,7 +165,7 @@ class OrdersController < ApplicationController
         else
           order.update_attribute(:paid, order.pay_until + 1.week)
         end        
-        if bid.fee.nil?
+        if (bid.fee.present? && bid.fee.reversed?) || bid.fee.nil? 
           Fee.compute(bid, 'Paid', order.id)
         end
       end

@@ -34,7 +34,7 @@
 		  <%= render 'orders/order_status_buyer', :order => order %>
 			<% if order.paid && order.paid_but_overdue %>
 				<%= content_tag :p , ('Overdue: ' + (pluralize order.paid_but_overdue, 'day')), :id => 'overdue' if order.paid_but_overdue > 0 %>
-				<%= content_tag :p , 'Paid before due date!', :id => 'overdue' if order.paid_but_overdue <= 0 %>
+				<%= content_tag :p , 'Paid before due date!', :id => 'overdue', :class => 'green' if order.paid_but_overdue <= 0 %>
 			<% end %>
 		</td>
   </tr>
