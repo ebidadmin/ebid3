@@ -120,6 +120,11 @@ class Entry < ActiveRecord::Base
     if status == "Online"
       line_items.update_all(:status => status)
       bids.update_all(:status => 'Submitted') if bids
+    elsif status == "For-Decision"
+      update_attributes(:expired => nil, :chargeable_expiry => nil)
+      for item in line_items.with_bids.includes(:bids, :order_item)
+         item.update_for_decision
+      end
     else
       line_items.update_all(:status => status)
       bids.update_all(:status => status) if bids
@@ -180,13 +185,13 @@ class Entry < ActiveRecord::Base
       end
     elsif self.bids_revealed?
       deadline = bid_until + 3.days unless bid_until.nil?
-      # if Time.now >= deadline #&& expired_at.nil?
+      if Time.now >= deadline && expired.nil?
         update_attributes(:chargeable_expiry => true, :expired => Time.now)
         line_items.each do |item|
           item.update_for_decline unless item.order_item.present? || item.declined_or_expired? || item.cancelled?
         end
         update_status #unless orders.exists?
-      # end
+      end
     end
 	end
 

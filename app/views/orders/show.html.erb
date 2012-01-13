@@ -45,7 +45,8 @@
 			</tr>	
 		<% end %>
 		<tr class="selection-total">	
-			<%= content_tag :td, 'Order Total', :class => 'label', :colspan => 2 %>
+			<%= content_tag :td, pluralize(@order_items1.not_cancelled.count, 'part'), :class => 'label' %>
+			<%= content_tag :td, 'Order Total', :class => 'label' %>
 			<%= content_tag :td, ph_currency(@order.order_total), :class => 'price', :colspan => 2 %>
 		</tr>
 		<% if @order.can_be_cancelled?(current_user)  %>

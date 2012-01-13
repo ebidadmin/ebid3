@@ -261,7 +261,7 @@ class SellerController < ApplicationController
     end_date
     seller_company
     @search = @all_market_fees.search(params[:search])
-    @market_fees = @search.inclusions.with_orders
+    @market_fees = @search.inclusions.with_orders.order('created_at DESC')
     render :layout => 'print'
   end
   

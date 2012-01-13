@@ -48,6 +48,7 @@
 			<td class='birthday'><%= user.profile.birthdate.strftime('%b %d') unless user.profile.blank? %></td>
       <td class="links">
     		<%= content_tag :p, (link_to "View Info", user) %>
+    		<%= content_tag :p, (link_to "Edit", edit_user_path(user)) %>
 				<%= content_tag :p, (link_to "Delete", user, :confirm => 'Are you sure? WARNING: This will remove all entries and bids related to this user.', :method => :delete)  %>
 			</td>
     </tr>

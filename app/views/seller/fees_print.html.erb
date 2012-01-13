@@ -37,12 +37,16 @@
 				    <%= content_tag :span, fee.line_item.quantity, :class => 'qty' %>
 						<%= content_tag :span, fee.line_item.part_name, :class => 'name' %>
 					</div>
-			    <%= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'amount-paid'  %>
-					<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' -%>
-					<%= content_tag :div, percentage(fee.fee_rate), :class => 'rate instruction' -%>
+			    <%#= content_tag :div, (number_to_currency fee.bid_total, :unit => ""), :class => 'amount-paid'  %>
+			    <%= content_tag :div, :class => 'amount-paid' do  %>
+						<%= content_tag :p, currency(fee.bid_total) %>
+						<%= content_tag :p, regular_date(fee.created_at, 2), :class => 'instruction' if fee.fee? %>
+					<% end %>
+					<%= content_tag :div, (distance_of_time_in_words fee.bid_speed unless fee.bid_speed.blank?), :class => 'speed' %>
+					<%= content_tag :div, percentage(fee.fee_rate), :class => 'rate instruction' %>
 					<div class='fee'>
 				    <%= content_tag :p, (number_to_currency fee.fee, :unit => "") %>
-						<%= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>
+						<%#= content_tag :p, fee.seller.username, :class => 'instruction' unless fee.seller == current_user %>
 					</div>
 				<% end %>
 			</div>
@@ -51,7 +55,7 @@
 	</tr>
   <% end %>
 	<tr class="totals">
-    <%= content_tag :td, 'Sub-Totals', :class => 'vehicle' %>
+    <%= content_tag :td, 'Totals', :class => 'vehicle' %>
 	  <td>
 			<div class="po-group">
 		    <%= content_tag :div, '', :class => 'part' %>

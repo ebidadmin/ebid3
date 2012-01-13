@@ -36,6 +36,7 @@ table { border-collapse: collapse; margin: 0 auto 1.5em; width: 100%; text-align
 th { font-weight: bold; padding: 8px; border-bottom: 1px solid black; }
 td { border-bottom: 1px solid black; padding: 6px 8px; }
 table p { margin: 0 0 5px; }
+table tbody th { font-weight: normal; }
 
 .small { color: #919191; font-size: 0.8em; }
 .strong { font-weight: bold; }

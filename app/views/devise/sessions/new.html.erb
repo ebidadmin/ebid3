@@ -1,7 +1,4 @@
-<div id="xmas">
-	<h1 id="countdown" class="instruction">
-		<%= pluralize(('2011-12-25'.to_date - Date.today).to_i, 'day') %> na lang ... birthday na ni Jesus!
-	</h1>
+<% title 'Login' %>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
   <p><%= f.label :username, :class => 'inlined' %>
@@ -13,5 +10,3 @@
   <%#= render :partial => 'remember' %>
   <p><%= f.submit "Login" %></p>
 <% end %>
-
-</div>
