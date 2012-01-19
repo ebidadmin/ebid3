@@ -5,7 +5,7 @@
 #branding-menu p a { margin-left: 10px; }
 #branding-top { font-family: 'Myriad Pro', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif; padding: 10% 0 20px; position: relative; }
 #branding-top #logo { background: transparent url(../images/base/ebidlogo.png) no-repeat; clear: both; height: 95px; opacity: 1; text-indent: -9999px; width: 100px; }
-#branding-top img { border: 2px solid #a9a9a9; height: 275px; width: 484px; position: absolute; padding: 8px; right: 0; top: 15%; }
+#branding-top img { height: 275px; width: 484px; position: absolute; padding: 8px; right: 0; top: 15%; }
 #branding-top h2 { clear: both; float: left; display: inline; font-size: 3em; font-weight: normal; line-height: 1.2em; width: 450px; margin-bottom: 12%; }
 #branding-top p, #call-to-action p, #reg-instruction { border-top: 1px dotted #cacaca; border-bottom: 1px dotted #cacaca; clear: both; color: #919191; font: italic 2em/1.6em Georgia, "Times New Roman", Times, serif; padding: 8px 0 15px; text-align: center; }
 #reg-instruction { text-align: left; }

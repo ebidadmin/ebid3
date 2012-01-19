@@ -1,5 +1,6 @@
 <% title 'Login' %>
 
+<%= render 'chinese_new_yr' %>
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
   <p><%= f.label :username, :class => 'inlined' %>
   <%= f.text_field :username, :class => 'input-text' %></p>
@@ -7,6 +8,7 @@
   <p><%= f.label :password, :class => 'inlined' %>
   <%= f.password_field :password, :class => 'input-text' %></p>
 
-  <%#= render :partial => 'remember' %>
   <p><%= f.submit "Login" %></p>
 <% end %>
+<h2>Gōng xǐ fā cái!  Kiong hee huat tsai!<br> Kong Hei Fat Choi!</h2>
+<h4 class="instruction">(Meaning: Congratulations and wishing you prosperity!)</h4>

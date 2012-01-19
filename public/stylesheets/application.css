@@ -32,7 +32,7 @@ p { margin: 0 0 0.5em; }
 hr { background: #ddd; clear: both; float: none; width: 100%; height: .1em; margin: 20px 0; border: none; }
 .container { margin: 0 auto; width: 960px; position: relative; overflow: hidden; }
 /*.container { width: 92%; margin-left: 4%; margin-right: 4%; overflow: hidden; padding: 0 1%; }*/
-#top { background-color: #f1f2ed; padding-bottom: 20px; }
+#top { background-color: white; padding-bottom: 20px; }
 #content-main { clear: both; padding: 10px 0; min-height: 200px; position: relative; }
 #content-main a, #subnav #flash_info a, #call-to-action a { color: #C00; font-weight: bold; text-decoration: none; background-color: white; border-bottom: 1px dotted #C00; }
 #content-main a[rel^=shadowbox] { padding: 0; opacity: 1; }
@@ -689,6 +689,9 @@ table .totals { font-size: 1.5em; font-weight: bold; padding-top: 10px; padding-
 #car_variants .rationalize input[type="submit"] { padding: 5px 10px; }
 
 #user_new label { float: left; width: 80px; }
+#user_new { margin-bottom: 85px; }
+#chnwyr { float: right; margin-top: -75px; width: 48%; text-align: center;}
+#chnwyr img { height: 85%; width: 85%; }
 
 /* PRINTING STYLES
 ---------------------------------------------------------------------- */
